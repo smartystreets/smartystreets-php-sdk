@@ -1,9 +1,6 @@
 <?php
 namespace smartystreets\api\us_zipcode;
 
-require_once (dirname(__FILE__)) . '/Result.php';
-use Result as Result;
-
 class Lookup {
     //region [ Fields ]
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace smartystreets\api\us_zipcode;
+
 class Result {
     private $status,
             $reason,
@@ -45,6 +47,8 @@ class Result {
         return ($this->status == null && $this->reason == null);
     }
 
+    //region [ Getters ]
+
     public function getCityAtIndex($index) {
         return $this->cities[$index];
     }
@@ -53,4 +57,44 @@ class Result {
         return $this->zipCodes[$index];
     }
 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function getReason()
+    {
+        return $this->reason;
+    }
+
+    public function getInputIndex()
+    {
+        return $this->inputIndex;
+    }
+
+    public function getCities()
+    {
+        return $this->cities;
+    }
+
+    public function getZipCodes()
+    {
+        return $this->zipCodes;
+    }
+
+    //endregion
+
+    //region [ Setters ]
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    public function setReason($reason)
+    {
+        $this->reason = $reason;
+    }
+
+    //endregion
 }
