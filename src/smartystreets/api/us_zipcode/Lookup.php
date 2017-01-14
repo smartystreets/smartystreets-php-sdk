@@ -1,6 +1,8 @@
 <?php
-
 namespace smartystreets\api\us_zipcode;
+
+require_once (dirname(__FILE__)) . '/Result.php';
+use Result as Result;
 
 class Lookup {
     //region [ Fields ]
@@ -16,40 +18,25 @@ class Lookup {
     //region [ Constructors ]
 
     public function __construct() {
+        $this->result = new Result();
+
         $argv = func_get_args();
-        switch (func_num_args()) {
-            case 1:
-                self::__construct1();
-                break;
-            case 2:
-                self::__construct2($argv[0]);
-                break;
-            case 3:
-                self::__construct3($argv[0], $argv[1]);
-                break;
-            case 4:
-                self::__construct4($argv[0], $argv[1], $argv[2]);
-                break;
+        $i = func_num_args();
+        if (method_exists($this, $f='__construct'.$i)) {
+            call_user_func_array(array($this, $f), $argv);
         }
     }
 
-    public function __construct1() {
-        $this->result = new Result();
-    }
-
-    public function __construct2($argv1) {
-        $this->__construct1();
+    public function __construct1($argv1) {
         $this->zipcode = $argv1;
     }
 
-    public function __construct3($argv1, $argv2) {
-        $this->__construct1();
+    public function __construct2($argv1, $argv2) {
         $this->city = $argv1;
         $this->state = $argv2;
     }
 
-    public function __construct4($argv1, $argv2, $argv3) {
-        $this->__construct1();
+    public function __construct3($argv1, $argv2, $argv3) {
         $this->city = $argv1;
         $this->state = $argv2;
         $this->zipcode = $argv3;
