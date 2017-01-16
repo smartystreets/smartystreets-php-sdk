@@ -2,6 +2,6 @@
 
 namespace smartystreets\api;
 
-interface Credentials {
+interface Sender {
     function sign(Request $request);
 }
