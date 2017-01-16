@@ -23,7 +23,7 @@ class Batch {
         if ($key != null)
             $this->namedLookups[$key] = $lookup;
 
-        array_push($this->allLookups, $lookup);
+        $this->allLookups[] = $lookup;
     }
 
     public function clear() {
