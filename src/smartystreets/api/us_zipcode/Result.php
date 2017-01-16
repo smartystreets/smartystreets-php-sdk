@@ -35,11 +35,11 @@ class Result {
         $this->zipCodes = $this->convertToZipCodeObjects();
     }
 
-    public function convertToCityObjects() {
+    private function convertToCityObjects() {
         return array(); //TODO: implement function
     }
 
-    public function convertToZipCodeObjects() {
+    private function convertToZipCodeObjects() {
         return array(); //TODO: implement function
     }
 
@@ -57,28 +57,23 @@ class Result {
         return $this->zipCodes[$index];
     }
 
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
 
-    public function getReason()
-    {
+    public function getReason() {
         return $this->reason;
     }
 
-    public function getInputIndex()
-    {
+    public function getInputIndex() {
         return $this->inputIndex;
     }
 
-    public function getCities()
-    {
+    public function getCities() {
         return $this->cities;
     }
 
-    public function getZipCodes()
-    {
+    public function getZipCodes() {
         return $this->zipCodes;
     }
 
@@ -86,13 +81,11 @@ class Result {
 
     //region [ Setters ]
 
-    public function setStatus($status)
-    {
+    public function setStatus($status) {
         $this->status = $status;
     }
 
-    public function setReason($reason)
-    {
+    public function setReason($reason) {
         $this->reason = $reason;
     }
 
