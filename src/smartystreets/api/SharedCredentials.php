@@ -2,7 +2,7 @@
 
 namespace smartystreets\api;
 
-include('Credentials.php');
+include_once('Credentials.php');
 
 class SharedCredentials implements Credentials {
     private $id,

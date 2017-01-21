@@ -2,7 +2,7 @@
 
 namespace smartystreets\api;
 
-include('Credentials.php');
+include_once('Credentials.php');
 
 class StaticCredentials implements Credentials {
     private $authId,
