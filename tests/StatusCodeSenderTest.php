@@ -1,10 +1,10 @@
 <?php
 
 require_once('mocks/MockStatusCodeSender.php');
-use mocks\MockStatusCodeSender;
 require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/StatusCodeSender.php');
-use smartystreets\api\StatusCodeSender as StatusCodeSender;
 require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Request.php');
+use mocks\MockStatusCodeSender;
+use smartystreets\api\StatusCodeSender as StatusCodeSender;
 use smartystreets\api\Request;
 
 class StatusCodeSenderTest extends PHPUnit_Framework_TestCase {
