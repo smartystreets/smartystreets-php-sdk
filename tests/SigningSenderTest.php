@@ -1,15 +1,15 @@
 <?php
 
+require_once('mocks/MockSender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Response.php');
 require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/StaticCredentials.php');
 require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/SigningSender.php');
-require_once('mocks/MockSender.php');
+use mocks\MockSender;
 use smartystreets\api\Request as Request;
 use smartystreets\api\Response as Response;
 use smartystreets\api\StaticCredentials as StaticCredentials;
 use smartystreets\api\SigningSender as SigningSender;
-use mocks\MockSender;
 
 class SigningSenderTest extends PHPUnit_Framework_TestCase {
 

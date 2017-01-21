@@ -2,7 +2,7 @@
 
 namespace smartystreets\api;
 
-include('Sender.php');
+include_once('Sender.php');
 
 class SigningSender implements Sender {
     private $signer,
