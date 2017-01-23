@@ -5,8 +5,8 @@ namespace smartystreets\api\us_zipcode;
 class Batch {
 
     const MAX_BATCH_SIZE = 100;
-    private $namedLookups;
-    private $allLookups;
+    private $namedLookups,
+            $allLookups;
 
     public function __construct() {
         $this->namedLookups = array();
