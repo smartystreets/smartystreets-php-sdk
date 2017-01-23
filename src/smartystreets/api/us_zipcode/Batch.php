@@ -53,11 +53,11 @@ class Batch {
         return $this->allLookups;
     }
 
-    public function getLookupById($inputId) {
+    public function getLookupById($inputId) { //TODO: try and make it batch["id"] instead of batch->getLookupById("id");
         return $this->namedLookups[$inputId];
     }
 
-    public function getLookupByIndex($inputIndex) {
+    public function getLookupByIndex($inputIndex) { //TODO: try and make it batch[1] instead of batch->getLookupByIndex(1);
         return $this->allLookups[$inputIndex];
     }
 

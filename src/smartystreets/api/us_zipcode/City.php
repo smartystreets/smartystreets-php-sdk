@@ -23,14 +23,14 @@ class City {
         }
     }
 
-    public function __construct1($argv) {
-        $this->city = $argv["city"];
+    public function __construct1($dictionary) {
+        $this->city = $dictionary["city"];
 
-        if ($argv["mailable_city"])
+        if ($dictionary["mailable_city"])
             $this->mailableCity = true;
 
-        $this->stateAbbreviation = $argv["state_abbreviation"];
-        $this->state = $argv["state"];
+        $this->stateAbbreviation = $dictionary["state_abbreviation"];
+        $this->state = $dictionary["state"];
     }
 
     //endregion
