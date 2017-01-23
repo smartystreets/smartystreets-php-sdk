@@ -8,13 +8,13 @@ class LookupTest extends \PHPUnit_Framework_TestCase {
     }
 
     function testLookupConstructorSetsZipcode() {
-        $lookup = new Lookup("12345");
+        $lookup = new Lookup(null, null, "12345");
 
         $this->assertEquals("12345", $lookup->getZipcode());
     }
 
     function testLookupConstructorSetsCityAndState() {
-        $lookup = new Lookup("city", "state");
+        $lookup = new Lookup("city", "state", null);
 
         $this->assertEquals("city", $lookup->getCity());
         $this->assertEquals("state", $lookup->getState());

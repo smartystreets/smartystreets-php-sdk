@@ -16,29 +16,11 @@ class Lookup {
 
     //region [ Constructors ]
 
-    public function __construct() {
+    public function __construct($city = null, $state = null, $zipcode = null) {
         $this->result = new Result();
-
-        $argv = func_get_args();
-        $i = func_num_args();
-        if (method_exists($this, $f='__construct'.$i)) {
-            call_user_func_array(array($this, $f), $argv);
-        }
-    }
-
-    public function __construct1($argv1) {
-        $this->zipcode = $argv1;
-    }
-
-    public function __construct2($argv1, $argv2) {
-        $this->city = $argv1;
-        $this->state = $argv2;
-    }
-
-    public function __construct3($argv1, $argv2, $argv3) {
-        $this->city = $argv1;
-        $this->state = $argv2;
-        $this->zipcode = $argv3;
+        $this->city = $city;
+        $this->state = $state;
+        $this->zipcode = $zipcode;
     }
 
     //endregion
