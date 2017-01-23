@@ -3,7 +3,7 @@
 namespace smartystreets\api;
 
 interface Serializer {
-    function serialize($obj, $classType);
-    function deserialize($payload, $classType);
+    function serialize($obj);
+    function deserialize($payload);
 
 }

@@ -1,9 +1,10 @@
 <?php
 namespace smartystreets\api\us_zipcode;
 
+//require_once('Result.php'); //TODO: uncomment this one and see if it works instead.
 require_once(dirname(dirname(__FILE__)) . '/us_zipcode/Result.php');
 
-class Lookup {
+class Lookup implements \JsonSerializable {
     //region [ Fields ]
 
     private $result,
@@ -24,6 +25,16 @@ class Lookup {
     }
 
     //endregion
+
+    public function jsonSerialize()
+    {
+        return array(
+            'input_id' => $this->inputId,
+            'city' => $this->city,
+            'state' => $this->state,
+            'zipcode' => $this->zipcode
+        );
+    }
 
     //region [ Getters ]
 
@@ -63,7 +74,7 @@ class Lookup {
         $this->state = $state;
     }
 
-    public function setZipcode($zipcode) {
+    public function setZipCode($zipcode) {
         $this->zipcode = $zipcode;
     }
 
