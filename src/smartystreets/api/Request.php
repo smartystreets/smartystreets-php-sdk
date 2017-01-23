@@ -10,20 +10,11 @@ class Request {
             $method,
             $payload;
 
-    public function __construct() {
+    public function __construct($urlPrefix = null) {
         $this->method = "GET";
         $this->headers = array();
         $this->parameters = array();
-
-        $argv = func_get_args();
-        $i = func_num_args();
-        if (method_exists($this, $f='__construct'.$i)) {
-            call_user_func_array(array($this, $f), $argv);
-        }
-    }
-
-    public function __construct1($argv1) {
-        $this->urlPrefix = $argv1;
+        $this->urlPrefix = $urlPrefix;
     }
 
     public function setHeader($header, $value) {

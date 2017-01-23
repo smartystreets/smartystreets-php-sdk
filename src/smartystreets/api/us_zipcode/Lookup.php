@@ -1,6 +1,7 @@
 <?php
 namespace smartystreets\api\us_zipcode;
 
+//require_once('Result.php'); //TODO: uncomment this one and see if it works instead.
 require_once(dirname(dirname(__FILE__)) . '/us_zipcode/Result.php');
 
 class Lookup {
@@ -43,7 +44,7 @@ class Lookup {
         return $this->state;
     }
 
-    public function getZipcode() {
+    public function getZipCode() {
         return $this->zipcode;
     }
 
