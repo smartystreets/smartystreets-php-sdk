@@ -18,12 +18,12 @@ class Result {
         }
     }
 
-    public function __construct1($argv) {
-        $this->status = $argv["status"];
-        $this->reason = $argv["reason"];
-        $this->inputIndex = $argv["input_index"];
-        $this->cities = $argv["city_states"];
-        $this->zipCodes = $argv["zipcodes"];
+    public function __construct1($dictionary) {
+        $this->status = $dictionary["status"];
+        $this->reason = $dictionary["reason"];
+        $this->inputIndex = $dictionary["input_index"];
+        $this->cities = $dictionary["city_states"];
+        $this->zipCodes = $dictionary["zipcodes"];
 
         if ($this->cities == null)
             $this->cities = array();

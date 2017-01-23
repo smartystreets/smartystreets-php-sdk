@@ -23,18 +23,18 @@ class ZipCode {
         }
     }
 
-    public function __construct1($argv) {
-        $this->zipCode = $argv["zipcode"];
-        $this->zipCodeType = $argv["zipcode_type"];
-        $this->defaultCity = $argv["default_city"];
-        $this->countyFips = $argv["county_fips"];
-        $this->countyName = $argv["county_name"];
-        $this->stateAbbreviation = $argv["state_abbreviation"];
-        $this->state = $argv["state"];
+    public function __construct1($dictionary) {
+        $this->zipCode = $dictionary["zipcode"];
+        $this->zipCodeType = $dictionary["zipcode_type"];
+        $this->defaultCity = $dictionary["default_city"];
+        $this->countyFips = $dictionary["county_fips"];
+        $this->countyName = $dictionary["county_name"];
+        $this->stateAbbreviation = $dictionary["state_abbreviation"];
+        $this->state = $dictionary["state"];
         $this->latitude = ["latitude"];
-        $this->longitude = $argv["longitude"];
-        $this->precision = $argv["precision"];
-        $this->alternateCounties = $argv["alternate_counties"];
+        $this->longitude = $dictionary["longitude"];
+        $this->precision = $dictionary["precision"];
+        $this->alternateCounties = $dictionary["alternate_counties"];
 
         if ($this->alternateCounties == null)
             $this->alternateCounties = array();
@@ -52,58 +52,47 @@ class ZipCode {
         return $this->alternateCounties[$index];
     }
 
-    public function getZipCode()
-    {
+    public function getZipCode() {
         return $this->zipCode;
     }
 
-    public function getZipCodeType()
-    {
+    public function getZipCodeType() {
         return $this->zipCodeType;
     }
 
-    public function getDefaultCity()
-    {
+    public function getDefaultCity() {
         return $this->defaultCity;
     }
 
-    public function getCountyFips()
-    {
+    public function getCountyFips() {
         return $this->countyFips;
     }
 
-    public function getCountyName()
-    {
+    public function getCountyName() {
         return $this->countyName;
     }
 
-    public function getStateAbbreviation()
-    {
+    public function getStateAbbreviation() {
         return $this->stateAbbreviation;
     }
 
-    public function getState()
-    {
+    public function getState() {
         return $this->state;
     }
 
-    public function getLatitude()
-    {
+    public function getLatitude() {
         return $this->latitude;
     }
 
-    public function getLongitude()
-    {
+    public function getLongitude() {
         return $this->longitude;
     }
 
-    public function getPrecision()
-    {
+    public function getPrecision() {
         return $this->precision;
     }
 
-    public function getAlternateCounties()
-    {
+    public function getAlternateCounties() {
         return $this->alternateCounties;
     }
 

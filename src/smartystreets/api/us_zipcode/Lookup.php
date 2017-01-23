@@ -54,7 +54,7 @@ class Lookup implements \JsonSerializable {
         return $this->state;
     }
 
-    public function getZipcode() {
+    public function getZipCode() {
         return $this->zipcode;
     }
 
