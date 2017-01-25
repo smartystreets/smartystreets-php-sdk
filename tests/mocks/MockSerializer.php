@@ -12,11 +12,11 @@ class MockSerializer implements Serializer {
         $this->bytes = $bytes;
     }
 
-    public function serialize($obj, $classType) {
+    public function serialize($obj) {
         return $this->bytes;
     }
 
-    public function deserialize($payload, $classType) {
+    public function deserialize($payload) {
         return null;
     }
 

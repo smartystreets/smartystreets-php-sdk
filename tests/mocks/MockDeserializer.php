@@ -13,11 +13,11 @@ class MockDeserializer implements Serializer {
         $this->deserialized = $deserialized;
     }
 
-    public function serialize($obj, $classType) {
+    public function serialize($obj) {
         return "[]";
     }
 
-    public function deserialize($payload, $classType) {
+    public function deserialize($payload) {
         $this->payload = $payload;
         return $this->deserialized;
     }
