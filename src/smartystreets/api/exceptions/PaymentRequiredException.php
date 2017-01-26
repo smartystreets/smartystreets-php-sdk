@@ -2,6 +2,6 @@
 
 namespace smartystreets\api\exceptions;
 
-class PaymentRequiredException extends \Exception {
+class PaymentRequiredException extends SmartyException {
 
 }

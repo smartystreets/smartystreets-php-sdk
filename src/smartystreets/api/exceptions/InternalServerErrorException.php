@@ -2,6 +2,6 @@
 
 namespace smartystreets\api\exceptions;
 
-class InternalServerErrorException extends \Exception {
+class InternalServerErrorException extends SmartyException {
 
 }

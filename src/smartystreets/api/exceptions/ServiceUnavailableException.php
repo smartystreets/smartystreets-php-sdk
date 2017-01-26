@@ -2,6 +2,6 @@
 
 namespace smartystreets\api\exceptions;
 
-class ServiceUnavailableException extends \Exception {
+class ServiceUnavailableException extends SmartyException {
 
 }

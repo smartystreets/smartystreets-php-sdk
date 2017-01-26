@@ -2,6 +2,6 @@
 
 namespace smartystreets\api\exceptions;
 
-class BadRequestException extends \Exception {
+class BadRequestException extends SmartyException {
 
 }

@@ -2,6 +2,6 @@
 
 namespace smartystreets\api\exceptions;
 
-class BatchFullException extends \Exception {
+class BatchFullException extends SmartyException {
 
 }

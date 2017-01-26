@@ -2,6 +2,6 @@
 
 namespace smartystreets\api\exceptions;
 
-class RequestEntityTooLargeException extends \Exception {
+class RequestEntityTooLargeException extends SmartyException {
 
 }

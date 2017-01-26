@@ -2,6 +2,6 @@
 
 namespace smartystreets\api\exceptions;
 
-class TooManyRequestsException extends \Exception {
+class TooManyRequestsException extends SmartyException {
 
 }
