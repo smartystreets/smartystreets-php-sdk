@@ -40,4 +40,72 @@ class Metadata {
         $this->utcOffset = $obj['utc_offset'];
         $this->obeysDst = $obj['dst'];
     }
+
+    //region [ Getters ]
+
+    public function getRecordType() {
+        return $this->recordType;
+    }
+
+    public function getZipType() {
+        return $this->zipType;
+    }
+
+    public function getCountyFips() {
+        return $this->countyFips;
+    }
+
+    public function getCountyName() {
+        return $this->countyName;
+    }
+
+    public function getCarrierRoute() {
+        return $this->carrierRoute;
+    }
+
+    public function getCongressionalDistrict() {
+        return $this->congressionalDistrict;
+    }
+
+    public function getBuildingDefaultIndicator() {
+        return $this->buildingDefaultIndicator;
+    }
+
+    public function getRdi() {
+        return $this->rdi;
+    }
+
+    public function getElotSequence() {
+        return $this->elotSequence;
+    }
+
+    public function getElotSort() {
+        return $this->elotSort;
+    }
+
+    public function getLatitude() {
+        return $this->latitude;
+    }
+
+    public function getLongitude() {
+        return $this->longitude;
+    }
+
+    public function getPrecision() {
+        return $this->precision;
+    }
+
+    public function getTimeZone() {
+        return $this->timeZone;
+    }
+
+    public function getUtcOffset() {
+        return $this->utcOffset;
+    }
+
+    public function obeysDst() {
+        return $this->obeysDst;
+    }
+
+    //endregion
 }
