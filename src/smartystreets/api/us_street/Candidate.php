@@ -9,25 +9,25 @@ require_once('Analysis.php');
 
 
 class Candidate {
-    private $input_index,
-            $candidate_index,
+    private $inputIndex,
+            $candidateIndex,
             $addressee,
-            $delivery_line_1,
-            $delivery_line_2,
-            $delivery_point_barcode,
-            $last_line,
+            $deliveryLine1,
+            $deliveryLine2,
+            $deliveryPointBarcode,
+            $lastLine,
             $metadata,
             $components,
             $analysis;
 
     public function __construct($obj) {
-        $this->input_index = $obj['input_index'];
-        $this->candidate_index = $obj['candidate_index'];
+        $this->inputIndex = $obj['input_index'];
+        $this->candidateIndex = $obj['candidate_index'];
         $this->addressee = $obj['addressee'];
-        $this->delivery_line_1 = $obj['delivery_line_1'];
-        $this->delivery_line_2 = $obj['delivery_line_2'];
-        $this->last_line = $obj['last_line'];
-        $this->delivery_point_barcode = $obj['delivery_point_barcode'];
+        $this->deliveryLine1 = $obj['delivery_line_1'];
+        $this->deliveryLine2 = $obj['delivery_line_2'];
+        $this->lastLine = $obj['last_line'];
+        $this->deliveryPointBarcode = $obj['delivery_point_barcode'];
         $this->components = new Components(isset($obj['components']) ? $obj['components'] : array());
         $this->metadata = new Metadata(isset($obj['metadata']) ? $obj['metadata'] : array());
         $this->analysis = new Analysis(isset($obj['analysis']) ? $obj['analysis'] : array());
@@ -36,12 +36,12 @@ class Candidate {
     //region [Getters]
 
     public function getInputIndex() {
-        return $this->input_index;
+        return $this->inputIndex;
     }
 
 
     public function getCandidateIndex() {
-        return $this->candidate_index;
+        return $this->candidateIndex;
     }
 
 
@@ -51,22 +51,22 @@ class Candidate {
 
 
     public function getDeliveryLine1() {
-        return $this->delivery_line_1;
+        return $this->deliveryLine1;
     }
 
 
     public function getDeliveryLine2() {
-        return $this->delivery_line_2;
+        return $this->deliveryLine2;
     }
 
 
     public function getDeliveryPointBarcode() {
-        return $this->delivery_point_barcode;
+        return $this->deliveryPointBarcode;
     }
 
 
     public function getLastLine() {
-        return $this->last_line;
+        return $this->lastLine;
     }
 
 
