@@ -6,7 +6,7 @@ use smartystreets\api\us_street\Candidate as Candidate;
 class CandidateTest extends \PHPUnit_Framework_TestCase{
 
     public function testAllFieldsFilledCorrectly() {
-        $obj = [
+        $obj = array(
             'input_index' => 0,
             'candidate_index' => 1,
             'addressee' => '2',
@@ -14,7 +14,7 @@ class CandidateTest extends \PHPUnit_Framework_TestCase{
             'delivery_line_2' => '4',
             'last_line' => '5',
             'delivery_point_barcode' => '6',
-            'components' => [
+            'components' => array(
                 'urbanization' => '7',
                 'primary_number' => '8',
                 'street_name' => '9',
@@ -34,8 +34,8 @@ class CandidateTest extends \PHPUnit_Framework_TestCase{
                 'plus4_code' => '23',
                 'delivery_point' => '24',
                 'delivery_point_check_digit' => '25'
-            ],
-            'metadata' => [
+        ),
+            'metadata' => array(
                 'record_type' => '26',
                 'zip_type' => '27',
                 'county_fips' => '28',
@@ -52,8 +52,8 @@ class CandidateTest extends \PHPUnit_Framework_TestCase{
                 'time_zone' => '39',
                 'utc_offset' => 40.0,
                 'dst' => '41'
-            ],
-            'analysis' => [
+        ),
+            'analysis' => array(
                 'dpv_match_code' => '42',
                 'dpv_footnotes' => '43',
                 'dpv_cmra' => '44',
@@ -64,8 +64,8 @@ class CandidateTest extends \PHPUnit_Framework_TestCase{
                 'lacslink_code' => '49',
                 'lacslink_indicator' => '50',
                 'suitelink_match' => '51'
-            ]
-        ];
+        )
+    );
 
         $candidate = new Candidate($obj);
 
