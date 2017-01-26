@@ -36,11 +36,11 @@ class Client {
         if ($batch->size() == 1)
             $this->populateQueryString($batch->getLookupByIndex(0), $request);
         else
-            $request->setPayload($this->serializer->serialize($batch->getAllLookups(), Lookup::class));
+            $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
 
         $response = $this->sender->send($request);
 
-        $results = $this->serializer->deserialize($response->getPayload(), Result::class);
+        $results = $this->serializer->deserialize($response->getPayload());
         if ($results == null) {
             $results = array();
             $results[0] = new Result();
