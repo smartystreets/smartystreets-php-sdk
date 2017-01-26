@@ -93,7 +93,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     public function testCandidatesCorrectlyAssignedToCorrespondingLookup() {
         $expectedCandidates = array();
         $expectedCandidates[0] = new Result();
+        $expectedCandidates[0]->setStatus('First');
         $expectedCandidates[1] = new Result();
+        $expectedCandidates[1]->setStatus('Second');
         $batch = new Batch();
         $batch->add(new Lookup());
         $batch->add(new Lookup());
