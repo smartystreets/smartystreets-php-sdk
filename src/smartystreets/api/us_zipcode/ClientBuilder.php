@@ -11,13 +11,12 @@ use smartystreets\api\Credentials;
 use smartystreets\api\RetrySender;
 use smartystreets\api\Sender;
 use smartystreets\api\Serializer;
-use smartystreets\api\Request;
 use smartystreets\api\HttpSender;
 use smartystreets\api\SigningSender;
 use smartystreets\api\StaticCredentials;
 use smartystreets\api\StatusCodeSender;
 
-class ClientBuilder {
+class ClientBuilder { //TODO: try and make a parent ClientBuilder for both us_street and us_zipcode
     private $signer,
             $serializer,
             $httpSender,
@@ -26,7 +25,7 @@ class ClientBuilder {
             $urlPrefix;
 
     public function __construct(Credentials $signer = null, $authId = null, $authToken = null) {
-        $this->serializer = new HttpSender(); //TODO:have it make a new HttpSender()
+        $this->serializer = new HttpSender();
         $this->maxRetries = 5;
         $this->maxTimeout = 10000;
         $this->urlPrefix = "https://us-zipcode.api.smartystreets.com/lookup";

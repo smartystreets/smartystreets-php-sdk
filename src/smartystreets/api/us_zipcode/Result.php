@@ -22,25 +22,29 @@ class Result {
         $this->status = $dictionary["status"];
         $this->reason = $dictionary["reason"];
         $this->inputIndex = $dictionary["input_index"];
-        $this->cities = $dictionary["city_states"];
-        $this->zipCodes = $dictionary["zipcodes"];
-
-        if ($this->cities == null)
-            $this->cities = array();
-
-        if ($this->zipCodes == null)
-            $this->zipCodes = array();
+        $this->cities = (isset($dictionary["city_states"]) ? $dictionary["city_states"] : array());
+        $this->zipCodes = (isset($dictionary["zipcodes"]) ? $dictionary["zipcodes"] : array());
 
         $this->cities = $this->convertToCityObjects();
         $this->zipCodes = $this->convertToZipCodeObjects();
     }
 
     private function convertToCityObjects() {
-        return array(); //TODO: implement function
+        $cityObjects = array();
+
+        foreach ($this->cities as $city)
+            $cityObjects[] = $city;
+
+        return $cityObjects;
     }
 
     private function convertToZipCodeObjects() {
-        return array(); //TODO: implement function
+        $zipCodeObjects = array();
+
+        foreach ($this->zipCodes as $zipCode)
+            $zipCodeObjects[] = $zipCode;
+
+        return $zipCodeObjects;
     }
 
     public function isValid() {

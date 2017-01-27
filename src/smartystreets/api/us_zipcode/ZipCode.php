@@ -23,27 +23,29 @@ class ZipCode {
         }
     }
 
-    public function __construct1($dictionary) {
-        $this->zipCode = $dictionary["zipcode"];
-        $this->zipCodeType = $dictionary["zipcode_type"];
-        $this->defaultCity = $dictionary["default_city"];
-        $this->countyFips = $dictionary["county_fips"];
-        $this->countyName = $dictionary["county_name"];
-        $this->stateAbbreviation = $dictionary["state_abbreviation"];
-        $this->state = $dictionary["state"];
+    public function __construct1($obj) {
+        $this->zipCode = $obj["zipcode"];
+        $this->zipCodeType = $obj["zipcode_type"];
+        $this->defaultCity = $obj["default_city"];
+        $this->countyFips = $obj["county_fips"];
+        $this->countyName = $obj["county_name"];
+        $this->stateAbbreviation = $obj["state_abbreviation"];
+        $this->state = $obj["state"];
         $this->latitude = ["latitude"];
-        $this->longitude = $dictionary["longitude"];
-        $this->precision = $dictionary["precision"];
-        $this->alternateCounties = $dictionary["alternate_counties"];
-
-        if ($this->alternateCounties == null)
-            $this->alternateCounties = array();
+        $this->longitude = $obj["longitude"];
+        $this->precision = $obj["precision"];
+        $this->alternateCounties = (isset($obj["alternate_counties"]) ? $obj["alternate_counties"] : array());
 
         $this->alternateCounties = $this->convertToAlternateCountyObjects();
     }
 
     private function convertToAlternateCountyObjects() {
-        return array(); //TODO: implement function
+        $altCountyObjects = array();
+
+        foreach ($this->alternateCounties as $county)
+            $altCountyObjects[] = $county;
+
+        return $altCountyObjects;
     }
 
     //region [ Getters ]
