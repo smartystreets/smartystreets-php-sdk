@@ -18,7 +18,7 @@ class UsZipCodeSingleLookupExample {
 
     public function run() {
 //        $staticCredentials = new StaticCredentials($_ENV['SMARTY_AUTH_ID'], $_ENV['SMARTY_AUTH_TOKEN']);
-        $staticCredentials = new StaticCredentials('3fa4c814-7015-5345-cc65-3e169e095b04', '6qGUjYXqayyGVYn56OmV');
+        $staticCredentials = new StaticCredentials('auth_id', 'auth_token');
         $client = (new ClientBuilder($staticCredentials))->build();
 
         $lookup = new Lookup();
