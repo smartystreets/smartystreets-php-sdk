@@ -1,5 +1,6 @@
 <?php
 
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/NativeSerializer.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Result.php');
 use smartystreets\api\us_zipcode\Result as Result;
 
@@ -52,10 +53,10 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($result->isValid());
     }
 
-    public function testAllFieldsFilledCorrectly() {
-        $serializer = new NativeSerializer();
-        $results = $serializer->deserialize($this->expectedJsonOutput);
-
-        //TODO:
-    }
+//    public function testAllFieldsFilledCorrectly() {
+//        $serializer = new NativeSerializer();
+//        $results = $serializer->deserialize($this->expectedJsonOutput);
+//
+//        //TODO:
+//    }
 }

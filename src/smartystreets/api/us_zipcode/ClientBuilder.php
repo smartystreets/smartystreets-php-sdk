@@ -2,12 +2,21 @@
 
 namespace smartystreets\api\us_zipcode;
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/api/Sender.php');
+//foreach (glob(dirname(dirname(dirname(__FILE__))) . '/api/*.php') as $filename) {
+//    include $filename;
+//}
 require_once(dirname(dirname(dirname(__FILE__))) . '/api/Serializer.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/api/Request.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/api/HttpSender.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/api/NativeSerializer.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/api/NativeSender.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/api/StatusCodeSender.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/api/SigningSender.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/api/RetrySender.php');
+require_once('Client.php');
+require_once('Lookup.php');
 require_once('Batch.php');
 use smartystreets\api\Credentials;
+use smartystreets\api\NativeSender;
 use smartystreets\api\RetrySender;
 use smartystreets\api\Sender;
 use smartystreets\api\Serializer;
@@ -15,6 +24,7 @@ use smartystreets\api\HttpSender;
 use smartystreets\api\SigningSender;
 use smartystreets\api\StaticCredentials;
 use smartystreets\api\StatusCodeSender;
+use smartystreets\NativeSerializer;
 
 class ClientBuilder { //TODO: try and make a parent ClientBuilder for both us_street and us_zipcode
     private $signer,
@@ -22,20 +32,16 @@ class ClientBuilder { //TODO: try and make a parent ClientBuilder for both us_st
             $httpSender,
             $maxRetries,
             $maxTimeout,
-            $urlPrefix;
+            $urlPrefix,
+            $referer;
 
-    public function __construct(Credentials $signer = null, $authId = null, $authToken = null) {
-        $this->serializer = new HttpSender();
+    public function __construct(Credentials $signer = null) {
+        $this->serializer = new NativeSerializer();
         $this->maxRetries = 5;
         $this->maxTimeout = 10000;
         $this->urlPrefix = "https://us-zipcode.api.smartystreets.com/lookup";
 
-        if ($signer != null) {
-            $this->signer = $signer;
-        }
-        else if ($authId != null && $authToken != null) {
-            $this->signer = new StaticCredentials($authId, $authToken);
-        }
+        $this->signer = $signer;
     }
 
     public function retryAtMost($maxRetries) {
@@ -58,20 +64,25 @@ class ClientBuilder { //TODO: try and make a parent ClientBuilder for both us_st
         return $this;
     }
 
+    public function withReferer($referer) {
+        $this->referer = $referer;
+        return $this;
+    }
+
     public function withUrl($urlPrefix) {
         $this->urlPrefix = $urlPrefix;
         return $this;
     }
 
     public function build() {
-        return new Client($this->urlPrefix, $this->buildSender(), $this->serializer);
+        return new Client($this->urlPrefix, $this->buildSender(), $this->serializer, $this->referer);
     }
 
     public function buildSender() {
         if ($this->httpSender != null)
             return $this->httpSender;
 
-        $sender = new HttpSender($this->maxTimeout);
+        $sender = new NativeSender($this->maxTimeout);
 
         $sender = new StatusCodeSender($sender);
 

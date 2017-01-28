@@ -19,13 +19,13 @@ class MockCrashingSender implements Sender {
     function send(Request $request) {
         $this->sendCount++;
 
-        if (strpos($request->getUrl(), "RetryThreeTimes") !== false) {
+        if (strpos($request->buildUrl(), "RetryThreeTimes") !== false) {
             if ($this->sendCount <= 3) {
                 throw new IOException("You need to retry"); //TODO: figure out what exception to throw
             }
         }
 
-        if (strpos($request->getUrl(), "RetryMaxTimes") !== false)
+        if (strpos($request->buildUrl(), "RetryMaxTimes") !== false)
             throw new IOException("Retrying won't help");
 
         return new Response(self::STATUS_CODE, "");

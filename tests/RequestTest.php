@@ -27,7 +27,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
         $request->setParameter($name, $value);
 
-        $this->assertEquals($expected, $request->getUrl());
+        $this->assertEquals($expected, $request->buildUrl());
     }
 
     public function testMultipleQueryStringParameters() {
@@ -38,7 +38,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         $request->setParameter("name3", "value3");
 
         $expected = "http://localhost/?name1=value1&name2=value2&name3=value3";
-        $this->assertEquals($expected, $request->getUrl());
+        $this->assertEquals($expected, $request->buildUrl());
     }
 
     public function testUrlEncodingOfQueryStringParameters() {
@@ -49,7 +49,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
         $expected = "http://localhost/?name%26=value&name1=other+%21value%24";
 
-        $this->assertEquals($expected, $request->getUrl());
+        $this->assertEquals($expected, $request->buildUrl());
     }
 
     public function testHeadersAddedToRequest() {
@@ -62,20 +62,12 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("value2", $request->getHeaders()["header2"]);
     }
 
-    public function testGet() {
-        $request = new Request(self::LOCAL_HOST);
-
-        $this->assertEquals("GET", $request->getMethod());
-        $this->assertNull($request->getPayload());
-    }
-
     public function testPost() {
         $request = new Request(self::LOCAL_HOST);
 
         $request->setPayload("bytes");
         $actualPayload = $request->getPayload();
 
-        $this->assertEquals("POST", $request->getMethod());
         $this->assertEquals("bytes", $actualPayload);
     }
 
@@ -87,6 +79,6 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         $request->setParameter("name3", "value3");
 
         $expected = "http://localhost/?name1=value1&name2=value2&name3=value3";
-        $this->assertEquals($expected, $request->getUrl());
+        $this->assertEquals($expected, $request->buildUrl());
     }
 }

@@ -13,15 +13,18 @@ use smartystreets\api\Request;
 class Client {
     private $urlPrefix,
             $sender,
-            $serializer;
+            $serializer,
+            $referer;
 
-    public function __construct($urlPrefix, Sender $sender, Serializer $serializer = null) {
+    public function __construct($urlPrefix, Sender $sender, Serializer $serializer = null, $referer = null) {
         $this->urlPrefix = $urlPrefix;
         $this->sender = $sender;
         $this->serializer = $serializer;
+        $this->referer = $referer;
     }
 
     public function sendLookup(Lookup $lookup) {
+        $myarray = array();
         $batch = new Batch();
         $batch->add($lookup);
         $this->sendBatch($batch);
@@ -33,10 +36,8 @@ class Client {
         if ($batch->size() == 0)
             return;
 
-        if ($batch->size() == 1)
-            $this->populateQueryString($batch->getLookupByIndex(0), $request);
-        else
-            $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
+        $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
+        $request->setReferer($this->referer);
 
         $response = $this->sender->send($request);
 
@@ -49,16 +50,8 @@ class Client {
         $this->assignResultsToLookups($batch, $results);
     }
 
-    private function populateQueryString(Lookup $lookup, Request $request) {
-        $request->setParameter("input_id", $lookup->getInputId());
-        $request->setParameter("city", $lookup->getCity());
-        $request->setParameter("state", $lookup->getState());
-        $request->setParameter("zipcode", $lookup->getZipCode());
-    }
-
     private function assignResultsToLookups(Batch $batch, $results) {
         for ($i = 0; $i < count($results); $i++)
             $batch->getLookupByIndex($i)->setResult($results[$i]);
     }
-
 }
