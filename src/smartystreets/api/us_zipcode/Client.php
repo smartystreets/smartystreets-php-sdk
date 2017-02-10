@@ -51,7 +51,9 @@ class Client {
     }
 
     private function assignResultsToLookups(Batch $batch, $results) {
-        for ($i = 0; $i < count($results); $i++)
-            $batch->getLookupByIndex($i)->setResult($results[$i]);
+        foreach ($results as $rawResult) {
+            $result = new Result($rawResult);
+            $batch->getLookupByIndex($result->getInputIndex())->setResult($result);
+        }
     }
 }

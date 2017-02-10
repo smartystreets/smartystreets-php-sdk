@@ -2,6 +2,9 @@
 
 namespace smartystreets\api\us_zipcode;
 
+require_once('City.php');
+require_once('ZipCode.php');
+
 class Result {
     private $status,
             $reason,
@@ -18,12 +21,12 @@ class Result {
         }
     }
 
-    public function __construct1($dictionary) {
-        $this->status = $dictionary["status"];
-        $this->reason = $dictionary["reason"];
-        $this->inputIndex = $dictionary["input_index"];
-        $this->cities = (isset($dictionary["city_states"]) ? $dictionary["city_states"] : array());
-        $this->zipCodes = (isset($dictionary["zipcodes"]) ? $dictionary["zipcodes"] : array());
+    public function __construct1($obj) {
+        $this->status = (isset($obj["status"])) ? $obj["status"] : null;
+        $this->reason = (isset($obj["reason"])) ? $obj["status"] : null;
+        $this->inputIndex = $obj["input_index"];
+        $this->cities = (isset($obj["city_states"]) ? $obj["city_states"] : array());
+        $this->zipCodes = (isset($obj["zipcodes"]) ? $obj["zipcodes"] : array());
 
         $this->cities = $this->convertToCityObjects();
         $this->zipCodes = $this->convertToZipCodeObjects();
@@ -33,7 +36,7 @@ class Result {
         $cityObjects = array();
 
         foreach ($this->cities as $city)
-            $cityObjects[] = $city;
+            $cityObjects[] = new City($city);
 
         return $cityObjects;
     }
@@ -42,7 +45,7 @@ class Result {
         $zipCodeObjects = array();
 
         foreach ($this->zipCodes as $zipCode)
-            $zipCodeObjects[] = $zipCode;
+            $zipCodeObjects[] = new ZipCode($zipCode);
 
         return $zipCodeObjects;
     }

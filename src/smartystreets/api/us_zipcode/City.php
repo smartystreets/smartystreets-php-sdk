@@ -23,14 +23,11 @@ class City {
         }
     }
 
-    public function __construct1($dictionary) {
-        $this->city = $dictionary["city"];
-
-        if ($dictionary["mailable_city"])
-            $this->mailableCity = true;
-
-        $this->stateAbbreviation = $dictionary["state_abbreviation"];
-        $this->state = $dictionary["state"];
+    public function __construct1($obj) {
+        $this->city = $obj["city"];
+        $this->mailableCity = ($obj["mailable_city"]) ? true : false;
+        $this->stateAbbreviation = $obj["state_abbreviation"];
+        $this->state = $obj["state"];
     }
 
     //endregion

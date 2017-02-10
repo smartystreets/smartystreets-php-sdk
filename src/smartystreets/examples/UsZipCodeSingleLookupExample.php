@@ -3,13 +3,13 @@
 namespace smartystreets\examples;
 
 require_once(dirname(dirname(__FILE__)) . '/api/us_zipcode/ClientBuilder.php');
-//require_once(dirname(dirname(__FILE__)) . '/api/us_zipcode/Client.php');
+require_once(dirname(dirname(__FILE__)) . '/api/us_zipcode/Result.php');
 require_once(dirname(dirname(__FILE__)) . '/api/StaticCredentials.php');
+require_once(dirname(dirname(__FILE__)) . '/api/SharedCredentials.php');
 use smartystreets\api\exceptions\SmartyException;
 use smartystreets\api\StaticCredentials;
 use smartystreets\api\us_zipcode\Lookup;
 use smartystreets\api\us_zipcode\ClientBuilder;
-use smartystreets\api\us_zipcode\Client;
 
 $lookupExample = new UsZipCodeSingleLookupExample();
 $lookupExample->run();
@@ -40,15 +40,15 @@ class UsZipCodeSingleLookupExample {
         $cities = $result->getCities();
 
         foreach ($cities as $city) {
-            echo("\nCity: " . $city->getCity());
-            echo("State: " . $city->getState());
-            echo("Mailable City: " . $city->getMailableCity());
+            echo("\n\nCity: " . $city->getCity());
+            echo("\nState: " . $city->getState());
+            echo("\nMailable City: " . json_encode($city->getMailableCity()));
         }
 
         foreach ($zipCodes as $zip) {
-            echo("\nZIP Code: " . $zip->getZipCode());
-            echo("Latitude: " . $zip->getLatitude());
-            echo("Longitude: " . $zip->getLongitude());
+            echo("\n\nZIP Code: " . $zip->getZipCode());
+            echo("\nLatitude: " . $zip->getLatitude());
+            echo("\nLongitude: " . $zip->getLongitude());
         }
     }
 }

@@ -31,7 +31,7 @@ class ZipCode {
         $this->countyName = $obj["county_name"];
         $this->stateAbbreviation = $obj["state_abbreviation"];
         $this->state = $obj["state"];
-        $this->latitude = ["latitude"];
+        $this->latitude = $obj["latitude"];
         $this->longitude = $obj["longitude"];
         $this->precision = $obj["precision"];
         $this->alternateCounties = (isset($obj["alternate_counties"]) ? $obj["alternate_counties"] : array());

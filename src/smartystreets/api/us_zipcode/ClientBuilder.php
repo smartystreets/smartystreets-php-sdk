@@ -40,7 +40,6 @@ class ClientBuilder { //TODO: try and make a parent ClientBuilder for both us_st
         $this->maxRetries = 5;
         $this->maxTimeout = 10000;
         $this->urlPrefix = "https://us-zipcode.api.smartystreets.com/lookup";
-
         $this->signer = $signer;
     }
 
