@@ -27,9 +27,34 @@ class Request {
         $this->parameters[$name] = $value;
     }
 
-    public function getBaseUrl() {
-        return $this->baseUrl;
+    private static function urlEncode($value) {
+        return urlencode($value);
     }
+
+    public function getUrl() {
+        $url = $this->baseUrl;
+
+        if (!strpos($url, "?"))
+            $url .= "?";
+
+        foreach(array_keys($this->parameters) as $key) {
+            if (!$this->endsWith($url, "?"))
+                $url .= "&";
+
+            $encodedName = self::urlEncode($key);
+            $encodedValue = self::urlEncode($this->parameters[$key]);
+            $url .= $encodedName . "=" . $encodedValue;
+        }
+
+        return $url;
+    }
+
+    function endsWith($haystack, $needle) {
+        // search forward starting from end minus needle length characters
+        return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
+    }
+
+    //region [ Getters ]
 
     public function getHeaders() {
         return $this->headers;
@@ -43,6 +68,14 @@ class Request {
         return $this->payload;
     }
 
+    public function getReferer() {
+        return $this->referer;
+    }
+
+    //endregion
+
+    //region [ Setters ]
+
     public function setPayload($payload) {
         $this->payload = $payload;
     }
@@ -51,7 +84,5 @@ class Request {
         $this->referer = $referer;
     }
 
-    public function getReferer() {
-        return $this->referer;
-    }
+    //endregion
 }

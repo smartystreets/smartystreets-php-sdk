@@ -62,7 +62,7 @@ class Lookup implements \JsonSerializable {
 
     //region [ Setters ]
 
-    public function setResult($result) {
+    public function setResult(Result $result) {
         $this->result = $result;
     }
 

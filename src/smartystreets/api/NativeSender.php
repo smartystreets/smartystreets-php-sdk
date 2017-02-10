@@ -3,11 +3,7 @@
 namespace smartystreets\api;
 
 include_once('Sender.php');
-require_once 'HTTP/Request.php';
-
-use HttpRequest;
-//require_once(\HttpRequest::);
-
+require_once('Response.php');
 
 class NativeSender implements Sender {
     private $maxTimeOut;
@@ -17,39 +13,44 @@ class NativeSender implements Sender {
     }
 
     function send(Request $smartyRequest) {
-        $nativeRequest = $this->buildRequest($smartyRequest);
-        $this->setHeaders($smartyRequest, $nativeRequest);
+        $ch = $this->buildRequest($smartyRequest);
+        $this->setHeaders($smartyRequest, $ch);
 
-        $httpMessage = $nativeRequest->send();
+        $response = curl_exec($ch);
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
 
-        return $this->buildResponse($httpMessage);
+        return $this->buildResponse($statusCode, $response);
     }
 
     private function buildRequest(Request $smartyRequest) {
-        $url = $smartyRequest->getBaseUrl();
-        $nativeRequest = new HttpRequest($url, "POST");
+        $url = $smartyRequest->getUrl();
 
-        $this->buildQuery($smartyRequest, $nativeRequest);
-        $nativeRequest->setRawPostData($smartyRequest->getPayload());
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ($smartyRequest->getPayload()));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->setHeaders($smartyRequest));
 
-        return $nativeRequest;
+        return $ch;
     }
 
-    private function buildQuery(Request $smartyRequest, HttpRequest $nativeRequest) {
-        foreach ($smartyRequest->getParameters() as $parameter) {
-            $nativeRequest->addQueryData($parameter);
+    private function setHeaders(Request $smartyRequest) {
+        $headers = array();
+
+        foreach (array_keys($smartyRequest->getHeaders()) as $key) {
+            $headers[$key] = $smartyRequest->getHeaders()[$key];
         }
+
+        $headers[] = 'Content-Type: application/json';
+//        $headers['User-Agent'] = 'smartystreets (sdk:php@' . VERSION . ')'; //TODO: get VERSION working
+        if ($smartyRequest->getReferer() != null)
+            $headers['Referer'] = $smartyRequest->getReferer();
+
+        return $headers;
     }
 
-    private function setHeaders(Request $smartyRequest, HttpRequest $nativeRequest) {
-        $nativeRequest->addHeaders($smartyRequest->getHeaders());
-        $nativeRequest->setContentType('application/json');
-
-        $nativeRequest->addHeaders(array('User-Agent' => 'smartystreets (sdk:php@' . VERSION . ')'));
-        $nativeRequest->addHeaders(array('Referer' => $smartyRequest->getReferer()));
-    }
-
-    private function buildResponse(\HttpMessage $httpMessage) {
-        return new Response($httpMessage->getResponseCode(), $httpMessage->getBody());
+    private function buildResponse($statusCode, $response) {
+        return new Response($statusCode, $response);
     }
 }
