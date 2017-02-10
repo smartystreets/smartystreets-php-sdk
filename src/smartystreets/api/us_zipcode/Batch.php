@@ -43,8 +43,6 @@ class Batch {
         return ($this->size() >= self::MAX_BATCH_SIZE);
     }
 
-    //public Iterator<Lookup> iterator() { return this.allLookups.iterator(); }
-
     //region [ Getters ]
 
     public function getNamedLookups()
