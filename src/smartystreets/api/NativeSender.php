@@ -4,6 +4,7 @@ namespace smartystreets\api;
 
 include_once('Sender.php');
 require_once('Response.php');
+require_once('Version.php');
 
 class NativeSender implements Sender {
     private $maxTimeOut;
@@ -31,6 +32,10 @@ class NativeSender implements Sender {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, ($smartyRequest->getPayload()));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->setHeaders($smartyRequest));
+        curl_setopt($ch, CURLOPT_USERAGENT, 'smartystreets (sdk:php@' . VERSION . ')'); //TODO: check to make sure that version is getting sent
+
+        if ($smartyRequest->getReferer() != null)
+            curl_setopt($ch, CURLOPT_REFERER, $smartyRequest->getReferer());
 
         return $ch;
     }
@@ -43,9 +48,6 @@ class NativeSender implements Sender {
         }
 
         $headers[] = 'Content-Type: application/json';
-//        $headers['User-Agent'] = 'smartystreets (sdk:php@' . VERSION . ')'; //TODO: get VERSION working
-        if ($smartyRequest->getReferer() != null)
-            $headers['Referer'] = $smartyRequest->getReferer();
 
         return $headers;
     }

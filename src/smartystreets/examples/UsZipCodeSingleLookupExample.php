@@ -27,6 +27,7 @@ class UsZipCodeSingleLookupExample {
 
         try {
             $client->sendLookup($lookup);
+            $this->displayResults($lookup);
         }
         catch (SmartyException $ex) {
             echo($ex->getMessage());
@@ -34,7 +35,9 @@ class UsZipCodeSingleLookupExample {
         catch (\Exception $ex) {
             echo($ex->getMessage());
         }
+    }
 
+    public function displayResults(Lookup $lookup) {
         $result = $lookup->getResult();
         $zipCodes = $result->getZipCodes();
         $cities = $result->getCities();

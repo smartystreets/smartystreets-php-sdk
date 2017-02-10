@@ -1,8 +1,7 @@
 <?php
 namespace smartystreets\api\us_zipcode;
 
-//require_once('Result.php'); //TODO: uncomment this one and see if it works instead.
-require_once(dirname(dirname(__FILE__)) . '/us_zipcode/Result.php');
+require_once('Result.php');
 
 class Lookup implements \JsonSerializable {
     //region [ Fields ]

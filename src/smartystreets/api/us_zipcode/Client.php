@@ -24,7 +24,6 @@ class Client {
     }
 
     public function sendLookup(Lookup $lookup) {
-        $myarray = array();
         $batch = new Batch();
         $batch->add($lookup);
         $this->sendBatch($batch);

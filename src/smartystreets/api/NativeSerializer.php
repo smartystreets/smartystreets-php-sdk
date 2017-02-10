@@ -18,8 +18,4 @@ class NativeSerializer implements Serializer {
     public function deserialize($payload) {
         return json_decode($payload, true);
     }
-
-    public function __toString() {
-        return "";
-    }
 }
