@@ -17,8 +17,7 @@ $lookupExample->run();
 class UsZipCodeSingleLookupExample {
 
     public function run() {
-//        $staticCredentials = new StaticCredentials($_ENV['SMARTY_AUTH_ID'], $_ENV['SMARTY_AUTH_TOKEN']);
-        $staticCredentials = new StaticCredentials('auth_id', 'auth_token');
+        $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
         $client = (new ClientBuilder($staticCredentials))->build();
 
         $lookup = new Lookup();
@@ -43,7 +42,7 @@ class UsZipCodeSingleLookupExample {
         $cities = $result->getCities();
 
         foreach ($cities as $city) {
-            echo("\n\nCity: " . $city->getCity());
+            echo("\nCity: " . $city->getCity());
             echo("\nState: " . $city->getState());
             echo("\nMailable City: " . json_encode($city->getMailableCity()));
         }
