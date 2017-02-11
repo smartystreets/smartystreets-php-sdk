@@ -8,6 +8,7 @@ require_once(dirname(dirname(__FILE__)) . '/api/us_zipcode/Result.php');
 require_once(dirname(dirname(__FILE__)) . '/api/StaticCredentials.php');
 require_once(dirname(dirname(__FILE__)) . '/api/SharedCredentials.php');
 use smartystreets\api\exceptions\SmartyException;
+use smartystreets\api\exceptions\BatchFullException;
 use smartystreets\api\StaticCredentials;
 use smartystreets\api\us_zipcode\Lookup;
 use smartystreets\api\ClientBuilder;
@@ -39,6 +40,9 @@ class UsZipCodeMultipleLookupsExample {
 
             $client->sendBatch($batch);
             $this->displayResults($batch);
+        }
+        catch (BatchFullException $ex) {
+            echo("Oops! Batch was already full.");
         }
         catch (SmartyException $ex) {
             echo($ex->getMessage());

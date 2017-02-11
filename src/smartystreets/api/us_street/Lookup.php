@@ -16,13 +16,13 @@ class Lookup implements \JsonSerializable {
             $addressee,
             $urbanization,
             $match,
-            $candidates,
+            $maxCandidates,
             $result;
 
     //endregion
 
     public function __construct($street = null, $street2 = null, $secondary = null, $city = null, $state = null, $zipcode = null,
-                                $lastline = null, $addressee = null, $urbanization = null, $match = null, $candidates = 1, $input_id = null) {
+                                $lastline = null, $addressee = null, $urbanization = null, $match = null, $maxCandidates = 1, $input_id = null) {
         $this->input_id = $input_id;
         $this->street = $street;
         $this->street2 = $street2;
@@ -34,7 +34,7 @@ class Lookup implements \JsonSerializable {
         $this->addressee = $addressee;
         $this->urbanization = $urbanization;
         $this->match = $match;
-        $this->candidates = $candidates;
+        $this->maxCandidates = $maxCandidates;
         $this->result = array();
     }
 
@@ -51,7 +51,7 @@ class Lookup implements \JsonSerializable {
             'addressee' => $this->addressee,
             'urbanization' => $this->urbanization,
             'match' => $this->match,
-            'candidates' => $this->candidates
+            'candidates' => $this->maxCandidates
         );
     }
 
@@ -101,8 +101,8 @@ class Lookup implements \JsonSerializable {
         return $this->match;
     }
 
-    public function getCandidates() {
-        return $this->candidates;
+    public function getMaxCandidates() {
+        return $this->maxCandidates;
     }
 
     public function getResult() {
@@ -157,8 +157,11 @@ class Lookup implements \JsonSerializable {
         $this->match = $match;
     }
 
-    public function setCandidates($candidates) {
-        $this->candidates = $candidates;
+    public function setMaxCandidates($maxCandidates) {
+        if ($maxCandidates > 0)
+            $this->maxCandidates = $maxCandidates;
+        else
+            throw new \InvalidArgumentException("Max candidates must be a positive integer.");
     }
 
     public function setResult($result) {
