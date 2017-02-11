@@ -27,7 +27,7 @@ class RetrySenderTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testRetryUntilMaxAttempts() {
-        $classType = \smartystreets\api\exceptions\IOException::class;
+        $classType = \Exception::class;
 
         $this->expectException($classType);
 

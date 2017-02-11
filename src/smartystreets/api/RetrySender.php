@@ -2,9 +2,6 @@
 
 namespace smartystreets\api;
 
-require_once('exceptions/IOException.php');
-use smartystreets\api\exceptions\IOException as IOException;
-
 include_once('Sender.php');
 
 class RetrySender implements Sender {
@@ -29,7 +26,7 @@ class RetrySender implements Sender {
     private function trySend(Request $request, $attempt) {
         try {
             return $this->inner->send($request);
-        } catch (IOException $ex) {
+        } catch (\Exception $ex) {
             if ($attempt >= $this->maxRetries)
                 throw $ex;
         }

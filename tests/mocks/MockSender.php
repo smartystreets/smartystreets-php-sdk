@@ -14,7 +14,6 @@ class MockSender implements Sender {
 
     public function __construct(Response $response) {
         $this->response = $response;
-//        $request = new Request();
     }
 
     function send(Request $request) {
