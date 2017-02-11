@@ -1,52 +1,41 @@
 <?php
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/NativeSerializer.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Result.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/City.php');
 use smartystreets\api\us_zipcode\Result;
-use smartystreets\api\us_zipcode\City;
-use smartystreets\api\NativeSerializer;
-
 
 class ResultTest extends \PHPUnit_Framework_TestCase {
     private $obj;
 
     public function setUp() {
-        $this->obj = "{  
-    \"status\":\"0\",
-    \"reason\":\"1\",
-    \"input_index\":2,
-    \"city_states\":[  
-        {  
-            \"city\":\"3\",
-            \"mailable_city\":true,
-            \"state_abbreviation\":\"4\",
-            \"state\":\"5\"
-        }
-    ],
-    \"zipcodes\":[  
-        {  
-            \"zipcode\":\"6\",
-            \"zipcode_type\":\"7\",
-            \"default_city\":\"8\",
-            \"county_fips\":\"9\",
-            \"county_name\":\"10\",
-            \"state_abbreviation\":\"11\",
-            \"state\":\"12\",
-            \"latitude\":13,
-            \"longitude\":14,
-            \"precision\":\"15\",
-            \"alternate_counties\":[  
-                {  
-                    \"county_fips\":\"16\",
-                    \"county_name\":\"17\",
-                    \"state_abbreviation\":\"18\",
-                    \"state\":\"19\"
-                }
-            ]
-        }
-    ]
-}";
+        $this->obj = $this->obj = array(
+            'status' => '0',
+            'reason' => '1',
+            'input_index' => 2,
+            'city_states' => array( array(
+                'city' => '3',
+                'mailable_city' => true,
+                'state_abbreviation' => '4',
+                'state' => '5')
+            ),
+            'zipcodes' => array( array(
+                'zipcode' => '6',
+                'zipcode_type' => '7',
+                'default_city' => '8',
+                'county_fips' => '9',
+                'county_name' => '10',
+                'state_abbreviation' => '11',
+                'state' => '12',
+                'latitude' => 13,
+                'longitude' => 14,
+                'precision' => '15',
+                'alternate_counties' => array( array(
+                    'county_fips' => '16',
+                    'county_name' =>'17',
+                    'state_abbreviation' =>'18',
+                    'state' =>'19')
+                ))
+            )
+        );
     }
 
     function testIsValidReturnsTrueWhenInputIsValid() {
@@ -64,9 +53,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testAllFieldsFilledCorrectly() {
-        $serializer = new NativeSerializer(); //TODO: make the json an array (not a string) so you don't have to depend on the serializer
-        $rawResult = $serializer->deserialize($this->obj);
-        $result = new Result($rawResult);
+        $result = new Result($this->obj);
 
         $this->assertEquals("0", $result->getStatus());
         $this->assertEquals("1", $result->getReason());

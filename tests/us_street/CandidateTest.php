@@ -3,80 +3,74 @@
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_street/Candidate.php');
 use smartystreets\api\us_street\Candidate;
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/NativeSerializer.php');
-use smartystreets\api\NativeSerializer;
-
 class CandidateTest extends \PHPUnit_Framework_TestCase{
     private $obj;
 
     public function setUp() {
-        $this->obj = "{  
-    \"input_index\":0,
-    \"candidate_index\":1,
-    \"addressee\":\"2\",
-    \"delivery_line_1\":\"3\",
-    \"delivery_line_2\":\"4\",
-    \"last_line\":\"5\",
-    \"delivery_point_barcode\":\"6\",
-    \"components\":{  
-            \"urbanization\":\"7\",
-            \"primary_number\":\"8\",
-            \"street_name\":\"9\",
-            \"street_predirection\":\"10\",
-            \"street_postdirection\":\"11\",
-            \"street_suffix\":\"12\",
-            \"secondary_number\":\"13\",
-            \"secondary_designator\":\"14\",
-            \"extra_secondary_number\":\"15\",
-            \"extra_secondary_designator\":\"16\",
-            \"pmb_designator\":\"17\",
-            \"pmb_number\":\"18\",
-            \"city_name\":\"19\",
-            \"default_city_name\":\"20\",
-            \"state_abbreviation\":\"21\",
-            \"zipcode\":\"22\",
-            \"plus4_code\":\"23\",
-            \"delivery_point\":\"24\",
-            \"delivery_point_check_digit\":\"25\"
-        },
-    \"metadata\":  
-        {  
-            \"record_type\":\"26\",
-            \"zip_type\":\"27\",
-            \"county_fips\":\"28\",
-            \"county_name\":\"29\",
-            \"carrier_route\":\"30\",
-            \"congressional_district\":\"31\",
-            \"building_default_indicator\":\"32\",
-            \"rdi\":\"33\",
-            \"elot_sequence\":\"34\",
-            \"elot_sort\":\"35\",
-            \"latitude\":36.0,
-            \"longitude\":37.0,
-            \"precision\":\"38\",
-            \"time_zone\":\"39\",
-            \"utc_offset\":40.0,
-            \"dst\":\"41\"
-        },
-    \"analysis\":{  
-            \"dpv_match_code\":\"42\",
-            \"dpv_footnotes\":\"43\",
-            \"dpv_cmra\":\"44\",
-            \"dpv_vacant\":\"45\",
-            \"active\":\"46\",
-            \"ews_match\":\"47\",
-            \"footnotes\":\"48\",
-            \"lacslink_code\":\"49\",
-            \"lacslink_indicator\":\"50\",
-            \"suitelink_match\":\"51\"
-        }
-}";
+        $this->obj = array(
+            'input_index' => 0,
+            'candidate_index' => 1,
+            'addressee' => '2',
+            'delivery_line_1' => '3',
+            'delivery_line_2' => '4',
+            'last_line' => '5',
+            'delivery_point_barcode' => '6',
+            'components' => array(
+                'urbanization' => '7',
+                'primary_number' => '8',
+                'street_name' => '9',
+                'street_predirection' => '10',
+                'street_postdirection' => '11',
+                'street_suffix' => '12',
+                'secondary_number' => '13',
+                'secondary_designator' => '14',
+                'extra_secondary_number' => '15',
+                'extra_secondary_designator' => '16',
+                'pmb_designator' => '17',
+                'pmb_number' => '18',
+                'city_name' => '19',
+                'default_city_name' => '20',
+                'state_abbreviation' => '21',
+                'zipcode' => '22',
+                'plus4_code' => '23',
+                'delivery_point' => '24',
+                'delivery_point_check_digit' => '25'
+            ),
+            'metadata' => array(
+                'record_type' => '26',
+                'zip_type' => '27',
+                'county_fips' => '28',
+                'county_name' => '29',
+                'carrier_route' => '30',
+                'congressional_district' => '31',
+                'building_default_indicator' => '32',
+                'rdi' => '33',
+                'elot_sequence' => '34',
+                'elot_sort' => '35',
+                'latitude' => 36.0,
+                'longitude' => 37.0,
+                'precision' => '38',
+                'time_zone' => '39',
+                'utc_offset' => 40.0,
+                'dst' => '41'
+            ),
+            'analysis' => array(
+                'dpv_match_code' => '42',
+                'dpv_footnotes' => '43',
+                'dpv_cmra' => '44',
+                'dpv_vacant' => '45',
+                'active' => '46',
+                'ews_match' => '47',
+                'footnotes' => '48',
+                'lacslink_code' => '49',
+                'lacslink_indicator' => '50',
+                'suitelink_match' => '51'
+            )
+        );
     }
 
     public function testAllFieldsFilledCorrectly() {
-        $serializer = new \smartystreets\api\NativeSerializer(); //TODO: make the json an array (not a string) so you don't have to depend on the serializer
-        $rawResult = $serializer->deserialize($this->obj);
-        $candidate = new Candidate($rawResult);
+        $candidate = new Candidate($this->obj);
 
         $this->assertEquals(0, $candidate->getInputIndex());
         $this->assertEquals(1, $candidate->getCandidateIndex());
