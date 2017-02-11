@@ -22,14 +22,21 @@ class Result {
     }
 
     public function __construct1($obj) {
-        $this->status = (isset($obj["status"])) ? $obj["status"] : null;
-        $this->reason = (isset($obj["reason"])) ? $obj["reason"] : null;
+        $this->status = $this->setField($obj, "status");
+        $this->reason = $this->setField($obj, "reason");
         $this->inputIndex = $obj["input_index"];
-        $this->cities = (isset($obj["city_states"]) ? $obj["city_states"] : array());
-        $this->zipCodes = (isset($obj["zipcodes"]) ? $obj["zipcodes"] : array());
+        $this->cities = $this->setField($obj, "city_states", array());
+        $this->zipCodes = $this->setField($obj, "zipcodes", array());
 
         $this->cities = $this->convertToCityObjects();
         $this->zipCodes = $this->convertToZipCodeObjects();
+    }
+
+    private function setField($obj, $key, $typeIfKeyNotFound = null) {
+        if (isset($obj[$key]))
+            return $obj[$key];
+        else
+            return $typeIfKeyNotFound;
     }
 
     private function convertToCityObjects() {

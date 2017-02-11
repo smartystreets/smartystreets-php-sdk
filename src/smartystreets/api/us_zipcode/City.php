@@ -24,10 +24,17 @@ class City {
     }
 
     public function __construct1($obj) {
-        $this->city = $obj["city"];
-        $this->mailableCity = ($obj["mailable_city"]) ? true : false;
-        $this->stateAbbreviation = $obj["state_abbreviation"];
-        $this->state = $obj["state"];
+        $this->city = $this->setField($obj, "city");
+        $this->mailableCity = ($this->setField($obj, "mailable_city", false));
+        $this->stateAbbreviation = $this->setField($obj, "state_abbreviation");
+        $this->state = $this->setField($obj, "state");
+    }
+
+    private function setField($obj, $key, $typeIfKeyNotFound = null) {
+        if (isset($obj[$key]))
+            return $obj[$key];
+        else
+            return $typeIfKeyNotFound;
     }
 
     //endregion

@@ -17,16 +17,23 @@ class Analysis {
             $isSuiteLinkMatch;
 
     public function __construct($obj) {
-        $this->dpvMatchCode = $obj['dpv_match_code'];
-      $this->dpvFootnotes = $obj['dpv_footnotes'];
-      $this->cmra = $obj['dpv_cmra'];
-      $this->vacant = $obj['dpv_vacant'];
-      $this->active = $obj['active'];
-      $this->isEwsMatch = $obj['ews_match'];
-      $this->footnotes = $obj['footnotes'];
-      $this->lacsLinkCode = $obj['lacslink_code'];
-      $this->lacsLinkIndicator = $obj['lacslink_indicator'];
-      $this->isSuiteLinkMatch = $obj['suitelink_match'];
+        $this->dpvMatchCode = $this->setField($obj, 'dpv_match_code');
+        $this->dpvFootnotes = $this->setField($obj, 'dpv_footnotes');
+        $this->cmra = $this->setField($obj, 'dpv_cmra');
+        $this->vacant = $this->setField($obj, 'dpv_vacant');
+        $this->active = $this->setField($obj, 'active');
+        $this->isEwsMatch = $this->setField($obj, 'ews_match');
+        $this->footnotes = $this->setField($obj, 'footnotes');
+        $this->lacsLinkCode = $this->setField($obj, 'lacslink_code');
+        $this->lacsLinkIndicator = $this->setField($obj, 'lacslink_indicator');
+        $this->isSuiteLinkMatch = $this->setField($obj, 'suitelink_match');
+    }
+
+    private function setField($obj, $key, $typeIfKeyNotFound = null) {
+        if (isset($obj[$key]))
+            return $obj[$key];
+        else
+            return $typeIfKeyNotFound;
     }
 
     //region [ Getters ]

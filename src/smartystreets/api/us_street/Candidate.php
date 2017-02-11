@@ -30,16 +30,22 @@ class Candidate {
     public function __construct1($obj) {
         $this->inputIndex = $obj['input_index'];
         $this->candidateIndex = $obj['candidate_index'];
-        $this->addressee = $obj['addressee'];
-        $this->deliveryLine1 = $obj['delivery_line_1'];
-        $this->deliveryLine2 = $obj['delivery_line_2'];
-        $this->lastLine = $obj['last_line'];
-        $this->deliveryPointBarcode = $obj['delivery_point_barcode'];
+        $this->addressee = $this->setField($obj, 'addressee');
+        $this->deliveryLine1 = $this->setField($obj, 'delivery_line_1');
+        $this->deliveryLine2 = $this->setField($obj, 'delivery_line_2');
+        $this->lastLine = $this->setField($obj, 'last_line');
+        $this->deliveryPointBarcode = $this->setField($obj, 'delivery_point_barcode');
 
+        $this->components = new Components($this->setField($obj, 'components', array()));
+        $this->metadata = new Metadata($this->setField($obj, 'metadata', array()));
+        $this->analysis = new Analysis($this->setField($obj, 'analysis', array()));
+    }
 
-        $this->components = new Components(isset($obj['components']) ? $obj['components'] : array());
-        $this->metadata = new Metadata(isset($obj['metadata']) ? $obj['metadata'] : array());
-        $this->analysis = new Analysis(isset($obj['analysis']) ? $obj['analysis'] : array());
+    private function setField($obj, $key, $typeIfKeyNotFound = null) {
+        if (isset($obj[$key]))
+            return $obj[$key];
+        else
+            return $typeIfKeyNotFound;
     }
 
     //region [Getters]

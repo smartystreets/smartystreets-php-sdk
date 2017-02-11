@@ -26,19 +26,26 @@ class ZipCode {
     }
 
     public function __construct1($obj) {
-        $this->zipCode = $obj["zipcode"];
-        $this->zipCodeType = $obj["zipcode_type"];
-        $this->defaultCity = $obj["default_city"];
-        $this->countyFips = $obj["county_fips"];
-        $this->countyName = $obj["county_name"];
-        $this->stateAbbreviation = $obj["state_abbreviation"];
-        $this->state = $obj["state"];
-        $this->latitude = $obj["latitude"];
-        $this->longitude = $obj["longitude"];
-        $this->precision = $obj["precision"];
-        $this->alternateCounties = (isset($obj["alternate_counties"]) ? $obj["alternate_counties"] : array());
+        $this->zipCode = $this->setField($obj, "zipcode");
+        $this->zipCodeType = $this->setField($obj, "zipcode_type");
+        $this->defaultCity = $this->setField($obj, "default_city");
+        $this->countyFips = $this->setField($obj, "county_fips");
+        $this->countyName = $this->setField($obj, "county_name");
+        $this->stateAbbreviation = $this->setField($obj, "state_abbreviation");
+        $this->state = $this->setField($obj, "state");
+        $this->latitude = $this->setField($obj, "latitude");
+        $this->longitude = $this->setField($obj, "longitude");
+        $this->precision = $this->setField($obj, "precision");
+        $this->alternateCounties = $this->setField($obj, "alternate_counties", array());
 
         $this->alternateCounties = $this->convertToAlternateCountyObjects();
+    }
+
+    private function setField($obj, $key, $typeIfKeyNotFound = null) {
+        if (isset($obj[$key]))
+            return $obj[$key];
+        else
+            return $typeIfKeyNotFound;
     }
 
     private function convertToAlternateCountyObjects() {

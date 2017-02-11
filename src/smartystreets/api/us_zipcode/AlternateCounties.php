@@ -17,10 +17,17 @@ class AlternateCounties {
     }
 
     public function __construct1($obj) {
-        $this->countyFips = $obj['county_fips'];
-        $this->countyName = $obj['county_name'];
-        $this->stateAbbreviation = $obj['state_abbreviation'];
-        $this->state = $obj['state'];
+        $this->countyFips = $this->setField($obj, 'county_fips');
+        $this->countyName = $this->setField($obj, 'county_name');
+        $this->stateAbbreviation = $this->setField($obj, 'state_abbreviation');
+        $this->state = $this->setField($obj, 'state');
+    }
+
+    private function setField($obj, $key, $typeIfKeyNotFound = null) {
+        if (isset($obj[$key]))
+            return $obj[$key];
+        else
+            return $typeIfKeyNotFound;
     }
 
     public function getCountyFips() {
