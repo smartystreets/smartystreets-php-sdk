@@ -1,9 +1,9 @@
 <?php
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Batch.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Lookup.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/exceptions/BatchFullException.php');
-use smartystreets\api\us_zipcode\Batch;
+use smartystreets\api\Batch;
 use smartystreets\api\us_zipcode\Lookup;
 use smartystreets\api\exceptions\BatchFullException;
 

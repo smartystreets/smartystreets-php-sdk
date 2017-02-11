@@ -8,7 +8,7 @@ require_once(dirname(dirname(__FILE__)) . '/mocks/RequestCapturingSender.php');
 require_once(dirname(dirname(__FILE__)) . '/mocks/MockSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Batch.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Result.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Response.php');
 use mocks\MockDeserializer;
@@ -17,7 +17,7 @@ use mocks\MockSerializer;
 use mocks\RequestCapturingSender;
 use smartystreets\api\us_zipcode\Client;
 use smartystreets\api\us_zipcode\Lookup;
-use smartystreets\api\us_zipcode\Batch;
+use smartystreets\api\Batch;
 use smartystreets\api\us_zipcode\Result;
 use smartystreets\api\Response;
 

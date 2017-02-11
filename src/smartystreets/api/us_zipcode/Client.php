@@ -5,10 +5,11 @@ namespace smartystreets\api\us_zipcode;
 require_once(dirname(dirname(dirname(__FILE__))) . '/api/Sender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/api/Serializer.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/api/Request.php');
-require_once('Batch.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/api/Batch.php');
 use smartystreets\api\Sender;
 use smartystreets\api\Serializer;
 use smartystreets\api\Request;
+use smartystreets\api\Batch;
 
 class Client {
     private $urlPrefix,

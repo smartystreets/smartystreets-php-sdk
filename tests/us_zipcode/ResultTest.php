@@ -64,7 +64,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testAllFieldsFilledCorrectly() {
-        $serializer = new NativeSerializer();
+        $serializer = new NativeSerializer(); //TODO: make the json an array (not a string) so you don't have to depend on the serializer
         $rawResult = $serializer->deserialize($this->obj);
         $result = new Result($rawResult);
 

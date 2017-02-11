@@ -9,7 +9,7 @@ require_once(dirname(dirname(__FILE__)) . '/api/StaticCredentials.php');
 require_once(dirname(dirname(__FILE__)) . '/api/SharedCredentials.php');
 use smartystreets\api\exceptions\SmartyException;
 use smartystreets\api\StaticCredentials;
-use smartystreets\api\us_zipcode\Batch;
+use smartystreets\api\Batch;
 use smartystreets\api\us_zipcode\Lookup;
 use smartystreets\api\us_zipcode\ClientBuilder;
 

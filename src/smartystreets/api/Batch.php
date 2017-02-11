@@ -1,9 +1,10 @@
 <?php
 
-namespace smartystreets\api\us_street;
+namespace smartystreets\api;
+
+use smartystreets\api\exceptions\BatchFullException;
 
 class Batch {
-
     const MAX_BATCH_SIZE = 100;
     private $namedLookups,
         $allLookups;
@@ -13,9 +14,9 @@ class Batch {
         $this->allLookups = array();
     }
 
-    public function add(Lookup $lookup) {
+    public function add($lookup) {
         if ($this->isFull()) {
-            return false;
+            throw new BatchFullException("Batch size cannot exceed " . self::MAX_BATCH_SIZE);
         }
 
         $this->allLookups[] = $lookup;
@@ -23,11 +24,9 @@ class Batch {
         $key = $lookup->getInputId();
 
         if ($key == null)
-            return true;
+            return;
 
         $this->namedLookups[$key] = $lookup;
-
-        return true;
     }
 
     public function clear() {
@@ -42,8 +41,6 @@ class Batch {
     public function isFull() {
         return ($this->size() >= self::MAX_BATCH_SIZE);
     }
-
-    //public Iterator<Lookup> iterator() { return this.allLookups.iterator(); }
 
     //region [ Getters ]
 
