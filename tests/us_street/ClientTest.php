@@ -1,23 +1,21 @@
 <?php
 
-namespace us_zipcode;
-
 require_once(dirname(dirname(__FILE__)) . '/mocks/MockSerializer.php');
 require_once(dirname(dirname(__FILE__)) . '/mocks/MockDeserializer.php');
 require_once(dirname(dirname(__FILE__)) . '/mocks/RequestCapturingSender.php');
 require_once(dirname(dirname(__FILE__)) . '/mocks/MockSender.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Client.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Result.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_street/Client.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_street/Lookup.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_street/Candidate.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Response.php');
 use mocks\MockSerializer;
 use mocks\MockDeserializer;
 use mocks\RequestCapturingSender;
 use mocks\MockSender;
-use smartystreets\api\us_zipcode\Client;
-use smartystreets\api\us_zipcode\Lookup;
-use smartystreets\api\us_zipcode\Result;
+use smartystreets\api\us_street\Client;
+use smartystreets\api\us_street\Lookup;
+use smartystreets\api\us_street\Candidate;
 use smartystreets\api\Batch;
 use smartystreets\api\Response;
 
@@ -64,8 +62,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCandidatesCorrectlyAssignedToCorrespondingLookup() {
-        $rawResults = array(array('input_index' => 0), array('input_index' => 1));
-        $expectedResults = array(new Result($rawResults[0]), new Result($rawResults[1]));
+        $rawResults = array(array('input_index' => 0, 'candidate_index' => 0), array('input_index' => 1, 'candidate_index' => 1));
+        $expectedResults = array(new Candidate($rawResults[0]), new Candidate($rawResults[1]));
 
         $batch = new Batch();
         $batch->add(new Lookup());
@@ -82,4 +80,5 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     }
 
     //endregion
+
 }
