@@ -1,8 +1,6 @@
 <?php
 
-
 namespace smartystreets\api\us_street;
-
 
 class Components {
     private $streetPostDirection,
