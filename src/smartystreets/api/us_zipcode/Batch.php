@@ -2,6 +2,8 @@
 
 namespace smartystreets\api\us_zipcode;
 
+use smartystreets\api\exceptions\BatchFullException;
+
 class Batch {
 
     const MAX_BATCH_SIZE = 100;
@@ -15,7 +17,7 @@ class Batch {
 
     public function add(Lookup $lookup) {
         if ($this->isFull()) {
-            return false;
+            throw new BatchFullException("Batch size cannot exceed " . self::MAX_BATCH_SIZE);
         }
 
         $this->allLookups[] = $lookup;

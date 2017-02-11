@@ -1,9 +1,11 @@
 <?php
+
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Lookup.php');
-use smartystreets\api\us_zipcode\Batch as Batch;
-use smartystreets\api\us_zipcode\Lookup as Lookup;
-
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/exceptions/BatchFullException.php');
+use smartystreets\api\us_zipcode\Batch;
+use smartystreets\api\us_zipcode\Lookup;
+use smartystreets\api\exceptions\BatchFullException;
 
 class BatchTest extends \PHPUnit_Framework_TestCase {
     function testGetsLookupByInputId() {
@@ -45,11 +47,17 @@ class BatchTest extends \PHPUnit_Framework_TestCase {
 
         $exMessage = "";
 
-        for ($i = 0; $i < $batch::MAX_BATCH_SIZE + 1; $i++) {
-            $batch->add($lookup);
+        try {
+            for ($i = 0; $i < $batch::MAX_BATCH_SIZE + 1; $i++)
+                $batch->add($lookup);
         }
-
-        //TODO: implement exceptions/errors
+        catch (BatchFullException $ex) {
+            $exMessage = $ex->getMessage();
+        }
+        finally {
+            $this->assertEquals($batch::MAX_BATCH_SIZE, $batch->size());
+            $this->assertEquals("Batch size cannot exceed " . $batch::MAX_BATCH_SIZE, $exMessage);
+        }
     }
 
     function testClearMethodClearsBothLookupCollections() {
@@ -64,6 +72,4 @@ class BatchTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(0, count($batch->getAllLookups()));
         $this->assertEquals(0, count($batch->getNamedLookups()));
     }
-
-
 }

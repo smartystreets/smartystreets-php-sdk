@@ -2,6 +2,8 @@
 
 namespace smartystreets\api\us_zipcode;
 
+require_once('AlternateCounties.php');
+
 class ZipCode {
     private $zipCode,
             $zipCodeType,
@@ -43,7 +45,7 @@ class ZipCode {
         $altCountyObjects = array();
 
         foreach ($this->alternateCounties as $county)
-            $altCountyObjects[] = $county;
+            $altCountyObjects[] = new AlternateCounties($county);
 
         return $altCountyObjects;
     }

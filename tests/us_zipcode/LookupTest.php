@@ -1,10 +1,14 @@
 <?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Lookup.php');
-use smartystreets\api\us_zipcode\Lookup as Lookup;
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Result.php');
+use smartystreets\api\us_zipcode\Lookup;
+use smartystreets\api\us_zipcode\Result;
 
 class LookupTest extends \PHPUnit_Framework_TestCase {
     function testConstructorCreatesResult() {
-        //TODO: create Result class, then implement this test
+        $lookup = new Lookup();
+
+        $this->assertEquals($lookup->getResult(), new Result());
     }
 
     function testLookupConstructorSetsZipcode() {

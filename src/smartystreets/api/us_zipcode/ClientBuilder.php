@@ -20,11 +20,9 @@ use smartystreets\api\NativeSender;
 use smartystreets\api\RetrySender;
 use smartystreets\api\Sender;
 use smartystreets\api\Serializer;
-use smartystreets\api\HttpSender;
 use smartystreets\api\SigningSender;
-use smartystreets\api\StaticCredentials;
 use smartystreets\api\StatusCodeSender;
-use smartystreets\NativeSerializer;
+use smartystreets\api\NativeSerializer;
 
 class ClientBuilder { //TODO: try and make a parent ClientBuilder for both us_street and us_zipcode
     private $signer,

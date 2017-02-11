@@ -27,7 +27,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
         $request->setParameter($name, $value);
 
-        $this->assertEquals($expected, $request->buildUrl());
+        $this->assertEquals($expected, $request->getUrl());
     }
 
     public function testMultipleQueryStringParameters() {
@@ -38,7 +38,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         $request->setParameter("name3", "value3");
 
         $expected = "http://localhost/?name1=value1&name2=value2&name3=value3";
-        $this->assertEquals($expected, $request->buildUrl());
+        $this->assertEquals($expected, $request->getUrl());
     }
 
     public function testUrlEncodingOfQueryStringParameters() {
@@ -49,7 +49,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 
         $expected = "http://localhost/?name%26=value&name1=other+%21value%24";
 
-        $this->assertEquals($expected, $request->buildUrl());
+        $this->assertEquals($expected, $request->getUrl());
     }
 
     public function testHeadersAddedToRequest() {
@@ -79,6 +79,6 @@ class RequestTest extends PHPUnit_Framework_TestCase {
         $request->setParameter("name3", "value3");
 
         $expected = "http://localhost/?name1=value1&name2=value2&name3=value3";
-        $this->assertEquals($expected, $request->buildUrl());
+        $this->assertEquals($expected, $request->getUrl());
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
-namespace smartystreets;
-
-use smartystreets\api\Serializer;
+namespace smartystreets\api;
 
 include_once('Serializer.php');
 

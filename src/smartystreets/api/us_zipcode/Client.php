@@ -41,10 +41,8 @@ class Client {
         $response = $this->sender->send($request);
 
         $results = $this->serializer->deserialize($response->getPayload());
-        if ($results == null) {
+        if ($results == null)
             $results = array();
-            $results[0] = new Result();
-        }
 
         $this->assignResultsToLookups($batch, $results);
     }

@@ -22,7 +22,7 @@ class StaticCredentialsTest extends PHPUnit_Framework_TestCase {
 
         $credentials->sign($request);
 
-        $this->assertEquals($expected, $request->buildUrl());
+        $this->assertEquals($expected, $request->getUrl());
     }
 
 }

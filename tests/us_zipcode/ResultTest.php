@@ -2,42 +2,52 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/NativeSerializer.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Result.php');
-use smartystreets\api\us_zipcode\Result as Result;
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/City.php');
+use smartystreets\api\us_zipcode\Result;
+use smartystreets\api\us_zipcode\City;
+use smartystreets\api\NativeSerializer;
 
 
 class ResultTest extends \PHPUnit_Framework_TestCase {
     private $obj;
 
-//    public function setUp() { //TODO: finish the result test setup
-//        $this->obj = array(
-//            'status' => '0',
-//            'reason' => '1',
-//            'input_index' => 2,
-//            'city_states' => array (
-//                'city' => '3',
-//                'mailable_city' => true,
-//                'state_abbreviation' => '4',
-//                'state' => '5'
-//            ),
-//            'zipcodes' => array (
-//                'zipcode' => '6',
-//                'zipcode_type' => '7',
-//                'default_city' => '8',
-//                'county_fips' => '9',
-//                'county_name' => '10',
-//                'state_abbreviation' => '11',
-//                'state' => '12',
-//                'latitude' => 13,
-//                'longitude' => 14,
-//                'precision' => '15',
-//                'alternate_counties' => array (
-//
-//                )
-//            );
-//
-//        )
-//    }
-
+    public function setUp() {
+        $this->obj = "{  
+    \"status\":\"0\",
+    \"reason\":\"1\",
+    \"input_index\":2,
+    \"city_states\":[  
+        {  
+            \"city\":\"3\",
+            \"mailable_city\":true,
+            \"state_abbreviation\":\"4\",
+            \"state\":\"5\"
+        }
+    ],
+    \"zipcodes\":[  
+        {  
+            \"zipcode\":\"6\",
+            \"zipcode_type\":\"7\",
+            \"default_city\":\"8\",
+            \"county_fips\":\"9\",
+            \"county_name\":\"10\",
+            \"state_abbreviation\":\"11\",
+            \"state\":\"12\",
+            \"latitude\":13,
+            \"longitude\":14,
+            \"precision\":\"15\",
+            \"alternate_counties\":[  
+                {  
+                    \"county_fips\":\"16\",
+                    \"county_name\":\"17\",
+                    \"state_abbreviation\":\"18\",
+                    \"state\":\"19\"
+                }
+            ]
+        }
+    ]
+}";
+    }
 
     function testIsValidReturnsTrueWhenInputIsValid() {
         $result = new Result();
@@ -53,10 +63,37 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($result->isValid());
     }
 
-//    public function testAllFieldsFilledCorrectly() {
-//        $serializer = new NativeSerializer();
-//        $results = $serializer->deserialize($this->expectedJsonOutput);
-//
-//        //TODO:
-//    }
+    public function testAllFieldsFilledCorrectly() {
+        $serializer = new NativeSerializer();
+        $rawResult = $serializer->deserialize($this->obj);
+        $result = new Result($rawResult);
+
+        $this->assertEquals("0", $result->getStatus());
+        $this->assertEquals("1", $result->getReason());
+        $this->assertEquals(2, $result->getInputIndex());
+
+        $city = $result->getCities()[0];
+        $this->assertEquals('3', $city->getCity());
+        $this->assertTrue($city->getMailableCity());
+        $this->assertEquals('4', $city->getStateAbbreviation());
+        $this->assertEquals('5', $city->getState());
+
+        $zip = $result->getZipCodes()[0];
+        $this->assertEquals('6', $zip->getZipCode());
+        $this->assertEquals('7', $zip->getZipCodeType());
+        $this->assertEquals('8', $zip->getDefaultCity());
+        $this->assertEquals('9', $zip->getCountyFips());
+        $this->assertEquals('10', $zip->getCountyName());
+        $this->assertEquals('11', $zip->getStateAbbreviation());
+        $this->assertEquals('12', $zip->getState());
+        $this->assertEquals(13, $zip->getLatitude());
+        $this->assertEquals(14, $zip->getLongitude());
+        $this->assertEquals('15', $zip->getPrecision());
+
+        $altCounties = $zip->getAlternateCounties()[0];
+        $this->assertEquals('16', $altCounties->getCountyFips());
+        $this->assertEquals('17', $altCounties->getCountyName());
+        $this->assertEquals('18', $altCounties->getStateAbbreviation());
+        $this->assertEquals('19', $altCounties->getState());
+    }
 }

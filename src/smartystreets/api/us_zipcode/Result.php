@@ -23,7 +23,7 @@ class Result {
 
     public function __construct1($obj) {
         $this->status = (isset($obj["status"])) ? $obj["status"] : null;
-        $this->reason = (isset($obj["reason"])) ? $obj["status"] : null;
+        $this->reason = (isset($obj["reason"])) ? $obj["reason"] : null;
         $this->inputIndex = $obj["input_index"];
         $this->cities = (isset($obj["city_states"]) ? $obj["city_states"] : array());
         $this->zipCodes = (isset($obj["zipcodes"]) ? $obj["zipcodes"] : array());

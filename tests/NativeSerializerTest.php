@@ -3,7 +3,7 @@
 require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/NativeSerializer.php');
 require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/us_zipcode/Lookup.php');
 
-use smartystreets\NativeSerializer as NativeSerializer;
+use smartystreets\api\NativeSerializer as NativeSerializer;
 use smartystreets\api\us_zipcode\Lookup as Lookup;
 
 class NativeSerializerTest extends PHPUnit_Framework_TestCase {

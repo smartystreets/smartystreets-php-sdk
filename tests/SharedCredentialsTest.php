@@ -10,7 +10,7 @@ class SharedCredentialsTest extends PHPUnit_Framework_TestCase {
         $request = $this->createSignedRequest();
         $expected = "https://us-street.api.smartystreets.com/street-address?auth-id=3516378604772256";
 
-        $this->assertEquals($expected, $request->buildUrl());
+        $this->assertEquals($expected, $request->getUrl());
     }
 
     public function testReferringHeader() {
