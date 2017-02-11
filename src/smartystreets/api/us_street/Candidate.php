@@ -1,6 +1,5 @@
 <?php
 
-
 namespace smartystreets\api\us_street;
 
 require_once('Components.php');
@@ -54,51 +53,41 @@ class Candidate {
         return $this->inputIndex;
     }
 
-
     public function getCandidateIndex() {
         return $this->candidateIndex;
     }
-
 
     public function getAddressee() {
         return $this->addressee;
     }
 
-
     public function getDeliveryLine1() {
         return $this->deliveryLine1;
     }
-
 
     public function getDeliveryLine2() {
         return $this->deliveryLine2;
     }
 
-
     public function getDeliveryPointBarcode() {
         return $this->deliveryPointBarcode;
     }
-
 
     public function getLastLine() {
         return $this->lastLine;
     }
 
-
     public function getMetadata() {
         return $this->metadata;
     }
 
-
     public function getComponents() {
         return $this->components;
     }
-
 
     public function getAnalysis() {
         return $this->analysis;
     }
 
     //endregion
-
 }

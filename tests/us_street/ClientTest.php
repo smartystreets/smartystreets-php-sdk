@@ -75,8 +75,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
         $client->sendBatch($batch);
 
-        $this->assertEquals($expectedResults[0], $batch->getLookupByIndex(0)->getResult());
-        $this->assertEquals($expectedResults[1], $batch->getLookupByIndex(1)->getResult());
+        $this->assertEquals($expectedResults[0], $batch->getLookupByIndex(0)->getResult()[0]);
+        $this->assertEquals($expectedResults[1], $batch->getLookupByIndex(1)->getResult()[0]);
     }
 
     //endregion

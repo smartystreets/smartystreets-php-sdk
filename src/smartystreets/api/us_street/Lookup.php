@@ -4,6 +4,9 @@ namespace smartystreets\api\us_street;
 
 class Lookup implements \JsonSerializable {
     //region [ Fields ]
+    const STRICT = "strict";
+    const RANGE = "range";
+    const INVALID = "invalid";
 
     private $input_id,
             $street,
@@ -15,14 +18,14 @@ class Lookup implements \JsonSerializable {
             $lastline,
             $addressee,
             $urbanization,
-            $match,
+            $matchStrategy,
             $maxCandidates,
             $result;
 
     //endregion
 
     public function __construct($street = null, $street2 = null, $secondary = null, $city = null, $state = null, $zipcode = null,
-                                $lastline = null, $addressee = null, $urbanization = null, $match = null, $maxCandidates = 1, $input_id = null) {
+                                $lastline = null, $addressee = null, $urbanization = null, $matchStrategy = null, $maxCandidates = 1, $input_id = null) {
         $this->input_id = $input_id;
         $this->street = $street;
         $this->street2 = $street2;
@@ -33,7 +36,7 @@ class Lookup implements \JsonSerializable {
         $this->lastline = $lastline;
         $this->addressee = $addressee;
         $this->urbanization = $urbanization;
-        $this->match = $match;
+        $this->matchStrategy = $matchStrategy;
         $this->maxCandidates = $maxCandidates;
         $this->result = array();
     }
@@ -50,7 +53,7 @@ class Lookup implements \JsonSerializable {
             'lastline' => $this->lastline,
             'addressee' => $this->addressee,
             'urbanization' => $this->urbanization,
-            'match' => $this->match,
+            'match' => $this->matchStrategy,
             'candidates' => $this->maxCandidates
         );
     }
@@ -97,8 +100,8 @@ class Lookup implements \JsonSerializable {
         return $this->urbanization;
     }
 
-    public function getMatch() {
-        return $this->match;
+    public function getMatchStrategy() {
+        return $this->matchStrategy;
     }
 
     public function getMaxCandidates() {
@@ -153,8 +156,8 @@ class Lookup implements \JsonSerializable {
         $this->urbanization = $urbanization;
     }
 
-    public function setMatch($match) {
-        $this->match = $match;
+    public function setMatchStrategy($matchStrategy) {
+        $this->matchStrategy = $matchStrategy;
     }
 
     public function setMaxCandidates($maxCandidates) {
