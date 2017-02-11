@@ -6,6 +6,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/api/Sender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/api/Serializer.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/api/Request.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/api/Batch.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/api/us_street/Candidate.php');
 use smartystreets\api\Sender;
 use smartystreets\api\Serializer;
 use smartystreets\api\Request;
@@ -41,17 +42,17 @@ class Client {
 
         $response = $this->sender->send($request);
 
-        $results = $this->serializer->deserialize($response->getPayload());
-        if ($results == null)
-            $results = array();
+        $candidates = $this->serializer->deserialize($response->getPayload());
+        if ($candidates == null)
+            $candidates = array();
 
-        $this->assignResultsToLookups($batch, $results);
+        $this->assignResultsToLookups($batch, $candidates);
     }
 
-    private function assignResultsToLookups(Batch $batch, $results) {
-        foreach ($results as $rawResult) {
-            $result = new Candidate($rawResult);
-            $batch->getLookupByIndex($result->getInputIndex())->setResult($result);
+    private function assignResultsToLookups(Batch $batch, $candidates) {
+        foreach ($candidates as $c) {
+            $candidate = new Candidate($c);
+            $batch->getLookupByIndex($candidate->getInputIndex())->setResult($candidate);
         }
     }
 }

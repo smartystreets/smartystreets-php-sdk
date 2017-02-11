@@ -2,16 +2,16 @@
 
 namespace smartystreets\examples;
 
-require_once(dirname(dirname(__FILE__)) . '/api/us_zipcode/ClientBuilder.php');
+require_once(dirname(dirname(__FILE__)) . '/api/ClientBuilder.php');
 require_once(dirname(dirname(__FILE__)) . '/api/us_zipcode/Lookup.php');
 require_once(dirname(dirname(__FILE__)) . '/api/us_zipcode/Result.php');
 require_once(dirname(dirname(__FILE__)) . '/api/StaticCredentials.php');
 require_once(dirname(dirname(__FILE__)) . '/api/SharedCredentials.php');
 use smartystreets\api\exceptions\SmartyException;
 use smartystreets\api\StaticCredentials;
-use smartystreets\api\Batch;
 use smartystreets\api\us_zipcode\Lookup;
-use smartystreets\api\us_zipcode\ClientBuilder;
+use smartystreets\api\ClientBuilder;
+use smartystreets\api\Batch;
 
 $lookupExample = new UsZipCodeMultipleLookupsExample();
 $lookupExample->run();
@@ -20,7 +20,7 @@ class UsZipCodeMultipleLookupsExample {
 
     public function run() {
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
-        $client = (new ClientBuilder($staticCredentials))->build();
+        $client = (new ClientBuilder($staticCredentials))->buildZipCodeClient();
         $batch = new Batch();
 
         $lookup0 = new Lookup();
