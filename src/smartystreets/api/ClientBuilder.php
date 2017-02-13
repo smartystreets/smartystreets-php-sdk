@@ -2,9 +2,6 @@
 
 namespace smartystreets\api;
 
-//foreach (glob(dirname(dirname(dirname(__FILE__))) . '/api/*.php') as $filename) {
-//    include $filename;
-//}
 require_once(dirname(dirname(__FILE__)) . '/api/Serializer.php');
 require_once(dirname(dirname(__FILE__)) . '/api/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/api/NativeSerializer.php');
@@ -12,17 +9,10 @@ require_once(dirname(dirname(__FILE__)) . '/api/NativeSender.php');
 require_once(dirname(dirname(__FILE__)) . '/api/StatusCodeSender.php');
 require_once(dirname(dirname(__FILE__)) . '/api/SigningSender.php');
 require_once(dirname(dirname(__FILE__)) . '/api/RetrySender.php');
+require_once(dirname(dirname(__FILE__)) . '/api/URLPrefixSender.php');
 require_once(dirname(dirname(__FILE__)) . '/api/Batch.php');
 require_once(dirname(dirname(__FILE__)) . '/api/us_street/Client.php');
 require_once(dirname(dirname(__FILE__)) . '/api/us_zipcode/Client.php');
-use smartystreets\api\Credentials;
-use smartystreets\api\NativeSender;
-use smartystreets\api\RetrySender;
-use smartystreets\api\Sender;
-use smartystreets\api\Serializer;
-use smartystreets\api\SigningSender;
-use smartystreets\api\StatusCodeSender;
-use smartystreets\api\NativeSerializer;
 
 class ClientBuilder {
     const US_AUTOCOMPLETE_API_URL = "https://us-autocomplete.api.smartystreets.com/suggest";
@@ -35,6 +25,7 @@ class ClientBuilder {
             $httpSender,
             $maxRetries,
             $maxTimeout,
+            $urlPrefix,
             $referer;
 
     public function __construct(Credentials $signer = null) {
@@ -74,20 +65,14 @@ class ClientBuilder {
         return $this;
     }
 
-//    public function buildAutocompleteClient() {
-//        return new Client(self::US_AUTOCOMPLETE_API_URL, $this->buildSender(), $this->serializer, $this->referer);
-//    }
-//
-//    public function buildExtractClient() {
-//        return new Client(self::US_EXTRACT_API_URL, $this->buildSender(), $this->serializer, $this->referer);
-//    }
-
     public function buildStreetClient() {
-        return new \smartystreets\api\us_street\Client(self::US_STREET_API_URL, $this->buildSender(), $this->serializer, $this->referer);
+        $this->ensureURLPrefixNotNull(self::US_STREET_API_URL);
+        return new \smartystreets\api\us_street\Client($this->buildSender(), $this->serializer, $this->referer);
     }
 
     public function buildZipCodeClient() {
-        return new \smartystreets\api\us_zipcode\Client(self::US_ZIP_CODE_API_URL, $this->buildSender(), $this->serializer, $this->referer);
+        $this->ensureURLPrefixNotNull(self::US_ZIP_CODE_API_URL);
+        return new \smartystreets\api\us_zipcode\Client($this->buildSender(), $this->serializer, $this->referer);
     }
 
     public function buildSender() {
@@ -104,7 +89,13 @@ class ClientBuilder {
         if ($this->maxRetries > 0)
             $sender = new RetrySender($this->maxRetries, $sender);
 
+        $sender = new URLPrefixSender($this->urlPrefix, $sender);
+
         return $sender;
     }
 
+    private function ensureURLPrefixNotNull($url) {
+        if ($this->urlPrefix == null)
+            $this->urlPrefix = $url;
+    }
 }

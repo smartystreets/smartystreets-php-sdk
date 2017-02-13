@@ -29,7 +29,7 @@ class Analysis {
         $this->isSuiteLinkMatch = $this->setField($obj, 'suitelink_match');
     }
 
-    private function setField($obj, $key, $typeIfKeyNotFound = null) {
+    private function setField($obj, $key, $typeIfKeyNotFound = null) { //TODO: try and put this in a single class
         if (isset($obj[$key]))
             return $obj[$key];
         else

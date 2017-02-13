@@ -4,19 +4,19 @@ namespace smartystreets\api;
 
 include_once('Sender.php');
 require_once('exceptions/BadCredentialsException.php');
-use smartystreets\api\exceptions\BadCredentialsException as BadCredentialsException;
+use smartystreets\api\exceptions\BadCredentialsException;
 require_once('exceptions/BadRequestException.php');
-use smartystreets\api\exceptions\BadRequestException as BadRequestException;
+use smartystreets\api\exceptions\BadRequestException;
 require_once('exceptions/InternalServerErrorException.php');
-use smartystreets\api\exceptions\InternalServerErrorException as InternalServerErrorException;
+use smartystreets\api\exceptions\InternalServerErrorException;
 require_once('exceptions/PaymentRequiredException.php');
-use smartystreets\api\exceptions\PaymentRequiredException as PaymentRequiredException;
+use smartystreets\api\exceptions\PaymentRequiredException;
 require_once('exceptions/RequestEntityTooLargeException.php');
-use smartystreets\api\exceptions\RequestEntityTooLargeException as RequestEntityTooLargeException;
+use smartystreets\api\exceptions\RequestEntityTooLargeException;
 require_once('exceptions/ServiceUnavailableException.php');
-use smartystreets\api\exceptions\ServiceUnavailableException as ServiceUnavailableException;
+use smartystreets\api\exceptions\ServiceUnavailableException;
 require_once('exceptions/TooManyRequestsException.php');
-use smartystreets\api\exceptions\TooManyRequestsException as TooManyRequestsException;
+use smartystreets\api\exceptions\TooManyRequestsException;
 
 class StatusCodeSender implements Sender {
     private $inner;

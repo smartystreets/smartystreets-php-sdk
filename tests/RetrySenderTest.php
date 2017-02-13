@@ -35,7 +35,9 @@ class RetrySenderTest extends PHPUnit_Framework_TestCase {
     }
 
     private function sendRequest($requestBehavior) {
-        $request = new Request($requestBehavior);
+        $request = new Request();
+        $request->setUrlPrefix($requestBehavior);
+
         $retrySender = new RetrySender(5, $this->mockCrashingSender);
 
         $retrySender->send($request);

@@ -23,7 +23,8 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     }
 
     private function assertQueryStringParameters($name, $value, $expected) {
-        $request = new Request(self::LOCAL_HOST);
+        $request = new Request();
+        $request->setUrlPrefix(self::LOCAL_HOST);
 
         $request->setParameter($name, $value);
 
@@ -31,7 +32,8 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testMultipleQueryStringParameters() {
-        $request = new Request(self::LOCAL_HOST);
+        $request = new Request();
+        $request->setUrlPrefix(self::LOCAL_HOST);
 
         $request->setParameter("name1", "value1");
         $request->setParameter("name2", "value2");
@@ -42,7 +44,8 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testUrlEncodingOfQueryStringParameters() {
-        $request = new Request(self::LOCAL_HOST);
+        $request = new Request();
+        $request->setUrlPrefix(self::LOCAL_HOST);
 
         $request->setParameter("name&", "value");
         $request->setParameter("name1", "other !value$");
@@ -53,7 +56,8 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testHeadersAddedToRequest() {
-        $request = new Request(self::LOCAL_HOST);
+        $request = new Request();
+        $request->setUrlPrefix(self::LOCAL_HOST);
 
         $request->setHeader("header1", "value1");
         $request->setHeader("header2", "value2");
@@ -63,7 +67,8 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testPost() {
-        $request = new Request(self::LOCAL_HOST);
+        $request = new Request();
+        $request->setUrlPrefix(self::LOCAL_HOST);
 
         $request->setPayload("bytes");
         $actualPayload = $request->getPayload();
@@ -72,7 +77,8 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testUrlWithoutTrailingQuestionMark() {
-        $request = new Request("http://localhost/");
+        $request = new Request();
+        $request->setUrlPrefix("http://localhost/");
 
         $request->setParameter("name1", "value1");
         $request->setParameter("name2", "value2");

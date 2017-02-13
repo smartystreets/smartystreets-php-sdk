@@ -17,11 +17,13 @@ class SigningSenderTest extends PHPUnit_Framework_TestCase {
         $signer = new StaticCredentials("id", "secret");
         $mockSender = new MockSender(new Response("", ""));
         $sender = new SigningSender($signer, $mockSender);
+        $request = new Request();
+        $request->setUrlPrefix("http://localhost/");
 
-        $sender->send(new Request("http://localhost/"));
+        $sender->send($request);
 
-        $request = $mockSender->getRequest();
-        $this->assertEquals("http://localhost/?auth-id=id&auth-token=secret", $request->getUrl());
+        $actualRequest = $mockSender->getRequest();
+        $this->assertEquals("http://localhost/?auth-id=id&auth-token=secret", $actualRequest->getUrl());
     }
 
     public function testResponseReturnedCorrectly() {
@@ -30,7 +32,7 @@ class SigningSenderTest extends PHPUnit_Framework_TestCase {
         $mockSender = new MockSender($expectedResponse);
         $sender = new SigningSender($signer, $mockSender);
 
-        $actualResponse = $sender->send(new Request("http://localhost"));
+        $actualResponse = $sender->send(new Request());
 
         $this->assertEquals($expectedResponse, $actualResponse);
     }

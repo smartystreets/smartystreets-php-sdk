@@ -21,7 +21,9 @@ class SharedCredentialsTest extends PHPUnit_Framework_TestCase {
 
     private function createSignedRequest() {
         $mobile = new SharedCredentials("3516378604772256", "example.com");
-        $request = new Request("https://us-street.api.smartystreets.com/street-address?");
+        $request = new Request();
+        $request->setUrlPrefix("https://us-street.api.smartystreets.com/street-address?");
+
         $mobile->sign($request);
         return $request;
     }

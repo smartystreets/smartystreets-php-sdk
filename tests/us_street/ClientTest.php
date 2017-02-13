@@ -25,7 +25,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
     public function testEmptyBatchNotSent() {
         $sender = new RequestCapturingSender();
-        $client = new Client("/", $sender, null);
+        $client = new Client($sender, null);
 
         $client->sendBatch(new Batch());
 
@@ -36,7 +36,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $expectedPayload = "Hello, World!";
         $sender = new RequestCapturingSender();
         $serializer = new MockSerializer($expectedPayload);
-        $client = new Client("http://localhost/", $sender, $serializer);
+        $client = new Client($sender, $serializer);
         $batch = new Batch();
         $batch->add(new Lookup());
         $batch->add(new Lookup());
@@ -54,7 +54,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $response = new Response(0, "Hello, World!");
         $sender = new MockSender($response);
         $deserializer = new MockDeserializer(null);
-        $client = new Client("/", $sender, $deserializer);
+        $client = new Client($sender, $deserializer);
 
         $client->sendLookup(new Lookup());
 
@@ -71,7 +71,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
         $sender = new MockSender(new Response(0, "[]"));
         $deserializer = new MockDeserializer($rawResults);
-        $client = new Client("/", $sender, $deserializer);
+        $client = new Client($sender, $deserializer);
 
         $client->sendBatch($batch);
 

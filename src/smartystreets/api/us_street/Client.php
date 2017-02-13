@@ -13,13 +13,11 @@ use smartystreets\api\Request;
 use smartystreets\api\Batch;
 
 class Client {
-    private $urlPrefix,
-            $sender,
+    private $sender,
             $serializer,
             $referer;
 
-    public function __construct($urlPrefix, Sender $sender, Serializer $serializer = null, $referer = null) {
-        $this->urlPrefix = $urlPrefix;
+    public function __construct(Sender $sender, Serializer $serializer = null, $referer = null) {
         $this->sender = $sender;
         $this->serializer = $serializer;
         $this->referer = $referer;
@@ -32,7 +30,7 @@ class Client {
     }
 
     public function sendBatch(Batch $batch) {
-        $request = new Request($this->urlPrefix);
+        $request = new Request();
 
         if ($batch->size() == 0)
             return;

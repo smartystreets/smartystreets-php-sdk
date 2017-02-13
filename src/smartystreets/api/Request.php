@@ -6,14 +6,14 @@ class Request {
     const CHARSET = "UTF-8";
     private $headers,
             $parameters,
-            $baseUrl,
+            $urlPrefix,
             $payload,
             $referer;
 
-    public function __construct($baseUrl = null) {
+    public function __construct() {
         $this->headers = array();
         $this->parameters = array();
-        $this->baseUrl = $baseUrl;
+        $this->urlPrefix = '';
     }
 
     public function setHeader($header, $value) {
@@ -32,7 +32,7 @@ class Request {
     }
 
     public function getUrl() {
-        $url = $this->baseUrl;
+        $url = $this->urlPrefix;
 
         if (!strpos($url, "?"))
             $url .= "?";
@@ -82,6 +82,10 @@ class Request {
 
     public function setReferer($referer) {
         $this->referer = $referer;
+    }
+
+    public function setUrlPrefix($urlPrefix) {
+        $this->urlPrefix = $urlPrefix;
     }
 
     //endregion

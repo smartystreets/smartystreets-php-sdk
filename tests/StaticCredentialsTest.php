@@ -2,8 +2,8 @@
 
 require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/StaticCredentials.php');
-use smartystreets\api\Request as Request;
-use smartystreets\api\StaticCredentials as StaticCredentials;
+use smartystreets\api\Request;
+use smartystreets\api\StaticCredentials;
 
 class StaticCredentialsTest extends PHPUnit_Framework_TestCase {
     public function testStandardCredentials() {
@@ -18,11 +18,11 @@ class StaticCredentialsTest extends PHPUnit_Framework_TestCase {
 
     private function assertSignedRequest($id, $secret, $expected) {
         $credentials = new StaticCredentials($id, $secret);
-        $request = new Request("https://us-street.api.smartystreets.com/street-address?");
+        $request = new Request();
+        $request->setUrlPrefix("https://us-street.api.smartystreets.com/street-address?");
 
         $credentials->sign($request);
 
         $this->assertEquals($expected, $request->getUrl());
     }
-
 }
