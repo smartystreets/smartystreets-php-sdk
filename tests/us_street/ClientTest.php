@@ -1,23 +1,25 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/mocks/MockSerializer.php');
-require_once(dirname(dirname(__FILE__)) . '/mocks/MockDeserializer.php');
-require_once(dirname(dirname(__FILE__)) . '/mocks/RequestCapturingSender.php');
-require_once(dirname(dirname(__FILE__)) . '/mocks/MockSender.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_street/Client.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_street/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_street/Candidate.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Batch.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Response.php');
-use mocks\MockSerializer;
-use mocks\MockDeserializer;
-use mocks\RequestCapturingSender;
-use mocks\MockSender;
-use smartystreets\api\us_street\Client;
-use smartystreets\api\us_street\Lookup;
-use smartystreets\api\us_street\Candidate;
-use smartystreets\api\Batch;
-use smartystreets\api\Response;
+namespace SmartyStreets\Tests\US_Street;
+
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/RequestCapturingSender.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Street/Client.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Street/Lookup.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Street/Candidate.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
+use SmartyStreets\Tests\Mocks\MockSerializer;
+use SmartyStreets\Tests\Mocks\MockDeserializer;
+use SmartyStreets\Tests\Mocks\RequestCapturingSender;
+use SmartyStreets\Tests\Mocks\MockSender;
+use SmartyStreets\US_Street\Client;
+use SmartyStreets\US_Street\Lookup;
+use SmartyStreets\US_Street\Candidate;
+use SmartyStreets\Batch;
+use SmartyStreets\Response;
 
 class ClientTest extends \PHPUnit_Framework_TestCase {
 

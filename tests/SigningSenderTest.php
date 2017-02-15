@@ -1,17 +1,19 @@
 <?php
 
-require_once('mocks/MockSender.php');
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Request.php');
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Response.php');
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/StaticCredentials.php');
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/SigningSender.php');
-use mocks\MockSender;
-use smartystreets\api\Request as Request;
-use smartystreets\api\Response as Response;
-use smartystreets\api\StaticCredentials as StaticCredentials;
-use smartystreets\api\SigningSender as SigningSender;
+namespace SmartyStreets\Tests;
 
-class SigningSenderTest extends PHPUnit_Framework_TestCase {
+require_once('Mocks/MockSender.php');
+require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
+require_once(dirname(dirname(__FILE__)) . '/src/Response.php');
+require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
+require_once(dirname(dirname(__FILE__)) . '/src/SigningSender.php');
+use SmartyStreets\Tests\Mocks\MockSender;
+use SmartyStreets\Request;
+use SmartyStreets\Response;
+use SmartyStreets\StaticCredentials;
+use SmartyStreets\SigningSender;
+
+class SigningSenderTest extends \PHPUnit_Framework_TestCase {
 
     public function testSigningOfRequest() {
         $signer = new StaticCredentials("id", "secret");

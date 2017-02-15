@@ -1,12 +1,12 @@
 <?php
 
-namespace mocks;
+namespace SmartyStreets\Tests\Mocks;
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Sender.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Response.php');
-use smartystreets\api\Response;
-use smartystreets\api\Request;
-use smartystreets\api\Sender as Sender;
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/Sender.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
+use SmartyStreets\Response;
+use SmartyStreets\Request;
+use SmartyStreets\Sender;
 
 class MockStatusCodeSender implements Sender {
     private $statusCode;

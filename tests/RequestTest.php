@@ -1,9 +1,11 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Request.php');
-use smartystreets\api\Request as Request;
+namespace SmartyStreets\Tests;
 
-class RequestTest extends PHPUnit_Framework_TestCase {
+require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
+use SmartyStreets\Request;
+
+class RequestTest extends \PHPUnit_Framework_TestCase {
     const LOCAL_HOST = "http://localhost/?";
 
     public function testNullNameQueryStringParameterNotAdded() {

@@ -1,25 +1,25 @@
 <?php
 
-namespace us_zipcode;
+namespace SmartyStreets\Tests\US_ZipCode;
 
-require_once(dirname(dirname(__FILE__)) . '/mocks/MockSerializer.php');
-require_once(dirname(dirname(__FILE__)) . '/mocks/MockDeserializer.php');
-require_once(dirname(dirname(__FILE__)) . '/mocks/RequestCapturingSender.php');
-require_once(dirname(dirname(__FILE__)) . '/mocks/MockSender.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Client.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_zipcode/Result.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Batch.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Response.php');
-use mocks\MockSerializer;
-use mocks\MockDeserializer;
-use mocks\RequestCapturingSender;
-use mocks\MockSender;
-use smartystreets\api\us_zipcode\Client;
-use smartystreets\api\us_zipcode\Lookup;
-use smartystreets\api\us_zipcode\Result;
-use smartystreets\api\Batch;
-use smartystreets\api\Response;
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/RequestCapturingSender.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Zipcode/Client.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Zipcode/Lookup.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Zipcode/Result.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
+use SmartyStreets\Tests\Mocks\MockSerializer;
+use SmartyStreets\Tests\Mocks\MockDeserializer;
+use SmartyStreets\Tests\Mocks\RequestCapturingSender;
+use SmartyStreets\Tests\Mocks\MockSender;
+use SmartyStreets\US_ZipCode\Client;
+use SmartyStreets\US_ZipCode\Lookup;
+use SmartyStreets\US_ZipCode\Result;
+use SmartyStreets\Batch;
+use SmartyStreets\Response;
 
 class ClientTest extends \PHPUnit_Framework_TestCase {
 

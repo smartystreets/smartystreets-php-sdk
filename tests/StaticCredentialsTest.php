@@ -1,11 +1,13 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Request.php');
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/StaticCredentials.php');
-use smartystreets\api\Request;
-use smartystreets\api\StaticCredentials;
+namespace SmartyStreets\Tests;
 
-class StaticCredentialsTest extends PHPUnit_Framework_TestCase {
+require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
+require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
+use SmartyStreets\Request;
+use SmartyStreets\StaticCredentials;
+
+class StaticCredentialsTest extends \PHPUnit_Framework_TestCase {
     public function testStandardCredentials() {
         $this->assertSignedRequest("f83280df-s83d-f82j-d829-kd02l9tis7ek", "S9Djk63k2Ilj67vN82Km",
             "https://us-street.api.smartystreets.com/street-address?auth-id=f83280df-s83d-f82j-d829-kd02l9tis7ek&auth-token=S9Djk63k2Ilj67vN82Km");

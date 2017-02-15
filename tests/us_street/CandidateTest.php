@@ -1,9 +1,11 @@
 <?php
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/us_street/Candidate.php');
-use smartystreets\api\us_street\Candidate;
+namespace SmartyStreets\Tests\US_Street;
 
-class CandidateTest extends \PHPUnit_Framework_TestCase{
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Street/Candidate.php');
+use SmartyStreets\US_Street\Candidate;
+
+class CandidateTest extends \PHPUnit_Framework_TestCase {
     private $obj;
 
     public function setUp() {

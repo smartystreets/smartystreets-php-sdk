@@ -1,12 +1,12 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/NativeSerializer.php');
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/us_zipcode/Lookup.php');
+namespace SmartyStreets\Tests\US_ZipCode;
 
-use smartystreets\api\NativeSerializer as NativeSerializer;
-use smartystreets\api\us_zipcode\Lookup as Lookup;
+require_once(dirname(dirname(__FILE__)) . '/src/NativeSerializer.php');
+use SmartyStreets\NativeSerializer;
+use SmartyStreets\US_ZipCode\Lookup;
 
-class NativeSerializerTest extends PHPUnit_Framework_TestCase {
+class NativeSerializerTest extends \PHPUnit_Framework_TestCase {
 
     public function testSerialize() {
         $serializer = new NativeSerializer();

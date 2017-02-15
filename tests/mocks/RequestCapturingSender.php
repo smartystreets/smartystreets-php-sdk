@@ -1,12 +1,12 @@
 <?php
 
-namespace mocks;
+namespace SmartyStreets\Tests\Mocks;
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Sender.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/smartystreets/api/Response.php');
-use smartystreets\api\Sender;
-use smartystreets\api\Response;
-use smartystreets\api\Request;
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/Sender.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
+use SmartyStreets\Sender;
+use SmartyStreets\Response;
+use SmartyStreets\Request;
 
 class RequestCapturingSender implements Sender {
     private $request;

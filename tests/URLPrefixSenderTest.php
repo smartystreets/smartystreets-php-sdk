@@ -1,15 +1,17 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Request.php');
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Response.php');
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/URLPrefixSender.php');
-require_once('mocks/MockSender.php');
-use smartystreets\api\Request;
-use smartystreets\api\Response;
-use smartystreets\api\URLPrefixSender;
-use mocks\MockSender;
+namespace SmartyStreets\Tests;
 
-class URLPrefixSenderTest extends PHPUnit_Framework_TestCase {
+require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
+require_once(dirname(dirname(__FILE__)) . '/src/Response.php');
+require_once(dirname(dirname(__FILE__)) . '/src/URLPrefixSender.php');
+require_once('Mocks/MockSender.php');
+use SmartyStreets\Request;
+use SmartyStreets\Response;
+use SmartyStreets\URLPrefixSender;
+use SmartyStreets\Tests\Mocks\MockSender;
+
+class URLPrefixSenderTest extends \PHPUnit_Framework_TestCase {
     public function testProvidedURLOverridesRequestURL() {
         $request = new Request();
         $request->setUrlPrefix("original");

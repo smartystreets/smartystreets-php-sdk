@@ -1,13 +1,15 @@
 <?php
 
-require_once('mocks/MockCrashingSender.php');
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/RetrySender.php');
-require_once(dirname(dirname(__FILE__)) . '/src/smartystreets/api/Request.php');
-use mocks\MockCrashingSender;
-use smartystreets\api\RetrySender as RetrySender;
-use smartystreets\api\Request;
+namespace SmartyStreets\Tests;
 
-class RetrySenderTest extends PHPUnit_Framework_TestCase {
+require_once('Mocks/MockCrashingSender.php');
+require_once(dirname(dirname(__FILE__)) . '/src/RetrySender.php');
+require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
+use SmartyStreets\Tests\Mocks\MockCrashingSender;
+use SmartyStreets\RetrySender;
+use SmartyStreets\Request;
+
+class RetrySenderTest extends \PHPUnit_Framework_TestCase {
     private $mockCrashingSender;
 
     public function setUp() {
