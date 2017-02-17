@@ -21,7 +21,7 @@ class NativeSender implements Sender {
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        return $this->buildResponse($statusCode, $response);
+        return new Response($statusCode, $response);
     }
 
     private function buildRequest(Request $smartyRequest) {
@@ -50,9 +50,5 @@ class NativeSender implements Sender {
         $headers[] = 'Content-Type: application/json';
 
         return $headers;
-    }
-
-    private function buildResponse($statusCode, $response) {
-        return new Response($statusCode, $response);
     }
 }
