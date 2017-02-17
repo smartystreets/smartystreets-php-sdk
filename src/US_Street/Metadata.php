@@ -2,6 +2,9 @@
 
 namespace SmartyStreets\US_Street;
 
+require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+use SmartyStreets\ArrayUtil;
+
 class Metadata {
     private $recordType,
             $zipType,
@@ -21,29 +24,22 @@ class Metadata {
             $obeysDst;
 
     public function __construct($obj) {
-        $this->recordType = $this->setField($obj, 'record_type');
-        $this->zipType = $this->setField($obj, 'zip_type');
-        $this->countyFips = $this->setField($obj, 'county_fips');
-        $this->countyName = $this->setField($obj, 'county_name');
-        $this->carrierRoute = $this->setField($obj, 'carrier_route');
-        $this->congressionalDistrict = $this->setField($obj, 'congressional_district');
-        $this->buildingDefaultIndicator = $this->setField($obj, 'building_default_indicator');
-        $this->rdi = $this->setField($obj, 'rdi');
-        $this->elotSequence = $this->setField($obj, 'elot_sequence');
-        $this->elotSort = $this->setField($obj, 'elot_sort');
-        $this->latitude = $this->setField($obj, 'latitude');
-        $this->longitude = $this->setField($obj, 'longitude');
-        $this->precision = $this->setField($obj, 'precision');
-        $this->timeZone = $this->setField($obj, 'time_zone');
-        $this->utcOffset = $this->setField($obj, 'utc_offset');
-        $this->obeysDst = $this->setField($obj, 'dst');
-    }
-
-    private function setField($obj, $key, $typeIfKeyNotFound = null) {
-        if (isset($obj[$key]))
-            return $obj[$key];
-        else
-            return $typeIfKeyNotFound;
+        $this->recordType = ArrayUtil::setField($obj, 'record_type');
+        $this->zipType = ArrayUtil::setField($obj, 'zip_type');
+        $this->countyFips = ArrayUtil::setField($obj, 'county_fips');
+        $this->countyName = ArrayUtil::setField($obj, 'county_name');
+        $this->carrierRoute = ArrayUtil::setField($obj, 'carrier_route');
+        $this->congressionalDistrict = ArrayUtil::setField($obj, 'congressional_district');
+        $this->buildingDefaultIndicator = ArrayUtil::setField($obj, 'building_default_indicator');
+        $this->rdi = ArrayUtil::setField($obj, 'rdi');
+        $this->elotSequence = ArrayUtil::setField($obj, 'elot_sequence');
+        $this->elotSort = ArrayUtil::setField($obj, 'elot_sort');
+        $this->latitude = ArrayUtil::setField($obj, 'latitude');
+        $this->longitude = ArrayUtil::setField($obj, 'longitude');
+        $this->precision = ArrayUtil::setField($obj, 'precision');
+        $this->timeZone = ArrayUtil::setField($obj, 'time_zone');
+        $this->utcOffset = ArrayUtil::setField($obj, 'utc_offset');
+        $this->obeysDst = ArrayUtil::setField($obj, 'dst');
     }
 
     //region [ Getters ]

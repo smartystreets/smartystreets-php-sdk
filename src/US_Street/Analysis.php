@@ -2,6 +2,9 @@
 
 namespace SmartyStreets\US_Street;
 
+require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+use SmartyStreets\ArrayUtil;
+
 class Analysis {
     private $dpvMatchCode,
             $dpvFootnotes,
@@ -15,23 +18,16 @@ class Analysis {
             $isSuiteLinkMatch;
 
     public function __construct($obj) {
-        $this->dpvMatchCode = $this->setField($obj, 'dpv_match_code');
-        $this->dpvFootnotes = $this->setField($obj, 'dpv_footnotes');
-        $this->cmra = $this->setField($obj, 'dpv_cmra');
-        $this->vacant = $this->setField($obj, 'dpv_vacant');
-        $this->active = $this->setField($obj, 'active');
-        $this->isEwsMatch = $this->setField($obj, 'ews_match');
-        $this->footnotes = $this->setField($obj, 'footnotes');
-        $this->lacsLinkCode = $this->setField($obj, 'lacslink_code');
-        $this->lacsLinkIndicator = $this->setField($obj, 'lacslink_indicator');
-        $this->isSuiteLinkMatch = $this->setField($obj, 'suitelink_match');
-    }
-
-    private function setField($obj, $key, $typeIfKeyNotFound = null) { //TODO: try and put this in a single class
-        if (isset($obj[$key]))
-            return $obj[$key];
-        else
-            return $typeIfKeyNotFound;
+        $this->dpvMatchCode = ArrayUtil::setField($obj, 'dpv_match_code');
+        $this->dpvFootnotes = ArrayUtil::setField($obj, 'dpv_footnotes');
+        $this->cmra = ArrayUtil::setField($obj, 'dpv_cmra');
+        $this->vacant = ArrayUtil::setField($obj, 'dpv_vacant');
+        $this->active = ArrayUtil::setField($obj, 'active');
+        $this->isEwsMatch = ArrayUtil::setField($obj, 'ews_match');
+        $this->footnotes = ArrayUtil::setField($obj, 'footnotes');
+        $this->lacsLinkCode = ArrayUtil::setField($obj, 'lacslink_code');
+        $this->lacsLinkIndicator = ArrayUtil::setField($obj, 'lacslink_indicator');
+        $this->isSuiteLinkMatch = ArrayUtil::setField($obj, 'suitelink_match');
     }
 
     //region [ Getters ]

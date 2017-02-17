@@ -2,8 +2,10 @@
 
 namespace SmartyStreets\US_ZipCode;
 
+require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('City.php');
 require_once('ZipCode.php');
+use SmartyStreets\ArrayUtil;
 
 class Result {
     private $status,
@@ -12,31 +14,18 @@ class Result {
             $cities,
             $zipCodes;
 
+    public function __construct($obj = null) {
+        if ($obj == null)
+            return;
 
-    public function __construct() {
-        $argv = func_get_args();
-        $i = func_num_args();
-        if (method_exists($this, $f = '__construct' . $i)) {
-            call_user_func_array(array($this, $f), $argv);
-        }
-    }
-
-    public function __construct1($obj) {
-        $this->status = $this->setField($obj, "status");
-        $this->reason = $this->setField($obj, "reason");
+        $this->status = ArrayUtil::setField($obj, "status");
+        $this->reason = ArrayUtil::setField($obj, "reason");
         $this->inputIndex = $obj["input_index"];
-        $this->cities = $this->setField($obj, "city_states", array());
-        $this->zipCodes = $this->setField($obj, "zipcodes", array());
+        $this->cities = ArrayUtil::setField($obj, "city_states", array());
+        $this->zipCodes = ArrayUtil::setField($obj, "zipcodes", array());
 
         $this->cities = $this->convertToCityObjects();
         $this->zipCodes = $this->convertToZipCodeObjects();
-    }
-
-    private function setField($obj, $key, $typeIfKeyNotFound = null) {
-        if (isset($obj[$key]))
-            return $obj[$key];
-        else
-            return $typeIfKeyNotFound;
     }
 
     private function convertToCityObjects() {

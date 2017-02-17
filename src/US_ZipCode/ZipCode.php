@@ -2,7 +2,9 @@
 
 namespace SmartyStreets\US_ZipCode;
 
+require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('AlternateCounties.php');
+use SmartyStreets\ArrayUtil;
 
 class ZipCode {
     private $zipCode,
@@ -17,35 +19,23 @@ class ZipCode {
             $precision,
             $alternateCounties;
 
-    public function __construct() {
-        $argv = func_get_args();
-        $i = func_num_args();
-        if (method_exists($this, $f = '__construct' . $i)) {
-            call_user_func_array(array($this, $f), $argv);
-        }
-    }
+    public function __construct($obj = null) {
+        if ($obj == null)
+            return;
 
-    public function __construct1($obj) {
-        $this->zipCode = $this->setField($obj, "zipcode");
-        $this->zipCodeType = $this->setField($obj, "zipcode_type");
-        $this->defaultCity = $this->setField($obj, "default_city");
-        $this->countyFips = $this->setField($obj, "county_fips");
-        $this->countyName = $this->setField($obj, "county_name");
-        $this->stateAbbreviation = $this->setField($obj, "state_abbreviation");
-        $this->state = $this->setField($obj, "state");
-        $this->latitude = $this->setField($obj, "latitude");
-        $this->longitude = $this->setField($obj, "longitude");
-        $this->precision = $this->setField($obj, "precision");
-        $this->alternateCounties = $this->setField($obj, "alternate_counties", array());
+        $this->zipCode = ArrayUtil::setField($obj, "zipcode");
+        $this->zipCodeType = ArrayUtil::setField($obj, "zipcode_type");
+        $this->defaultCity = ArrayUtil::setField($obj, "default_city");
+        $this->countyFips = ArrayUtil::setField($obj, "county_fips");
+        $this->countyName = ArrayUtil::setField($obj, "county_name");
+        $this->stateAbbreviation = ArrayUtil::setField($obj, "state_abbreviation");
+        $this->state = ArrayUtil::setField($obj, "state");
+        $this->latitude = ArrayUtil::setField($obj, "latitude");
+        $this->longitude = ArrayUtil::setField($obj, "longitude");
+        $this->precision = ArrayUtil::setField($obj, "precision");
+        $this->alternateCounties = ArrayUtil::setField($obj, "alternate_counties", array());
 
         $this->alternateCounties = $this->convertToAlternateCountyObjects();
-    }
-
-    private function setField($obj, $key, $typeIfKeyNotFound = null) {
-        if (isset($obj[$key]))
-            return $obj[$key];
-        else
-            return $typeIfKeyNotFound;
     }
 
     private function convertToAlternateCountyObjects() {

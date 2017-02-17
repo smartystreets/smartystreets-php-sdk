@@ -2,6 +2,9 @@
 
 namespace SmartyStreets\US_ZipCode;
 
+require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+use SmartyStreets\ArrayUtil;
+
 class City {
     //region [ Fields ]
 
@@ -14,26 +17,14 @@ class City {
 
     //region [ Constructors ]
 
-    public function __construct() {
-        $argv = func_get_args();
-        $i = func_num_args();
-        if (method_exists($this, $f='__construct'.$i)) {
-            call_user_func_array(array($this, $f), $argv);
-        }
-    }
+    public function __construct($obj = null) {
+        if ($obj == null)
+            return;
 
-    public function __construct1($obj) {
-        $this->city = $this->setField($obj, "city");
-        $this->mailableCity = ($this->setField($obj, "mailable_city", false));
-        $this->stateAbbreviation = $this->setField($obj, "state_abbreviation");
-        $this->state = $this->setField($obj, "state");
-    }
-
-    private function setField($obj, $key, $typeIfKeyNotFound = null) {
-        if (isset($obj[$key]))
-            return $obj[$key];
-        else
-            return $typeIfKeyNotFound;
+        $this->city = ArrayUtil::setField($obj, "city");
+        $this->mailableCity = (ArrayUtil::setField($obj, "mailable_city", false));
+        $this->stateAbbreviation = ArrayUtil::setField($obj, "state_abbreviation");
+        $this->state = ArrayUtil::setField($obj, "state");
     }
 
     //endregion
