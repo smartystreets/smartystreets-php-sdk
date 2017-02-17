@@ -17,7 +17,7 @@ class UsZipCodeSingleLookupExample {
 
     public function run() {
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
-        $client = (new ClientBuilder($staticCredentials))->buildZipCodeClient();
+        $client = (new ClientBuilder($staticCredentials))->buildUsZipCodeApiClient();
 
         $lookup = new Lookup();
         $lookup->setCity("Mountain View");

@@ -15,7 +15,7 @@ class UsStreetSingleAddressExample {
 
     public function run() {
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
-        $client = (new ClientBuilder($staticCredentials))->buildStreetClient();
+        $client = (new ClientBuilder($staticCredentials))->buildUsStreetApiClient();
 
         $lookup = new Lookup();
         $lookup->setStreet("1600 Amphitheatre Pkwy");

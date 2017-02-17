@@ -65,12 +65,12 @@ class ClientBuilder {
         return $this;
     }
 
-    public function buildStreetClient() {
+    public function buildUsStreetApiClient() {
         $this->ensureURLPrefixNotNull(self::US_STREET_API_URL);
         return new \SmartyStreets\US_Street\Client($this->buildSender(), $this->serializer, $this->referer);
     }
 
-    public function buildZipCodeClient() {
+    public function buildUsZipCodeApiClient() {
         $this->ensureURLPrefixNotNull(self::US_ZIP_CODE_API_URL);
         return new \SmartyStreets\US_ZipCode\Client($this->buildSender(), $this->serializer, $this->referer);
     }
@@ -83,11 +83,11 @@ class ClientBuilder {
 
         $sender = new StatusCodeSender($sender);
 
-        if ($this->signer != null)
-            $sender = new SigningSender($this->signer, $sender);
-
         if ($this->maxRetries > 0)
             $sender = new RetrySender($this->maxRetries, $sender);
+
+        if ($this->signer != null)
+            $sender = new SigningSender($this->signer, $sender);
 
         $sender = new URLPrefixSender($this->urlPrefix, $sender);
 
