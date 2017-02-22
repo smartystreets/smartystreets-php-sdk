@@ -1,0 +1,25 @@
+{
+    "name": "smartystreets/phpsdk",
+    "description": "A library to help PHP developers easily access the SmartyStreets APIs.",
+    "type": "library",
+    "license": "The Apache License, Version 2.0",
+    "authors": [
+        {
+            "name": "SmartyStreets SDK Team",
+            "email": "support@smartystreets.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "SmartyStreets\\PhpSdk\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": { 
+        "SmartyStreets\\PhpSdk\\Tests\\": "tests/" 
+    	}
+    }
+}
