@@ -18,7 +18,7 @@ def main():
 	increment = INCREMENTS[increment] 
 
 	prefix = SOURCE_VERSION + "."
-	current = subprocess.check_output("git describe", shell=True)
+	current = subprocess.check_output("git describe", shell=True).strip()
 	last_stable = subprocess.check_output("git tag -l", shell=True).strip().split('\n')[-1]
 	if current == last_stable:
 		return
