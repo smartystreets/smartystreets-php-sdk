@@ -1,17 +1,17 @@
 <?php
 
-namespace SmartyStreets\Tests;
+namespace SmartyStreets\PhpSdk\Tests;
 
 require_once('Mocks/MockSender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Response.php');
 require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
 require_once(dirname(dirname(__FILE__)) . '/src/SigningSender.php');
-use SmartyStreets\Tests\Mocks\MockSender;
-use SmartyStreets\Request;
-use SmartyStreets\Response;
-use SmartyStreets\StaticCredentials;
-use SmartyStreets\SigningSender;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
+use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\Response;
+use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\SigningSender;
 
 class SigningSenderTest extends \PHPUnit_Framework_TestCase {
 

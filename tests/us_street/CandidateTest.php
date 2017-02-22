@@ -1,9 +1,9 @@
 <?php
 
-namespace SmartyStreets\Tests\US_Street;
+namespace SmartyStreets\PhpSdk\Tests\US_Street;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Street/Candidate.php');
-use SmartyStreets\US_Street\Candidate;
+use SmartyStreets\PhpSdk\US_Street\Candidate;
 
 class CandidateTest extends \PHPUnit_Framework_TestCase {
     private $obj;

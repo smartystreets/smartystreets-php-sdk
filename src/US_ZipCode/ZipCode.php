@@ -1,10 +1,10 @@
 <?php
 
-namespace SmartyStreets\US_ZipCode;
+namespace SmartyStreets\PhpSdk\US_ZipCode;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('AlternateCounties.php');
-use SmartyStreets\ArrayUtil;
+use SmartyStreets\PhpSdk\ArrayUtil;
 
 class ZipCode {
     private $zipCode,

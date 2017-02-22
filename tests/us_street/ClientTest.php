@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets\Tests\US_Street;
+namespace SmartyStreets\PhpSdk\Tests\US_Street;
 
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
@@ -11,15 +11,15 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Street/Lookup.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Street/Candidate.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
-use SmartyStreets\Tests\Mocks\MockSerializer;
-use SmartyStreets\Tests\Mocks\MockDeserializer;
-use SmartyStreets\Tests\Mocks\RequestCapturingSender;
-use SmartyStreets\Tests\Mocks\MockSender;
-use SmartyStreets\US_Street\Client;
-use SmartyStreets\US_Street\Lookup;
-use SmartyStreets\US_Street\Candidate;
-use SmartyStreets\Batch;
-use SmartyStreets\Response;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
+use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
+use SmartyStreets\PhpSdk\US_Street\Client;
+use SmartyStreets\PhpSdk\US_Street\Lookup;
+use SmartyStreets\PhpSdk\US_Street\Candidate;
+use SmartyStreets\PhpSdk\Batch;
+use SmartyStreets\PhpSdk\Response;
 
 class ClientTest extends \PHPUnit_Framework_TestCase {
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace SmartyStreets\Tests;
+namespace SmartyStreets\PhpSdk\Tests;
 
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
-use SmartyStreets\Request;
+use SmartyStreets\PhpSdk\Request;
 
 class RequestTest extends \PHPUnit_Framework_TestCase {
     const LOCAL_HOST = "http://localhost/?";

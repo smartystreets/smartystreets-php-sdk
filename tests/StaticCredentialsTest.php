@@ -1,11 +1,11 @@
 <?php
 
-namespace SmartyStreets\Tests;
+namespace SmartyStreets\PhpSdk\Tests;
 
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
-use SmartyStreets\Request;
-use SmartyStreets\StaticCredentials;
+use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\StaticCredentials;
 
 class StaticCredentialsTest extends \PHPUnit_Framework_TestCase {
     public function testStandardCredentials() {

@@ -1,12 +1,12 @@
 <?php
 
-namespace SmartyStreets\US_Street;
+namespace SmartyStreets\PhpSdk\US_Street;
 
 require_once('Components.php');
 require_once('Metadata.php');
 require_once('Analysis.php');
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-use SmartyStreets\ArrayUtil;
+use SmartyStreets\PhpSdk\ArrayUtil;
 
 class Candidate {
     private $inputIndex,

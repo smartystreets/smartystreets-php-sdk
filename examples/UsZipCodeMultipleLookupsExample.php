@@ -5,12 +5,12 @@ require_once(dirname(dirname(__FILE__)) . '/src/us_zipcode/Lookup.php');
 require_once(dirname(dirname(__FILE__)) . '/src/us_zipcode/Result.php');
 require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
 require_once(dirname(dirname(__FILE__)) . '/src/SharedCredentials.php');
-use SmartyStreets\Exceptions\SmartyException;
-use SmartyStreets\Exceptions\BatchFullException;
-use SmartyStreets\StaticCredentials;
-use SmartyStreets\US_ZipCode\Lookup;
-use SmartyStreets\ClientBuilder;
-use SmartyStreets\Batch;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
+use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
+use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\US_ZipCode\Lookup;
+use SmartyStreets\PhpSdk\ClientBuilder;
+use SmartyStreets\PhpSdk\Batch;
 
 $lookupExample = new UsZipCodeMultipleLookupsExample();
 $lookupExample->run();

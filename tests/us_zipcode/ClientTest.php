@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets\Tests\US_ZipCode;
+namespace SmartyStreets\PhpSdk\Tests\US_ZipCode;
 
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
@@ -11,15 +11,15 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Zipcode/Lookup.php')
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Zipcode/Result.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
-use SmartyStreets\Tests\Mocks\MockSerializer;
-use SmartyStreets\Tests\Mocks\MockDeserializer;
-use SmartyStreets\Tests\Mocks\RequestCapturingSender;
-use SmartyStreets\Tests\Mocks\MockSender;
-use SmartyStreets\US_ZipCode\Client;
-use SmartyStreets\US_ZipCode\Lookup;
-use SmartyStreets\US_ZipCode\Result;
-use SmartyStreets\Batch;
-use SmartyStreets\Response;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
+use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
+use SmartyStreets\PhpSdk\US_ZipCode\Client;
+use SmartyStreets\PhpSdk\US_ZipCode\Lookup;
+use SmartyStreets\PhpSdk\US_ZipCode\Result;
+use SmartyStreets\PhpSdk\Batch;
+use SmartyStreets\PhpSdk\Response;
 
 class ClientTest extends \PHPUnit_Framework_TestCase {
 

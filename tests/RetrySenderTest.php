@@ -1,13 +1,13 @@
 <?php
 
-namespace SmartyStreets\Tests;
+namespace SmartyStreets\PhpSdk\Tests;
 
 require_once('Mocks/MockCrashingSender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/RetrySender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
-use SmartyStreets\Tests\Mocks\MockCrashingSender;
-use SmartyStreets\RetrySender;
-use SmartyStreets\Request;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockCrashingSender;
+use SmartyStreets\PhpSdk\RetrySender;
+use SmartyStreets\PhpSdk\Request;
 
 class RetrySenderTest extends \PHPUnit_Framework_TestCase {
     private $mockCrashingSender;

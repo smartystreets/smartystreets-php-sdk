@@ -1,22 +1,22 @@
 <?php
 
-namespace SmartyStreets;
+namespace SmartyStreets\PhpSdk;
 
 include_once('Sender.php');
 require_once('Exceptions/BadCredentialsException.php');
-use SmartyStreets\Exceptions\BadCredentialsException;
+use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
 require_once('Exceptions/BadRequestException.php');
-use SmartyStreets\Exceptions\BadRequestException;
+use SmartyStreets\PhpSdk\Exceptions\BadRequestException;
 require_once('Exceptions/InternalServerErrorException.php');
-use SmartyStreets\Exceptions\InternalServerErrorException;
+use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 require_once('Exceptions/PaymentRequiredException.php');
-use SmartyStreets\Exceptions\PaymentRequiredException;
+use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
 require_once('Exceptions/RequestEntityTooLargeException.php');
-use SmartyStreets\Exceptions\RequestEntityTooLargeException;
+use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
 require_once('Exceptions/ServiceUnavailableException.php');
-use SmartyStreets\Exceptions\ServiceUnavailableException;
+use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
 require_once('Exceptions/TooManyRequestsException.php');
-use SmartyStreets\Exceptions\TooManyRequestsException;
+use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 
 class StatusCodeSender implements Sender {
     private $inner;

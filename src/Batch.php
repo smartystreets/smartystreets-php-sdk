@@ -1,8 +1,8 @@
 <?php
 
-namespace SmartyStreets;
+namespace SmartyStreets\PhpSdk;
 
-use SmartyStreets\Exceptions\BatchFullException;
+use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
 
 class Batch {
     const MAX_BATCH_SIZE = 100;

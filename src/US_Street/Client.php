@@ -1,16 +1,16 @@
 <?php
 
-namespace SmartyStreets\US_Street;
+namespace SmartyStreets\PhpSdk\US_Street;
 
 require_once(dirname(dirname(__FILE__)) . '/Sender.php');
 require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/Batch.php');
 require_once('Candidate.php');
-use SmartyStreets\Sender;
-use SmartyStreets\Serializer;
-use SmartyStreets\Request;
-use SmartyStreets\Batch;
+use SmartyStreets\PhpSdk\Sender;
+use SmartyStreets\PhpSdk\Serializer;
+use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\Batch;
 
 class Client {
     private $sender,

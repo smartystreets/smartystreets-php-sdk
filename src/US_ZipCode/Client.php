@@ -1,15 +1,15 @@
 <?php
 
-namespace SmartyStreets\US_ZipCode;
+namespace SmartyStreets\PhpSdk\US_ZipCode;
 
 require_once(dirname(dirname(__FILE__)) . '/Sender.php');
 require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/Batch.php');
-use SmartyStreets\Sender;
-use SmartyStreets\Serializer;
-use SmartyStreets\Request;
-use SmartyStreets\Batch;
+use SmartyStreets\PhpSdk\Sender;
+use SmartyStreets\PhpSdk\Serializer;
+use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\Batch;
 
 class Client {
     private $sender,

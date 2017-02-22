@@ -1,11 +1,11 @@
 <?php
 
-namespace SmartyStreets\Tests;
+namespace SmartyStreets\PhpSdk\Tests;
 
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/src/SharedCredentials.php');
-use SmartyStreets\Request;
-use SmartyStreets\SharedCredentials;
+use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\SharedCredentials;
 
 class SharedCredentialsTest extends \PHPUnit_Framework_TestCase {
     public function testSignedRequest() {

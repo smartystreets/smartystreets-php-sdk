@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets\US_ZipCode;
+namespace SmartyStreets\PhpSdk\US_ZipCode;
 
 require_once('Result.php');
 

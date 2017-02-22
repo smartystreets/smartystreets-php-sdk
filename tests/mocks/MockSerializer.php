@@ -1,9 +1,9 @@
 <?php
 
-namespace SmartyStreets\Tests\Mocks;
+namespace SmartyStreets\PhpSdk\Tests\Mocks;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Serializer.php');
-use SmartyStreets\Serializer;
+use SmartyStreets\PhpSdk\Serializer;
 
 class MockSerializer implements Serializer {
     private $bytes;

@@ -1,9 +1,9 @@
 <?php
 
-namespace SmartyStreets\US_Street;
+namespace SmartyStreets\PhpSdk\US_Street;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-use SmartyStreets\ArrayUtil;
+use SmartyStreets\PhpSdk\ArrayUtil;
 
 class Analysis {
     private $dpvMatchCode,

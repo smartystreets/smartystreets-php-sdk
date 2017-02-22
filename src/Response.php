@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets;
+namespace SmartyStreets\PhpSdk;
 
 class Response {
     //region [ Fields ]

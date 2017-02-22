@@ -1,11 +1,11 @@
 <?php
 
-namespace SmartyStreets\US_ZipCode;
+namespace SmartyStreets\PhpSdk\US_ZipCode;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('City.php');
 require_once('ZipCode.php');
-use SmartyStreets\ArrayUtil;
+use SmartyStreets\PhpSdk\ArrayUtil;
 
 class Result {
     private $status,

@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets;
+namespace SmartyStreets\PhpSdk;
 
 require_once('Serializer.php');
 require_once('Request.php');
@@ -67,12 +67,12 @@ class ClientBuilder {
 
     public function buildUsStreetApiClient() {
         $this->ensureURLPrefixNotNull(self::US_STREET_API_URL);
-        return new \SmartyStreets\US_Street\Client($this->buildSender(), $this->serializer, $this->referer);
+        return new \SmartyStreets\PhpSdk\US_Street\Client($this->buildSender(), $this->serializer, $this->referer);
     }
 
     public function buildUsZipCodeApiClient() {
         $this->ensureURLPrefixNotNull(self::US_ZIP_CODE_API_URL);
-        return new \SmartyStreets\US_ZipCode\Client($this->buildSender(), $this->serializer, $this->referer);
+        return new \SmartyStreets\PhpSdk\US_ZipCode\Client($this->buildSender(), $this->serializer, $this->referer);
     }
 
     public function buildSender() {

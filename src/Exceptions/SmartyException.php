@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets\Exceptions;
+namespace SmartyStreets\PhpSdk\Exceptions;
 
 class SmartyException extends \Exception {
 

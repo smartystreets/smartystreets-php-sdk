@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets;
+namespace SmartyStreets\PhpSdk;
 
 interface Serializer {
     function serialize($obj);

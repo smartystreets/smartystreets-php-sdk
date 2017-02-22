@@ -1,9 +1,9 @@
 <?php
 
-namespace SmartyStreets\Tests\US_Street;
+namespace SmartyStreets\PhpSdk\Tests\US_Street;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Zipcode/Result.php');
-use SmartyStreets\US_ZipCode\Result;
+use SmartyStreets\PhpSdk\US_ZipCode\Result;
 
 class ResultTest extends \PHPUnit_Framework_TestCase {
     private $obj;

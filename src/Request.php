@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets;
+namespace SmartyStreets\PhpSdk;
 
 class Request {
     const CHARSET = "UTF-8";
@@ -21,7 +21,7 @@ class Request {
     }
 
     public function setParameter($name, $value) {
-        if ($name === null || $value === null || strlen($name) == 0)
+        if ($name === null || $value === null || strlen($name) == 0) //TODO: add test to check the triple equal on $name === null
             return;
 
         $this->parameters[$name] = $value;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets\US_Street;
+namespace SmartyStreets\PhpSdk\US_Street;
 
 class Lookup implements \JsonSerializable {
     //region [ Fields ]

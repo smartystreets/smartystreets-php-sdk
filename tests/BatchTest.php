@@ -1,13 +1,13 @@
 <?php
 
-namespace SmartyStreets\Tests;
+namespace SmartyStreets\PhpSdk\Tests;
 
 require_once(dirname(dirname(__FILE__)) . '/src/Batch.php');
 require_once(dirname(dirname(__FILE__)) . '/src/US_Zipcode/Lookup.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Exceptions/BatchFullException.php');
-use SmartyStreets\Batch;
-use SmartyStreets\US_ZipCode\Lookup;
-use SmartyStreets\Exceptions\BatchFullException;
+use SmartyStreets\PhpSdk\Batch;
+use SmartyStreets\PhpSdk\US_ZipCode\Lookup;
+use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
 
 class BatchTest extends \PHPUnit_Framework_TestCase {
     function testGetsLookupByInputId() {

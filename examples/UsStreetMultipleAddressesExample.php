@@ -3,12 +3,12 @@
 require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
 require_once(dirname(dirname(__FILE__)) . '/src/us_street/Lookup.php');
 require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
-use SmartyStreets\Exceptions\SmartyException;
-use SmartyStreets\Exceptions\BatchFullException;
-use SmartyStreets\StaticCredentials;
-use SmartyStreets\ClientBuilder;
-use SmartyStreets\US_Street\Lookup;
-use SmartyStreets\Batch;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
+use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
+use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\ClientBuilder;
+use SmartyStreets\PhpSdk\US_Street\Lookup;
+use SmartyStreets\PhpSdk\Batch;
 
 $lookupExample = new UsStreetMultipleAddressesExample();
 $lookupExample->run();
