@@ -6,4 +6,5 @@ test:
 	phpunit .
 
 publish:
+	git push origin master
 	@python tag.py $(INCREMENT)
