@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 
-SOURCE_VERSION = "0.0"
+SOURCE_VERSION = "1.0"
 INCREMENTS = {
 	"patch": 2,
 	"minor": 1,
