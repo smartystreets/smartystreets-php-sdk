@@ -1,7 +1,7 @@
 {
     "name": "smartystreets/phpsdk",
     "type": "library",
-    "description": "A library to help PHP developers easily access the SmartyStreets APIs.",
+    "description": "The official PHP client library from SmartyStreets.",
     "homepage": "https://github.com/smartystreets/smartystreets-php-sdk",
     "license": "The Apache License Version 2.0",
     "authors": [
