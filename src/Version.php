@@ -2,4 +2,4 @@
 
 namespace SmartyStreets\PhpSdk;
 
-define('VERSION', '0.0.4', false);
+define('VERSION', '1.0.0', false);
