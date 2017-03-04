@@ -21,6 +21,8 @@ class Metadata {
         $this->maxGeocodePrecision = ArrayUtil::setField($obj,'max_geocode_precision');
     }
 
+    //region [ Getters ]
+
     public function getLatitude() {
         return $this->latitude;
     }
@@ -36,4 +38,6 @@ class Metadata {
     public function getMaxGeocodePrecision() {
         return $this->maxGeocodePrecision;
     }
+
+    //endregion
 }

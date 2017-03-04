@@ -23,9 +23,9 @@ class CandidateTest extends \PHPUnit_Framework_TestCase {
             "address10" => "11",
             "address11" => "12",
             "address12" => "13",
-            "components" => array( array(
+            "components" => array(
                 "country_iso_3" => "14",
-                "super_administrative_area" => "15",
+                'super_administrative_area' => '15',
                 "administrative_area" => "16",
                 "sub_administrative_area" => "17",
                 "dependent_locality" => "18",
@@ -61,18 +61,18 @@ class CandidateTest extends \PHPUnit_Framework_TestCase {
                 "sub_building" => "48",
                 "post_box" => "49",
                 "post_box_type" => "50",
-                "post_box_number" => "51")
+                "post_box_number" => "51"
             ),
-            "metadata" => array( array(
+            "metadata" => array(
                 "latitude" => 52.0,
                 "longitude" => 53.0,
                 "geocode_precision" => "54",
-                "max_geocode_precision" => "55")
+                "max_geocode_precision" => "55"
             ),
-            "analysis" => array( array(
+            "analysis" => array(
                 "verification_status" => "56",
                 "address_precision" => "57",
-                "max_address_precision" => "58")
+                "max_address_precision" => "58"
             )
         );
     }
