@@ -43,6 +43,12 @@ class StatusCodeSenderTest extends \PHPUnit_Framework_TestCase {
         $this->assertSend(413, $classType);
     }
 
+    public function test422ResponseThrowsUnprocessableEntityException() {
+        $classType = \SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException::class;
+
+        $this->assertSend(422, $classType);
+    }
+
     public function test429ResponseThrowsTooManyRequestsException() {
         $classType = \SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException::class;
 
@@ -59,6 +65,12 @@ class StatusCodeSenderTest extends \PHPUnit_Framework_TestCase {
         $classType = \SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException::class;
 
         $this->assertSend(503, $classType);
+    }
+
+    public function test504ResponseThrowsGatewayTimeoutException() {
+        $classType = \SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException::class;
+
+        $this->assertSend(504, $classType);
     }
 
     private function assertSend($statusCode, $classType) {

@@ -17,6 +17,10 @@ require_once('Exceptions/ServiceUnavailableException.php');
 use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
 require_once('Exceptions/TooManyRequestsException.php');
 use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
+require_once('Exceptions/UnprocessableEntityException.php');
+use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
+require_once('Exceptions/GatewayTimeoutException.php');
+use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;
 
 class StatusCodeSender implements Sender {
     private $inner;
@@ -39,12 +43,16 @@ class StatusCodeSender implements Sender {
                 throw new PaymentRequiredException("Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.");
             case 413:
                 throw new RequestEntityTooLargeException("Request Entity Too Large: The request body has exceeded the maximum size.");
+            case 422:
+                throw new UnprocessableEntityException("GET request lacked required fields.");
             case 429:
                 throw new TooManyRequestsException("When using public \"website key\" authentication, we restrict the number of requests coming from a given source over too short of a time.");
             case 500:
                 throw new InternalServerErrorException("Internal Server Error.");
             case 503:
                 throw new ServiceUnavailableException("Service Unavailable. Try again later.");
+            case 504:
+                throw new GatewayTimeoutException("The upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed.");
             default:
                 return null;
         }
