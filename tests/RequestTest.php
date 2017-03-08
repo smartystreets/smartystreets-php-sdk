@@ -89,4 +89,17 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
         $expected = "http://localhost/?name1=value1&name2=value2&name3=value3";
         $this->assertEquals($expected, $request->getUrl());
     }
+
+    public function testBooleanValuesAndOnesAndZerosAreAppendedCorrectlyToUrl() {
+        $request = new Request();
+        $request->setUrlPrefix("http://localhost/");
+
+        $request->setParameter("key1", "0");
+        $request->setParameter("key2", "1");
+        $request->setParameter("key3", true);
+        $request->setParameter("key4", false);
+
+        $expected = "http://localhost/?key1=0&key2=1&key3=true&key4=false";
+        $this->assertEquals($expected, $request->getUrl());
+    }
 }
