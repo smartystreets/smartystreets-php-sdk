@@ -3,6 +3,7 @@
 namespace SmartyStreets\PhpSdk\International_Street;
 
 class Lookup {
+    //region [ Fields ]
     private $result,
             $inputId,
             $country,
@@ -18,8 +19,12 @@ class Lookup {
             $administrativeArea,
             $postalCode;
 
+    //endregion
+
+    //region [ Constructors ]
+
     public function __construct() {
-        $this->result = new Candidate();
+        $this->result = array();
     }
 
     public function withFreeform($freeform, $country) {
@@ -42,6 +47,8 @@ class Lookup {
         $this->administrativeArea = $administrativeArea;
         return $this;
     }
+
+    //endregion
 
     //region [ Query Methods ]
 
@@ -138,7 +145,7 @@ class Lookup {
     //region [ Setters ]
 
     public function setResult($result) {
-        $this->result = $result;
+        $this->result[] = $result;
     }
 
     public function setInputId($inputId) {

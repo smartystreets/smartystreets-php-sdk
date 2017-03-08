@@ -12,7 +12,6 @@ require_once('Candidate.php');
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;
-use SmartyStreets\PhpSdk\Batch;
 
 class Client {
     private $sender,
@@ -32,8 +31,10 @@ class Client {
         $response = $this->sender->send($request);
 
         $candidates = $this->serializer->deserialize($response->getPayload());
-        $lookup->setResult($candidates);
-        return $candidates;
+        if ($candidates == null)
+            $candidates = array();
+
+        $this->assignResultsToLookups($lookup, $candidates);
     }
 
     private function buildRequest(Lookup $lookup) {
@@ -52,11 +53,10 @@ class Client {
         $request->setParameter("locality", $lookup->getLocality());
         $request->setParameter("administrative_area", $lookup->getAdministrativeArea());
         $request->setParameter("postal_code", $lookup->getPostalCode());
+        $request->setReferer($this->referer);
 
         return $request;
     }
-
-
 
     private function ensureEnoughInfo(Lookup $lookup) {
         if ($lookup->missingCountry())
@@ -73,5 +73,12 @@ class Client {
 
         if ($lookup->missingLocalityOrAdministrativeArea())
             throw new UnprocessableEntityException("Insufficient information: One or more required fields were not set on the lookup.");
+    }
+
+    private function assignResultsToLookups(Lookup $lookup, $candidates) {
+        foreach ($candidates as $c) {
+            $candidate = new Candidate($c);
+            $lookup->setResult($candidate);
+        }
     }
 }

@@ -44,7 +44,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     public function testSendingSingleFullyPopulatedLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost/", $capturingSender);
-        $expectedUrl = "http://localhost/?country=0&geocode=1&language=native&freeform=1" .
+        $expectedUrl = "http://localhost/?country=0&geocode=true&language=native&freeform=1" .
             "&address1=2&address2=3&address3=4&address4=5&organization=6&locality=7&administrative_area=8&postal_code=9";
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
@@ -153,7 +153,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $lookup = (new Lookup())->withFreeform("1", "2");
 
         $sender = new MockSender(new Response(0, ""));
-        $deserializer = new MockDeserializer($expectedResults);
+        $deserializer = new MockDeserializer($rawResults);
         $client = new Client($sender, $deserializer);
 
         $client->sendLookup($lookup);
