@@ -15,6 +15,7 @@ require_once(dirname(__FILE__) . '/US_Street/Client.php');
 require_once(dirname(__FILE__) . '/US_ZipCode/Client.php');
 
 class ClientBuilder {
+    const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smartystreets.com/verify";
     const US_AUTOCOMPLETE_API_URL = "https://us-autocomplete.api.smartystreets.com/suggest";
     const US_EXTRACT_API_URL = "https://us-extract.api.smartystreets.com";
     const US_STREET_API_URL = "https://us-street.api.smartystreets.com/street-address";
@@ -63,6 +64,11 @@ class ClientBuilder {
     public function withUrl($urlPrefix) {
         $this->urlPrefix = $urlPrefix;
         return $this;
+    }
+
+    public function buildInternationalStreetApiClient() {
+        $this->ensureURLPrefixNotNull(self::INTERNATIONAL_STREET_API_URL);
+        return new \SmartyStreets\PhpSdk\International_Street\Client($this->buildSender(), $this->serializer);
     }
 
     public function buildUsStreetApiClient() {

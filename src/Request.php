@@ -8,12 +8,14 @@ class Request {
             $parameters,
             $urlPrefix,
             $payload,
-            $referer;
+            $referer,
+            $method;
 
     public function __construct() {
         $this->headers = array();
         $this->parameters = array();
         $this->urlPrefix = '';
+        $this->method = 'GET';
     }
 
     public function setHeader($header, $value) {
@@ -21,14 +23,10 @@ class Request {
     }
 
     public function setParameter($name, $value) {
-        if ($name === null || $value === null || strlen($name) == 0) //TODO: add test to check the triple equal on $name === null
+        if ($name === null || $value === null || strlen($name) == 0)
             return;
 
         $this->parameters[$name] = $value;
-    }
-
-    private static function urlEncode($value) {
-        return urlencode($value);
     }
 
     public function getUrl() {
@@ -41,12 +39,26 @@ class Request {
             if (!$this->endsWith($url, "?"))
                 $url .= "&";
 
-            $encodedName = self::urlEncode($key);
-            $encodedValue = self::urlEncode($this->parameters[$key]);
+            $encodedName = urlencode($key);
+            $encodedValue = $this->getEncodedValue($this->parameters[$key]);
             $url .= $encodedName . "=" . $encodedValue;
         }
 
         return $url;
+    }
+
+    private function getEncodedValue($value) {
+        if (is_bool($value))
+             return $this->getBooleanValue($value);
+        else
+            return urlencode($value);
+    }
+
+    private function getBooleanValue($value) {
+        if ($value === true)
+            return 'true';
+        else if ($value === false)
+            return 'false';
     }
 
     function endsWith($haystack, $needle) {
@@ -72,11 +84,16 @@ class Request {
         return $this->referer;
     }
 
+    public function getMethod() {
+        return $this->method;
+    }
+
     //endregion
 
     //region [ Setters ]
 
     public function setPayload($payload) {
+        $this->method = 'POST';
         $this->payload = $payload;
     }
 

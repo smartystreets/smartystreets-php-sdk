@@ -37,8 +37,6 @@ class Candidate {
         $this->analysis = new Analysis(ArrayUtil::setField($obj, 'analysis', array()));
     }
 
-
-
     //region [Getters]
 
     public function getInputIndex() {
