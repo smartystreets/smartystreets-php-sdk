@@ -1,10 +1,16 @@
 #!/usr/bin/make -f
 
-INCREMENT='patch' # or 'minor' or 'major'
-
 test:
 	phpunit .
 
-publish:
+push:
 	git push origin master
-	@python tag.py $(INCREMENT)
+
+publish-patch: push
+	@python tag.py patch
+
+publish-minor: push
+	@python tag.py minor
+
+publish-major: push
+	@python tag.py major
