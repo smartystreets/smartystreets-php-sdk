@@ -18,7 +18,8 @@ class InternationalExample {
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
         $client = (new ClientBuilder($staticCredentials))->buildInternationalStreetApiClient();
 
-        $lookup = (new Lookup())->withFreeform("Rua Padre Antonio D'Angelo 121 Casa Verde, Sao Paulo", "Brazil");
+        $lookup = new Lookup();
+        $lookup->setFreeformInput("Rua Padre Antonio D'Angelo 121 Casa Verde, Sao Paulo", "Brazil");
         $lookup->setGeocode(true); // Must be expressly set to get latitude and longitude.
 
         $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.

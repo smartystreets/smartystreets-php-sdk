@@ -27,25 +27,22 @@ class Lookup {
         $this->result = array();
     }
 
-    public function withFreeform($freeform, $country) {
+    public function setFreeformInput($freeform, $country) {
         $this->country = $country;
         $this->freeform = $freeform;
-        return $this;
     }
 
-    public function withPostalCode($address1, $postalCode, $country) {
+    public function setPostalCodeInput($address1, $postalCode, $country) { //TODO: make a test to make sure this setter work correctly
         $this->country = $country;
         $this->address1 = $address1;
         $this->postalCode = $postalCode;
-        return $this;
     }
 
-    public function withLocality($address1, $locality, $administrativeArea, $country) {
+    public function setLocalityInput($address1, $locality, $administrativeArea, $country) { //TODO: make a test to make sure this setter work correctly
         $this->country = $country;
         $this->address1 = $address1;
         $this->locality = $locality;
         $this->administrativeArea = $administrativeArea;
-        return $this;
     }
 
     //endregion

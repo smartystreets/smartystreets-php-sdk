@@ -34,7 +34,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $sender = new URLPrefixSender("http://localhost/", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
-        $lookup = (new Lookup())->withFreeform("freeform", "USA");
+        $lookup = new Lookup();
+        $lookup->setFreeformInput("freeform", "USA");
 
         $client->sendLookup($lookup);
 
@@ -140,8 +141,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $sender = new MockSender($response);
         $deserializer = new MockDeserializer(null);
         $client = new Client($sender, $deserializer);
+        $lookup = new Lookup();
+        $lookup->setFreeformInput("1", "2");
 
-        $client->sendLookup((new Lookup())->withFreeform("1", "2"));
+        $client->sendLookup($lookup);
 
         $this->assertEquals($response->getPayload(), $deserializer->getPayload());
     }
@@ -150,7 +153,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $rawResults = array(array('organization' => 0), array('address1' => 1));
         $expectedResults = array(new Candidate($rawResults[0]), new Candidate($rawResults[1]));
 
-        $lookup = (new Lookup())->withFreeform("1", "2");
+        $lookup = new Lookup();
+        $lookup->setFreeformInput("1", "2");
 
         $sender = new MockSender(new Response(0, ""));
         $deserializer = new MockDeserializer($rawResults);
