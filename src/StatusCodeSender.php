@@ -4,22 +4,23 @@ namespace SmartyStreets\PhpSdk;
 
 include_once('Sender.php');
 require_once('Exceptions/BadCredentialsException.php');
-use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
 require_once('Exceptions/BadRequestException.php');
-use SmartyStreets\PhpSdk\Exceptions\BadRequestException;
 require_once('Exceptions/InternalServerErrorException.php');
-use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 require_once('Exceptions/PaymentRequiredException.php');
-use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
 require_once('Exceptions/RequestEntityTooLargeException.php');
-use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
 require_once('Exceptions/ServiceUnavailableException.php');
-use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
 require_once('Exceptions/TooManyRequestsException.php');
-use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 require_once('Exceptions/UnprocessableEntityException.php');
-use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 require_once('Exceptions/GatewayTimeoutException.php');
+
+use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
+use SmartyStreets\PhpSdk\Exceptions\BadRequestException;
+use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
+use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
+use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
+use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
+use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
+use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;
 
 class StatusCodeSender implements Sender {
