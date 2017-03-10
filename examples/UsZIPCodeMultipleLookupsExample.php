@@ -1,29 +1,29 @@
 <?php
 
 require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/us_zipcode/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/us_zipcode/Result.php');
+require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Lookup.php');
+require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Result.php');
 require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
 require_once(dirname(dirname(__FILE__)) . '/src/SharedCredentials.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
 use SmartyStreets\PhpSdk\StaticCredentials;
-use SmartyStreets\PhpSdk\US_ZipCode\Lookup;
+use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\Batch;
 
-$lookupExample = new UsZipCodeMultipleLookupsExample();
+$lookupExample = new UsZIPCodeMultipleLookupsExample();
 $lookupExample->run();
 
-class UsZipCodeMultipleLookupsExample {
+class UsZIPCodeMultipleLookupsExample {
 
     public function run() {
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
-        $client = (new ClientBuilder($staticCredentials))->buildUsZipCodeApiClient();
+        $client = (new ClientBuilder($staticCredentials))->buildUsZIPCodeApiClient();
         $batch = new Batch();
 
         $lookup0 = new Lookup();
-        $lookup0->setZipCode("12345");  // A Lookup may have a ZIP Code, city and state, or city, state, and ZIP Code
+        $lookup0->setZIPCode("12345");  // A Lookup may have a ZIP Code, city and state, or city, state, and ZIP Code
 
         $lookup1 = new Lookup();
         $lookup1->setCity("Phoenix");
@@ -74,11 +74,11 @@ class UsZipCodeMultipleLookupsExample {
                 echo("\n");
             }
 
-            $zipCodes = $result->getZipCodes();
+            $zipCodes = $result->getZIPCodes();
             echo "\n" . count($zipCodes) . " ZIP Code match(es):";
 
             foreach ($zipCodes as $zip) {
-                echo("\nZIP Code: " . $zip->getZipCode());
+                echo("\nZIP Code: " . $zip->getZIPCode());
                 echo("\nCounty: " . $zip->getCountyName());
                 echo("\nLatitude: " . $zip->getLatitude());
                 echo("\nLongitude: " . $zip->getLongitude());

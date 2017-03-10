@@ -4,7 +4,7 @@ namespace SmartyStreets\PhpSdk;
 
 use SmartyStreets\PhpSdk\International_Street\Client as InternationalStreetApiClient;
 use SmartyStreets\PhpSdk\US_Street\Client as USStreetApiClient;
-use SmartyStreets\PhpSdk\US_ZipCode\Client as USZipCodeApiClient;
+use SmartyStreets\PhpSdk\US_ZIPCode\Client as USZIPCodeApiClient;
 
 require_once('Serializer.php');
 require_once('Request.php');
@@ -16,7 +16,7 @@ require_once('RetrySender.php');
 require_once('URLPrefixSender.php');
 require_once('Batch.php');
 require_once(dirname(__FILE__) . '/US_Street/Client.php');
-require_once(dirname(__FILE__) . '/US_ZipCode/Client.php');
+require_once(dirname(__FILE__) . '/US_ZIPCode/Client.php');
 
 class ClientBuilder {
     const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smartystreets.com/verify";
@@ -80,9 +80,9 @@ class ClientBuilder {
         return new USStreetApiClient($this->buildSender(), $this->serializer, $this->referer);
     }
 
-    public function buildUsZipCodeApiClient() {
+    public function buildUsZIPCodeApiClient() {
         $this->ensureURLPrefixNotNull(self::US_ZIP_CODE_API_URL);
-        return new USZipCodeApiClient($this->buildSender(), $this->serializer, $this->referer);
+        return new USZIPCodeApiClient($this->buildSender(), $this->serializer, $this->referer);
     }
 
     public function buildSender() {

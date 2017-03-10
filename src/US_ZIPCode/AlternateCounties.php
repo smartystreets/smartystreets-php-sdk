@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets\PhpSdk\US_ZipCode;
+namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;

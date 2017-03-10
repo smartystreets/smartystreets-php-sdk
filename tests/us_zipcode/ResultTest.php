@@ -2,8 +2,8 @@
 
 namespace SmartyStreets\PhpSdk\Tests\US_Street;
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Zipcode/Result.php');
-use SmartyStreets\PhpSdk\US_ZipCode\Result;
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Result.php');
+use SmartyStreets\PhpSdk\US_ZIPCode\Result;
 
 class ResultTest extends \PHPUnit_Framework_TestCase {
     private $obj;
@@ -67,9 +67,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('4', $city->getStateAbbreviation());
         $this->assertEquals('5', $city->getState());
 
-        $zip = $result->getZipCodes()[0];
-        $this->assertEquals('6', $zip->getZipCode());
-        $this->assertEquals('7', $zip->getZipCodeType());
+        $zip = $result->getZIPCodes()[0];
+        $this->assertEquals('6', $zip->getZIPCode());
+        $this->assertEquals('7', $zip->getZIPCodeType());
         $this->assertEquals('8', $zip->getDefaultCity());
         $this->assertEquals('9', $zip->getCountyFips());
         $this->assertEquals('10', $zip->getCountyName());

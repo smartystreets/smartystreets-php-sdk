@@ -31,7 +31,7 @@ class UsStreetMultipleAddressesExample {
 
         $address3 = new Lookup();
         $address3->setStreet("1 Infinite Loop");
-        $address3->setZipCode("95014"); // You can just input the street and ZIP if you want.
+        $address3->setZIPCode("95014"); // You can just input the street and ZIP if you want.
 
         try {
             $batch->add($address0);
@@ -73,7 +73,7 @@ class UsStreetMultipleAddressesExample {
                 echo("\n\nCandidate " . $candidate->getCandidateIndex() . ":");
                 echo("\nDelivery line 1: " . $candidate->getDeliveryLine1());
                 echo("\nLast line:       " . $candidate->getLastLine());
-                echo("\nZIP Code:        " . $components->getZipCode() . "-" . $components->getPlus4Code());
+                echo("\nZIP Code:        " . $components->getZIPCode() . "-" . $components->getPlus4Code());
                 echo("\nCounty:          " . $metadata->getCountyName());
                 echo("\nLatitude:        " . $metadata->getLatitude());
                 echo("\nLongitude:       " . $metadata->getLongitude());

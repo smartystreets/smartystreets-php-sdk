@@ -3,10 +3,10 @@
 namespace SmartyStreets\PhpSdk\Tests;
 
 require_once(dirname(dirname(__FILE__)) . '/src/Batch.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Zipcode/Lookup.php');
+require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Lookup.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Exceptions/BatchFullException.php');
 use SmartyStreets\PhpSdk\Batch;
-use SmartyStreets\PhpSdk\US_ZipCode\Lookup;
+use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
 use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
 
 class BatchTest extends \PHPUnit_Framework_TestCase {

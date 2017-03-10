@@ -1,10 +1,10 @@
 <?php
 
-namespace SmartyStreets\PhpSdk\US_ZipCode;
+namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('City.php');
-require_once('ZipCode.php');
+require_once('ZIPCode.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 class Result {
@@ -25,7 +25,7 @@ class Result {
         $this->zipCodes = ArrayUtil::setField($obj, "zipcodes", array());
 
         $this->cities = $this->convertToCityObjects();
-        $this->zipCodes = $this->convertToZipCodeObjects();
+        $this->zipCodes = $this->convertToZIPCodeObjects();
     }
 
     private function convertToCityObjects() {
@@ -37,11 +37,11 @@ class Result {
         return $cityObjects;
     }
 
-    private function convertToZipCodeObjects() {
+    private function convertToZIPCodeObjects() {
         $zipCodeObjects = array();
 
         foreach ($this->zipCodes as $zipCode)
-            $zipCodeObjects[] = new ZipCode($zipCode);
+            $zipCodeObjects[] = new ZIPCode($zipCode);
 
         return $zipCodeObjects;
     }
@@ -56,7 +56,7 @@ class Result {
         return $this->cities[$index];
     }
 
-    public function getZipCodeAtIndex($index) {
+    public function getZIPCodeAtIndex($index) {
         return $this->zipCodes[$index];
     }
 
@@ -76,7 +76,7 @@ class Result {
         return $this->cities;
     }
 
-    public function getZipCodes() {
+    public function getZIPCodes() {
         return $this->zipCodes;
     }
 

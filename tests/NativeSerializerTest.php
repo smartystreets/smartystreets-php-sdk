@@ -1,10 +1,10 @@
 <?php
 
-namespace SmartyStreets\PhpSdk\Tests\US_ZipCode;
+namespace SmartyStreets\PhpSdk\Tests\US_ZIPCode;
 
 require_once(dirname(dirname(__FILE__)) . '/src/NativeSerializer.php');
 use SmartyStreets\PhpSdk\NativeSerializer;
-use SmartyStreets\PhpSdk\US_ZipCode\Lookup;
+use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
 
 class NativeSerializerTest extends \PHPUnit_Framework_TestCase {
 

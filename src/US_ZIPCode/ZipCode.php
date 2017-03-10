@@ -1,12 +1,12 @@
 <?php
 
-namespace SmartyStreets\PhpSdk\US_ZipCode;
+namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('AlternateCounties.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
-class ZipCode {
+class ZIPCode {
     private $zipCode,
             $zipCodeType,
             $defaultCity,
@@ -53,11 +53,11 @@ class ZipCode {
         return $this->alternateCounties[$index];
     }
 
-    public function getZipCode() {
+    public function getZIPCode() {
         return $this->zipCode;
     }
 
-    public function getZipCodeType() {
+    public function getZIPCodeType() {
         return $this->zipCodeType;
     }
 

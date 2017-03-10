@@ -45,7 +45,7 @@ class UsStreetSingleAddressExample {
         $firstCandidate = $results[0];
 
         echo("\nAddress is valid. (There is at least one candidate)\n");
-        echo("\nZIP Code: " . $firstCandidate->getComponents()->getZipCode());
+        echo("\nZIP Code: " . $firstCandidate->getComponents()->getZIPCode());
         echo("\nCounty: " . $firstCandidate->getMetadata()->getCountyName());
         echo("\nLatitude: " . $firstCandidate->getMetadata()->getLatitude());
         echo("\nLongitude: " . $firstCandidate->getMetadata()->getLongitude());

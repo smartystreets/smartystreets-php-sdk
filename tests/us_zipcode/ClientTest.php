@@ -1,23 +1,23 @@
 <?php
 
-namespace SmartyStreets\PhpSdk\Tests\US_ZipCode;
+namespace SmartyStreets\PhpSdk\Tests\US_ZIPCode;
 
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/RequestCapturingSender.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Zipcode/Client.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Zipcode/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Zipcode/Result.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Client.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Lookup.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Result.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
-use SmartyStreets\PhpSdk\US_ZipCode\Client;
-use SmartyStreets\PhpSdk\US_ZipCode\Lookup;
-use SmartyStreets\PhpSdk\US_ZipCode\Result;
+use SmartyStreets\PhpSdk\US_ZIPCode\Client;
+use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
+use SmartyStreets\PhpSdk\US_ZIPCode\Result;
 use SmartyStreets\PhpSdk\Batch;
 use SmartyStreets\PhpSdk\Response;
 

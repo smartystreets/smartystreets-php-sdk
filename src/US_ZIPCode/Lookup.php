@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets\PhpSdk\US_ZipCode;
+namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
 require_once('Result.php');
 
@@ -54,7 +54,7 @@ class Lookup implements \JsonSerializable {
         return $this->state;
     }
 
-    public function getZipCode() {
+    public function getZIPCode() {
         return $this->zipcode;
     }
 
@@ -74,7 +74,7 @@ class Lookup implements \JsonSerializable {
         $this->state = $state;
     }
 
-    public function setZipCode($zipcode) {
+    public function setZIPCode($zipcode) {
         $this->zipcode = $zipcode;
     }
 

@@ -1,23 +1,23 @@
 <?php
 
 require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/us_zipcode/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/us_zipcode/Result.php');
+require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Lookup.php');
+require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Result.php');
 require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
 require_once(dirname(dirname(__FILE__)) . '/src/SharedCredentials.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\StaticCredentials;
-use SmartyStreets\PhpSdk\US_ZipCode\Lookup;
+use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
 use SmartyStreets\PhpSdk\ClientBuilder;
 
-$lookupExample = new UsZipCodeSingleLookupExample();
+$lookupExample = new UsZIPCodeSingleLookupExample();
 $lookupExample->run();
 
-class UsZipCodeSingleLookupExample {
+class UsZIPCodeSingleLookupExample {
 
     public function run() {
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
-        $client = (new ClientBuilder($staticCredentials))->buildUsZipCodeApiClient();
+        $client = (new ClientBuilder($staticCredentials))->buildUsZIPCodeApiClient();
 
         $lookup = new Lookup();
         $lookup->setCity("Mountain View");
@@ -37,7 +37,7 @@ class UsZipCodeSingleLookupExample {
 
     public function displayResults(Lookup $lookup) {
         $result = $lookup->getResult();
-        $zipCodes = $result->getZipCodes();
+        $zipCodes = $result->getZIPCodes();
         $cities = $result->getCities();
 
         foreach ($cities as $city) {
@@ -47,7 +47,7 @@ class UsZipCodeSingleLookupExample {
         }
 
         foreach ($zipCodes as $zip) {
-            echo("\n\nZIP Code: " . $zip->getZipCode());
+            echo("\n\nZIP Code: " . $zip->getZIPCode());
             echo("\nLatitude: " . $zip->getLatitude());
             echo("\nLongitude: " . $zip->getLongitude());
         }

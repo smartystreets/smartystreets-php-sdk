@@ -78,7 +78,7 @@ class USStreetLookupsWithMatchStrategyExamples {
                 echo("with " . $lookups[$i]->getMatchStrategy() . " strategy");
                 echo("\nDelivery line 1: " . $candidate->getDeliveryLine1());
                 echo("\nLast line:       " . $candidate->getLastLine());
-                echo("\nZIP Code:        " . $components->getZipCode() . "-" . $components->getPlus4Code());
+                echo("\nZIP Code:        " . $components->getZIPCode() . "-" . $components->getPlus4Code());
                 echo("\nCounty:          " . $metadata->getCountyName());
                 echo("\nLatitude:        " . $metadata->getLatitude());
                 echo("\nLongitude:       " . $metadata->getLongitude());
