@@ -33,9 +33,9 @@ class Client {
 
         $candidates = $this->serializer->deserialize($response->getPayload());
         if ($candidates == null)
-            $candidates = array();
+            return;
 
-        $this->assignResultsToLookups($lookup, $candidates);
+        $this->assignResultsToLookup($lookup, $candidates);
     }
 
     private function buildRequest(Lookup $lookup) {
@@ -76,10 +76,14 @@ class Client {
             throw new UnprocessableEntityException("Insufficient information: One or more required fields were not set on the lookup.");
     }
 
-    private function assignResultsToLookups(Lookup $lookup, $candidates) {
+    private function assignResultsToLookup(Lookup $lookup, $candidates) {
+        $result = array();
+
         foreach ($candidates as $c) {
             $candidate = new Candidate($c);
-            $lookup->setResult($candidate);
+            $result[] = $candidate;
         }
+
+        $lookup->setResult($result);
     }
 }

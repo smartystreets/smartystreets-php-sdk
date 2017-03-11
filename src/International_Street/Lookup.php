@@ -142,7 +142,7 @@ class Lookup {
     //region [ Setters ]
 
     public function setResult($result) {
-        $this->result[] = $result;
+        $this->result = $result;
     }
 
     public function setInputId($inputId) {

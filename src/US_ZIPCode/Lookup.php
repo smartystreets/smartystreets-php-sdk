@@ -24,8 +24,6 @@ class Lookup implements \JsonSerializable {
         $this->zipcode = $zipcode;
     }
 
-    //endregion
-
     public function jsonSerialize()
     {
         return array(
@@ -35,6 +33,8 @@ class Lookup implements \JsonSerializable {
             'zipcode' => $this->zipcode
         );
     }
+
+    //endregion
 
     //region [ Getters ]
 

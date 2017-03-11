@@ -42,7 +42,7 @@ class Client {
 
         $candidates = $this->serializer->deserialize($response->getPayload());
         if ($candidates == null)
-            $candidates = array();
+            return;
 
         $this->assignResultsToLookups($batch, $candidates);
     }
