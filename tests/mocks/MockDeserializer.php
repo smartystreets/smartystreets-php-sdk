@@ -25,5 +25,4 @@ class MockDeserializer implements Serializer {
     public function getPayload() {
         return $this->payload;
     }
-
 }

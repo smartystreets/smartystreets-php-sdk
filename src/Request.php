@@ -36,7 +36,7 @@ class Request {
             $url .= "?";
 
         foreach(array_keys($this->parameters) as $key) {
-            if (!$this->endsWith($url, "?"))
+            if (!ArrayUtil::endsWith($url, "?"))
                 $url .= "&";
 
             $encodedName = urlencode($key);
@@ -59,11 +59,6 @@ class Request {
             return 'true';
         else if ($value === false)
             return 'false';
-    }
-
-    function endsWith($haystack, $needle) {
-        // search forward starting from end minus needle length characters
-        return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
     }
 
     //region [ Getters ]
