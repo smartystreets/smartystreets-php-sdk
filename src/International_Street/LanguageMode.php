@@ -2,8 +2,8 @@
 
 namespace SmartyStreets\PhpSdk\International_Street;
 
-define('NATIVE', 'native', false);
-define('LATIN', 'latin', false);
+define('LANGUAGE_MODE_NATIVE', 'native', false);
+define('LANGUAGE_MODE_LATIN', 'latin', false);
 
 /**
  * When not set, the output language will match the language of the input values. When set to <b>NATIVE</b> the<br>

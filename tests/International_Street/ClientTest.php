@@ -52,7 +52,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $lookup = new Lookup();
         $lookup->setCountry("0");
         $lookup->setGeocode(true);
-        $lookup->setLanguage(new LanguageMode(NATIVE));
+        $lookup->setLanguage(new LanguageMode(LANGUAGE_MODE_NATIVE));
         $lookup->setFreeform("1");
         $lookup->setAddress1("2");
         $lookup->setAddress2("3");
