@@ -7,6 +7,7 @@ require_once(dirname(dirname(__FILE__)) . '/Sender.php');
 require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Request.php');
 require_once('GeolocateType.php');
+require_once('Result.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Sender;
@@ -36,11 +37,7 @@ class Client {
         if ($result == null)
             return;
 
-        $suggestions = $result->getSuggestions();
-        if ($suggestions == null)
-            return;
-
-        $this->assignSuggestionsToLookup($lookup, $suggestions);
+        $lookup->setResult((new Result($result))->getSuggestions());
     }
 
     private function buildRequest(Lookup $lookup) {
@@ -73,16 +70,5 @@ class Client {
             $filterList = substr($filterList, 0, strlen($filterList) - 1);
 
         return $filterList;
-    }
-
-    private function assignSuggestionsToLookup(Lookup $lookup, $suggestions) {
-        $result = array();
-
-        foreach ($suggestions as $s) {
-            $suggestion = new Suggestion($s);
-            $result[] = $suggestion;
-        }
-
-        $lookup->setResult($result);
     }
 }

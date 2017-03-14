@@ -15,9 +15,11 @@ class NativeSender implements Sender {
 
     function send(Request $smartyRequest) {
         $ch = $this->buildRequest($smartyRequest);
+
         $this->setHeaders($smartyRequest, $ch);
 
         $response = curl_exec($ch);
+
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 

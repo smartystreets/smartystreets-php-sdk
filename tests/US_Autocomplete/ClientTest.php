@@ -23,6 +23,7 @@ use SmartyStreets\PhpSdk\US_Autocomplete\Result;
 use SmartyStreets\PhpSdk\US_Autocomplete\Client;
 use SmartyStreets\PhpSdk\US_Autocomplete\Lookup;
 use SmartyStreets\PhpSdk\US_Autocomplete\GeolocateType;
+use SmartyStreets\PhpSdk\US_Autocomplete\Suggestion;
 
 
 class ClientTest extends \PHPUnit_Framework_TestCase {
@@ -67,7 +68,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $response = new Response(0, "Hello, World!");
         $mockSender = new MockSender($response);
         $sender = new URLPrefixSender("http://localhost/", $mockSender);
-        $deserializer = new MockDeserializer(new Result());
+        $deserializer = new MockDeserializer(null);
         $client = new Client($sender, $deserializer);
 
         $client->sendLookup(new Lookup('1'));
@@ -76,11 +77,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testResultCorrectlyAssignedToCorrespondingLookup() {
+        $rawResult = array(array('text' => '1'), array('text' => '2'));
+        $expectedResult = new Result(array(new Suggestion($rawResult[0]), new Suggestion($rawResult[1])));
+
         $lookup = new Lookup('1');
-        $expectedResult = new Result();
+
         $mockSender = new MockSender(new Response(0, "{[]}"));
         $sender = new URLPrefixSender("http://localhost/", $mockSender);
-        $deserializer = new MockDeserializer($expectedResult);
+        $deserializer = new MockDeserializer($rawResult);
         $client = new Client($sender, $deserializer);
 
         $client->sendLookup($lookup);
