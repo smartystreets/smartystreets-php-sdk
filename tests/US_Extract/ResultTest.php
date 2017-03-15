@@ -1,9 +1,9 @@
 <?php
 
-namespace US_Extract;
+namespace SmartyStreets\PhpSdk\Tests\US_Extract;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Extract/Result.php');
-
+use SmartyStreets\PhpSdk\US_Extract\Result;
 
 class ResultTest extends \PHPUnit_Framework_TestCase {
     private $obj;

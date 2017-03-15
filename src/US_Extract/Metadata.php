@@ -1,6 +1,6 @@
 <?php
 
-namespace US_Extract;
+namespace SmartyStreets\PhpSdk\US_Extract;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
