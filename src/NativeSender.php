@@ -49,7 +49,7 @@ class NativeSender implements Sender {
             $headers[$key] = $smartyRequest->getHeaders()[$key];
         }
 
-        $headers[] = 'Content-Type: application/json';
+        $headers[] = 'Content-Type: ' . $smartyRequest->getContentType();
 
         return $headers;
     }

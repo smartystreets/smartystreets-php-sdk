@@ -2,6 +2,8 @@
 
 namespace SmartyStreets\PhpSdk;
 
+require_once('ArrayUtil.php');
+
 class Request {
     const CHARSET = "UTF-8";
     private $headers,
@@ -9,13 +11,16 @@ class Request {
             $urlPrefix,
             $payload,
             $referer,
-            $method;
+            $method,
+            $contentType;
 
     public function __construct() {
         $this->headers = array();
         $this->parameters = array();
         $this->urlPrefix = '';
         $this->method = 'GET';
+        $this->contentType = 'application/json';
+
     }
 
     public function setHeader($header, $value) {
@@ -40,25 +45,11 @@ class Request {
                 $url .= "&";
 
             $encodedName = urlencode($key);
-            $encodedValue = $this->getEncodedValue($this->parameters[$key]);
+            $encodedValue = ArrayUtil::getEncodedValue($this->parameters[$key]);
             $url .= $encodedName . "=" . $encodedValue;
         }
 
         return $url;
-    }
-
-    private function getEncodedValue($value) {
-        if (is_bool($value))
-             return $this->getBooleanValue($value);
-        else
-            return urlencode($value);
-    }
-
-    private function getBooleanValue($value) {
-        if ($value === true)
-            return 'true';
-        else if ($value === false)
-            return 'false';
     }
 
     //region [ Getters ]
@@ -83,6 +74,10 @@ class Request {
         return $this->method;
     }
 
+    public function getContentType() {
+        return $this->contentType;
+    }
+
     //endregion
 
     //region [ Setters ]
@@ -98,6 +93,10 @@ class Request {
 
     public function setUrlPrefix($urlPrefix) {
         $this->urlPrefix = $urlPrefix;
+    }
+
+    public function setContentType($contentType) {
+        $this->contentType = $contentType;
     }
 
     //endregion

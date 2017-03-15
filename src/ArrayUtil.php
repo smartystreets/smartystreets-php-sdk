@@ -21,4 +21,24 @@ class ArrayUtil {
         // search forward starting from end minus needle length characters
         return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
     }
+
+    /**
+     * Returns encoded value of variable
+     */
+    public static function getEncodedValue($value) {
+        if (is_bool($value))
+            return self::getStringValueOfBoolean($value);
+        else
+            return urlencode($value);
+    }
+
+    /**
+     * Returns string value of boolean variable
+     */
+    public static function getStringValueOfBoolean($value) {
+        if ($value === true)
+            return 'true';
+        else if ($value === false)
+            return 'false';
+    }
 }
