@@ -3,6 +3,7 @@
 namespace SmartyStreets\PhpSdk;
 
 use SmartyStreets\PhpSdk\US_Autocomplete\Client as USAutoCompleteApiClient;
+use SmartyStreets\PhpSdk\US_Extract\Client as USExtractApiClient;
 use SmartyStreets\PhpSdk\International_Street\Client as InternationalStreetApiClient;
 use SmartyStreets\PhpSdk\US_Street\Client as USStreetApiClient;
 use SmartyStreets\PhpSdk\US_ZIPCode\Client as USZIPCodeApiClient;
@@ -74,6 +75,11 @@ class ClientBuilder {
     public function buildUSAutocompleteApiClient() {
         $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_API_URL);
         return new USAutoCompleteApiClient($this->buildSender(), $this->serializer);
+    }
+
+    public function buildUSExtractApiClient() {
+        $this->ensureURLPrefixNotNull(self::US_EXTRACT_API_URL);
+        return new USExtractApiClient($this->buildSender(), $this->serializer);
     }
 
     public function buildInternationalStreetApiClient() {
