@@ -63,9 +63,8 @@ class Lookup {
         $this->result = $result;
     }
 
-    public function setHtml($html) {
-//        $this->html = ArrayUtil::getEncodedValue($html);
-        $this->html = strval($html);// TODO: what type of value is it getting? (string value) 'true' 'false' or boolean value?
+    public function specifyHtmlInput($html) {
+        $this->html = $html;
     }
 
     public function setAggressive($aggressive) {
@@ -76,7 +75,7 @@ class Lookup {
         $this->addressesHaveLineBreaks = $addressesHaveLineBreaks;
     }
 
-    public function setAddressPerLine($addressPerLine) {
+    public function setAddressesPerLine($addressPerLine) {
         $this->addressPerLine = $addressPerLine;
     }
 

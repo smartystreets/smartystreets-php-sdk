@@ -6,7 +6,6 @@ require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('Metadata.php');
 require_once('Address.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
-use SmartyStreets\PhpSdk\US_Extract\Address;
 
 /**
  * @see <a href="https://smartystreets.com/docs/cloud/us-extract-api#http-response-status">SmartyStreets US Extract API docs</a>

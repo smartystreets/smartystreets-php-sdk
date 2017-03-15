@@ -23,7 +23,7 @@ class Client {
         $this->referer = $referer;
     }
 
-    public function sendLookup(Lookup $lookup) {
+    public function sendLookup(Lookup $lookup = null) {
         if ($lookup == null || $lookup->getText() == null || empty($lookup->getText()))
             throw new SmartyException("Client.send() requires a Lookup with the 'text' field set");
 
@@ -41,7 +41,7 @@ class Client {
         $request->setContentType("text/plain");
         $request->setPayload($lookup->getText());
 
-        $request->setParameter('html', $lookup->isHtml());
+        $request->setParameter('html', ArrayUtil::getStringValueOfBoolean($lookup->isHtml()));
         $request->setParameter('aggressive', ArrayUtil::getStringValueOfBoolean($lookup->isAggressive()));
         $request->setParameter('addr_line_breaks', ArrayUtil::getStringValueOfBoolean($lookup->addressesHaveLineBreaks()));
         $request->setParameter('addr_per_line', strval($lookup->getAddressesPerLine()));
