@@ -5,11 +5,16 @@ namespace SmartyStreets\PhpSdk;
 include_once('Sender.php');
 
 class RetrySender implements Sender {
+    const MAX_BACKOFF_DURATION = 10;
     private $inner,
-            $maxRetries;
+            $maxRetries,
+            $sleeper,
+            $logger;
 
-    public function __construct($maxRetries, Sender $inner) {
+    public function __construct($maxRetries, Sleeper $sleeper, Logger $logger, Sender $inner) {
         $this->inner = $inner;
+        $this->sleeper = $sleeper;
+        $this->logger = $logger;
         $this->maxRetries = $maxRetries;
     }
 
@@ -31,6 +36,8 @@ class RetrySender implements Sender {
                 throw $ex;
         }
 
+        $this->backoff($attempt);
+
         return null;
     }
 
@@ -40,5 +47,12 @@ class RetrySender implements Sender {
 
     public function getMaxRetries() {
         return $this->maxRetries;
+    }
+
+    private function backoff($attempt) {
+        $backoffDuration = min($attempt, self::MAX_BACKOFF_DURATION);
+
+        $this->logger->log("There was an error processing the request. Retrying in " . $backoffDuration . " seconds...");
+        $this->sleeper->sleep($backoffDuration);
     }
 }

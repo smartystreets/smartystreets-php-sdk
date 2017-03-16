@@ -17,6 +17,8 @@ require_once('SigningSender.php');
 require_once('RetrySender.php');
 require_once('URLPrefixSender.php');
 require_once('Batch.php');
+require_once('MyLogger.php');
+require_once('MySleeper.php');
 require_once(dirname(__FILE__) . '/US_Street/Client.php');
 require_once(dirname(__FILE__) . '/US_ZIPCode/Client.php');
 
@@ -106,7 +108,7 @@ class ClientBuilder {
         $sender = new StatusCodeSender($sender);
 
         if ($this->maxRetries > 0)
-            $sender = new RetrySender($this->maxRetries, $sender);
+            $sender = new RetrySender($this->maxRetries, new MySleeper(), new MyLogger(), $sender);
 
         if ($this->signer != null)
             $sender = new SigningSender($this->signer, $sender);

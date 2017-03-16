@@ -26,12 +26,14 @@ class MockCrashingSender implements Sender {
         if (strpos($request->getUrl(), "RetryMaxTimes") !== false)
             throw new \Exception("Retrying won't help");
 
+        if (strpos($request->getUrl(), "RetryFifteenTimes") !== false)
+            if ($this->sendCount <= 14)
+                throw new \Exception("You need to retry");
+
         return new Response(self::STATUS_CODE, "");
     }
 
     public function getSendCount() {
         return $this->sendCount;
     }
-
-
 }

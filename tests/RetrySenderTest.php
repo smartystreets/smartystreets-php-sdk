@@ -3,17 +3,25 @@
 namespace SmartyStreets\PhpSdk\Tests;
 
 require_once('Mocks/MockCrashingSender.php');
+require_once('Mocks/MockLogger.php');
+require_once('Mocks/MockSleeper.php');
 require_once(dirname(dirname(__FILE__)) . '/src/RetrySender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 use SmartyStreets\PhpSdk\Tests\Mocks\MockCrashingSender;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockLogger;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockSleeper;
 use SmartyStreets\PhpSdk\RetrySender;
 use SmartyStreets\PhpSdk\Request;
 
 class RetrySenderTest extends \PHPUnit_Framework_TestCase {
-    private $mockCrashingSender;
+    private $mockCrashingSender,
+            $mockLogger,
+            $mockSleeper;
 
     public function setUp() {
         $this->mockCrashingSender = new MockCrashingSender();
+        $this->mockLogger = new MockLogger();
+        $this->mockSleeper = new MockSleeper();
     }
 
     public function testSuccessDoesNotRetry() {
@@ -29,20 +37,26 @@ class RetrySenderTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testRetryUntilMaxAttempts() {
-        $classType = \Exception::class;
-
-        $this->expectException($classType);
+        $this->expectException(\Exception::class);
 
         $this->sendRequest("RetryMaxTimes");
+    }
+
+    public function testBackoffDoesNotExceedMax() {
+        $expectedDurations = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10);
+
+        $this->sendRequest("RetryFifteenTimes");
+
+        $this->assertEquals(15, $this->mockCrashingSender->getSendCount());
+        $this->assertEquals($expectedDurations, $this->mockSleeper->getSleepDurations());
     }
 
     private function sendRequest($requestBehavior) {
         $request = new Request();
         $request->setUrlPrefix($requestBehavior);
 
-        $retrySender = new RetrySender(5, $this->mockCrashingSender);
+        $retrySender = new RetrySender(15, $this->mockSleeper, $this->mockLogger, $this->mockCrashingSender);
 
         $retrySender->send($request);
     }
-
 }
