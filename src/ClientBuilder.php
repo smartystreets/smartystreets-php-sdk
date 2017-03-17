@@ -34,8 +34,7 @@ class ClientBuilder {
             $httpSender,
             $maxRetries,
             $maxTimeout,
-            $urlPrefix,
-            $referer;
+            $urlPrefix;
 
     public function __construct(Credentials $signer = null) {
         $this->serializer = new NativeSerializer();
@@ -64,11 +63,6 @@ class ClientBuilder {
         return $this;
     }
 
-    public function withReferer($referer) {
-        $this->referer = $referer;
-        return $this;
-    }
-
     public function withUrl($urlPrefix) {
         $this->urlPrefix = $urlPrefix;
         return $this;
@@ -91,12 +85,12 @@ class ClientBuilder {
 
     public function buildUsStreetApiClient() {
         $this->ensureURLPrefixNotNull(self::US_STREET_API_URL);
-        return new USStreetApiClient($this->buildSender(), $this->serializer, $this->referer);
+        return new USStreetApiClient($this->buildSender(), $this->serializer);
     }
 
     public function buildUsZIPCodeApiClient() {
         $this->ensureURLPrefixNotNull(self::US_ZIP_CODE_API_URL);
-        return new USZIPCodeApiClient($this->buildSender(), $this->serializer, $this->referer);
+        return new USZIPCodeApiClient($this->buildSender(), $this->serializer);
     }
 
     public function buildSender() {

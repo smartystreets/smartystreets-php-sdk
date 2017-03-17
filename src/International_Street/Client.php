@@ -16,13 +16,11 @@ use SmartyStreets\PhpSdk\Request;
 
 class Client {
     private $sender,
-            $serializer,
-            $referer;
+            $serializer;
 
-    public function __construct(Sender $sender, Serializer $serializer = null, $referer = null) {
+    public function __construct(Sender $sender, Serializer $serializer = null) {
         $this->sender = $sender;
         $this->serializer = $serializer;
-        $this->referer = $referer;
     }
 
     public function sendLookup(Lookup $lookup) {
@@ -37,6 +35,7 @@ class Client {
 
         $this->assignResultsToLookup($lookup, $candidates);
     }
+
 
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
@@ -54,7 +53,6 @@ class Client {
         $request->setParameter("locality", $lookup->getLocality());
         $request->setParameter("administrative_area", $lookup->getAdministrativeArea());
         $request->setParameter("postal_code", $lookup->getPostalCode());
-        $request->setReferer($this->referer);
 
         return $request;
     }

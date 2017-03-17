@@ -14,21 +14,20 @@ use SmartyStreets\PhpSdk\Request;
 
 class Client {
     private $sender,
-        $serializer,
-        $referer;
+        $serializer;
 
-    public function __construct(Sender $sender, Serializer $serializer = null, $referer = null) {
+    public function __construct(Sender $sender, Serializer $serializer = null) {
         $this->sender = $sender;
         $this->serializer = $serializer;
-        $this->referer = $referer;
     }
 
     public function sendLookup(Lookup $lookup = null) {
-        if ($lookup == null || $lookup->getText() == null || empty($lookup->getText()))
-            throw new SmartyException("Client.send() requires a Lookup with the 'text' field set");
+        if ($lookup == null || $lookup->getText() == null || strlen($lookup->getText()) == 0)
+            throw new SmartyException("sendLookup() requires a Lookup with the 'text' field set");
 
         $request = $this->buildRequest($lookup);
         $response = $this->sender->send($request);
+
         $result = $this->serializer->deserialize($response->getPayload());
         if ($result == null)
             return;

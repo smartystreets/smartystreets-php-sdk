@@ -14,13 +14,11 @@ use SmartyStreets\PhpSdk\Batch;
 
 class Client {
     private $sender,
-            $serializer,
-            $referer;
+            $serializer;
 
-    public function __construct(Sender $sender, Serializer $serializer = null, $referer = null) {
+    public function __construct(Sender $sender, Serializer $serializer = null) {
         $this->sender = $sender;
         $this->serializer = $serializer;
-        $this->referer = $referer;
     }
 
     public function sendLookup(Lookup $lookup) {
@@ -36,7 +34,6 @@ class Client {
             return;
 
         $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
-        $request->setReferer($this->referer);
 
         $response = $this->sender->send($request);
 

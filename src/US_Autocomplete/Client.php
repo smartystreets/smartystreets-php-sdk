@@ -16,18 +16,16 @@ use SmartyStreets\PhpSdk\Request;
 
 class Client {
     private $sender,
-        $serializer,
-        $referer;
+        $serializer;
 
-    public function __construct(Sender $sender, Serializer $serializer = null, $referer = null) {
+    public function __construct(Sender $sender, Serializer $serializer = null) {
         $this->sender = $sender;
         $this->serializer = $serializer;
-        $this->referer = $referer;
     }
 
     public function sendLookup(Lookup $lookup) {
-        if ($lookup == null || $lookup->getPrefix() == null || count($lookup->getPrefix()) == 0)
-            throw new SmartyException("Send() must be passed a Lookup with the prefix field set.");
+        if ($lookup == null || $lookup->getPrefix() == null || strlen($lookup->getPrefix()) == 0)
+            throw new SmartyException("sendLookup() must be passed a Lookup with the prefix field set.");
 
         $request = $this->buildRequest($lookup);
 
@@ -61,14 +59,6 @@ class Client {
         if (empty($list))
             return null;
 
-        $filterList = "";
-
-        foreach ($list as $item)
-            $filterList .= ($item . ',');
-
-        if (ArrayUtil::endsWith($filterList, ','))
-            $filterList = substr($filterList, 0, strlen($filterList) - 1);
-
-        return $filterList;
+        return join(',', $list);
     }
 }
