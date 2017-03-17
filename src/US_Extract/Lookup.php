@@ -4,7 +4,6 @@ namespace SmartyStreets\PhpSdk\US_Extract;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('Result.php');
-use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
  * In addition to holding all of the input data for this lookup, this class also<br>
@@ -20,7 +19,7 @@ class Lookup {
             $text;
 
     /**
-     * @param text The text that is to have addresses extracted out of it for verification
+     * @param The text that is to have addresses extracted out of it for verification
      */
     public function __construct($text = null) {
         $this->result = new Result();

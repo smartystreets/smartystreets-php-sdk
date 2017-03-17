@@ -40,5 +40,7 @@ class ArrayUtil {
             return 'true';
         else if ($value === false)
             return 'false';
+        else
+            return null;
     }
 }

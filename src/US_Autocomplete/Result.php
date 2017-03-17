@@ -6,7 +6,6 @@ require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('Suggestion.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
-
 class Result {
     private $suggestions;
 
