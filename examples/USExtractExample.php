@@ -31,10 +31,10 @@ class USExtractExample {
 
         $addresses = $result->getAddresses();
 
-        print("Addresses: \r\n**********************\r\n");
+        print("Addresses: \n**********************\n");
         foreach($addresses as $address) {
-            print("\"" . $address->getText() . "\"\n");
-            print("Verified? " . $address->isVerified());
+            print("\n\"" . $address->getText() . "\"\n");
+            print("\nVerified? " . boolval($address->isVerified()));
             if (count($address->getCandidates()) > 0) {
                 print("\nMatches:");
 
