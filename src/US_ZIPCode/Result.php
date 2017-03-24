@@ -7,6 +7,9 @@ require_once('City.php');
 require_once('ZIPCode.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
+/**
+ * @see "https://smartystreets.com/docs/cloud/us-zipcode-api#root"
+ */
 class Result {
     private $status,
             $reason,
@@ -60,6 +63,10 @@ class Result {
         return $this->zipCodes[$index];
     }
 
+    /**
+     *
+     * @return Returns a status if there was no match
+     */
     public function getStatus() {
         return $this->status;
     }

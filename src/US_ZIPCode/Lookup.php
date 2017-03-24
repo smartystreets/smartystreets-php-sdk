@@ -4,6 +4,11 @@ namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
 require_once('Result.php');
 
+/**
+ * In addition to holding all of the input data for this lookup, this class also<br>
+ *     will contain the result of the lookup after it comes back from the API.
+ *     @see "https://smartystreets.com/docs/cloud/us-zipcode-api#http-request-input-fields"
+ */
 class Lookup implements \JsonSerializable {
     //region [ Fields ]
 

@@ -14,6 +14,10 @@ use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;
 
+/**
+ * This client sends lookups to the SmartyStreets US Autocomplete API, <br>
+ *     and attaches the results to the appropriate Lookup objects.
+ */
 class Client {
     private $sender,
         $serializer;

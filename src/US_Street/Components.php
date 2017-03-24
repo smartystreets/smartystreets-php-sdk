@@ -5,6 +5,11 @@ namespace SmartyStreets\PhpSdk\US_Street;
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
+/**
+ * This class contains the matched address broken down into its<br>
+ *     fundamental pieces.
+ * @see "https://smartystreets.com/docs/cloud/us-street-api#components"
+ */
 class Components {
     private $streetPostDirection,
             $deliveryPointCheckDigit,

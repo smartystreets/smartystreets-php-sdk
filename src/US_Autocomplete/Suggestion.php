@@ -5,6 +5,9 @@ namespace SmartyStreets\PhpSdk\US_Autocomplete;
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
+/**
+ * @see "https://smartystreets.com/docs/cloud/us-autocomplete-api#http-response"
+ */
 class Suggestion {
     private $text,
             $streetLine,

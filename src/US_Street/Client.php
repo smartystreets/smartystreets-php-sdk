@@ -12,6 +12,10 @@ use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;
 use SmartyStreets\PhpSdk\Batch;
 
+/**
+ * This client sends lookups to the SmartyStreets US Street API, <br>
+ *     and attaches the results to the appropriate Lookup objects.
+ */
 class Client {
     private $sender,
             $serializer;
@@ -21,6 +25,11 @@ class Client {
         $this->serializer = $serializer;
     }
 
+    /**
+     * @param batch Batch must contain between 1 and 100 Lookup objects
+     * @throws SmartyException
+     * @throws IOException
+     */
     public function sendLookup(Lookup $lookup) {
         $batch = new Batch();
         $batch->add($lookup);

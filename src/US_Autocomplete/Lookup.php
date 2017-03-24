@@ -20,6 +20,10 @@ class Lookup {
 
     //endregion
 
+    /**
+     * If you use this constructor, don't forget to set the <b>prefix</b>. It is required.
+     *  @param prefix The beginning of an address
+     */
     public function __construct($prefix = null) {
         $this->result = array();
         $this->prefix = $prefix;

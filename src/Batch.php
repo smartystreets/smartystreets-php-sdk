@@ -4,6 +4,11 @@ namespace SmartyStreets\PhpSdk;
 
 use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
 
+/**
+ * This class contains a collection of lookups to be sent to SmartyStreets <br>
+ *     APIs all at once. This is more efficient than sending them<br>
+ *     one at a time.
+ */
 class Batch {
     const MAX_BATCH_SIZE = 100;
     private $namedLookups,
@@ -14,6 +19,10 @@ class Batch {
         $this->allLookups = array();
     }
 
+    /**
+     * @param $lookup
+     * @throws BatchFullException Batch size cannot exceed 100
+     */
     public function add($lookup) {
         if ($this->isFull()) {
             throw new BatchFullException("Batch size cannot exceed " . self::MAX_BATCH_SIZE);
@@ -29,11 +38,18 @@ class Batch {
         $this->namedLookups[$key] = $lookup;
     }
 
+    /**
+     * Clears the lookups stored in the batch so it can be used again.<br>
+     *     This helps avoid the overhead of building a new Batch object for each group of lookups.
+     */
     public function clear() {
         $this->namedLookups = array();
         $this->allLookups = array();
     }
 
+    /**
+     * @return The number of lookups currently in this batch.
+     */
     public function size() {
         return count($this->allLookups);
     }

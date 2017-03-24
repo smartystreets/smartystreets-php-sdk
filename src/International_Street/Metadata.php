@@ -5,6 +5,9 @@ namespace SmartyStreets\PhpSdk\International_Street;
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
+/**
+ * @see "https://smartystreets.com/docs/cloud/international-street-api#metadata"
+ */
 class Metadata {
     private $latitude,
             $longitude,

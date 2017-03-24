@@ -12,6 +12,10 @@ use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;
 
+/**
+ * This client sends lookups to the SmartyStreets US Extract API, <br>
+ *     and attaches the results to the Lookup objects.
+ */
 class Client {
     private $sender,
         $serializer;

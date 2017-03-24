@@ -5,6 +5,9 @@ namespace SmartyStreets\PhpSdk\US_ZIPCode;
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
+/**
+ * @see "https://smartystreets.com/docs/cloud/us-zipcode-api#zipcodes"
+ */
 class AlternateCounties {
     private $countyFips,
             $countyName,

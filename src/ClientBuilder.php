@@ -25,6 +25,11 @@ require_once(dirname(__FILE__) . '/US_Extract/Client.php');
 require_once(dirname(__FILE__) . '/US_Autocomplete/Client.php');
 require_once(dirname(__FILE__) . '/International_Street/Client.php');
 
+/**
+ * The ClientBuilder class helps you build a client object for one of the supported SmartyStreets APIs.<br>
+ * You can use ClientBuilder's methods to customize settings like maximum retries or timeout duration. These methods<br>
+ * are chainable, so you can usually get set up with one line of code.
+ */
 class ClientBuilder {
     const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smartystreets.com/verify";
     const US_AUTOCOMPLETE_API_URL = "https://us-autocomplete.api.smartystreets.com/suggest";
@@ -46,26 +51,49 @@ class ClientBuilder {
         $this->signer = $signer;
     }
 
+    /**
+     * @param maxRetries The maximum number of times to retry sending the request to the API. (Default is 5)
+     * @return Returns <b>this</b> to accommodate method chaining.
+     */
     public function retryAtMost($maxRetries) {
         $this->maxRetries = $maxRetries;
         return $this;
     }
 
+    /**
+     * @param maxTimeout The maximum time (in milliseconds) to wait for a connection, and also to wait for <br>
+     *                   the response to be read. (Default is 10000)
+     * @return Returns <b>this</b> to accommodate method chaining.
+     */
     public function withMaxTimeout($maxTimeout) {
         $this->maxTimeout = $maxTimeout;
         return $this;
     }
 
+    /**
+     * @param sender Default is a series of nested senders. See <b>buildSender()</b>.
+     * @return Returns <b>this</b> to accommodate method chaining.
+     */
     public function withSender(Sender $sender) {
         $this->httpSender = $sender;
         return $this;
     }
 
+    /**
+     * Changes the <b>Serializer</b> from the default <b>GoogleSerializer</b>.
+     * @param serializer An object that implements the <b>Serializer</b> interface.
+     * @return Returns <b>this</b> to accommodate method chaining.
+     */
     public function withSerializer(Serializer $serializer) {
         $this->serializer = $serializer;
         return $this;
     }
 
+    /**
+     * This may be useful when using a local installation of the SmartyStreets APIs.
+     * @param baseUrl Defaults to the URL for the API corresponding to the <b>Client</b> object being built.
+     * @return Returns <b>this</b> to accommodate method chaining.
+     */
     public function withUrl($urlPrefix) {
         $this->urlPrefix = $urlPrefix;
         return $this;

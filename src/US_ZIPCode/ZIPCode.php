@@ -6,6 +6,9 @@ require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('AlternateCounties.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
+/**
+ * @see "https://smartystreets.com/docs/cloud/us-zipcode-api#zipcodes"
+ */
 class ZIPCode {
     private $zipCode,
             $zipCodeType,

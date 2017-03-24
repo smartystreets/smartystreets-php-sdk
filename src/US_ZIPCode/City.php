@@ -5,6 +5,10 @@ namespace SmartyStreets\PhpSdk\US_ZIPCode;
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
+/**
+ * Known in the SmartyStreets US ZIP Code API documentation as a <b>city_state</b>
+ * @see "https://smartystreets.com/docs/cloud/us-zipcode-api#cities"
+ */
 class City {
     //region [ Fields ]
 

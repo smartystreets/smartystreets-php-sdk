@@ -2,6 +2,13 @@
 
 namespace SmartyStreets\PhpSdk\International_Street;
 
+/**
+ * In addition to holding all of the input data for this lookup, this class also<br>
+ *     will contain the result of the lookup after it comes back from the API.
+ *     <p><b>Note: </b><i>Lookups must have certain required fields set with non-blank values. <br>
+ *         These can be found at the URL below.</i></p>
+ *     @see "https://smartystreets.com/docs/cloud/international-street-api#http-input-fields"
+ */
 class Lookup {
     //region [ Fields ]
     private $result,
