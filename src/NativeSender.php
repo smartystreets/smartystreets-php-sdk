@@ -34,6 +34,7 @@ class NativeSender implements Sender {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $smartyRequest->getMethod());
         curl_setopt($ch, CURLOPT_POSTFIELDS, ($smartyRequest->getPayload()));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->setHeaders($smartyRequest));
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->maxTimeOut);
         curl_setopt($ch, CURLOPT_USERAGENT, 'smartystreets (sdk:php@' . VERSION . ')');
 
         if ($smartyRequest->getReferer() != null)

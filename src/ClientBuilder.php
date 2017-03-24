@@ -21,6 +21,9 @@ require_once('MyLogger.php');
 require_once('MySleeper.php');
 require_once(dirname(__FILE__) . '/US_Street/Client.php');
 require_once(dirname(__FILE__) . '/US_ZIPCode/Client.php');
+require_once(dirname(__FILE__) . '/US_Extract/Client.php');
+require_once(dirname(__FILE__) . '/US_Autocomplete/Client.php');
+require_once(dirname(__FILE__) . '/International_Street/Client.php');
 
 class ClientBuilder {
     const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smartystreets.com/verify";
