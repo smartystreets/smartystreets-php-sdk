@@ -18,6 +18,7 @@ $lookupExample->run();
 class UsZIPCodeMultipleLookupsExample {
 
     public function run() {
+        // We recommend storing your secret keys in environment variables.
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
         $client = (new ClientBuilder($staticCredentials))->buildUsZIPCodeApiClient();
         $batch = new Batch();
@@ -64,7 +65,6 @@ class UsZIPCodeMultipleLookupsExample {
             }
 
             $cities = $result->getCities();
-//            echo("\n");
             echo "\n" . count($cities) . " City and State match(es):";
 
             foreach ($cities as $city) {

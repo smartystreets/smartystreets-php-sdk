@@ -16,6 +16,7 @@ $lookupExample->run();
 class UsZIPCodeSingleLookupExample {
 
     public function run() {
+        // We recommend storing your secret keys in environment variables.
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
         $client = (new ClientBuilder($staticCredentials))->buildUsZIPCodeApiClient();
 
