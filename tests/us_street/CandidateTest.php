@@ -54,7 +54,7 @@ class CandidateTest extends \PHPUnit_Framework_TestCase {
                 'precision' => '38',
                 'time_zone' => '39',
                 'utc_offset' => 40.0,
-                'dst' => '41'
+                'dst' => true
             ),
             'analysis' => array(
                 'dpv_match_code' => '42',
@@ -62,11 +62,11 @@ class CandidateTest extends \PHPUnit_Framework_TestCase {
                 'dpv_cmra' => '44',
                 'dpv_vacant' => '45',
                 'active' => '46',
-                'ews_match' => '47',
+                'ews_match' => true,
                 'footnotes' => '48',
                 'lacslink_code' => '49',
                 'lacslink_indicator' => '50',
-                'suitelink_match' => '51'
+                'suitelink_match' => true
             )
         );
     }
@@ -119,7 +119,7 @@ class CandidateTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('38', $metadata->getPrecision());
         $this->assertEquals('39', $metadata->getTimeZone());
         $this->assertEquals(40.0, $metadata->getUtcOffset());
-        $this->assertEquals('41', $metadata->obeysDst());
+        $this->assertEquals(true, $metadata->obeysDst());
 
         $analysis = $candidate->getAnalysis();
         $this->assertEquals('42', $analysis->getDpvMatchCode());
@@ -127,10 +127,10 @@ class CandidateTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('44', $analysis->getCmra());
         $this->assertEquals('45', $analysis->getVacant());
         $this->assertEquals('46', $analysis->getActive());
-        $this->assertEquals('47', $analysis->isEwsMatch());
+        $this->assertEquals(true, $analysis->isEwsMatch());
         $this->assertEquals('48', $analysis->getFootnotes());
         $this->assertEquals('49', $analysis->getLacsLinkCode());
         $this->assertEquals('50', $analysis->getLacsLinkIndicator());
-        $this->assertEquals('51', $analysis->isSuiteLinkMatch());
+        $this->assertEquals(true, $analysis->isSuiteLinkMatch());
     }
 }
