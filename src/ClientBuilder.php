@@ -124,7 +124,7 @@ class ClientBuilder {
         return new USZIPCodeApiClient($this->buildSender(), $this->serializer);
     }
 
-    public function buildSender() {
+    private function buildSender() {
         if ($this->httpSender != null)
             return $this->httpSender;
 
