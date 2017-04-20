@@ -9,7 +9,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
     private $obj;
 
     public function setUp() {
-        $this->obj = $this->obj = array(
+        $this->obj = array(
             'status' => '0',
             'reason' => '1',
             'input_index' => 2,

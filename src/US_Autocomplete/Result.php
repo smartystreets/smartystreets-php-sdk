@@ -14,6 +14,7 @@ class Result {
             return;
 
         $this->suggestions = ArrayUtil::setField($obj, 'suggestions', array());
+
         $this->suggestions = $this->convertToSuggestionObjects();
     }
 

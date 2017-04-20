@@ -29,7 +29,7 @@ class USAutocompleteExample {
         $lookup->addStateFilter("IL");
         $lookup->setMaxSuggestions(5);
 
-        $client->sendLookup($lookup); //The client will also return the suggestions directly
+        $client->sendLookup($lookup);
 
         echo("\n");
         echo("*** Result with some filters ***\n");
