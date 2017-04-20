@@ -56,19 +56,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
     }
 
-    public function testHtmlNullThenNoQueryStringParameterAdded() {
-        $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender('http://localhost/', $capturingSender);
-        $serializer = new MockSerializer(null);
-        $client = new Client($sender, $serializer);
-        $expectedUrl = "http://localhost/?aggressive=false&addr_line_breaks=true&addr_per_line=0";
-        $lookup = new Lookup('1');
-
-        $client->sendLookup($lookup);
-
-        $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
-    }
-
     public function testRejectNullLookup() {
         $classType = \SmartyStreets\PhpSdk\Exceptions\SmartyException::class;
 
