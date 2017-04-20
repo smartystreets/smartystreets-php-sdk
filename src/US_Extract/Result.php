@@ -18,8 +18,7 @@ class Result {
         if ($obj == null)
             return;
 
-        $this->metadata = new Metadata(ArrayUtil::setField($obj, 'meta', array()));
-
+        $this->metadata = new Metadata(ArrayUtil::setField($obj, 'meta'));
         $this->addresses = ArrayUtil::setField($obj, 'addresses', array());
         $this->addresses = $this->convertToAddressObjects();
     }
