@@ -21,7 +21,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function testAllFieldGetFilledInCorrectly() {
+    public function testAllFieldsGetFilledInCorrectly() {
         $result = new Result($this->obj);
 
         $suggestion = $result->getSuggestion(0);

@@ -36,6 +36,7 @@ class Client {
         $response = $this->sender->send($request);
 
         $result = $this->serializer->deserialize($response->getPayload());
+
         if ($result == null)
             return;
 
@@ -50,7 +51,7 @@ class Client {
         $request->setParameter("city_filter", $this->buildFilterString($lookup->getCityFilter()));
         $request->setParameter("state_filter", $this->buildFilterString($lookup->getStateFilter()));
         $request->setParameter("prefer", $this->buildFilterString($lookup->getPrefer()));
-        if ($lookup->getGeolocateType() != GEOLOCATE_TYPE_NONE) {
+        if ($lookup->getGeolocateType()->getName() != GEOLOCATE_TYPE_NONE) {
             $request->setParameter("geolocate", "true");
             $request->setParameter("geolocate_precision", $lookup->getGeolocateType()->getName());
         }

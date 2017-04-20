@@ -60,6 +60,21 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedURL, $capturingSender->getRequest()->getUrl());
     }
 
+    public function testSendingLookupWithGeolocateTypeSetToNone() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $serializer = new MockSerializer(new Result());
+        $expectedURL = "http://localhost/?prefix=1&suggestions=10&geolocate=false";
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setPrefix('1');
+        $lookup->setGeolocateType(new GeolocateType(GEOLOCATE_TYPE_NONE));
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals($expectedURL, $capturingSender->getRequest()->getUrl());
+    }
+
     //endregion
 
     //region [ Response Handling ]
@@ -77,8 +92,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testResultCorrectlyAssignedToCorrespondingLookup() {
-        $rawResult = array(array('text' => '1'), array('text' => '2'));
-        $expectedResult = new Result(array(new Suggestion($rawResult[0]), new Suggestion($rawResult[1])));
+        $rawSuggestions = array(array('text' => '1'), array('text' => '2'));
+        $rawResult = array('suggestions' => $rawSuggestions);
+        $expectedResult = new Result($rawResult);
 
         $lookup = new Lookup('1');
 
@@ -89,7 +105,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
         $client->sendLookup($lookup);
 
-        $this->assertEquals($expectedResult->getSuggestions(), $lookup->getResult());
+        $this->assertEquals($expectedResult->getSuggestions()[0]->getText(), $lookup->getResult()[0]->getText());
+        $this->assertEquals($expectedResult->getSuggestions()[1]->getText(), $lookup->getResult()[1]->getText());
     }
 
     //endregion

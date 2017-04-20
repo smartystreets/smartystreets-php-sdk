@@ -25,7 +25,6 @@ class Lookup {
      *  @param prefix The beginning of an address
      */
     public function __construct($prefix = null) {
-        $this->result = array();
         $this->prefix = $prefix;
         $this->maxSuggestions = 10;
         $this->cityFilter = array();
@@ -50,6 +49,10 @@ class Lookup {
 
     public function getResult() {
         return $this->result;
+    }
+
+    public function getResultAtIndex($index) {
+        return $this->result[$index];
     }
 
     public function getPrefix() {
