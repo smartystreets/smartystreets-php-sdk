@@ -1,5 +1,6 @@
 <?php
 
+require_once(dirname(dirname(__FILE__)) . '/src/ArrayUtil.php');
 require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
 require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
 require_once(dirname(dirname(__FILE__)) . '/src/US_Extract/Lookup.php');
@@ -7,6 +8,7 @@ require_once(dirname(dirname(__FILE__)) . '/src/US_Extract/Client.php');
 use SmartyStreets\PhpSdk\StaticCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Extract\Lookup;
+use SmartyStreets\PhpSdk\ArrayUtil;
 
 $lookupExample = new USExtractExample();
 $lookupExample->run();
@@ -34,7 +36,7 @@ class USExtractExample {
         print("Addresses: \n**********************\n");
         foreach($addresses as $address) {
             print("\n\"" . $address->getText() . "\"\n");
-            print("\nVerified? " . boolval($address->isVerified()));
+            print("\nVerified? " . ArrayUtil::getStringValueOfBoolean($address->isVerified()));
             if (count($address->getCandidates()) > 0) {
                 print("\nMatches:");
 
