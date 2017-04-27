@@ -80,7 +80,7 @@ class ClientBuilder {
     }
 
     /**
-     * Changes the <b>Serializer</b> from the default <b>GoogleSerializer</b>.
+     * Changes the <b>Serializer</b> from the default <b>NativeSerializer</b>.
      * @param serializer An object that implements the <b>Serializer</b> interface.
      * @return Returns <b>this</b> to accommodate method chaining.
      */
