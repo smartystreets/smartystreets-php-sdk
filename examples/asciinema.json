@@ -1,0 +1,1030 @@
+{
+  "version": 1,
+  "width": 100,
+  "height": 36,
+  "duration": 18.089373,
+  "command": null,
+  "title": null,
+  "env": {
+    "TERM": "xterm-256color",
+    "SHELL": "/bin/bash"
+  },
+  "stdout": [
+    [
+      0.008124,
+      "\u001b[?1034hbash-3.2$ "
+    ],
+    [
+      1.760775,
+      "g"
+    ],
+    [
+      0.095885,
+      "i"
+    ],
+    [
+      0.088059,
+      "t"
+    ],
+    [
+      0.104168,
+      " "
+    ],
+    [
+      0.159783,
+      "c"
+    ],
+    [
+      0.112189,
+      "l"
+    ],
+    [
+      0.143829,
+      "o"
+    ],
+    [
+      0.071907,
+      "n"
+    ],
+    [
+      0.120011,
+      "e"
+    ],
+    [
+      0.111986,
+      " "
+    ],
+    [
+      0.339496,
+      "git@git"
+    ],
+    [
+      2.3e-05,
+      "hub.c"
+    ],
+    [
+      1.2e-05,
+      "om"
+    ],
+    [
+      1.1e-05,
+      ":s"
+    ],
+    [
+      1.7e-05,
+      "ma"
+    ],
+    [
+      1.4e-05,
+      "rty"
+    ],
+    [
+      1.1e-05,
+      "st"
+    ],
+    [
+      1e-05,
+      "re"
+    ],
+    [
+      1e-05,
+      "e"
+    ],
+    [
+      1e-05,
+      "t"
+    ],
+    [
+      1.4e-05,
+      "s/"
+    ],
+    [
+      1e-05,
+      "sm"
+    ],
+    [
+      1.3e-05,
+      "a"
+    ],
+    [
+      1e-05,
+      "rt"
+    ],
+    [
+      4.9e-05,
+      "y"
+    ],
+    [
+      1.8e-05,
+      "streets"
+    ],
+    [
+      1.1e-05,
+      "-"
+    ],
+    [
+      1.3e-05,
+      "p"
+    ],
+    [
+      1.1e-05,
+      "hp"
+    ],
+    [
+      9e-06,
+      "-"
+    ],
+    [
+      1e-05,
+      "s"
+    ],
+    [
+      1e-05,
+      "d"
+    ],
+    [
+      1e-05,
+      "k"
+    ],
+    [
+      1.2e-05,
+      "."
+    ],
+    [
+      1.1e-05,
+      "gi"
+    ],
+    [
+      1.3e-05,
+      "t"
+    ],
+    [
+      0.418719,
+      "\r\n"
+    ],
+    [
+      0.003524,
+      "Cloning into 'smartystreets-php-sdk'...\r\n"
+    ],
+    [
+      0.598456,
+      "remote: Counting objects: 1288, done.\u001b[K\r\n"
+    ],
+    [
+      0.03733,
+      "Receiving objects:   0% (1/1288)   \r"
+    ],
+    [
+      0.000317,
+      "Receiving objects:   1% (13/1288)   \r"
+    ],
+    [
+      0.000436,
+      "Receiving objects:   2% (26/1288)   \r"
+    ],
+    [
+      0.000325,
+      "Receiving objects:   3% (39/1288)   \r"
+    ],
+    [
+      0.000333,
+      "Receiving objects:   4% (52/1288)   \r"
+    ],
+    [
+      0.00028,
+      "Receiving objects:   5% (65/1288)   \r"
+    ],
+    [
+      0.000328,
+      "Receiving objects:   6% (78/1288)   \r"
+    ],
+    [
+      0.034158,
+      "Receiving objects:   7% (91/1288)   \r"
+    ],
+    [
+      0.000586,
+      "Receiving objects:   8% (104/1288)   \r"
+    ],
+    [
+      0.000569,
+      "Receiving objects:   9% (116/1288)   \r"
+    ],
+    [
+      0.000326,
+      "Receiving objects:  10% (129/1288)   \r"
+    ],
+    [
+      0.00036,
+      "Receiving objects:  11% (142/1288)   \r"
+    ],
+    [
+      0.000393,
+      "Receiving objects:  12% (155/1288)   \r"
+    ],
+    [
+      0.000246,
+      "Receiving objects:  13% (168/1288)   \r"
+    ],
+    [
+      0.000172,
+      "Receiving objects:  14% (181/1288)   \r"
+    ],
+    [
+      0.000178,
+      "Receiving objects:  15% (194/1288)   \r"
+    ],
+    [
+      1.8e-05,
+      "Receiving objects:  16% (207/1288)   \r"
+    ],
+    [
+      0.000196,
+      "Receiving objects:  17% (219/1288)   \r"
+    ],
+    [
+      8.5e-05,
+      "Receiving objects:  18% (232/1288)   \r"
+    ],
+    [
+      0.000136,
+      "Receiving objects:  19% (245/1288)   \r"
+    ],
+    [
+      4.3e-05,
+      "Receiving objects:  20% (258/1288)   \r"
+    ],
+    [
+      0.000112,
+      "Receiving objects:  21% (271/1288)   \r"
+    ],
+    [
+      0.000165,
+      "Receiving objects:  22% (284/1288)   \r"
+    ],
+    [
+      6.9e-05,
+      "Receiving objects:  23% (297/1288)   \r"
+    ],
+    [
+      0.000235,
+      "Receiving objects:  24% (310/1288)   \r"
+    ],
+    [
+      7.2e-05,
+      "Receiving objects:  25% (322/1288)   \r"
+    ],
+    [
+      0.03349,
+      "Receiving objects:  26% (335/1288)   \r"
+    ],
+    [
+      0.000213,
+      "Receiving objects:  27% (348/1288)   \r"
+    ],
+    [
+      0.000211,
+      "Receiving objects:  28% (361/1288)   \r"
+    ],
+    [
+      0.000186,
+      "Receiving objects:  29% (374/1288)   \r"
+    ],
+    [
+      0.00017,
+      "Receiving objects:  30% (387/1288)   \r"
+    ],
+    [
+      9e-05,
+      "Receiving objects:  31% (400/1288)   \r"
+    ],
+    [
+      0.00012,
+      "Receiving objects:  32% (413/1288)   \r"
+    ],
+    [
+      0.001041,
+      "Receiving objects:  33% (426/1288)   \r"
+    ],
+    [
+      1.5e-05,
+      "Receiving objects:  34% (438/1288)   \r"
+    ],
+    [
+      0.000507,
+      "Receiving objects:  35% (451/1288)   \rReceiving objects:  36% (464/1288)   \rReceiving objects:  37% (477/1288)   \rReceiving objects:  38% (490/1288)   \rReceiving objects:  39% (503/1288)   \rReceiving objects:  40% (516/1288)   \rReceiving objects:  41% (529/1288)   \rReceiving objects:  42% (541/1288)   \rReceiving objects:  43% (554/1288)   \rReceiving objects:  44% (567/1288)   \r"
+    ],
+    [
+      1.7e-05,
+      "Receiving objects:  45% (580/1288)   \r"
+    ],
+    [
+      0.000114,
+      "Receiving objects:  46% (593/1288)   \r"
+    ],
+    [
+      1.6e-05,
+      "Receiving objects:  47% (606/1288)   \r"
+    ],
+    [
+      7.2e-05,
+      "Receiving objects:  48% (619/1288)   \r"
+    ],
+    [
+      1.5e-05,
+      "Receiving objects:  49% (632/1288)   \r"
+    ],
+    [
+      2.1e-05,
+      "Receiving objects:  50% (644/1288)   \r"
+    ],
+    [
+      6.1e-05,
+      "Receiving objects:  51% (657/1288)   \r"
+    ],
+    [
+      1.4e-05,
+      "Receiving objects:  52% (670/1288)   \r"
+    ],
+    [
+      9e-06,
+      "Receiving objects:  53% (683/1288)   \r"
+    ],
+    [
+      6.9e-05,
+      "Receiving objects:  54% (696/1288)   \r"
+    ],
+    [
+      6.5e-05,
+      "Receiving objects:  55% (709/1288)   \r"
+    ],
+    [
+      6.2e-05,
+      "Receiving objects:  56% (722/1288)   \r"
+    ],
+    [
+      0.034226,
+      "Receiving objects:  57% (735/1288)   \r"
+    ],
+    [
+      0.000118,
+      "Receiving objects:  58% (748/1288)   \r"
+    ],
+    [
+      0.000328,
+      "Receiving objects:  59% (760/1288)   \r"
+    ],
+    [
+      0.000243,
+      "Receiving objects:  60% (773/1288)   \r"
+    ],
+    [
+      3.3e-05,
+      "Receiving objects:  61% (786/1288)   \r"
+    ],
+    [
+      0.000364,
+      "Receiving objects:  62% (799/1288)   \r"
+    ],
+    [
+      0.000113,
+      "remote: Total 1288 (delta 0), reused 0 (delta 0), pack-reused 1288\u001b[K\r\nReceiving objects:  63% (812/1288)   \r"
+    ],
+    [
+      0.000206,
+      "Receiving objects:  64% (825/1288)   \r"
+    ],
+    [
+      0.000119,
+      "Receiving objects:  65% (838/1288)   \r"
+    ],
+    [
+      4.4e-05,
+      "Receiving objects:  66% (851/1288)   \r"
+    ],
+    [
+      0.000123,
+      "Receiving objects:  67% (863/1288)   \r"
+    ],
+    [
+      2.3e-05,
+      "Receiving objects:  68% (876/1288)   \r"
+    ],
+    [
+      0.000148,
+      "Receiving objects:  69% (889/1288)   \r"
+    ],
+    [
+      8.4e-05,
+      "Receiving objects:  70% (902/1288)   \r"
+    ],
+    [
+      0.000141,
+      "Receiving objects:  71% (915/1288)   \r"
+    ],
+    [
+      7.7e-05,
+      "Receiving objects:  72% (928/1288)   \r"
+    ],
+    [
+      2e-05,
+      "Receiving objects:  73% (941/1288)   \r"
+    ],
+    [
+      5.4e-05,
+      "Receiving objects:  74% (954/1288)   \r"
+    ],
+    [
+      0.000108,
+      "Receiving objects:  75% (966/1288)   \r"
+    ],
+    [
+      8.8e-05,
+      "Receiving objects:  76% (979/1288)   \r"
+    ],
+    [
+      4.8e-05,
+      "Receiving objects:  77% (992/1288)   \r"
+    ],
+    [
+      0.00012,
+      "Receiving objects:  78% (1005/1288)   \r"
+    ],
+    [
+      7.6e-05,
+      "Receiving objects:  79% (1018/1288)   \r"
+    ],
+    [
+      2e-05,
+      "Receiving objects:  80% (1031/1288)   \r"
+    ],
+    [
+      7.2e-05,
+      "Receiving objects:  81% (1044/1288)   \r"
+    ],
+    [
+      1.4e-05,
+      "Receiving objects:  82% (1057/1288)   \r"
+    ],
+    [
+      7.4e-05,
+      "Receiving objects:  83% (1070/1288)   \r"
+    ],
+    [
+      7.4e-05,
+      "Receiving objects:  84% (1082/1288)   \r"
+    ],
+    [
+      1.9e-05,
+      "Receiving objects:  85% (1095/1288)   \r"
+    ],
+    [
+      9.7e-05,
+      "Receiving objects:  86% (1108/1288)   \r"
+    ],
+    [
+      4.4e-05,
+      "Receiving objects:  87% (1121/1288)   \r"
+    ],
+    [
+      6.8e-05,
+      "Receiving objects:  88% (1134/1288)   \r"
+    ],
+    [
+      6.3e-05,
+      "Receiving objects:  89% (1147/1288)   \r"
+    ],
+    [
+      2e-05,
+      "Receiving objects:  90% (1160/1288)   \r"
+    ],
+    [
+      0.0001,
+      "Receiving objects:  91% (1173/1288)   \r"
+    ],
+    [
+      4.5e-05,
+      "Receiving objects:  92% (1185/1288)   \r"
+    ],
+    [
+      8.3e-05,
+      "Receiving objects:  93% (1198/1288)   \r"
+    ],
+    [
+      2e-05,
+      "Receiving objects:  94% (1211/1288)   \r"
+    ],
+    [
+      8.2e-05,
+      "Receiving objects:  95% (1224/1288)   \r"
+    ],
+    [
+      7.2e-05,
+      "Receiving objects:  96% (1237/1288)   \r"
+    ],
+    [
+      6.7e-05,
+      "Receiving objects:  97% (1250/1288)   \r"
+    ],
+    [
+      6.1e-05,
+      "Receiving objects:  98% (1263/1288)   \r"
+    ],
+    [
+      7e-05,
+      "Receiving objects:  99% (1276/1288)   \r"
+    ],
+    [
+      7.6e-05,
+      "Receiving objects: 100% (1288/1288)   \r"
+    ],
+    [
+      1.8e-05,
+      "Receiving objects: 100% (1288/1288), 176.42 KiB | 0 bytes/s, done.\r\n"
+    ],
+    [
+      0.000227,
+      "Resolving deltas:   0% (0/754)   \r"
+    ],
+    [
+      0.000888,
+      "Resolving deltas:   1% (8/754)   \r"
+    ],
+    [
+      0.000167,
+      "Resolving deltas:   2% (19/754)   \r"
+    ],
+    [
+      0.000185,
+      "Resolving deltas:   4% (33/754)   \r"
+    ],
+    [
+      0.000131,
+      "Resolving deltas:   5% (42/754)   \r"
+    ],
+    [
+      7.2e-05,
+      "Resolving deltas:   6% (48/754)   \r"
+    ],
+    [
+      0.000798,
+      "Resolving deltas:  14% (112/754)   \r"
+    ],
+    [
+      0.000104,
+      "Resolving deltas:  15% (119/754)   \r"
+    ],
+    [
+      0.000476,
+      "Resolving deltas:  20% (157/754)   \r"
+    ],
+    [
+      2.3e-05,
+      "Resolving deltas:  21% (161/754)   \r"
+    ],
+    [
+      0.000184,
+      "Resolving deltas:  23% (174/754)   \r"
+    ],
+    [
+      0.000376,
+      "Resolving deltas:  27% (207/754)   \r"
+    ],
+    [
+      0.000229,
+      "Resolving deltas:  29% (225/754)   \r"
+    ],
+    [
+      5.5e-05,
+      "Resolving deltas:  30% (227/754)   \r"
+    ],
+    [
+      0.000203,
+      "Resolving deltas:  32% (243/754)   \r"
+    ],
+    [
+      0.000112,
+      "Resolving deltas:  33% (252/754)   \r"
+    ],
+    [
+      0.000262,
+      "Resolving deltas:  37% (281/754)   \r"
+    ],
+    [
+      0.00026,
+      "Resolving deltas:  40% (307/754)   \r"
+    ],
+    [
+      1.9e-05,
+      "Resolving deltas:  41% (310/754)   \r"
+    ],
+    [
+      9.7e-05,
+      "Resolving deltas:  42% (317/754)   \r"
+    ],
+    [
+      8e-05,
+      "Resolving deltas:  43% (325/754)   \r"
+    ],
+    [
+      0.000109,
+      "Resolving deltas:  44% (333/754)   \r"
+    ],
+    [
+      8.4e-05,
+      "Resolving deltas:  45% (340/754)   \r"
+    ],
+    [
+      0.000135,
+      "Resolving deltas:  46% (353/754)   \r"
+    ],
+    [
+      1.1e-05,
+      "Resolving deltas:  47% (355/754)   \r"
+    ],
+    [
+      0.000384,
+      "Resolving deltas:  52% (398/754)   \r"
+    ],
+    [
+      2.5e-05,
+      "Resolving deltas:  53% (402/754)   \r"
+    ],
+    [
+      0.000158,
+      "Resolving deltas:  54% (413/754)   \r"
+    ],
+    [
+      9.5e-05,
+      "Resolving deltas:  55% (422/754)   \rResolving deltas:  56% (424/754)   \r"
+    ],
+    [
+      7.9e-05,
+      "Resolving deltas:  57% (430/754)   \r"
+    ],
+    [
+      0.000152,
+      "Resolving deltas:  58% (444/754)   \r"
+    ],
+    [
+      0.000137,
+      "Resolving deltas:  60% (459/754)   \r"
+    ],
+    [
+      7e-05,
+      "Resolving deltas:  61% (465/754)   \r"
+    ],
+    [
+      7.6e-05,
+      "Resolving deltas:  62% (474/754)   \r"
+    ],
+    [
+      0.000124,
+      "Resolving deltas:  64% (487/754)   \r"
+    ],
+    [
+      0.000111,
+      "Resolving deltas:  65% (496/754)   \r"
+    ],
+    [
+      6.8e-05,
+      "Resolving deltas:  66% (503/754)   \r"
+    ],
+    [
+      0.00018,
+      "Resolving deltas:  69% (523/754)   \r"
+    ],
+    [
+      0.000138,
+      "Resolving deltas:  71% (538/754)   \r"
+    ],
+    [
+      5.9e-05,
+      "Resolving deltas:  72% (543/754)   \r"
+    ],
+    [
+      0.000112,
+      "Resolving deltas:  73% (556/754)   \r"
+    ],
+    [
+      4.8e-05,
+      "Resolving deltas:  74% (560/754)   \r"
+    ],
+    [
+      8.2e-05,
+      "Resolving deltas:  75% (568/754)   \r"
+    ],
+    [
+      5.8e-05,
+      "Resolving deltas:  76% (575/754)   \r"
+    ],
+    [
+      7.3e-05,
+      "Resolving deltas:  77% (581/754)   \r"
+    ],
+    [
+      9.5e-05,
+      "Resolving deltas:  78% (589/754)   \r"
+    ],
+    [
+      7.3e-05,
+      "Resolving deltas:  79% (596/754)   \r"
+    ],
+    [
+      0.000127,
+      "Resolving deltas:  80% (607/754)   \r"
+    ],
+    [
+      7.7e-05,
+      "Resolving deltas:  81% (611/754)   \r"
+    ],
+    [
+      0.00015,
+      "Resolving deltas:  82% (625/754)   \r"
+    ],
+    [
+      0.00018,
+      "Resolving deltas:  85% (644/754)   \r"
+    ],
+    [
+      9e-05,
+      "Resolving deltas:  86% (652/754)   \r"
+    ],
+    [
+      0.000115,
+      "Resolving deltas:  87% (663/754)   \r"
+    ],
+    [
+      0.000126,
+      "Resolving deltas:  89% (676/754)   \r"
+    ],
+    [
+      5.5e-05,
+      "Resolving deltas:  90% (681/754)   \r"
+    ],
+    [
+      8.1e-05,
+      "Resolving deltas:  91% (690/754)   \r"
+    ],
+    [
+      6.6e-05,
+      "Resolving deltas:  92% (694/754)   \r"
+    ],
+    [
+      0.000188,
+      "Resolving deltas:  94% (713/754)   \r"
+    ],
+    [
+      9.6e-05,
+      "Resolving deltas:  95% (723/754)   \r"
+    ],
+    [
+      7.3e-05,
+      "Resolving deltas:  96% (730/754)   \r"
+    ],
+    [
+      1.3e-05,
+      "Resolving deltas:  97% (732/754)   \r"
+    ],
+    [
+      0.000164,
+      "Resolving deltas:  98% (741/754)   \r"
+    ],
+    [
+      6.5e-05,
+      "Resolving deltas:  99% (747/754)   \r"
+    ],
+    [
+      0.000193,
+      "Resolving deltas: 100% (754/754)   \r"
+    ],
+    [
+      0.000177,
+      "Resolving deltas: 100% (754/754), done.\r\n"
+    ],
+    [
+      0.060914,
+      "bash-3.2$ "
+    ],
+    [
+      0.92784,
+      "\r\n"
+    ],
+    [
+      4.7e-05,
+      "bash-3.2$ "
+    ],
+    [
+      0.135941,
+      "\r\n"
+    ],
+    [
+      8.5e-05,
+      "bash-3.2$ "
+    ],
+    [
+      0.16792,
+      "\r\n"
+    ],
+    [
+      8.2e-05,
+      "bash-3.2$ "
+    ],
+    [
+      0.672641,
+      "c"
+    ],
+    [
+      0.119963,
+      "a"
+    ],
+    [
+      0.095929,
+      "t"
+    ],
+    [
+      0.152101,
+      " "
+    ],
+    [
+      0.231995,
+      "e"
+    ],
+    [
+      0.191731,
+      "x"
+    ],
+    [
+      0.064182,
+      "a"
+    ],
+    [
+      0.080093,
+      "m"
+    ],
+    [
+      0.048012,
+      "p"
+    ],
+    [
+      0.079845,
+      "l"
+    ],
+    [
+      0.160088,
+      "e"
+    ],
+    [
+      0.407929,
+      "."
+    ],
+    [
+      0.240009,
+      "p"
+    ],
+    [
+      0.103968,
+      "h"
+    ],
+    [
+      0.119929,
+      "p"
+    ],
+    [
+      0.28731,
+      "\r\n"
+    ],
+    [
+      0.003292,
+      "<?php\r\n\r\nrequire_once(dirname(__FILE__) . '/smartystreets-php-sdk/src/ClientBuilder.php');\r\nrequire_once(dirname(__FILE__) . '/smartystreets-php-sdk/src/us_street/Lookup.php');\r\nrequire_once(dirname(__FILE__) . '/smartystreets-php-sdk/src/StaticCredentials.php');\r\nuse SmartyStreets\\PhpSdk\\Exceptions\\SmartyException;\r\nuse SmartyStreets\\PhpSdk\\StaticCredentials;\r\nuse SmartyStreets\\PhpSdk\\ClientBuilder;\r\nuse SmartyStreets\\PhpSdk\\US_Street\\Lookup;\r\n\r\n$lookupExample = new TestExample();\r\n$lookupExample->run();\r\n\r\nclass TestExample {\r\n    public function run() {\r\n        //This keypair will have been deleted by the time you are watching this video...\r\n        $authID = \"0122a4f0-32c9-a26d-b978-a7e8fbeae1c7\";\r\n        $authToken = \"uSSbqYmyOsbWlwzeWXoY\";\r\n\r\n        echo(\"Step 1: Wire up the client with your keypair.\");\r\n        $staticCredentials = new StaticCredentials($authID, $authToken);\r\n        $client = (new ClientBuilder($staticCredentials))->buildUsStreetApiClient();\r\n\r\n        echo(\"\\nStep 2: Make a lookup"
+    ],
+    [
+      3.2e-05,
+      ". (BTW, you can also send entire batches of lookups...)\");\r\n        $lookup = new Lookup();\r\n        $lookup->setStreet(\"1 Rosedale\");\r\n        $lookup->setLastline(\"Baltimore MD\");\r\n        $lookup->setMaxCandidates(10);\r\n\r\n        echo(\"\\nStep 3: Send the lookup.\");\r\n        try {\r\n            $client->sendLookup($lookup);\r\n        }\r\n        catch (SmartyException $ex) {\r\n            echo($ex->getMessage());\r\n        }\r\n        catch (\\Exception $ex) {\r\n            echo($ex->getMessage());\r\n        }\r\n\r\n        $results = $lookup->getResult();\r\n\r\n        echo(\"\\nStep 4: Show the resulting candidate addresses\\n\");\r\n        for ($i = 0; $i < count($results); $i++) {\r\n            echo(\"        - \" . $i . \": \");\r\n            echo($results[$i]->getDeliveryLine1() . \", \" . $results[$i]->getLastLine() . \"\\n\");\r\n        }\r\n    }\r\n}"
+    ],
+    [
+      0.000341,
+      "bash-3.2$ "
+    ],
+    [
+      1.660247,
+      "\r\n"
+    ],
+    [
+      3.5e-05,
+      "bash-3.2$ "
+    ],
+    [
+      0.135855,
+      "\r\n"
+    ],
+    [
+      0.000139,
+      "bash-3.2$ "
+    ],
+    [
+      0.207433,
+      "\r\n"
+    ],
+    [
+      2.3e-05,
+      "bash-3.2$ "
+    ],
+    [
+      1.537291,
+      "p"
+    ],
+    [
+      0.119925,
+      "h"
+    ],
+    [
+      0.135963,
+      "p"
+    ],
+    [
+      0.192056,
+      " "
+    ],
+    [
+      0.247906,
+      "e"
+    ],
+    [
+      0.199988,
+      "x"
+    ],
+    [
+      0.079307,
+      "a"
+    ],
+    [
+      0.09674,
+      "m"
+    ],
+    [
+      0.055925,
+      "p"
+    ],
+    [
+      0.112008,
+      "l"
+    ],
+    [
+      0.151984,
+      "e"
+    ],
+    [
+      0.135438,
+      "."
+    ],
+    [
+      0.168537,
+      "p"
+    ],
+    [
+      0.112127,
+      "h"
+    ],
+    [
+      0.127855,
+      "p"
+    ],
+    [
+      0.40723,
+      "\r\n"
+    ],
+    [
+      0.020516,
+      "Step 1: Wire up the client with your keypair.\r\nStep 2: Make a lookup. (BTW, you can also send entire batches of lookups...)\r\nStep 3: Send the lookup."
+    ],
+    [
+      0.285995,
+      "\r\nStep 4: Show the resulting candidate addresses\r\n        - 0: 1 N Rosedale St, Baltimore MD 21229-3737\r\n        - 1: 1 S Rosedale St, Baltimore MD 21229-3739\r\n"
+    ],
+    [
+      0.007984,
+      "bash-3.2$ "
+    ],
+    [
+      2.262132,
+      "e"
+    ],
+    [
+      0.18414,
+      "x"
+    ],
+    [
+      0.104012,
+      "i"
+    ],
+    [
+      0.135196,
+      "t"
+    ],
+    [
+      0.551785,
+      "\r\n"
+    ]
+  ]
+}
