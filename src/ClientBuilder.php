@@ -42,7 +42,10 @@ class ClientBuilder {
             $httpSender,
             $maxRetries,
             $maxTimeout,
-            $urlPrefix;
+            $urlPrefix,
+            $proxyUrl,
+            $proxyPort,
+            $proxyUserPwd;
 
     public function __construct(Credentials $signer = null) {
         $this->serializer = new NativeSerializer();
@@ -67,6 +70,15 @@ class ClientBuilder {
      */
     public function withMaxTimeout($maxTimeout) {
         $this->maxTimeout = $maxTimeout;
+        return $this;
+    }
+
+    public function withProxy($proxyUrl, $proxyPort = null, $proxyUsername = null, $proxyPassword = null) {
+        $this->proxyUrl = $proxyUrl;
+        $this->proxyPort = $proxyPort;
+
+        if ($proxyUsername != null && $proxyPassword != null)
+            $this->proxyUserPwd[$proxyUsername] = $proxyPassword;
         return $this;
     }
 
@@ -128,7 +140,7 @@ class ClientBuilder {
         if ($this->httpSender != null)
             return $this->httpSender;
 
-        $sender = new NativeSender($this->maxTimeout);
+        $sender = new NativeSender($this->maxTimeout, $this->proxyUrl, $this->proxyPort, $this->proxyUserPwd);
 
         $sender = new StatusCodeSender($sender);
 
