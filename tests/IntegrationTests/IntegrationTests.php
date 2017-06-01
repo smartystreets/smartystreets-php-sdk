@@ -29,11 +29,11 @@ class IntegrationTests {
 
         print("\n");
         $this->testInternationalStreetRequestReturnsWithCorrectNumberOfResults($credentials);
-//        $this->testUSAutocompleteRequestReturnsWithCorrectNumberOfResults($credentials);
-//        $this->testUSExtractRequestReturnsWithCorrectNumberOfResults($credentials);
-//        $this->testUSStreetRequestReturnsWithCorrectNumberOfResults($credentials);
-//        $this->testUSZIPCodeRequestReturnsWithCorrectNumberOfResults($credentials);
-//        $this->testGetsResultsViaProxy($credentials);
+        $this->testUSAutocompleteRequestReturnsWithCorrectNumberOfResults($credentials);
+        $this->testUSExtractRequestReturnsWithCorrectNumberOfResults($credentials);
+        $this->testUSStreetRequestReturnsWithCorrectNumberOfResults($credentials);
+        $this->testUSZIPCodeRequestReturnsWithCorrectNumberOfResults($credentials);
+        $this->testGetsResultsViaProxy($credentials);
     }
 
     public function testInternationalStreetRequestReturnsWithCorrectNumberOfResults(StaticCredentials $credentials) {
