@@ -8,7 +8,7 @@ require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/Batch.php');
 require_once('Candidate.php');
-
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
@@ -32,6 +32,8 @@ class Client {
         $request = $this->buildRequest($lookup);
 
         $response = $this->sender->send($request);
+        if ($response == null)
+            throw new SmartyException("Response is null.");
 
         $candidates = $this->serializer->deserialize($response->getPayload());
         if ($candidates == null)

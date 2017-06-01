@@ -8,7 +8,6 @@ require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Request.php');
 require_once('GeolocateType.php');
 require_once('Result.php');
-use SmartyStreets\PhpSdk\ArrayUtil;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
@@ -34,9 +33,10 @@ class Client {
         $request = $this->buildRequest($lookup);
 
         $response = $this->sender->send($request);
+        if ($response == null)
+            throw new SmartyException("Response is null.");
 
         $result = $this->serializer->deserialize($response->getPayload());
-
         if ($result == null)
             return;
 
