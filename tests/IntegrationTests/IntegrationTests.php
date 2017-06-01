@@ -29,10 +29,11 @@ class IntegrationTests {
 
         print("\n");
         $this->testInternationalStreetRequestReturnsWithCorrectNumberOfResults($credentials);
-        $this->testUSAutocompleteRequestReturnsWithCorrectNumberOfResults($credentials);
-        $this->testUSExtractRequestReturnsWithCorrectNumberOfResults($credentials);
-        $this->testUSStreetRequestReturnsWithCorrectNumberOfResults($credentials);
-        $this->testUSZIPCodeRequestReturnsWithCorrectNumberOfResults($credentials);
+//        $this->testUSAutocompleteRequestReturnsWithCorrectNumberOfResults($credentials);
+//        $this->testUSExtractRequestReturnsWithCorrectNumberOfResults($credentials);
+//        $this->testUSStreetRequestReturnsWithCorrectNumberOfResults($credentials);
+//        $this->testUSZIPCodeRequestReturnsWithCorrectNumberOfResults($credentials);
+//        $this->testGetsResultsViaProxy($credentials);
     }
 
     public function testInternationalStreetRequestReturnsWithCorrectNumberOfResults(StaticCredentials $credentials) {
@@ -96,7 +97,7 @@ class IntegrationTests {
 
     public function testUSZIPCodeRequestReturnsWithCorrectNumberOfResults(StaticCredentials $credentials) {
         $client = (new ClientBuilder($credentials))->retryAtMost(0)->buildUsZIPCodeApiClient();
-        $lookup = new USZIPCodeLookup(null, null, "84601");
+        $lookup = new USZIPCodeLookup(null, null, "38852");
 
         try {
             $client->sendLookup($lookup);
@@ -104,7 +105,23 @@ class IntegrationTests {
         catch(\Exception $ex) {}
 
         $citiesAmount = count($lookup->getResult()->getCities());
-        $this->assertResults("US_ZIPCode", $citiesAmount, 1);
+        $this->assertResults("US_ZIPCode", $citiesAmount, 7);
+    }
+
+    public function testGetsResultsViaProxy(StaticCredentials $credentials) {
+        $client = (new ClientBuilder($credentials))->retryAtMost(0)->viaProxy("http://localhost:8080", "username", "password")->buildUsZIPCodeApiClient();
+        $lookup = new USZIPCodeLookup(null, null, "38852");
+
+        try {
+            $client->sendLookup($lookup);
+        }
+        catch(\Exception $ex) {}
+
+        $citiesAmount = 0;
+        if ($lookup->getResult()->getCities() != null)
+            $citiesAmount = count($lookup->getResult()->getCities());
+
+        $this->assertResults("WITH_PROXY", $citiesAmount, 7);
     }
 
     private function assertResults($apiType, $actualResultCount, $expectedResultCount) {

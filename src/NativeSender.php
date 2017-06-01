@@ -8,14 +8,12 @@ require_once('Version.php');
 
 class NativeSender implements Sender {
     private $maxTimeOut,
-            $proxyUrl,
-            $proxyPort,
+            $proxyAddress,
             $proxyUserPwd;
 
-    public function __construct($maxTimeOut = 10000, $proxyUrl, $proxyPort = null, $proxyUserPwd = null) {
+    public function __construct($maxTimeOut = 10000, $proxyAddress, $proxyUserPwd = null) {
         $this->maxTimeOut = $maxTimeOut;
-        $this->proxyUrl = $proxyUrl;
-        $this->proxyPort = $proxyPort;
+        $this->proxyAddress = $proxyAddress;
         $this->proxyUserPwd = $proxyUserPwd;
     }
 
@@ -43,7 +41,7 @@ class NativeSender implements Sender {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->maxTimeOut);
         curl_setopt($ch, CURLOPT_USERAGENT, 'smartystreets (sdk:php@' . VERSION . ')');
 
-        if ($this->proxyUrl != null)
+        if ($this->proxyAddress != null)
             $this->setProxy($ch);
 
         if ($smartyRequest->getReferer() != null)
@@ -53,10 +51,7 @@ class NativeSender implements Sender {
     }
 
     private function setProxy(&$ch) {
-        curl_setopt($ch, CURLOPT_PROXY, $this->proxyUrl);
-
-        if ($this->proxyPort != null)
-            curl_setopt($ch, CURLOPT_PROXYPORT, $this->proxyPort);
+        curl_setopt($ch, CURLOPT_PROXY, $this->proxyAddress);
 
         if ($this->proxyUserPwd != null)
             curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxyUserPwd);
