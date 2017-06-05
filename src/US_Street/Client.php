@@ -44,10 +44,7 @@ class Client {
             return;
 
         $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
-
         $response = $this->sender->send($request);
-        if ($response == null)
-            throw new SmartyException("Response is null.");
 
         $candidates = $this->serializer->deserialize($response->getPayload());
         if ($candidates == null)

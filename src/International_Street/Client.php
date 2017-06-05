@@ -30,10 +30,7 @@ class Client {
     public function sendLookup(Lookup $lookup) {
         $this->ensureEnoughInfo($lookup);
         $request = $this->buildRequest($lookup);
-
         $response = $this->sender->send($request);
-        if ($response == null)
-            throw new SmartyException("Response is null.");
 
         $candidates = $this->serializer->deserialize($response->getPayload());
         if ($candidates == null)

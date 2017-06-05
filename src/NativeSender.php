@@ -5,6 +5,7 @@ namespace SmartyStreets\PhpSdk;
 include_once('Sender.php');
 require_once('Response.php');
 require_once('Version.php');
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 class NativeSender implements Sender {
     private $maxTimeOut,
@@ -19,15 +20,19 @@ class NativeSender implements Sender {
 
     function send(Request $smartyRequest) {
         $ch = $this->buildRequest($smartyRequest);
-
         $this->setHeaders($smartyRequest, $ch);
+        $payload = curl_exec($ch);
 
-        $response = curl_exec($ch);
+        $connectCode = curl_getinfo($ch, CURLINFO_HTTP_CONNECTCODE);
+        if ($payload === FALSE && $connectCode != 200) {
+            $errorMessage = curl_error($ch);
+            curl_close($ch);
+            throw new SmartyException($errorMessage);
+        }
 
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-
-        return new Response($statusCode, $response);
+        return new Response($statusCode, $payload);
     }
 
     private function buildRequest(Request $smartyRequest) {

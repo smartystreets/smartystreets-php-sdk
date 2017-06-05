@@ -31,10 +31,7 @@ class Client {
             throw new SmartyException("sendLookup() must be passed a Lookup with the prefix field set.");
 
         $request = $this->buildRequest($lookup);
-
         $response = $this->sender->send($request);
-        if ($response == null)
-            throw new SmartyException("Response is null.");
 
         $result = $this->serializer->deserialize($response->getPayload());
         if ($result == null)

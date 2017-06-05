@@ -12,13 +12,13 @@ require_once('Exceptions/ServiceUnavailableException.php');
 require_once('Exceptions/TooManyRequestsException.php');
 require_once('Exceptions/UnprocessableEntityException.php');
 require_once('Exceptions/GatewayTimeoutException.php');
-
 use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
 use SmartyStreets\PhpSdk\Exceptions\BadRequestException;
 use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
 use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
 use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;
@@ -55,7 +55,7 @@ class StatusCodeSender implements Sender {
             case 504:
                 throw new GatewayTimeoutException("The upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed.");
             default:
-                return null;
+                return new SmartyException("Error sending request. Status code is: " . $response->getStatusCode());
         }
     }
 }
