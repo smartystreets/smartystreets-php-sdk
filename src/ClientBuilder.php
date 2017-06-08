@@ -72,6 +72,13 @@ class ClientBuilder {
         return $this;
     }
 
+    /**
+     * ViaProxy saves the address of your proxy server through which to send all requests.
+     * @param $proxyAddress Proxy address of your proxy server.
+     * @param $proxyUsername Username for proxy authentication.
+     * @param $proxyPassword Password for proxy authentication.
+     * @return Returns <b>this</b> to accommodate method chaining.
+     */
     public function viaProxy($proxyAddress, $proxyUsername = null, $proxyPassword = null) {
         $this->proxyAddress = $proxyAddress;
 
