@@ -12,7 +12,8 @@ class Metadata {
     private $latitude,
             $longitude,
             $geocodePrecision,
-            $maxGeocodePrecision;
+            $maxGeocodePrecision,
+            $addressFormat;
 
     public function __construct($obj = null) {
         if ($obj == null)
@@ -22,6 +23,7 @@ class Metadata {
         $this->longitude = ArrayUtil::setField($obj,'longitude');
         $this->geocodePrecision = ArrayUtil::setField($obj,'geocode_precision');
         $this->maxGeocodePrecision = ArrayUtil::setField($obj,'max_geocode_precision');
+        $this->addressFormat = ArrayUtil::setField($obj,'address_format');
     }
 
     //region [ Getters ]
@@ -40,6 +42,10 @@ class Metadata {
 
     public function getMaxGeocodePrecision() {
         return $this->maxGeocodePrecision;
+    }
+
+    public function getAddressFormat() {
+        return $this->addressFormat;
     }
 
     //endregion
