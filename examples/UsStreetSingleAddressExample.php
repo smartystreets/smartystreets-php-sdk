@@ -17,7 +17,7 @@ class UsStreetSingleAddressExample {
         // We recommend storing your secret keys in environment variables.
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
         $client = (new ClientBuilder($staticCredentials))
-                        ->viaProxy("http://localhost:8080", "username", "password") // uncomment this line to point to the specified proxy.
+//                        ->viaProxy("http://localhost:8080", "username", "password") // uncomment this line to point to the specified proxy.
                         ->buildUsStreetApiClient();
 
         $lookup = new Lookup();
