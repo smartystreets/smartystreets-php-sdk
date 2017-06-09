@@ -5,17 +5,16 @@ namespace SmartyStreets\PhpSdk;
 include_once('Sender.php');
 require_once('Response.php');
 require_once('Version.php');
+require_once('Proxy.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 class NativeSender implements Sender {
     private $maxTimeOut,
-            $proxyAddress,
-            $proxyUserPwd;
+            $proxy;
 
-    public function __construct($maxTimeOut = 10000, $proxyAddress, $proxyUserPwd = null) {
+    public function __construct($maxTimeOut = 10000, Proxy $proxy) {
         $this->maxTimeOut = $maxTimeOut;
-        $this->proxyAddress = $proxyAddress;
-        $this->proxyUserPwd = $proxyUserPwd;
+        $this->proxy = $proxy;
     }
 
     function send(Request $smartyRequest) {
@@ -46,7 +45,7 @@ class NativeSender implements Sender {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->maxTimeOut);
         curl_setopt($ch, CURLOPT_USERAGENT, 'smartystreets (sdk:php@' . VERSION . ')');
 
-        if ($this->proxyAddress != null)
+        if ($this->proxy->getAddress() != null)
             $this->setProxy($ch);
 
         if ($smartyRequest->getReferer() != null)
@@ -56,10 +55,10 @@ class NativeSender implements Sender {
     }
 
     private function setProxy(&$ch) {
-        curl_setopt($ch, CURLOPT_PROXY, $this->proxyAddress);
+        curl_setopt($ch, CURLOPT_PROXY, $this->proxy->getAddress());
 
-        if ($this->proxyUserPwd != null)
-            curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxyUserPwd);
+        if ($this->proxy->getCredentials() != null)
+            curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxy->getCredentials());
     }
 
     private function setHeaders(Request $smartyRequest) {

@@ -19,6 +19,7 @@ require_once('URLPrefixSender.php');
 require_once('Batch.php');
 require_once('MyLogger.php');
 require_once('MySleeper.php');
+require_once('Proxy.php');
 require_once(dirname(__FILE__) . '/US_Street/Client.php');
 require_once(dirname(__FILE__) . '/US_ZIPCode/Client.php');
 require_once(dirname(__FILE__) . '/US_Extract/Client.php');
@@ -43,8 +44,7 @@ class ClientBuilder {
             $maxRetries,
             $maxTimeout,
             $urlPrefix,
-            $proxyAddress,
-            $proxyUserPwd;
+            $proxy;
 
     public function __construct(Credentials $signer = null) {
         $this->serializer = new NativeSerializer();
@@ -80,10 +80,10 @@ class ClientBuilder {
      * @return Returns <b>this</b> to accommodate method chaining.
      */
     public function viaProxy($proxyAddress, $proxyUsername = null, $proxyPassword = null) {
-        $this->proxyAddress = $proxyAddress;
+        $this->proxy = new Proxy($proxyAddress);
 
         if ($proxyUsername != null && $proxyPassword != null)
-            $this->proxyUserPwd = $proxyUsername . ":" . $proxyPassword;
+            $this->proxy->setCredentials($proxyUsername, $proxyPassword);
 
         return $this;
     }
@@ -146,7 +146,7 @@ class ClientBuilder {
         if ($this->httpSender != null)
             return $this->httpSender;
 
-        $sender = new NativeSender($this->maxTimeout, $this->proxyAddress, $this->proxyUserPwd);
+        $sender = new NativeSender($this->maxTimeout, $this->proxy);
 
         $sender = new StatusCodeSender($sender);
 
