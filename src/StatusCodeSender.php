@@ -55,7 +55,7 @@ class StatusCodeSender implements Sender {
             case 504:
                 throw new GatewayTimeoutException("The upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed.");
             default:
-                return new SmartyException("Error sending request. Status code is: " . $response->getStatusCode());
+                throw new SmartyException("Error sending request. Status code is: " . $response->getStatusCode());
         }
     }
 }
