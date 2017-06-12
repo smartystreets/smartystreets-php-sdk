@@ -12,7 +12,7 @@ class NativeSender implements Sender {
     private $maxTimeOut,
             $proxy;
 
-    public function __construct($maxTimeOut = 10000, Proxy $proxy) {
+    public function __construct($maxTimeOut = 10000, Proxy $proxy = null) {
         $this->maxTimeOut = $maxTimeOut;
         $this->proxy = $proxy;
     }
@@ -45,7 +45,7 @@ class NativeSender implements Sender {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->maxTimeOut);
         curl_setopt($ch, CURLOPT_USERAGENT, 'smartystreets (sdk:php@' . VERSION . ')');
 
-        if ($this->proxy->getAddress() != null)
+        if ($this->proxy != null)
             $this->setProxy($ch);
 
         if ($smartyRequest->getReferer() != null)
