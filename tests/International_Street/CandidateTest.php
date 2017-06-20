@@ -67,13 +67,12 @@ class CandidateTest extends \PHPUnit_Framework_TestCase {
                 "latitude" => 52.0,
                 "longitude" => 53.0,
                 "geocode_precision" => "54",
-                "max_geocode_precision" => "55",
-                "address_format" => "56"
+                "max_geocode_precision" => "55"
             ),
             "analysis" => array(
-                "verification_status" => "57",
-                "address_precision" => "58",
-                "max_address_precision" => "59"
+                "verification_status" => "56",
+                "address_precision" => "57",
+                "max_address_precision" => "58"
             )
         );
     }
@@ -147,15 +146,14 @@ class CandidateTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(53, $metadata->getLongitude());
         $this->assertEquals("54", $metadata->getGeocodePrecision());
         $this->assertEquals("55", $metadata->getMaxGeocodePrecision());
-        $this->assertEquals("56", $metadata->getAddressFormat());
         //endregion
 
         //region [ Analysis ]
         $analysis = $candidate->getAnalysis();
         $this->assertNotNull($analysis);
-        $this->assertEquals("57", $analysis->getVerificationStatus());
-        $this->assertEquals("58", $analysis->getAddressPrecision());
-        $this->assertEquals("59", $analysis->getMaxAddressPrecision());
+        $this->assertEquals("56", $analysis->getVerificationStatus());
+        $this->assertEquals("57", $analysis->getAddressPrecision());
+        $this->assertEquals("58", $analysis->getMaxAddressPrecision());
         //endregion
     }
 }

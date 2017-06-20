@@ -22,8 +22,6 @@ class InternationalExample {
         $lookup->setFreeformInput("Rua Padre Antonio D'Angelo 121 Casa Verde, Sao Paulo", "Brazil");
         $lookup->setGeocode(true); // Must be expressly set to get latitude and longitude.
 
-        //TODO: set address_format
-
         $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
 
         $firstCandidate = $lookup->getResult()[0];
@@ -37,7 +35,6 @@ class InternationalExample {
         echo("\nFourth Line: " . $firstCandidate->getAddress4());
 
         $metadata = $firstCandidate->getMetadata();
-        echo("\nAddress Format: " . $metadata->getAddressFormat());
         echo("\nLatitude: " . $metadata->getLatitude());
         echo("\nLongitude: " . $metadata->getLongitude());
     }
