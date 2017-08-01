@@ -44,10 +44,11 @@ class Client {
         $request = new Request();
 
         $request->setParameter("prefix", $lookup->getPrefix());
-        $request->setParameter("suggestions", strval($lookup->getMaxSuggestions()));
+        $request->setParameter("suggestions", $lookup->getMaxSuggestionsStringIfSet());
         $request->setParameter("city_filter", $this->buildFilterString($lookup->getCityFilter()));
         $request->setParameter("state_filter", $this->buildFilterString($lookup->getStateFilter()));
         $request->setParameter("prefer", $this->buildFilterString($lookup->getPrefer()));
+        $request->setParameter("prefer_ratio", $lookup->getPreferRatioStringIfSet());
         if ($lookup->getGeolocateType()->getName() != GEOLOCATE_TYPE_NONE) {
             $request->setParameter("geolocate", "true");
             $request->setParameter("geolocate_precision", $lookup->getGeolocateType()->getName());

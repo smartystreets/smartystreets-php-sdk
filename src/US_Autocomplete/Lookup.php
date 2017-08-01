@@ -9,6 +9,8 @@ namespace SmartyStreets\PhpSdk\US_Autocomplete;
  */
 class Lookup {
     //region [ Fields ]
+    const MAX_SUGGESTIONS_DEFAULT = 10;
+    const PREFER_RATIO_DEFAULT = 1 / 3.0;
 
     private $result,
             $prefix,
@@ -16,6 +18,7 @@ class Lookup {
             $cityFilter,
             $stateFilter,
             $prefer,
+            $preferRatio,
             $geolocateType;
 
     //endregion
@@ -26,10 +29,11 @@ class Lookup {
      */
     public function __construct($prefix = null) {
         $this->prefix = $prefix;
-        $this->maxSuggestions = 10;
+        $this->maxSuggestions = Lookup::MAX_SUGGESTIONS_DEFAULT;
         $this->cityFilter = array();
         $this->stateFilter = array();
         $this->prefer = array();
+        $this->preferRatio = Lookup::PREFER_RATIO_DEFAULT;
         $this->geolocateType = new GeolocateType(GEOLOCATE_TYPE_CITY);
     }
 
@@ -75,10 +79,25 @@ class Lookup {
         return $this->prefer;
     }
 
+    public function getPreferRatio() {
+        return $this->preferRatio;
+    }
+
     public function getGeolocateType() {
         return $this->geolocateType;
     }
 
+    function getMaxSuggestionsStringIfSet() {
+        if ($this->maxSuggestions == Lookup::MAX_SUGGESTIONS_DEFAULT)
+            return null;
+        return strval($this->maxSuggestions);
+    }
+
+    function getPreferRatioStringIfSet() {
+        if ($this->preferRatio == Lookup::PREFER_RATIO_DEFAULT)
+            return null;
+        return strval($this->preferRatio);
+    }
     //endregion
 
     //region [ Setter ]
@@ -108,6 +127,10 @@ class Lookup {
 
     public function setPrefer($prefer) {
         $this->prefer = $prefer;
+    }
+
+    public function setPreferRatio($preferRatio) {
+        $this->preferRatio = $preferRatio;
     }
 
     public function setGeolocateType(GeolocateType $geolocateType) {

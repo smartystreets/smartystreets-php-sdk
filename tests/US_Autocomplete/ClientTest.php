@@ -37,7 +37,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
         $client->sendLookup(new Lookup('1'));
 
-        $this->assertEquals("http://localhost/?prefix=1&suggestions=10&geolocate=true&geolocate_precision=city",
+        $this->assertEquals("http://localhost/?prefix=1&geolocate=true&geolocate_precision=city",
             $capturingSender->getRequest()->getUrl());
     }
 
@@ -46,13 +46,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $sender = new URLPrefixSender("http://localhost/", $capturingSender);
         $serializer = new MockSerializer(new Result());
         $client = new Client($sender, $serializer);
-        $expectedURL = "http://localhost/?prefix=1&suggestions=2&city_filter=3&state_filter=4&prefer=5&geolocate=true&geolocate_precision=state";
+        $expectedURL = "http://localhost/?prefix=1&suggestions=2&city_filter=3&state_filter=4&prefer=5&prefer_ratio=0.6&geolocate=true&geolocate_precision=state";
         $lookup = new Lookup();
         $lookup->setPrefix('1');
         $lookup->setMaxSuggestions(2);
         $lookup->addCityFilter("3");
         $lookup->addStateFilter("4");
         $lookup->addPrefer("5");
+        $lookup->setPreferRatio("0.6");
         $lookup->setGeolocateType(new GeolocateType(GEOLOCATE_TYPE_STATE));
 
         $client->sendLookup($lookup);
@@ -64,7 +65,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost/", $capturingSender);
         $serializer = new MockSerializer(new Result());
-        $expectedURL = "http://localhost/?prefix=1&suggestions=10&geolocate=false";
+        $expectedURL = "http://localhost/?prefix=1&geolocate=false";
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
         $lookup->setPrefix('1');
