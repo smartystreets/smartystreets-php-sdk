@@ -57,6 +57,18 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $request->getUrl());
     }
 
+    public function testUrlEncodingOfUnicodeCharacters() {
+    	$request = new Request();
+    	        $request->setUrlPrefix(self::LOCAL_HOST);
+
+        $request->setParameter("needs_encoding", "&foo=bar");
+        $request->setParameter("unicode", "Sjömadsvägen");
+
+        $expected = "http://localhost/?needs_encoding=%26foo%3Dbar&unicode=Sj%C3%B6madsv%C3%A4gen";
+
+        $this->assertEquals($expected, $request->getUrl());
+    }
+
     public function testHeadersAddedToRequest() {
         $request = new Request();
         $request->setUrlPrefix(self::LOCAL_HOST);
