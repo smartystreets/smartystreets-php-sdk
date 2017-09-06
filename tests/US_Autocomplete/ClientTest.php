@@ -24,9 +24,10 @@ use SmartyStreets\PhpSdk\US_Autocomplete\Client;
 use SmartyStreets\PhpSdk\US_Autocomplete\Lookup;
 use SmartyStreets\PhpSdk\US_Autocomplete\GeolocateType;
 use SmartyStreets\PhpSdk\US_Autocomplete\Suggestion;
+use PHPUnit\Framework\TestCase;
 
 
-class ClientTest extends \PHPUnit_Framework_TestCase {
+class ClientTest extends TestCase {
     //region [ Single Lookup ]
 
     public function testSendingSinglePrefixOnlyLookup() {

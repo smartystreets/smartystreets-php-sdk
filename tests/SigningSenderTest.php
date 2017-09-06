@@ -12,8 +12,9 @@ use SmartyStreets\PhpSdk\Request;
 use SmartyStreets\PhpSdk\Response;
 use SmartyStreets\PhpSdk\StaticCredentials;
 use SmartyStreets\PhpSdk\SigningSender;
+use PHPUnit\Framework\TestCase;
 
-class SigningSenderTest extends \PHPUnit_Framework_TestCase {
+class SigningSenderTest extends TestCase {
 
     public function testSigningOfRequest() {
         $signer = new StaticCredentials("id", "secret");

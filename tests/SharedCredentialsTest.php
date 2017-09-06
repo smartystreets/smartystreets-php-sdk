@@ -6,8 +6,9 @@ require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/src/SharedCredentials.php');
 use SmartyStreets\PhpSdk\Request;
 use SmartyStreets\PhpSdk\SharedCredentials;
+use PHPUnit\Framework\TestCase;
 
-class SharedCredentialsTest extends \PHPUnit_Framework_TestCase {
+class SharedCredentialsTest extends TestCase {
     public function testSignedRequest() {
         $request = $this->createSignedRequest();
         $expected = "https://us-street.api.smartystreets.com/street-address?auth-id=3516378604772256";

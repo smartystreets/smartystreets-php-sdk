@@ -23,8 +23,9 @@ use SmartyStreets\PhpSdk\Response;
 use SmartyStreets\PhpSdk\US_Extract\Result;
 use SmartyStreets\PhpSdk\US_Extract\Client;
 use SmartyStreets\PhpSdk\US_Extract\Lookup;
+use PHPUnit\Framework\TestCase;
 
-class ClientTest extends \PHPUnit_Framework_TestCase {
+class ClientTest extends TestCase {
     public function testSendingBodyOnlyLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender('http://localhost/', $capturingSender);

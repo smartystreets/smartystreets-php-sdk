@@ -4,8 +4,9 @@ namespace SmartyStreets\PhpSdk\Tests\US_Street;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Result.php');
 use SmartyStreets\PhpSdk\US_ZIPCode\Result;
+use PHPUnit\Framework\TestCase;
 
-class ResultTest extends \PHPUnit_Framework_TestCase {
+class ResultTest extends TestCase {
     private $obj;
 
     public function setUp() {

@@ -6,8 +6,9 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Lookup.php')
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Result.php');
 use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
 use SmartyStreets\PhpSdk\US_ZIPCode\Result;
+use PHPUnit\Framework\TestCase;
 
-class LookupTest extends \PHPUnit_Framework_TestCase {
+class LookupTest extends TestCase {
     function testConstructorCreatesResult() {
         $lookup = new Lookup();
 

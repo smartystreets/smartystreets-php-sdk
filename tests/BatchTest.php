@@ -8,8 +8,9 @@ require_once(dirname(dirname(__FILE__)) . '/src/Exceptions/BatchFullException.ph
 use SmartyStreets\PhpSdk\Batch;
 use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
 use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
+use PHPUnit\Framework\TestCase;
 
-class BatchTest extends \PHPUnit_Framework_TestCase {
+class BatchTest extends TestCase {
     function testGetsLookupByInputId() {
         $batch = new Batch();
         $lookup = (new Lookup())->setInputId("hasInputId");

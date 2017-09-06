@@ -5,9 +5,9 @@ namespace SmartyStreets\PhpSdk\Tests\US_Autocomplete;
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete/Result.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete/Suggestion.php');
 use SmartyStreets\PhpSdk\US_Autocomplete\Result;
-use SmartyStreets\PhpSdk\US_Autocomplete\Suggestion;
+use SmartyStreets\PhpSdk\US_Autocomplete\Suggestion;use PHPUnit\Framework\TestCase;
 
-class ResultTest extends \PHPUnit_Framework_TestCase {
+class ResultTest extends TestCase {
     private $obj;
 
     public function setUp() {

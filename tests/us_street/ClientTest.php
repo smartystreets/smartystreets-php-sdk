@@ -24,8 +24,9 @@ use SmartyStreets\PhpSdk\US_Street\Candidate;
 use SmartyStreets\PhpSdk\Batch;
 use SmartyStreets\PhpSdk\Response;
 use SmartyStreets\PhpSdk\URLPrefixSender;
+use PHPUnit\Framework\TestCase;
 
-class ClientTest extends \PHPUnit_Framework_TestCase {
+class ClientTest extends TestCase {
 
     //region [ Single Lookup ]
 

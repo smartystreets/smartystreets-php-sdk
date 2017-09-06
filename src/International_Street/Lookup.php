@@ -161,7 +161,7 @@ class Lookup {
     }
 
     /**
-     * @param geocode Disabled by default. Set to <b>true</b> to enable.
+     * @param geocode bool Disabled by default. Set to <b>true</b> to enable.
      */
     public function setGeocode($geocode) {
         $this->geocode = $geocode;
@@ -177,7 +177,7 @@ class Lookup {
     }
 
     /**
-     * @param freeform The entire address except the country, which should be input using setCountry().
+     * @param freeform String The entire address except the country, which should be input using setCountry().
      */
     public function setFreeform($freeform) {
         $this->freeform = $freeform;

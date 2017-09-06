@@ -12,8 +12,9 @@ use SmartyStreets\PhpSdk\Tests\Mocks\MockLogger;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSleeper;
 use SmartyStreets\PhpSdk\RetrySender;
 use SmartyStreets\PhpSdk\Request;
+use PHPUnit\Framework\TestCase;
 
-class RetrySenderTest extends \PHPUnit_Framework_TestCase {
+class RetrySenderTest extends TestCase {
     private $mockCrashingSender,
             $mockLogger,
             $mockSleeper;

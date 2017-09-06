@@ -6,8 +6,9 @@ require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
 use SmartyStreets\PhpSdk\Request;
 use SmartyStreets\PhpSdk\StaticCredentials;
+use PHPUnit\Framework\TestCase;
 
-class StaticCredentialsTest extends \PHPUnit_Framework_TestCase {
+class StaticCredentialsTest extends TestCase {
     public function testStandardCredentials() {
         $this->assertSignedRequest("f83280df-s83d-f82j-d829-kd02l9tis7ek", "S9Djk63k2Ilj67vN82Km",
             "https://us-street.api.smartystreets.com/street-address?auth-id=f83280df-s83d-f82j-d829-kd02l9tis7ek&auth-token=S9Djk63k2Ilj67vN82Km");

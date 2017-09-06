@@ -8,8 +8,9 @@ require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 use SmartyStreets\PhpSdk\Tests\Mocks\MockStatusCodeSender;
 use SmartyStreets\PhpSdk\StatusCodeSender;
 use SmartyStreets\PhpSdk\Request;
+use PHPUnit\Framework\TestCase;
 
-class StatusCodeSenderTest extends \PHPUnit_Framework_TestCase {
+class StatusCodeSenderTest extends TestCase {
 
     public function test200Response() {
         $sender = new StatusCodeSender(new MockStatusCodeSender(200));

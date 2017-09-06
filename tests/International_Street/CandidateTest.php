@@ -4,8 +4,9 @@ namespace SmartyStreets\PhpSdk\Tests\International_Street;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/Candidate.php');
 use SmartyStreets\PhpSdk\International_Street\Candidate;
+use PHPUnit\Framework\TestCase;
 
-class CandidateTest extends \PHPUnit_Framework_TestCase {
+class CandidateTest extends TestCase {
     private $obj;
 
     public function setUp() {

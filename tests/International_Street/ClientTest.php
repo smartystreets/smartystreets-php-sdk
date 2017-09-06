@@ -26,8 +26,9 @@ use SmartyStreets\PhpSdk\International_Street\Lookup;
 use SmartyStreets\PhpSdk\International_Street\Candidate;
 use SmartyStreets\PhpSdk\International_Street\LanguageMode;
 use SmartyStreets\PhpSdk\Response;
+use PHPUnit\Framework\TestCase;
 
-class ClientTest extends \PHPUnit_Framework_TestCase {
+class ClientTest extends TestCase {
 
     public function testSendingFreeformLookup() {
         $capturingSender = new RequestCapturingSender();
@@ -124,16 +125,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $lookup->setCountry("0");
         $lookup->setFreeform("1");
         $client->sendLookup($lookup);
+        $this->assertNotNull($lookup->getResult());
 
         $lookup->setFreeform(null);
         $lookup->setAddress1("1");
         $lookup->setPostalCode("2");
         $client->sendLookup($lookup);
+        $this->assertNotNull($lookup->getResult());
 
         $lookup->setPostalCode(null);
         $lookup->setLocality("3");
         $lookup->setAdministrativeArea("4");
         $client->sendLookup($lookup);
+        $this->assertNotNull($lookup->getResult());
     }
 
     public function testDeserializeCalledWithResponseBody() {

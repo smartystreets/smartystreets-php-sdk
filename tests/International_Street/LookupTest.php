@@ -4,8 +4,9 @@ namespace SmartyStreets\PhpSdk\Tests\International_Street;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/Lookup.php');
 use SmartyStreets\PhpSdk\International_Street\Lookup;
+use PHPUnit\Framework\TestCase;
 
-class LookupTest extends \PHPUnit_Framework_TestCase {
+class LookupTest extends TestCase {
 
     public function testSetsFreeformInput() {
         $freeform = '1';

@@ -20,8 +20,9 @@ use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
 use SmartyStreets\PhpSdk\US_ZIPCode\Result;
 use SmartyStreets\PhpSdk\Batch;
 use SmartyStreets\PhpSdk\Response;
+use PHPUnit\Framework\TestCase;
 
-class ClientTest extends \PHPUnit_Framework_TestCase {
+class ClientTest extends TestCase {
 
     //region [Batch Lookup ]
 

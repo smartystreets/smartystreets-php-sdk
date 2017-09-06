@@ -10,8 +10,9 @@ use SmartyStreets\PhpSdk\Request;
 use SmartyStreets\PhpSdk\Response;
 use SmartyStreets\PhpSdk\URLPrefixSender;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
+use PHPUnit\Framework\TestCase;
 
-class URLPrefixSenderTest extends \PHPUnit_Framework_TestCase {
+class URLPrefixSenderTest extends TestCase {
     public function testProvidedURLOverridesRequestURL() {
         $request = new Request();
         $request->setUrlPrefix("original");

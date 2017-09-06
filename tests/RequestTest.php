@@ -4,8 +4,9 @@ namespace SmartyStreets\PhpSdk\Tests;
 
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 use SmartyStreets\PhpSdk\Request;
+use PHPUnit\Framework\TestCase;
 
-class RequestTest extends \PHPUnit_Framework_TestCase {
+class RequestTest extends TestCase {
     const LOCAL_HOST = "http://localhost/?";
 
     public function testNullNameQueryStringParameterNotAdded() {
