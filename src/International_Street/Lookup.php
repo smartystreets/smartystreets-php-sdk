@@ -161,7 +161,7 @@ class Lookup {
     }
 
     /**
-     * @param geocode bool Disabled by default. Set to <b>true</b> to enable.
+     * @param $geocode bool Disabled by default. Set to <b>true</b> to enable.
      */
     public function setGeocode($geocode) {
         $this->geocode = $geocode;
@@ -171,13 +171,15 @@ class Lookup {
      * When not set, the output language will match the language of the input values. When set to <b>NATIVE</b> the<br>
      *     results will always be in the language of the output country. When set to <b>LATIN</b> the results<br>
      *     will always be provided using a Latin character set.
+     *
+     * @param $language LanguageMode
      */
     public function setLanguage(LanguageMode $language) {
         $this->language = $language;
     }
 
     /**
-     * @param freeform String The entire address except the country, which should be input using setCountry().
+     * @param $freeform String The entire address except the country, which should be input using setCountry().
      */
     public function setFreeform($freeform) {
         $this->freeform = $freeform;
