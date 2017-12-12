@@ -15,8 +15,14 @@ $lookupExample->run();
 
 class UsStreetMultipleAddressesExample {
     public function run() {
-        // We recommend storing your secret keys in environment variables.
-        $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
+        $authId = 'Your SmartyStreets Auth ID here';
+        $authToken = 'Your SmartyStreets Auth Token here';
+
+        // We recommend storing your secret keys in environment variables instead---it's safer!
+//        $authId = getenv('SMARTY_AUTH_ID');
+//        $authToken = getenv('SMARTY_AUTH_TOKEN');
+
+        $staticCredentials = new StaticCredentials($authId, $authToken);
         $client = (new ClientBuilder($staticCredentials))->buildUsStreetApiClient();
         $batch = new Batch();
 
