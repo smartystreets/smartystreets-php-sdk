@@ -31,23 +31,23 @@ class ClientTest extends TestCase {
     //region [ Single Lookup ]
 
     public function testSendingSingleFreeformLookup() {
-        $expectedPayload = "Hello, World!";
+        $expectedPayload = "?street=freeform&candidates=1";
         $sender = new RequestCapturingSender();
         $serializer = new MockSerializer($expectedPayload);
         $client = new Client($sender, $serializer);
 
         $client->sendLookup(new Lookup("freeform"));
 
-        $this->assertEquals($expectedPayload, $sender->getRequest()->getPayload());
+        $this->assertEquals($expectedPayload, $sender->getRequest()->getURL());
     }
 
     public function testSendingSingleFullyPopulatedLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost/", $capturingSender);
         $serializer = new NativeSerializer();
-        $expectedPayload = ("[{\"input_id\":1,\"street\":\"2\",\"street2\":\"3\",\"secondary\":\"4\",\"city\":\"5\"," .
-            "\"state\":\"6\",\"zipcode\":\"7\",\"lastline\":\"8\",\"addressee\":\"9\"," .
-            "\"urbanization\":\"10\",\"match\":\"invalid\",\"candidates\":12}]");
+        $expectedURL = ("http://localhost/?input_id=1&street=2&street2=3&secondary=4&city=5&" .
+            "state=6&zipcode=7&lastline=8&addressee=9&" .
+            "urbanization=10&match=invalid&candidates=12");
 
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -66,7 +66,8 @@ class ClientTest extends TestCase {
 
         $client->sendLookup($lookup);
 
-        $this->assertEquals($expectedPayload, $capturingSender->getRequest()->getPayload());
+        $this->assertEquals($expectedURL, $capturingSender->getRequest()->getURL());
+        $this->assertEquals("GET", $capturingSender->getRequest()->getMethod());
 }
 
 //endregion

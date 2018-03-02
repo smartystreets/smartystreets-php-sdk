@@ -11,6 +11,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Lookup.php')
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Result.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
@@ -20,6 +21,7 @@ use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
 use SmartyStreets\PhpSdk\US_ZIPCode\Result;
 use SmartyStreets\PhpSdk\Batch;
 use SmartyStreets\PhpSdk\Response;
+use SmartyStreets\PhpSdk\URLPrefixSender;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase {
@@ -33,6 +35,26 @@ class ClientTest extends TestCase {
         $client->sendBatch(new Batch());
 
         $this->assertNull($sender->getRequest());
+    }
+
+    public function testSendingSingleFullyPopulatedLookup() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $serializer = new MockSerializer("");
+        $expectedURL = ("http://localhost/?input_id=1&city=2&state=3&zipcode=4");
+
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setInputId("1");
+        $lookup->setCity("2");
+        $lookup->setState("3");
+        $lookup->setZipCode("4");
+
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals($expectedURL, $capturingSender->getRequest()->getURL());
+        $this->assertEquals("GET", $capturingSender->getRequest()->getMethod());
     }
 
     public function testSuccessfullySendsBatchOfLookups() {

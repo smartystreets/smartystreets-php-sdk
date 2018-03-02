@@ -43,7 +43,11 @@ class Client {
         if ($batch->size() == 0)
             return;
 
-        $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
+        if ($batch->size() == 1)
+            $this->buildParameters($request, $batch->getLookupByIndex(0));
+        else
+            $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
+
         $response = $this->sender->send($request);
 
         $candidates = $this->serializer->deserialize($response->getPayload());
@@ -57,6 +61,12 @@ class Client {
         foreach ($candidates as $c) {
             $candidate = new Candidate($c);
             $batch->getLookupByIndex($candidate->getInputIndex())->setResult($candidate);
+        }
+    }
+
+    private function buildParameters(Request $request, Lookup $lookup) {
+        foreach ($lookup->jsonSerialize() as $key => $value) {
+            $request->setParameter($key, $value);
         }
     }
 }
