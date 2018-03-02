@@ -26,7 +26,7 @@ class CandidateTest extends TestCase {
             "address12" => "13",
             "components" => array(
                 "country_iso_3" => "14",
-                'super_administrative_area' => '15',
+                "super_administrative_area" => '15',
                 "administrative_area" => "16",
                 "sub_administrative_area" => "17",
                 "dependent_locality" => "18",
@@ -39,6 +39,7 @@ class CandidateTest extends TestCase {
                 "premise" => "25",
                 "premise_extra" => "26",
                 "premise_number" => "27",
+                "premise_prefix_number" => "27.5",
                 "premise_type" => "28",
                 "thoroughfare" => "29",
                 "thoroughfare_predirection" => "30",
@@ -115,6 +116,7 @@ class CandidateTest extends TestCase {
         $this->assertEquals("25", $components->getPremise());
         $this->assertEquals("26", $components->getPremiseExtra());
         $this->assertEquals("27", $components->getPremiseNumber());
+        $this->assertEquals("27.5", $components->getPremisePrefixNumber());
         $this->assertEquals("28", $components->getPremiseType());
         $this->assertEquals("29", $components->getThoroughfare());
         $this->assertEquals("30", $components->getThoroughfarePredirection());

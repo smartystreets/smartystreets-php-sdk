@@ -25,6 +25,7 @@ class Components {
             $premise,
             $premiseExtra,
             $premiseNumber,
+            $premisePrefixNumber,
             $premiseType,
             $thoroughfare,
             $thoroughfarePredirection,
@@ -72,6 +73,7 @@ class Components {
         $this->premise = ArrayUtil::setField($obj,'premise');
         $this->premiseExtra = ArrayUtil::setField($obj,'premise_extra');
         $this->premiseNumber = ArrayUtil::setField($obj,'premise_number');
+        $this->premisePrefixNumber = ArrayUtil::setField($obj,'premise_prefix_number');
         $this->premiseType = ArrayUtil::setField($obj,'premise_type');
         $this->thoroughfare = ArrayUtil::setField($obj,'thoroughfare');
         $this->thoroughfarePredirection = ArrayUtil::setField($obj,'thoroughfare_predirection');
@@ -156,6 +158,10 @@ class Components {
 
     public function getPremiseNumber() {
         return $this->premiseNumber;
+    }
+
+    public function getPremisePrefixNumber() {
+        return $this->premisePrefixNumber;
     }
 
     public function getPremiseType() {
