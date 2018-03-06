@@ -31,7 +31,6 @@ class Lookup implements \JsonSerializable {
 
     /**
      * This constructor accepts a freeform address. That means the whole address is in one string.
-     * @param freeformAddress
      */
     public function __construct($street = null, $street2 = null, $secondary = null, $city = null, $state = null, $zipcode = null,
                                 $lastline = null, $addressee = null, $urbanization = null, $matchStrategy = null, $maxCandidates = 1, $input_id = null) {
@@ -134,7 +133,7 @@ class Lookup implements \JsonSerializable {
      *     and leave the other fields blank. We call this a <b>freeform address</b>.<br>
      *     <i><b>Note:</b> Freeform addresses are slightly less reliable.</i>
      *
-     *     @param street If using a freeform address, do <b>not</b> include country information
+     *     @param $street string If using a freeform address, do <b>not</b> include country information
      */
     public function setStreet($street) {
         $this->street = $street;
@@ -176,7 +175,7 @@ class Lookup implements \JsonSerializable {
      * Sets the match output strategy to be employed for this lookup.<br>
      *
      * @see "https://smartystreets.com/docs/cloud/us-street-api#input-fields"
-     * @param match The match output strategy
+     * @param $matchStrategy string The match output strategy
      */
     public function setMatchStrategy($matchStrategy) {
         $this->matchStrategy = $matchStrategy;
@@ -184,8 +183,8 @@ class Lookup implements \JsonSerializable {
 
     /**
      * Sets the maximum number of valid addresses returned when the input is ambiguous.
-     * @param maxCandidates Defaults to 1. Must be an integer between 1 and 10, inclusive.
-     * @throws IllegalArgumentException
+     * @param $maxCandidates int Defaults to 1. Must be an integer between 1 and 10, inclusive.
+     * @throws \InvalidArgumentException
      */
     public function setMaxCandidates($maxCandidates) {
         if ($maxCandidates > 0)
