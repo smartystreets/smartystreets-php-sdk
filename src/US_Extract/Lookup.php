@@ -19,7 +19,7 @@ class Lookup {
             $text;
 
     /**
-     * @param The text that is to have addresses extracted out of it for verification
+     * @param $text string The text that is to have addresses extracted out of it for verification
      */
     public function __construct($text = null) {
         $this->result = new Result();

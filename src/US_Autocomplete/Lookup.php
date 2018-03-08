@@ -25,7 +25,7 @@ class Lookup {
 
     /**
      * If you use this constructor, don't forget to set the <b>prefix</b>. It is required.
-     *  @param prefix The beginning of an address
+     *  @param $prefix string The beginning of an address
      */
     public function __construct($prefix = null) {
         $this->prefix = $prefix;
