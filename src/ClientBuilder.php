@@ -54,8 +54,8 @@ class ClientBuilder {
     }
 
     /**
-     * @param maxRetries The maximum number of times to retry sending the request to the API. (Default is 5)
-     * @return Returns <b>this</b> to accommodate method chaining.
+     * @param int $maxRetries The maximum number of times to retry sending the request to the API. (Default is 5)
+     * @return $this Returns <b>this</b> to accommodate method chaining.
      */
     public function retryAtMost($maxRetries) {
         $this->maxRetries = $maxRetries;
@@ -63,9 +63,9 @@ class ClientBuilder {
     }
 
     /**
-     * @param maxTimeout The maximum time (in milliseconds) to wait for a connection, and also to wait for <br>
+     * @param int $maxTimeout The maximum time (in milliseconds) to wait for a connection, and also to wait for <br>
      *                   the response to be read. (Default is 10000)
-     * @return Returns <b>this</b> to accommodate method chaining.
+     * @return $this Returns <b>this</b> to accommodate method chaining.
      */
     public function withMaxTimeout($maxTimeout) {
         $this->maxTimeout = $maxTimeout;
@@ -74,10 +74,10 @@ class ClientBuilder {
 
     /**
      * ViaProxy saves the address of your proxy server through which to send all requests.
-     * @param $proxyAddress Proxy address of your proxy server.
-     * @param $proxyUsername Username for proxy authentication.
-     * @param $proxyPassword Password for proxy authentication.
-     * @return Returns <b>this</b> to accommodate method chaining.
+     * @param string $proxyAddress Proxy address of your proxy server.
+     * @param string $proxyUsername Username for proxy authentication.
+     * @param string $proxyPassword Password for proxy authentication.
+     * @return $this Returns <b>this</b> to accommodate method chaining.
      */
     public function viaProxy($proxyAddress, $proxyUsername = null, $proxyPassword = null) {
         $this->proxy = new Proxy($proxyAddress);
@@ -89,8 +89,8 @@ class ClientBuilder {
     }
 
     /**
-     * @param sender Default is a series of nested senders. See <b>buildSender()</b>.
-     * @return Returns <b>this</b> to accommodate method chaining.
+     * @param Sender $sender Default is a series of nested senders. See <b>buildSender()</b>.
+     * @return $this Returns <b>this</b> to accommodate method chaining.
      */
     public function withSender(Sender $sender) {
         $this->httpSender = $sender;
@@ -99,8 +99,8 @@ class ClientBuilder {
 
     /**
      * Changes the <b>Serializer</b> from the default <b>NativeSerializer</b>.
-     * @param serializer An object that implements the <b>Serializer</b> interface.
-     * @return Returns <b>this</b> to accommodate method chaining.
+     * @param Serializer $serializer An object that implements the <b>Serializer</b> interface.
+     * @return $this Returns <b>this</b> to accommodate method chaining.
      */
     public function withSerializer(Serializer $serializer) {
         $this->serializer = $serializer;
@@ -109,8 +109,8 @@ class ClientBuilder {
 
     /**
      * This may be useful when using a local installation of the SmartyStreets APIs.
-     * @param baseUrl Defaults to the URL for the API corresponding to the <b>Client</b> object being built.
-     * @return Returns <b>this</b> to accommodate method chaining.
+     * @param string $urlPrefix Defaults to the URL for the API corresponding to the <b>Client</b> object being built.
+     * @return $this Returns <b>this</b> to accommodate method chaining.
      */
     public function withUrl($urlPrefix) {
         $this->urlPrefix = $urlPrefix;
