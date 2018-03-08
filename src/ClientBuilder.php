@@ -44,13 +44,15 @@ class ClientBuilder {
             $maxRetries,
             $maxTimeout,
             $urlPrefix,
-            $proxy;
+            $proxy,
+            $logger;
 
     public function __construct(Credentials $signer = null) {
         $this->serializer = new NativeSerializer();
         $this->maxRetries = 5;
         $this->maxTimeout = 10000;
         $this->signer = $signer;
+        $this->logger = new MyLogger();
     }
 
     /**
@@ -117,6 +119,16 @@ class ClientBuilder {
         return $this;
     }
 
+    /**
+     * Set a logger instance to be used by the default Sender implementation.
+     * @param Logger $logger the new default logger
+     * @return $this Returns <b>this</b> to accommodate method chaining.
+     */
+    public function withDefaultLogger(Logger $logger) {
+        $this->logger = $logger;
+        return $this;
+    }
+
     public function buildUSAutocompleteApiClient() {
         $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_API_URL);
         return new USAutoCompleteApiClient($this->buildSender(), $this->serializer);
@@ -151,7 +163,7 @@ class ClientBuilder {
         $sender = new StatusCodeSender($sender);
 
         if ($this->maxRetries > 0)
-            $sender = new RetrySender($this->maxRetries, new MySleeper(), new MyLogger(), $sender);
+            $sender = new RetrySender($this->maxRetries, new MySleeper(), $this->logger, $sender);
 
         if ($this->signer != null)
             $sender = new SigningSender($this->signer, $sender);
