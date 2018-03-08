@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 test:
-	phpunit .
+	phpunit tests
 
 push:
 	git push origin master
