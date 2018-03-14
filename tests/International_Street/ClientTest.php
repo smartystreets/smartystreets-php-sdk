@@ -2,12 +2,12 @@
 
 namespace SmartyStreets\PhpSdk\Tests\International_Street;
 
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/RequestCapturingSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockStatusCodeSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
+require_once(dirname(dirname(__FILE__)) . '/mocks/MockSerializer.php');
+require_once(dirname(dirname(__FILE__)) . '/mocks/MockDeserializer.php');
+require_once(dirname(dirname(__FILE__)) . '/mocks/RequestCapturingSender.php');
+require_once(dirname(dirname(__FILE__)) . '/mocks/MockStatusCodeSender.php');
+require_once(dirname(dirname(__FILE__)) . '/mocks/MockSender.php');
+require_once(dirname(dirname(__FILE__)) . '/mocks/MockCrashingSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/Lookup.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/Candidate.php');

@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\Tests;
 
-require_once('Mocks/MockStatusCodeSender.php');
+require_once('mocks/MockStatusCodeSender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/StatusCodeSender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 use SmartyStreets\PhpSdk\Tests\Mocks\MockStatusCodeSender;
