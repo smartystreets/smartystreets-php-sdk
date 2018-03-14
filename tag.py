@@ -10,13 +10,13 @@ INCREMENTS = {
 def main():
 	increment = sys.argv[-1]
 	if increment not in ['patch', 'minor', 'major']:
-		print 'Invalid INCREMENT value. Please use "patch", "minor", or "major".'
+		print('Invalid INCREMENT value. Please use "patch", "minor", or "major".')
 		os.Exit(1)
 
 	increment = INCREMENTS[increment] 
 
 	current = subprocess.check_output("git describe", shell=True).strip()
-	last_stable = subprocess.check_output("git tag -l", shell=True).strip().split('\n')[-1]
+	last_stable = str(subprocess.check_output("git tag -l", shell=True)).strip().split('\n')[-1]
 	if current == last_stable:
 		return
 
@@ -31,7 +31,7 @@ def main():
 		last_stable_split[2] = "0"
 
 	incremented = '.'.join(last_stable_split)
-	print incremented
+	print(incremented)
 
 	replace_in_file('src/Version.php', last_stable, incremented)
 
