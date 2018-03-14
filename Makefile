@@ -7,10 +7,10 @@ push:
 	git push origin master
 
 publish-patch: push
-	@python tag.py patch
+	@python2.7 tag.py patch
 
 publish-minor: push
-	@python tag.py minor
+	@python2.7 tag.py minor
 
 publish-major: push
-	@python tag.py major
+	@python2.7 tag.py major
