@@ -2,10 +2,10 @@
 
 namespace SmartyStreets\PhpSdk\Tests\US_ZIPCode;
 
-require_once(dirname(dirname(__FILE__)) . '/mocks/MockSerializer.php');
-require_once(dirname(dirname(__FILE__)) . '/mocks/MockDeserializer.php');
-require_once(dirname(dirname(__FILE__)) . '/mocks/RequestCapturingSender.php');
-require_once(dirname(dirname(__FILE__)) . '/mocks/MockSender.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/RequestCapturingSender.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Lookup.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Result.php');
