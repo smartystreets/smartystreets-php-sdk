@@ -30,6 +30,13 @@ class Client {
         $this->sendBatch($batch);
     }
 
+    /**
+     * Sends a batch of no more than 100 lookups.
+     *
+     * @param batch Batch Must contain between 1 and 100 Lookup objects
+     * @throws SmartyException
+     * @throws IOException
+     */
     public function sendBatch(Batch $batch) {
         $request = new Request();
 

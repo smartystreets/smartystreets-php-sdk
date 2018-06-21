@@ -7,7 +7,7 @@ use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
 /**
  * This class contains a collection of lookups to be sent to SmartyStreets <br>
  *     APIs all at once. This is more efficient than sending them<br>
- *     one at a time.
+ *     one at a time. Batch size cannot exceed 100.
  */
 class Batch {
     const MAX_BATCH_SIZE = 100;
@@ -20,6 +20,7 @@ class Batch {
     }
 
     /**
+     * Adds a lookup to the batch. (Batch size cannot exceed 100)
      * @param $lookup
      * @throws BatchFullException Batch size cannot exceed 100
      */
