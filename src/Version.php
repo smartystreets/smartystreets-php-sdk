@@ -2,4 +2,4 @@
 
 namespace SmartyStreets\PhpSdk;
 
-const VERSION = '4.4.0';
+const VERSION = '4.4.1';
