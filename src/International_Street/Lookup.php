@@ -81,7 +81,7 @@ class Lookup {
     }
 
     private function fieldIsMissing($field) {
-        return $field == null || count($field) == 0;
+        return $field == null || strlen(trim($field)) == 0;
     }
 
     //endregion

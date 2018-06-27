@@ -73,6 +73,12 @@ class ClientTest extends TestCase {
         $this->assertLookupRejected(new Lookup());
     }
 
+    public function testBlankLookupRejected() {
+        $lookup = new Lookup();
+        $lookup->setFreeformInput(" ", " ");
+        $this->assertLookupRejected($lookup);
+    }
+
     public function testRejectsLookupsWithOnlyCountry() {
         $lookup = new Lookup();
         $lookup->setCountry("0");
