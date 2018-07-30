@@ -45,7 +45,8 @@ class ClientBuilder {
             $maxTimeout,
             $urlPrefix,
             $proxy,
-            $logger;
+            $logger,
+            $debugMode;
 
     public function __construct(Credentials $signer = null) {
         $this->serializer = new NativeSerializer();
@@ -53,6 +54,7 @@ class ClientBuilder {
         $this->maxTimeout = 10000;
         $this->signer = $signer;
         $this->logger = new MyLogger();
+        $this->debugMode = false;
     }
 
     /**
@@ -129,6 +131,15 @@ class ClientBuilder {
         return $this;
     }
 
+    /**
+     * Enables debug mode, which will print information about the HTTP request and response to STDERR
+     * @return $this Returns <b>this</b> to accommodate method chaining.
+     */
+    public function withDebug() {
+        $this->debugMode = true;
+        return $this;
+    }
+
     public function buildUSAutocompleteApiClient() {
         $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_API_URL);
         return new USAutoCompleteApiClient($this->buildSender(), $this->serializer);
@@ -158,7 +169,7 @@ class ClientBuilder {
         if ($this->httpSender != null)
             return $this->httpSender;
 
-        $sender = new NativeSender($this->maxTimeout, $this->proxy);
+        $sender = new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode);
 
         $sender = new StatusCodeSender($sender);
 
