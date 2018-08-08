@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-test:
+local-test:
 	phpunit tests
 
 push:
@@ -14,3 +14,8 @@ publish-minor: push
 
 publish-major: push
 	@python2.7 tag.py major
+
+############################################################
+
+test:
+	docker-compose run sdk make local-test	
