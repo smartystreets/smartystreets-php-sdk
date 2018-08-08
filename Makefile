@@ -8,7 +8,7 @@ local-test:
 
 publish: version tag 
 	git add $(VERSION_FILE)
-	git commit -m "Incremented version number to $(shell git describe)"
+	# git commit -m "Incremented version number to $(shell git describe)"
 	git push origin master --tags
 
 version:
@@ -16,7 +16,7 @@ version:
 	$(eval CURRENT := $(shell git describe 2>/dev/null))
 	$(eval EXPECTED := $(PREFIX)$(shell git tag -l "$(PREFIX)*" | wc -l | xargs expr -1 +))
 	$(eval INCREMENTED := $(PREFIX)$(shell git tag -l "$(PREFIX)*" | wc -l | xargs expr 0 +))
-	@if [ "$(CURRENT)" != "$(EXPECTED)" ]; then git tag -a "$(INCREMENTED)" -m "" 2>/dev/null || true; fi
+	@if [ "$(CURRENT)" != "$(EXPECTED)" ]; then git commit -m "Incremented version number to $(shell git describe)" && git tag -a "$(INCREMENTED)" -m "" 2>/dev/null || true; fi
 
 ############################################################
 
