@@ -6,7 +6,7 @@ VERSION_FILE = src/Version.php
 local-test:
 	phpunit tests
 
-publish: tag version
+publish: version tag 
 	git push origin --tags
 	git push origin master
 
