@@ -7,8 +7,9 @@ local-test:
 	phpunit tests
 
 publish: version tag 
-	git push origin --tags
-	git push origin master
+	git add $(VERSION_FILE)
+	git commit -m "Incremented version number to $(shell git describe)"
+	git push origin master --tags
 
 version:
 	$(eval PREFIX := $(SOURCE_VERSION).)
