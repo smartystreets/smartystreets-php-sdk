@@ -7,7 +7,7 @@ local-test:
 	phpunit tests
 
 publish:
-	$(eval VERSION := $(shell $(MAKE) calculate-version))	
+	$(eval VERSION := $(shell $(MAKE) calculate-version))
 	@echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '$(VERSION)';" > $(VERSION_FILE)
 	git add $(VERSION_FILE)
 	git commit -m "Incremented version number to $(VERSION)"
@@ -25,5 +25,4 @@ calculate-version:
 ############################################################
 
 test:
-	docker-compose run sdk make local-test	
-
+	docker-compose run sdk make local-test
