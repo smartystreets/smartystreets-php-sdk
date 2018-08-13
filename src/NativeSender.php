@@ -49,8 +49,8 @@ class NativeSender implements Sender {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->setHeaders($smartyRequest));
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->maxTimeOut);
         curl_setopt($ch, CURLOPT_USERAGENT, 'smartystreets (sdk:php@' . VERSION . ')');
-        curl_setopt($ch, CURLINFO_HEADER_OUT, STDERR);
-
+        if ($this->debugMode && defined("STDERR"))
+            curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         if ($this->proxy != null)
             $this->setProxy($ch);
 
