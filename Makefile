@@ -1,28 +1,22 @@
 #!/usr/bin/make -f
 
-SOURCE_VERSION := 4.5
-VERSION_FILE = src/Version.php
+VERSION_FILE := src/Version.php
+VERSION      := $(shell tagit -p --dryrun)
 
-local-test:
+test:
 	phpunit tests
 
-publish:
-	$(eval VERSION := $(shell $(MAKE) calculate-version))
+publish: test
 	@echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '$(VERSION)';" > $(VERSION_FILE)
-	git add $(VERSION_FILE)
-	git commit -m "Incremented version number to $(VERSION)"
-	git tag -a "$(VERSION)" -m ""
-	git push origin master --tags
-
-calculate-version:
-	$(eval PREFIX := $(SOURCE_VERSION).)
-	$(eval CURRENT := $(shell git describe 2>/dev/null))
-	$(eval EXPECTED := $(PREFIX)$(shell git tag -l "$(PREFIX)*" | wc -l | xargs expr -1 +))
-	$(eval INCREMENTED := $(PREFIX)$(shell git tag -l "$(PREFIX)*" | wc -l | xargs expr 0 +))
-	@if [ "$(CURRENT)" != "$(EXPECTED)" ]; then echo $(INCREMENTED) ; else echo $(CURRENT); fi
-
 
 ############################################################
 
-test:
-	docker-compose run sdk make local-test
+workspace:
+	docker-compose run sdk /bin/sh
+
+release:
+	docker-compose run sdk make publish \
+		&& git commit -am "Incremented version to $(VERSION)" \
+		&& tagit -p
+
+.PHONY: test publish workspace release
