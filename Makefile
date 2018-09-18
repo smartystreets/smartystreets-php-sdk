@@ -17,6 +17,7 @@ workspace:
 release:
 	docker-compose run sdk make publish \
 		&& git commit -am "Incremented version to $(VERSION)" \
-		&& tagit -p
+		&& tagit -p \
+		&& git push origin master --tags
 
 .PHONY: test publish workspace release
