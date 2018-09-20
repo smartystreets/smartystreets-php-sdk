@@ -6,7 +6,7 @@ VERSION      := $(shell tagit -p --dryrun)
 test:
 	phpunit tests
 
-publish: test
+package: test
 	@echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '$(VERSION)';" > $(VERSION_FILE)
 
 ############################################################
@@ -15,9 +15,9 @@ workspace:
 	docker-compose run sdk /bin/sh
 
 release:
-	docker-compose run sdk make publish \
+	docker-compose run sdk make package \
 		&& git commit -am "Incremented version to $(VERSION)" \
 		&& tagit -p \
 		&& git push origin master --tags
 
-.PHONY: test publish workspace release
+.PHONY: test package workspace release
