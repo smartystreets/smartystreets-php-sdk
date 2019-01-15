@@ -43,6 +43,7 @@ class NativeSender implements Sender {
         $url = $smartyRequest->getUrl();
 
         $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_ENCODING , "gzip");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $smartyRequest->getMethod());
         curl_setopt($ch, CURLOPT_POSTFIELDS, ($smartyRequest->getPayload()));

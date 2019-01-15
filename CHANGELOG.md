@@ -11,6 +11,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Nothing yet
 
+## [4.5.7] - 2019-01-15
+
+### Changed:
+
+- By default add `Accept-Encoding: gzip` header to request and handle gzipped response.
 
 ## [4.5.6] - 2018-09-18
 
