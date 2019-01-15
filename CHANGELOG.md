@@ -27,5 +27,5 @@ For details on earlier changes, please see the [releases listing](https://github
 ------------
 
 [Unreleased]: https://github.com/smartystreets/smartystreets-php-sdk/compare/4.5.6...HEAD
-[3.3.6]: https://github.com/smartystreets/smartystreets-php-sdk/compare/4.5.5...4.5.6
+[4.5.6]: https://github.com/smartystreets/smartystreets-php-sdk/compare/4.5.5...4.5.6
 [Earlier]: https://github.com/smartystreets/smartystreets-php-sdk/releases
