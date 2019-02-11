@@ -37,7 +37,7 @@ class IntegrationTests {
     }
 
     public function testInternationalStreetRequestReturnsWithCorrectNumberOfResults(StaticCredentials $credentials) {
-        $client = (new ClientBuilder($credentials))->withUrl(getenv('SMARTY_URL_INTERNATIONAL'))->retryAtMost(0)->buildInternationalStreetApiClient();
+        $client = (new ClientBuilder($credentials))->withUrl(getenv('SMARTY_URL_INTERNATIONAL_STREET'))->retryAtMost(0)->buildInternationalStreetApiClient();
         $lookup = new InternationStreetLookup();
         $lookup->setFreeformInput("Rua Padre Antonio D'Angelo 121 Casa Verde, Sao Paulo", "Brazil");
 
