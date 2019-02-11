@@ -37,7 +37,7 @@ class IntegrationTests {
     }
 
     public function testInternationalStreetRequestReturnsWithCorrectNumberOfResults(StaticCredentials $credentials) {
-        $client = (new ClientBuilder($credentials))->retryAtMost(0)->buildInternationalStreetApiClient();
+        $client = (new ClientBuilder($credentials))->withUrl(getenv('SMARTY_URL_INTERNATIONAL_STREET'))->retryAtMost(0)->buildInternationalStreetApiClient();
         $lookup = new InternationStreetLookup();
         $lookup->setFreeformInput("Rua Padre Antonio D'Angelo 121 Casa Verde, Sao Paulo", "Brazil");
 
@@ -51,7 +51,7 @@ class IntegrationTests {
     }
 
     public function testUSAutocompleteRequestReturnsWithCorrectNumberOfResults(StaticCredentials $credentials) {
-        $client = (new ClientBuilder($credentials))->retryAtMost(0)->buildUSAutocompleteApiClient();
+        $client = (new ClientBuilder($credentials))->withUrl(getenv('SMARTY_URL_US_AUTOCOMPLETE'))->retryAtMost(0)->buildUSAutocompleteApiClient();
         $lookup = new USAutocompleteLookup("4770 Lincoln Ave O");
         $lookup->addStateFilter("IL");
 
@@ -65,7 +65,7 @@ class IntegrationTests {
     }
 
     public function testUSExtractRequestReturnsWithCorrectNumberOfResults(StaticCredentials $credentials) {
-        $client = (new ClientBuilder($credentials))->retryAtMost(0)->buildUSExtractApiClient();
+        $client = (new ClientBuilder($credentials))->withUrl(getenv('SMARTY_URL_US_EXTRACT'))->retryAtMost(0)->buildUSExtractApiClient();
         $text = "Here is some text.\r\nMy address is 3785 Las Vegs Av." .
             "\r\nLos Vegas, Nevada." .
             "\r\nMeet me at 1 Rosedale Baltimore Maryland, not at 123 Phony Street, Boise Idaho.";
@@ -82,7 +82,7 @@ class IntegrationTests {
     }
 
     public function testUSStreetRequestReturnsWithCorrectNumberOfResults(StaticCredentials $credentials) {
-        $client = (new ClientBuilder($credentials))->retryAtMost(0)->buildUsStreetApiClient();
+        $client = (new ClientBuilder($credentials))->withUrl(getenv('SMARTY_URL_US_STREET'))->retryAtMost(0)->buildUsStreetApiClient();
         $lookup = new USStreetLookup("1 Rosedale, Baltimore, Maryland");
         $lookup->setMaxCandidates(10);
 
@@ -96,7 +96,7 @@ class IntegrationTests {
     }
 
     public function testUSZIPCodeRequestReturnsWithCorrectNumberOfResults(StaticCredentials $credentials) {
-        $client = (new ClientBuilder($credentials))->retryAtMost(0)->buildUsZIPCodeApiClient();
+        $client = (new ClientBuilder($credentials))->withUrl(getenv('SMARTY_URL_US_ZIP'))->retryAtMost(0)->buildUsZIPCodeApiClient();
         $lookup = new USZIPCodeLookup(null, null, "38852");
 
         try {
@@ -109,7 +109,7 @@ class IntegrationTests {
     }
 
     public function testGetsResultsViaProxy(StaticCredentials $credentials) {
-        $client = (new ClientBuilder($credentials))->retryAtMost(0)->viaProxy("http://localhost:8080", "username", "password")->buildUsZIPCodeApiClient();
+        $client = (new ClientBuilder($credentials))->withUrl(getenv('SMARTY_URL_US_ZIP'))->retryAtMost(0)->viaProxy("http://localhost:8080", "username", "password")->buildUsZIPCodeApiClient();
         $lookup = new USZIPCodeLookup(null, null, "38852");
 
         try {
