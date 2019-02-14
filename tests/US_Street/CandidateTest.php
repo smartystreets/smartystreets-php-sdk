@@ -55,7 +55,8 @@ class CandidateTest extends TestCase {
                 'precision' => '38',
                 'time_zone' => '39',
                 'utc_offset' => 40.0,
-                'dst' => true
+                'dst' => true,
+                'ews_match' => true
             ),
             'analysis' => array(
                 'dpv_match_code' => '42',
@@ -63,7 +64,7 @@ class CandidateTest extends TestCase {
                 'dpv_cmra' => '44',
                 'dpv_vacant' => '45',
                 'active' => '46',
-                'ews_match' => true,
+                'ews_match' => false,
                 'footnotes' => '48',
                 'lacslink_code' => '49',
                 'lacslink_indicator' => '50',
@@ -121,6 +122,7 @@ class CandidateTest extends TestCase {
         $this->assertEquals('39', $metadata->getTimeZone());
         $this->assertEquals(40.0, $metadata->getUtcOffset());
         $this->assertEquals(true, $metadata->obeysDst());
+        $this->assertEquals(true, $metadata->isEwsMatch());
 
         $analysis = $candidate->getAnalysis();
         $this->assertEquals('42', $analysis->getDpvMatchCode());
@@ -128,7 +130,7 @@ class CandidateTest extends TestCase {
         $this->assertEquals('44', $analysis->getCmra());
         $this->assertEquals('45', $analysis->getVacant());
         $this->assertEquals('46', $analysis->getActive());
-        $this->assertEquals(true, $analysis->isEwsMatch());
+        $this->assertEquals(false, $analysis->isEwsMatch());
         $this->assertEquals('48', $analysis->getFootnotes());
         $this->assertEquals('49', $analysis->getLacsLinkCode());
         $this->assertEquals('50', $analysis->getLacsLinkIndicator());

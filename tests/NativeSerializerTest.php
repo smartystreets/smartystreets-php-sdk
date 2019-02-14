@@ -49,4 +49,6 @@ class NativeSerializerTest extends TestCase {
         $this->assertEquals('invalid_zipcode', $results[2]['status']);
         $this->assertEquals('Invalid ZIP Code.', $results[2]['reason']);
     }
+
+
 }

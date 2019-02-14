@@ -9,23 +9,6 @@ use SmartyStreets\PhpSdk\ArrayUtil;
  * @see "https://smartystreets.com/docs/cloud/us-street-api#metadata"
  */
 class Metadata {
-    private $recordType,
-            $zipType,
-            $countyFips,
-            $countyName,
-            $carrierRoute,
-            $congressionalDistrict,
-            $buildingDefaultIndicator,
-            $rdi,
-            $elotSequence,
-            $elotSort,
-            $latitude,
-            $longitude,
-            $precision,
-            $timeZone,
-            $utcOffset,
-            $obeysDst;
-
     public function __construct($obj) {
         $this->recordType = ArrayUtil::setField($obj, 'record_type');
         $this->zipType = ArrayUtil::setField($obj, 'zip_type');
@@ -43,7 +26,26 @@ class Metadata {
         $this->timeZone = ArrayUtil::setField($obj, 'time_zone');
         $this->utcOffset = ArrayUtil::setField($obj, 'utc_offset');
         $this->obeysDst = ArrayUtil::setField($obj, 'dst');
+        $this->isEwsMatch = ArrayUtil::setField($obj, 'ews_match');
     }
+
+    private $recordType,
+        $zipType,
+        $countyFips,
+        $countyName,
+        $carrierRoute,
+        $congressionalDistrict,
+        $buildingDefaultIndicator,
+        $rdi,
+        $elotSequence,
+        $elotSort,
+        $latitude,
+        $longitude,
+        $precision,
+        $timeZone,
+        $utcOffset,
+        $obeysDst,
+        $isEwsMatch;
 
     //region [ Getters ]
 
@@ -109,6 +111,10 @@ class Metadata {
 
     public function obeysDst() {
         return $this->obeysDst;
+    }
+
+    public function isEwsMatch() {
+        return $this->isEwsMatch;
     }
 
     //endregion
