@@ -26,7 +26,7 @@ class Analysis {
         $this->cmra = ArrayUtil::setField($obj, 'dpv_cmra');
         $this->vacant = ArrayUtil::setField($obj, 'dpv_vacant');
         $this->active = ArrayUtil::setField($obj, 'active');
-        $this->isEwsMatch = ArrayUtil::setField(false, 'ews_match');
+        $this->isEwsMatch = ArrayUtil::setField('deprecated, refer to metadata->isEwsMatch', 'ews_match');
         $this->footnotes = ArrayUtil::setField($obj, 'footnotes');
         $this->lacsLinkCode = ArrayUtil::setField($obj, 'lacslink_code');
         $this->lacsLinkIndicator = ArrayUtil::setField($obj, 'lacslink_indicator');

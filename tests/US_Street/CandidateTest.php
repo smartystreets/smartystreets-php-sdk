@@ -130,7 +130,6 @@ class CandidateTest extends TestCase {
         $this->assertEquals('44', $analysis->getCmra());
         $this->assertEquals('45', $analysis->getVacant());
         $this->assertEquals('46', $analysis->getActive());
-        $this->assertEquals(false, $analysis->isEwsMatch());
         $this->assertEquals('48', $analysis->getFootnotes());
         $this->assertEquals('49', $analysis->getLacsLinkCode());
         $this->assertEquals('50', $analysis->getLacsLinkIndicator());
