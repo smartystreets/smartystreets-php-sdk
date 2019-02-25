@@ -30,6 +30,7 @@ class UsStreetSingleAddressExample {
         $lookup->setStreet("1600 Amphitheatre Pkwy");
         $lookup->setCity("Mountain View");
         $lookup->setState("CA");
+        $lookup->setMatchStrategy("invalid");
 
         try {
             $client->sendLookup($lookup);
