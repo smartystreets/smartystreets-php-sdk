@@ -26,8 +26,7 @@ class RootLevel {
 
     //endregion
 
-    public function __construct($obj = null)
-    {
+    public function __construct($obj) {
         if ($obj == null)
             return;
 

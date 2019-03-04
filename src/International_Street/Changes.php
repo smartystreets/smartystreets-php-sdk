@@ -19,7 +19,8 @@ class Changes extends RootLevel {
         if ($obj == null)
             return;
 
-        $this -> components = ArrayUtil::setField($obj, 'components');
+        parent::__construct($obj);
+        $this->components = new Components(ArrayUtil::setField($obj, 'components'));
     }
 
     public function getComponents() {
