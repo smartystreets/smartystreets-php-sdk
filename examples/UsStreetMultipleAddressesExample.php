@@ -26,16 +26,21 @@ class UsStreetMultipleAddressesExample {
         $client = (new ClientBuilder($staticCredentials))->buildUsStreetApiClient();
         $batch = new Batch();
 
+        // Documentation for input fields can be found at:
+        // https://smartystreets.com/docs/cloud/us-street-api
+
         $address0 = new Lookup();
+        $address0->setInputId("24601"); // Optional ID from your system
         $address0->setStreet("1600 amphitheatre parkway");
-        $address0->setCity("Mountain view");
-        $address0->setState("california");
-        $address0->setMatchStrategy("invalid");
+        $address0->setLastline("Mountain view, California");
+        $address0->setMaxCandidates(5);
+        $address0->setMatchStrategy("invalid"); // "invalid" is the most permissive match
 
         $address1 = new Lookup("1 Rosedale, Baltimore, Maryland"); // Freeform addresses work too.
-        $address1->setMaxCandidates(10); // Allows up to ten possible matches to be returned (default is 1).
+        $address1->setMaxCandidates(1); // Allows up to ten possible matches to be returned (default is 1).
 
         $address2 = new Lookup("123 Bogus Street, Pretend Lake, Oklahoma");
+        $address2->setInputId("8675309");
 
         $address3 = new Lookup();
         $address3->setStreet("1 Infinite Loop");

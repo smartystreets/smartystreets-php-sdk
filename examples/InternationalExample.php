@@ -24,9 +24,19 @@ class InternationalExample {
         $staticCredentials = new StaticCredentials($authId, $authToken);
         $client = (new ClientBuilder($staticCredentials))->buildInternationalStreetApiClient();
 
+        // Documentation for input fields can be found at:
+        // https://smartystreets.com/docs/cloud/international-street-api
+
         $lookup = new Lookup();
-        $lookup->setFreeformInput("Rua Padre Antonio D'Angelo 121 Casa Verde, Sao Paulo", "Brazil");
+        $lookup->setInputId("ID-8675309");
         $lookup->setGeocode(true); // Must be expressly set to get latitude and longitude.
+        $lookup->setOrganization("John Doe");
+        $lookup->setAddress1("Rua Padre Antonio D'Angelo 121");
+        $lookup->setAddress2("Casa Verde");
+        $lookup->setLocality("Sao Paulo");
+        $lookup->setAdministrativeArea("SP");
+        $lookup->setCountry("Brazil");
+        $lookup->setPostalCode("02516-050");
 
         $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
 
