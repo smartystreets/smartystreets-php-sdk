@@ -22,6 +22,10 @@ class USAutocompleteExample {
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
         $client = (new ClientBuilder($staticCredentials))->buildUSAutocompleteApiClient();
+
+        // Documentation for input fields can be found at:
+        // https://smartystreets.com/docs/cloud/us-autocomplete-api
+
         $lookup = new Lookup("4770 Lincoln Ave O");
 
         $client->sendLookup($lookup);
@@ -31,8 +35,11 @@ class USAutocompleteExample {
         foreach ($lookup->getResult() as $suggestion)
             echo($suggestion->getText() . "\n");
 
-
+        $lookup->addCityFilter("Ogden");
         $lookup->addStateFilter("IL");
+        $lookup->addPrefer("Ogden, IL");
+        $lookup->getGeolocateType(GEOLOCATE_TYPE_NONE);
+        $lookup->setPreferRatio(0.333333);
         $lookup->setMaxSuggestions(5);
 
         $client->sendLookup($lookup);

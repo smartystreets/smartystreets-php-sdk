@@ -29,12 +29,17 @@ class UsZIPCodeMultipleLookupsExample {
         $client = (new ClientBuilder($staticCredentials))->buildUsZIPCodeApiClient();
         $batch = new Batch();
 
+        // Documentation for input fields can be found at:
+        // https://smartystreets.com/docs/cloud/us-zipcode-api
+
         $lookup0 = new Lookup();
         $lookup0->setZIPCode("12345");  // A Lookup may have a ZIP Code, city and state, or city, state, and ZIP Code
 
         $lookup1 = new Lookup();
+        $lookup1->setInputId("01189998819991197253"); // Optional ID from your system
         $lookup1->setCity("Phoenix");
         $lookup1->setState("Arizona");
+        $lookup1->setZIPCode("01234");
 
         $lookup2 = new Lookup("cupertino", "CA", "95014"); // You can also set these with arguments
 

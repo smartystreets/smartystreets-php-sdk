@@ -28,7 +28,13 @@ class USExtractExample {
             "\r\nLos Vegas, Nevada." .
             "\r\nMeet me at 1 Rosedale Baltimore Maryland, not at 123 Phony Street, Boise Idaho.";
 
+        // Documentation regarding input fields can be found at:
+        // https://smartystreets.com/docs/cloud/us-extract-api
+
         $lookup = new Lookup($text);
+        $lookup->isAggressive();
+        $lookup->setAddressesHaveLineBreaks(false);
+        $lookup->setAddressesPerLine(2);
 
         $client->sendLookup($lookup);
 

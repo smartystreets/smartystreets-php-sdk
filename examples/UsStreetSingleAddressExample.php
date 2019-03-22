@@ -26,11 +26,21 @@ class UsStreetSingleAddressExample {
 //                        ->viaProxy("http://localhost:8080", "username", "password") // uncomment this line to point to the specified proxy.
                         ->buildUsStreetApiClient();
 
+        // Documentation for input fields can be found at:
+        // https://smartystreets.com/docs/cloud/us-street-api
+
         $lookup = new Lookup();
+        $lookup->setInputId("24601"); // Optional ID from your system
+        $lookup->setAddressee("John Doe");
         $lookup->setStreet("1600 Amphitheatre Pkwy");
+        $lookup->setStreet2("closet under the stairs");
+        $lookup->setSecondary("APT 2");
+        $lookup->setUrbanization("");  // Only applies to Puerto Rico addresses
         $lookup->setCity("Mountain View");
         $lookup->setState("CA");
-        $lookup->setMatchStrategy("invalid");
+        $lookup->setZipcode("21229");
+        $lookup->setMaxCandidates(3);
+        $lookup->setMatchStrategy("invalid"); // "invalid" is the most permissive match
 
         try {
             $client->sendLookup($lookup);

@@ -26,7 +26,11 @@ class UsZIPCodeSingleLookupExample {
         $staticCredentials = new StaticCredentials($authId, $authToken);
         $client = (new ClientBuilder($staticCredentials))->buildUsZIPCodeApiClient();
 
+        // Documentation for input fields can be found at:
+        // https://smartystreets.com/docs/cloud/us-zipcode-api
+
         $lookup = new Lookup();
+        $lookup->setInputId("dfc33cb6-829e-4fea-aa1b-b6d6580f0817"); // Optional ID from you system
         $lookup->setCity("Mountain View");
         $lookup->setState("California");
 
