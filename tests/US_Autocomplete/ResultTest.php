@@ -10,7 +10,7 @@ use SmartyStreets\PhpSdk\US_Autocomplete\Suggestion;use PHPUnit\Framework\TestCa
 class ResultTest extends TestCase {
     private $obj;
 
-    public function setUp() {
+    public function setUp() : void {
         $this->obj = array(
             'suggestions' => array( array(
                 'text' => '1',

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class ResultTest extends TestCase {
     private $obj;
 
-    public function setUp() {
+    public function setUp() : void {
         $this->obj = array(
             "meta" => array(
                 'lines' => 1,

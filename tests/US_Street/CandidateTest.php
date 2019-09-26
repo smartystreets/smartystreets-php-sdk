@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class CandidateTest extends TestCase {
     private $obj;
 
-    public function setUp() {
+    public function setUp() : void {
         $this->obj = array(
             'input_index' => 0,
             'candidate_index' => 1,

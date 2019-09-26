@@ -10,7 +10,7 @@ use SmartyStreets\PhpSdk\International_Street\RootLevel;
 class CandidateTest extends TestCase {
     private $obj;
 
-    public function setUp() {
+    public function setUp() : void {
         $this->obj = array(
             "organization" => "1",
             "address1" => "2",

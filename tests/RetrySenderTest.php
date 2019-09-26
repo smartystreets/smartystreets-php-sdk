@@ -19,7 +19,7 @@ class RetrySenderTest extends TestCase {
             $mockLogger,
             $mockSleeper;
 
-    public function setUp() {
+    public function setUp() : void {
         $this->mockCrashingSender = new MockCrashingSender();
         $this->mockLogger = new MockLogger();
         $this->mockSleeper = new MockSleeper();
