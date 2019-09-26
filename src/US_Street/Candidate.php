@@ -16,7 +16,8 @@ use SmartyStreets\PhpSdk\ArrayUtil;
  * @see "https://smartystreets.com/docs/cloud/us-street-api#root"
  */
 class Candidate {
-    private $inputIndex,
+    private $inputId,
+            $inputIndex,
             $candidateIndex,
             $addressee,
             $deliveryLine1,
@@ -33,6 +34,7 @@ class Candidate {
 
         $this->inputIndex = $obj['input_index'];
         $this->candidateIndex = $obj['candidate_index'];
+        $this->inputId = ArrayUtil::setField($obj, 'input_id');
         $this->addressee = ArrayUtil::setField($obj, 'addressee');
         $this->deliveryLine1 = ArrayUtil::setField($obj, 'delivery_line_1');
         $this->deliveryLine2 = ArrayUtil::setField($obj, 'delivery_line_2');
@@ -45,6 +47,10 @@ class Candidate {
     }
 
     //region [Getters]
+
+    public function getInputId() {
+        return $this->inputId;
+    }
 
     public function getInputIndex() {
         return $this->inputIndex;

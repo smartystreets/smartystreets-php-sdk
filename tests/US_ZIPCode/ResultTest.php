@@ -13,6 +13,7 @@ class ResultTest extends TestCase {
         $this->obj = array(
             'status' => '0',
             'reason' => '1',
+            'input_id' => '1234',
             'input_index' => 2,
             'city_states' => array( array(
                 'city' => '3',
@@ -60,6 +61,7 @@ class ResultTest extends TestCase {
 
         $this->assertEquals("0", $result->getStatus());
         $this->assertEquals("1", $result->getReason());
+        $this->assertEquals("1234", $result->getInputId());
         $this->assertEquals(2, $result->getInputIndex());
 
         $city = $result->getCities()[0];

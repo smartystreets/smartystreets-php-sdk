@@ -11,6 +11,7 @@ class CandidateTest extends TestCase {
 
     public function setUp() : void {
         $this->obj = array(
+            'input_id' =>'1234',
             'input_index' => 0,
             'candidate_index' => 1,
             'addressee' => '2',
@@ -76,6 +77,7 @@ class CandidateTest extends TestCase {
     public function testAllFieldsFilledCorrectly() {
         $candidate = new Candidate($this->obj);
 
+        $this->assertEquals('1234', $candidate->getInputId());
         $this->assertEquals(0, $candidate->getInputIndex());
         $this->assertEquals(1, $candidate->getCandidateIndex());
         $this->assertEquals('2', $candidate->getAddressee());

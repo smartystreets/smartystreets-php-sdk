@@ -13,6 +13,7 @@ use SmartyStreets\PhpSdk\ArrayUtil;
 class Result {
     private $status,
             $reason,
+            $inputId,
             $inputIndex,
             $cities,
             $zipCodes;
@@ -24,6 +25,7 @@ class Result {
         $this->status = ArrayUtil::setField($obj, "status");
         $this->reason = ArrayUtil::setField($obj, "reason");
         $this->inputIndex = $obj["input_index"];
+        $this->inputId = ArrayUtil::setField($obj, "input_id");
         $this->cities = ArrayUtil::setField($obj, "city_states", array());
         $this->zipCodes = ArrayUtil::setField($obj, "zipcodes", array());
 
@@ -77,6 +79,10 @@ class Result {
 
     public function getInputIndex() {
         return $this->inputIndex;
+    }
+
+    public function getInputId() {
+        return $this->inputId;
     }
 
     public function getCities() {

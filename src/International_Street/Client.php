@@ -43,6 +43,7 @@ class Client {
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
 
+        $request->setParameter("input_id", $lookup->getInputId());
         $request->setParameter("country", $lookup->getCountry());
         $request->setParameter("geocode", $lookup->getGeocode());
         if ($lookup->getLanguage() != null)

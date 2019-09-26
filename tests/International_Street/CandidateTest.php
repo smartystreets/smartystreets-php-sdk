@@ -12,6 +12,7 @@ class CandidateTest extends TestCase {
 
     public function setUp() : void {
         $this->obj = array(
+            "input_id"=>"1234",
             "organization" => "1",
             "address1" => "2",
             "address2" => "3",
@@ -141,6 +142,7 @@ class CandidateTest extends TestCase {
         $candidate = new Candidate($this->obj);
 
         //region [ Candidate ]
+        $this->assertEquals("1234", $candidate->getInputId());
         $this->assertEquals("1", $candidate->getOrganization());
         $this->assertEquals("2", $candidate->getAddress1());
         $this->assertEquals("3", $candidate->getAddress2());

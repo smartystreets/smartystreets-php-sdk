@@ -10,7 +10,8 @@ class RootLevel {
 
     //region [fields]
 
-    private $organization,
+    private $inputId,
+        $organization,
         $address1,
         $address2,
         $address3,
@@ -30,6 +31,7 @@ class RootLevel {
         if ($obj == null)
             return;
 
+        $this->inputId = ArrayUtil::setField($obj, 'input_id');
         $this->organization = ArrayUtil::setField($obj, 'organization');
         $this->address1 = ArrayUtil::setField($obj, 'address1');
         $this->address2 = ArrayUtil::setField($obj, 'address2');
@@ -46,6 +48,10 @@ class RootLevel {
     }
 
     //region [ Getters ]
+
+    public function getInputId() {
+        return $this->inputId;
+    }
 
     public function getOrganization() {
         return $this->organization;
