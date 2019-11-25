@@ -34,7 +34,9 @@ class UsStreetMultipleAddressesExample {
         $address0->setStreet("1600 amphitheatre parkway");
         $address0->setLastline("Mountain view, California");
         $address0->setMaxCandidates(5);
-        $address0->setMatchStrategy("invalid"); // "invalid" is the most permissive match
+        $address0->setMatchStrategy("invalid"); // "invalid" is the most permissive match,
+                                                             // this will always return at least one result even if the address is invalid.
+                                                             // Refer to the documentation for additional MatchStrategy options.
 
         $address1 = new Lookup("1 Rosedale, Baltimore, Maryland"); // Freeform addresses work too.
         $address1->setMaxCandidates(1); // Allows up to ten possible matches to be returned (default is 1).
