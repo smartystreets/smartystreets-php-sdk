@@ -51,7 +51,7 @@ class UsStreetSingleAddressExample {
         catch (SmartyException $ex) {
             echo($ex->getMessage());
         }
-        catch (\Exception $ex) {
+        catch (Exception $ex) {
             echo($ex->getMessage());
         }
     }

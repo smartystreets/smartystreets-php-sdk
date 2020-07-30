@@ -37,23 +37,23 @@ class StatusCodeSender implements Sender {
             case 200:
                 return $response;
             case 400:
-                throw new BadRequestException("Bad Request (Malformed Payload): A GET request lacked a street field or the request body of a POST request contained malformed JSON.");
+                throw new BadRequestException("Bad Request (Malformed Payload): A GET request lacked a street field or the request body of a POST request contained malformed JSON." . $response->getStatusCode());
             case 401:
-                throw new BadCredentialsException("Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials.");
+                throw new BadCredentialsException("Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials." . $response->getStatusCode());
             case 402:
-                throw new PaymentRequiredException("Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.");
+                throw new PaymentRequiredException("Payment Required: There is no active subscription for the account associated with the credentials submitted with the request." . $response->getStatusCode());
             case 413:
-                throw new RequestEntityTooLargeException("Request Entity Too Large: The request body has exceeded the maximum size.");
+                throw new RequestEntityTooLargeException("Request Entity Too Large: The request body has exceeded the maximum size." . $response->getStatusCode());
             case 422:
-                throw new UnprocessableEntityException("GET request lacked required fields.");
+                throw new UnprocessableEntityException("GET request lacked required fields." . $response->getStatusCode());
             case 429:
-                throw new TooManyRequestsException("When using public \"website key\" authentication, we restrict the number of requests coming from a given source over too short of a time.");
+                throw new TooManyRequestsException("When using public \"website key\" authentication, we restrict the number of requests coming from a given source over too short of a time." . $response->getStatusCode());
             case 500:
-                throw new InternalServerErrorException("Internal Server Error.");
+                throw new InternalServerErrorException("Internal Server Error." . $response->getStatusCode());
             case 503:
-                throw new ServiceUnavailableException("Service Unavailable. Try again later.");
+                throw new ServiceUnavailableException("Service Unavailable. Try again later." . $response->getStatusCode());
             case 504:
-                throw new GatewayTimeoutException("The upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed.");
+                throw new GatewayTimeoutException("The upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed." . $response->getStatusCode());
             default:
                 throw new SmartyException("Error sending request. Status code is: " . $response->getStatusCode());
         }
