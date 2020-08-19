@@ -46,7 +46,8 @@ class ClientBuilder {
             $urlPrefix,
             $proxy,
             $logger,
-            $debugMode;
+            $debugMode,
+            $licenses;
 
     public function __construct(Credentials $signer = null) {
         $this->serializer = new NativeSerializer();
@@ -55,6 +56,7 @@ class ClientBuilder {
         $this->signer = $signer;
         $this->logger = new MyLogger();
         $this->debugMode = false;
+        $this->licenses = [];
     }
 
     /**
@@ -140,6 +142,16 @@ class ClientBuilder {
         return $this;
     }
 
+    /**
+     * Allows the caller to specify the subscription license(s) (aka "track") they wish to use.
+     * @param $licenses [String] An array of license strings
+     * @return $this Returns <b>this</b> to accommodate method chaining.
+     */
+    public function withLicenses($licenses) {
+        $this->licenses = array_merge($this->licenses, $licenses);
+        return $this;
+    }
+
     public function buildUSAutocompleteApiClient() {
         $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_API_URL);
         return new USAutoCompleteApiClient($this->buildSender(), $this->serializer);
@@ -180,6 +192,8 @@ class ClientBuilder {
             $sender = new SigningSender($this->signer, $sender);
 
         $sender = new URLPrefixSender($this->urlPrefix, $sender);
+
+        $sender = new LicenseSender($this->licenses, $sender);
 
         return $sender;
     }

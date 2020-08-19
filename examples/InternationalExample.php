@@ -22,7 +22,8 @@ class InternationalExample {
 //        $authToken = getenv('SMARTY_AUTH_TOKEN');
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
-        $client = (new ClientBuilder($staticCredentials))->buildInternationalStreetApiClient();
+        $client = (new ClientBuilder($staticCredentials)) // ->withLicenses(["international-fake-license"])
+            ->buildInternationalStreetApiClient();
 
         // Documentation for input fields can be found at:
         // https://smartystreets.com/docs/cloud/international-street-api
