@@ -23,7 +23,8 @@ class UsStreetMultipleAddressesExample {
 //        $authToken = getenv('SMARTY_AUTH_TOKEN');
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
-        $client = (new ClientBuilder($staticCredentials))->buildUsStreetApiClient();
+        $client = (new ClientBuilder($staticCredentials)) // ->withLicenses(["us-rooftop-geo-cloud"])
+            ->buildUsStreetApiClient();
         $batch = new Batch();
 
         // Documentation for input fields can be found at:
