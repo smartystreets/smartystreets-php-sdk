@@ -14,6 +14,7 @@ require_once('NativeSerializer.php');
 require_once('NativeSender.php');
 require_once('StatusCodeSender.php');
 require_once('SigningSender.php');
+require_once('LicenseSender.php');
 require_once('RetrySender.php');
 require_once('URLPrefixSender.php');
 require_once('Batch.php');
