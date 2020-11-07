@@ -15,9 +15,9 @@ class NativeSerializerTest extends TestCase {
 
         $result = $serializer->serialize($lookup);
 
-        $this->assertContains('"city":"fake city"', $result, "Result is: $result");
-        $this->assertContains('"state":"fake state"', $result, "Result is: $result");
-        $this->assertContains('"zipcode":"12345"', $result, "Result is: $result");
+        $this->assertStringContainsString('"city":"fake city"', $result, "Result is: $result");
+        $this->assertStringContainsString('"state":"fake state"', $result, "Result is: $result");
+        $this->assertStringContainsString('"zipcode":"12345"', $result, "Result is: $result");
     }
 
     public function testDeserialize() {
