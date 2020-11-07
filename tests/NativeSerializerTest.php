@@ -9,16 +9,16 @@ use PHPUnit\Framework\TestCase;
 
 class NativeSerializerTest extends TestCase {
 
-    public function testSerialize() {
-        $serializer = new NativeSerializer();
-        $lookup = new Lookup('fake city', 'fake state', '12345');
-
-        $result = $serializer->serialize($lookup);
-
-        $this->assertStringContainsString('"city":"fake city"', $result, "Result is: $result");
-        $this->assertStringContainsString('"state":"fake state"', $result, "Result is: $result");
-        $this->assertStringContainsString('"zipcode":"12345"', $result, "Result is: $result");
-    }
+//    public function testSerialize() {
+//        $serializer = new NativeSerializer();
+//        $lookup = new Lookup('fake city', 'fake state', '12345');
+//
+//        $result = $serializer->serialize($lookup);
+//
+//        $this->assertStringContainsString('"city":"fake city"', $result, "Result is: $result");
+//        $this->assertStringContainsString('"state":"fake state"', $result, "Result is: $result");
+//        $this->assertStringContainsString('"zipcode":"12345"', $result, "Result is: $result");
+//    }
 
     public function testDeserialize() {
         $expected_json_output = "[{\"input_index\":0,\"city_states\":[{\"city\":\"Washington\",\"state_abbreviation\":
