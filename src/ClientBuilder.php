@@ -7,6 +7,7 @@ use SmartyStreets\PhpSdk\US_Extract\Client as USExtractApiClient;
 use SmartyStreets\PhpSdk\International_Street\Client as InternationalStreetApiClient;
 use SmartyStreets\PhpSdk\US_Street\Client as USStreetApiClient;
 use SmartyStreets\PhpSdk\US_ZIPCode\Client as USZIPCodeApiClient;
+use SmartyStreets\PhpSdk\US_Reverse_Geo\Client as USReverseGeoApiClient;
 
 require_once('Serializer.php');
 require_once('Request.php');
@@ -26,6 +27,7 @@ require_once(dirname(__FILE__) . '/US_ZIPCode/Client.php');
 require_once(dirname(__FILE__) . '/US_Extract/Client.php');
 require_once(dirname(__FILE__) . '/US_Autocomplete/Client.php');
 require_once(dirname(__FILE__) . '/International_Street/Client.php');
+require_once(dirname(__FILE__) . '/US_Reverse_Geo/Client.php');
 
 /**
  * The ClientBuilder class helps you build a client object for one of the supported SmartyStreets APIs.<br>
@@ -38,6 +40,7 @@ class ClientBuilder {
     const US_EXTRACT_API_URL = "https://us-extract.api.smartystreets.com";
     const US_STREET_API_URL = "https://us-street.api.smartystreets.com/street-address";
     const US_ZIP_CODE_API_URL = "https://us-zipcode.api.smartystreets.com/lookup";
+    const US_REVERSE_GEO_API_URL = "https://us-reverse-geo.api.smartystreets.com/lookup";
 
     private $signer,
             $serializer,
@@ -176,6 +179,11 @@ class ClientBuilder {
     public function buildUsZIPCodeApiClient() {
         $this->ensureURLPrefixNotNull(self::US_ZIP_CODE_API_URL);
         return new USZIPCodeApiClient($this->buildSender(), $this->serializer);
+    }
+
+    public function buildUsReverseGeoApiClient() {
+        $this->ensureURLPrefixNotNull(self::US_REVERSE_GEO_API_URL);
+        return new USReverseGeoApiClient($this->buildSender(), $this->serializer);
     }
 
     private function buildSender() {
