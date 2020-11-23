@@ -47,7 +47,12 @@ class Coordinate {
     }
 
     public function getLicense() {
-        return $this->license;
+        switch ($this->license) {
+            case 1:
+                return "SmartyStreets Proprietary";
+            default:
+                return "SmartyStreets";
+        }
     }
 
     //endregion
