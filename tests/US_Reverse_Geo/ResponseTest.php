@@ -7,7 +7,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Reverse_Geo/Response
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Response;
 use PHPUnit\Framework\TestCase;
 
-class CandidateTest extends TestCase
+class ResponseTest extends TestCase
 {
     private $obj;
 
@@ -43,7 +43,7 @@ class CandidateTest extends TestCase
         $this->assertEquals(1.1, $coordinate->getLatitude());
         $this->assertEquals(2.2, $coordinate->getLongitude());
         $this->assertEquals('3', $coordinate->getAccuracy());
-        $this->assertEquals(4, $coordinate->getLicense());
+        $this->assertEquals('SmartyStreets', $coordinate->getLicense());
 
         $this->assertEquals(5.5, $result->getDistance());
 
