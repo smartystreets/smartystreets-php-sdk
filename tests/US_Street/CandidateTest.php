@@ -69,7 +69,8 @@ class CandidateTest extends TestCase {
                 'footnotes' => '48',
                 'lacslink_code' => '49',
                 'lacslink_indicator' => '50',
-                'suitelink_match' => true
+                'suitelink_match' => true,
+                'dpv_no_stat' => '51'
             )
         );
     }
@@ -136,5 +137,6 @@ class CandidateTest extends TestCase {
         $this->assertEquals('49', $analysis->getLacsLinkCode());
         $this->assertEquals('50', $analysis->getLacsLinkIndicator());
         $this->assertEquals(true, $analysis->isSuiteLinkMatch());
+        $this->assertEquals('51', $analysis->getNoStat());
     }
 }

@@ -25,6 +25,7 @@ class Analysis {
         $this->dpvFootnotes = ArrayUtil::setField($obj, 'dpv_footnotes');
         $this->cmra = ArrayUtil::setField($obj, 'dpv_cmra');
         $this->vacant = ArrayUtil::setField($obj, 'dpv_vacant');
+        $this->noStat = ArrayUtil::setField($obj, 'dpv_no_stat');
         $this->active = ArrayUtil::setField($obj, 'active');
         $this->isEwsMatch = ArrayUtil::setField('deprecated, refer to metadata->isEwsMatch', 'ews_match');
         $this->footnotes = ArrayUtil::setField($obj, 'footnotes');
@@ -49,6 +50,10 @@ class Analysis {
 
     public function getVacant() {
         return $this->vacant;
+    }
+
+    public function getNoStat() {
+        return $this->noStat;
     }
 
     public function getActive() {
