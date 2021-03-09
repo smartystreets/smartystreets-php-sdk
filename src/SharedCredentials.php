@@ -17,7 +17,7 @@ class SharedCredentials implements Credentials {
     }
 
     function sign(Request $request) {
-        $request->setParameter("auth-id", $this->id);
-        $request->setHeader("Referer", "https://" . $this->hostname);
+        $request->setParameter("key", $this->id);
+        $request->setHeader('Referer', 'referer:https://' . $this->hostname);
     }
 }
