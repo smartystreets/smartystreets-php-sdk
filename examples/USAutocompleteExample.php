@@ -38,7 +38,6 @@ class USAutocompleteExample {
         $lookup->addCityFilter("Ogden");
         $lookup->addStateFilter("IL");
         $lookup->addPrefer("Ogden, IL");
-        $lookup->getGeolocateType(GEOLOCATE_TYPE_NONE);
         $lookup->setPreferRatio(0.333333);
         $lookup->setMaxSuggestions(5);
 

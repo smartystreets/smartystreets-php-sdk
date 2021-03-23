@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class SharedCredentialsTest extends TestCase {
     public function testSignedRequest() {
         $request = $this->createSignedRequest();
-        $expected = "https://us-street.api.smartystreets.com/street-address?auth-id=3516378604772256";
+        $expected = "https://us-street.api.smartystreets.com/street-address?key=3516378604772256";
 
         $this->assertEquals($expected, $request->getUrl());
     }
@@ -19,7 +19,7 @@ class SharedCredentialsTest extends TestCase {
     public function testReferringHeader() {
         $request = $this->createSignedRequest();
 
-        $this->assertEquals("https://example.com", $request->getHeaders()["Referer"]);
+        $this->assertEquals("referer:https://example.com", $request->getHeaders()["Referer"]);
     }
 
     private function createSignedRequest() {

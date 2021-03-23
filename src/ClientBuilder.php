@@ -3,6 +3,7 @@
 namespace SmartyStreets\PhpSdk;
 
 use SmartyStreets\PhpSdk\US_Autocomplete\Client as USAutoCompleteApiClient;
+use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Client as USAutoCompleteProApiClient;
 use SmartyStreets\PhpSdk\US_Extract\Client as USExtractApiClient;
 use SmartyStreets\PhpSdk\International_Street\Client as InternationalStreetApiClient;
 use SmartyStreets\PhpSdk\US_Street\Client as USStreetApiClient;
@@ -26,6 +27,7 @@ require_once(dirname(__FILE__) . '/US_Street/Client.php');
 require_once(dirname(__FILE__) . '/US_ZIPCode/Client.php');
 require_once(dirname(__FILE__) . '/US_Extract/Client.php');
 require_once(dirname(__FILE__) . '/US_Autocomplete/Client.php');
+require_once(dirname(__FILE__) . '/US_Autocomplete_Pro/Client.php');
 require_once(dirname(__FILE__) . '/International_Street/Client.php');
 require_once(dirname(__FILE__) . '/US_Reverse_Geo/Client.php');
 
@@ -37,6 +39,7 @@ require_once(dirname(__FILE__) . '/US_Reverse_Geo/Client.php');
 class ClientBuilder {
     const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smartystreets.com/verify";
     const US_AUTOCOMPLETE_API_URL = "https://us-autocomplete.api.smartystreets.com/suggest";
+    const US_AUTOCOMPLETE_PRO_API_URL = "https://us-autocomplete-pro.api.smartystreets.com/lookup";
     const US_EXTRACT_API_URL = "https://us-extract.api.smartystreets.com";
     const US_STREET_API_URL = "https://us-street.api.smartystreets.com/street-address";
     const US_ZIP_CODE_API_URL = "https://us-zipcode.api.smartystreets.com/lookup";
@@ -159,6 +162,11 @@ class ClientBuilder {
     public function buildUSAutocompleteApiClient() {
         $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_API_URL);
         return new USAutoCompleteApiClient($this->buildSender(), $this->serializer);
+    }
+
+    public function buildUSAutocompleteProApiClient() {
+        $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_PRO_API_URL);
+        return new USAutoCompleteProApiClient($this->buildSender(), $this->serializer);
     }
 
     public function buildUSExtractApiClient() {
