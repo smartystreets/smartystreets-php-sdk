@@ -22,7 +22,11 @@ class UsStreetSingleAddressExample {
 //        $authToken = getenv('SMARTY_AUTH_TOKEN');
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
-        $client = (new ClientBuilder($staticCredentials))
+
+        // The appropriate license values to be used for your subscriptions
+        // can be found on the Subscriptions page the account dashboard.
+        // https://www.smartystreets.com/docs/cloud/licensing
+        $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-rooftop-geocoding-cloud"])
 //                        ->viaProxy("http://localhost:8080", "username", "password") // uncomment this line to point to the specified proxy.
                         ->buildUsStreetApiClient();
 

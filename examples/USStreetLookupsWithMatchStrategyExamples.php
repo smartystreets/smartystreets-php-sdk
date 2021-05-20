@@ -17,7 +17,12 @@ class USStreetLookupsWithMatchStrategyExamples {
 
     public function run() {
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
-        $client = (new ClientBuilder($staticCredentials))->buildUsStreetApiClient();
+
+        // The appropriate license values to be used for your subscriptions
+        // can be found on the Subscriptions page the account dashboard.
+        // https://www.smartystreets.com/docs/cloud/licensing
+        $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-rooftop-geocoding-cloud"])
+            ->buildUsStreetApiClient();
         $batch = new Batch();
 
         $addressWithStrictStrategy = new Lookup();

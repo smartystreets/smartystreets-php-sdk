@@ -25,7 +25,12 @@ class USAutocompleteProExample
 //        $hostname = getenv('SMARTY_WEBSITE_DOMAIN');
 
         $sharedCredentials = new SharedCredentials($key, $hostname);
-        $client = (new ClientBuilder($sharedCredentials))->buildUSAutocompleteProApiClient();
+
+        // The appropriate license values to be used for your subscriptions
+        // can be found on the Subscriptions page the account dashboard.
+        // https://www.smartystreets.com/docs/cloud/licensing
+        $client = (new ClientBuilder($sharedCredentials)) ->withLicenses(["us-autocomplete-pro-cloud"])
+            ->buildUSAutocompleteProApiClient();
 
         // Documentation for input fields can be found at:
         // https://smartystreets.com/docs/cloud/us-autocomplete-api
