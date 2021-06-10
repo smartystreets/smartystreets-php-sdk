@@ -18,7 +18,9 @@ class Analysis {
             $footnotes,
             $lacsLinkCode,
             $lacsLinkIndicator,
-            $isSuiteLinkMatch;
+            $isSuiteLinkMatch,
+            $matchMode,
+            $matchDetails;
 
     public function __construct($obj) {
         $this->dpvMatchCode = ArrayUtil::setField($obj, 'dpv_match_code');
@@ -32,6 +34,8 @@ class Analysis {
         $this->lacsLinkCode = ArrayUtil::setField($obj, 'lacslink_code');
         $this->lacsLinkIndicator = ArrayUtil::setField($obj, 'lacslink_indicator');
         $this->isSuiteLinkMatch = ArrayUtil::setField($obj, 'suitelink_match');
+        $this->matchMode = ArrayUtil::setField($obj, "match_mode");
+        $this->matchDetails = ArrayUtil::setField($obj, "match_details");
     }
 
     //region [ Getters ]
@@ -78,6 +82,14 @@ class Analysis {
 
     public function isSuiteLinkMatch() {
         return $this->isSuiteLinkMatch;
+    }
+
+    public function getMatchMode() {
+        return $this->matchMode;
+    }
+
+    public function getMatchDetails() {
+        return $this->matchDetails;
     }
 
     //endregion
