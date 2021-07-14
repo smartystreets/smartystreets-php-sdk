@@ -44,9 +44,9 @@ class UsStreetSingleAddressExample {
         $lookup->setState("CA");
         $lookup->setZipcode("21229");
         $lookup->setMaxCandidates(3);
-        $lookup->setMatchStrategy("invalid"); // "invalid" is the most permissive match,
-                                                           // this will always return at least one result even if the address is invalid.
-                                                           // Refer to the documentation for additional MatchStrategy options.
+        $lookup->setMatchStrategy(Lookup::INVALID); // "invalid" is the most permissive match,
+                                                                 // this will always return at least one result even if the address is invalid.
+                                                                 // Refer to the documentation for additional MatchStrategy options.
 
         try {
             $client->sendLookup($lookup);

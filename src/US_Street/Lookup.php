@@ -10,8 +10,9 @@ namespace SmartyStreets\PhpSdk\US_Street;
 class Lookup implements \JsonSerializable {
     //region [ Fields ]
     const STRICT = "strict";
-    const RANGE = "range";
+    const RANGE = "range"; // Deprecated
     const INVALID = "invalid";
+    const ENHANCED = "enhanced";
 
     private $input_id,
             $street,

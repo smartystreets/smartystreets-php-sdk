@@ -35,13 +35,13 @@ class USStreetLookupsWithMatchStrategyExamples {
         $addressWithRangeStrategy->setStreet("693 W 1150 S");
         $addressWithRangeStrategy->setCity("provo");
         $addressWithRangeStrategy->setState("utah");
-        $addressWithRangeStrategy->setMatchStrategy(Lookup::RANGE);
+        $addressWithRangeStrategy->setMatchStrategy(Lookup::INVALID);
 
         $addressWithInvalidStrategy = new Lookup();
         $addressWithInvalidStrategy->setStreet("9999 W 1150 S");
         $addressWithInvalidStrategy->setCity("provo");
         $addressWithInvalidStrategy->setState("utah");
-        $addressWithInvalidStrategy->setMatchStrategy(Lookup::INVALID);
+        $addressWithInvalidStrategy->setMatchStrategy(Lookup::ENHANCED);
 
         try {
             $batch->add($addressWithStrictStrategy);
