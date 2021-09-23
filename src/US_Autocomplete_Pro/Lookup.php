@@ -24,7 +24,8 @@ class Lookup {
             $preferZIPCodes,
             $preferRatio,
             $preferGeolocation,
-            $selected;
+            $selected,
+            $source;
 
     //endregion
 
@@ -134,6 +135,10 @@ class Lookup {
         return $this->selected;
     }
 
+    public function getSource() {
+        return $this->source;
+    }
+
     function getMaxResultsStringIfSet() {
         if ($this->maxResults == Lookup::MAX_RESULTS_DEFAULT)
             return null;
@@ -200,6 +205,10 @@ class Lookup {
 
     public function setSelected($selected) {
         $this->selected = $selected;
+    }
+
+    public function setSource($source) {
+        $this->source = $source;
     }
 
     //endregion

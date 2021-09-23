@@ -50,6 +50,7 @@ class USAutocompleteProExample
         $lookup->addPreferState("IL");
         $lookup->setPreferRatio(100);
         $lookup->setMaxResults(5);
+        $lookup->setSource("all");
 
         $client->sendLookup($lookup);
 

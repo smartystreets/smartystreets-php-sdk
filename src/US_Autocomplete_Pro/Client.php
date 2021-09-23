@@ -55,6 +55,7 @@ class Client {
         $request->setParameter("prefer_ratio", $lookup->getPreferRatioStringIfSet());
         $request->setParameter("prefer_geolocation", $lookup->getGeolocateType()->getName());
         $request->setParameter("selected", $lookup->getSelected());
+        $request->setParameter("source", $lookup->getSource());
 
         return $request;
     }
