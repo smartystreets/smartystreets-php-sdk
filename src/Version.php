@@ -1,1 +1,1 @@
-<?php namespace SmartyStreets\PhpSdk;const VERSION = '4.14.2';
+<?php namespace SmartyStreets\PhpSdk;const VERSION = '4.15.0';
