@@ -6,6 +6,7 @@ use SmartyStreets\PhpSdk\US_Autocomplete\Client as USAutoCompleteApiClient;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Client as USAutoCompleteProApiClient;
 use SmartyStreets\PhpSdk\US_Extract\Client as USExtractApiClient;
 use SmartyStreets\PhpSdk\International_Street\Client as InternationalStreetApiClient;
+use SmartyStreets\PhpSdk\International_Autocomplete\Client as InternationalAutocompleteApiClient;
 use SmartyStreets\PhpSdk\US_Street\Client as USStreetApiClient;
 use SmartyStreets\PhpSdk\US_ZIPCode\Client as USZIPCodeApiClient;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Client as USReverseGeoApiClient;
@@ -29,6 +30,7 @@ require_once(dirname(__FILE__) . '/US_Extract/Client.php');
 require_once(dirname(__FILE__) . '/US_Autocomplete/Client.php');
 require_once(dirname(__FILE__) . '/US_Autocomplete_Pro/Client.php');
 require_once(dirname(__FILE__) . '/International_Street/Client.php');
+require_once(dirname(__FILE__) . '/International_Autocomplete/Client.php');
 require_once(dirname(__FILE__) . '/US_Reverse_Geo/Client.php');
 
 /**
@@ -38,6 +40,7 @@ require_once(dirname(__FILE__) . '/US_Reverse_Geo/Client.php');
  */
 class ClientBuilder {
     const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smartystreets.com/verify";
+    const INTERNATIONAL_AUTOCOMPLETE_API_URL = "https://international-autocomplete.api.smartystreets.com/lookup";
     const US_AUTOCOMPLETE_API_URL = "https://us-autocomplete.api.smartystreets.com/suggest";
     const US_AUTOCOMPLETE_PRO_API_URL = "https://us-autocomplete-pro.api.smartystreets.com/lookup";
     const US_EXTRACT_API_URL = "https://us-extract.api.smartystreets.com";
@@ -177,6 +180,11 @@ class ClientBuilder {
     public function buildInternationalStreetApiClient() {
         $this->ensureURLPrefixNotNull(self::INTERNATIONAL_STREET_API_URL);
         return new InternationalStreetApiClient($this->buildSender(), $this->serializer);
+    }
+
+    public function buildInternationalAutocompleteApiClient() {
+        $this->ensureURLPrefixNotNull(self::INTERNATIONAL_AUTOCOMPLETE_API_URL);
+        return new InternationalAutocompleteApiClient($this->buildSender(), $this->serializer);
     }
 
     public function buildUsStreetApiClient() {
