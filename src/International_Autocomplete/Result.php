@@ -27,11 +27,11 @@ class Result {
         return $candidateObjects;
     }
 
-    public function getSuggestions() {
+    public function getCandidates() {
         return $this->candidates;
     }
 
-    public function getSuggestion($index) {
+    public function getCandidate($index) {
         return $this->candidates[$index];
     }
 }

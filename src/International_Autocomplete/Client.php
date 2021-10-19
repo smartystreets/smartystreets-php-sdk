@@ -36,7 +36,7 @@ class Client {
         if ($result == null)
             return;
 
-        $lookup->setResult((new Result($result))->getSuggestions());
+        $lookup->setResult((new Result($result))->getCandidates());
     }
 
     private function buildRequest(Lookup $lookup) {

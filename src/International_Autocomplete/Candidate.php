@@ -23,7 +23,6 @@ class Candidate {
         if ($obj == null)
             return;
 
-        $this->inputIndex = $obj['input_index'];
         $this->street = ArrayUtil::setField($obj, 'street');
         $this->locality = ArrayUtil::setField($obj, 'locality');
         $this->administrativeArea = ArrayUtil::setField($obj, 'administrative_area');
@@ -32,10 +31,6 @@ class Candidate {
     }
 
     //region [Getters]
-
-    public function getInputIndex() {
-        return $this->inputIndex;
-    }
 
     public function getStreet() {
         return $this->street;

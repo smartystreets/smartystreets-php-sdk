@@ -26,6 +26,7 @@ class Lookup {
      *  @param $search string The beginning of an address
      */
     public function __construct($search = null) {
+        $this->result = array();
         $this->search = $search;
         $this->maxResults = Lookup::MAX_RESULTS_DEFAULT;
     }
