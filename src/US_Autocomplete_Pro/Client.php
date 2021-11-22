@@ -64,6 +64,6 @@ class Client {
         if (empty($list))
             return null;
 
-        return join(',', $list);
+        return join(';', $list);
     }
 }

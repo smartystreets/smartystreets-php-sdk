@@ -35,7 +35,7 @@ class USAutocompleteProExample
         // Documentation for input fields can be found at:
         // https://smartystreets.com/docs/cloud/us-autocomplete-api
 
-        $lookup = new Lookup("4770 Lincoln Ave O");
+        $lookup = new Lookup("1042 W Center");
 
         $client->sendLookup($lookup);
 
@@ -44,11 +44,12 @@ class USAutocompleteProExample
         foreach ($lookup->getResult() as $suggestion)
             $this->printResults($suggestion);
 
-        $lookup->addCityFilter("Ogden");
-        $lookup->addStateFilter("IL");
-        $lookup->addPreferCity("Ogden");
-        $lookup->addPreferState("IL");
-        $lookup->setPreferRatio(100);
+        $lookup->addStateFilter("CO");
+        $lookup->addStateFilter("UT");
+        $lookup->addCityFilter("Denver");
+        $lookup->addCityFilter("Orem");
+//        $lookup->addPreferState("CO");
+        $lookup->setPreferRatio(3);
         $lookup->setMaxResults(5);
         $lookup->setSource("all");
 
