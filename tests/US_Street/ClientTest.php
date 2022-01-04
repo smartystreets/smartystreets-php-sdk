@@ -47,7 +47,7 @@ class ClientTest extends TestCase {
         $serializer = new NativeSerializer();
         $expectedURL = ("http://localhost/?input_id=1&street=2&street2=3&secondary=4&city=5&" .
             "state=6&zipcode=7&lastline=8&addressee=9&" .
-            "urbanization=10&match=invalid&candidates=12");
+            "urbanization=10&match=enhanced&candidates=5");
 
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -61,8 +61,7 @@ class ClientTest extends TestCase {
         $lookup->setLastline("8");
         $lookup->setAddressee("9");
         $lookup->setUrbanization("10");
-        $lookup->setMatchStrategy(Lookup::INVALID);
-        $lookup->setMaxCandidates(12);
+        $lookup->setMatchStrategy(Lookup::ENHANCED);
 
         $client->sendLookup($lookup);
 
