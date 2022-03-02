@@ -70,7 +70,7 @@ class UsStreetSingleAddressExample {
 
         $firstCandidate = $results[0];
 
-        echo("\nAddress is valid. (There is at least one candidate)\n");
+        echo("\nThere is at least one candidate. If the match parameter is set to STRICT, the address is valid. Otherwise, check the Analysis output fields to see if the address is valid.\n");
         echo("\nZIP Code: " . $firstCandidate->getComponents()->getZIPCode());
         echo("\nCounty: " . $firstCandidate->getMetadata()->getCountyName());
         echo("\nLatitude: " . $firstCandidate->getMetadata()->getLatitude());

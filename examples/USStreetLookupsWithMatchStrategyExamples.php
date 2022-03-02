@@ -73,7 +73,7 @@ class USStreetLookupsWithMatchStrategyExamples {
                 continue;
             }
 
-            echo("\nAddress " . $i . " is valid. (There is at least one candidate)");
+            echo("\nAddress " . $i . " has at least one candidate. If the match parameter is set to STRICT, the address is valid. Otherwise, check the Analysis output fields to see if the address is valid.\n");
 
             foreach ($candidates as $candidate) {
                 $components = $candidate->getComponents();
