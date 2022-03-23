@@ -2,6 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\Tests\US_Autocomplete;
 
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete/Lookup.php');
 use PHPUnit\Framework\TestCase;
 use SmartyStreets\PhpSdk\US_Autocomplete\Lookup;
 
