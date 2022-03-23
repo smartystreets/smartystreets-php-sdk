@@ -111,7 +111,7 @@ class Lookup {
     }
 
     public function setMaxSuggestions($maxSuggestions) {
-        if ($maxSuggestions > 0 && $this->maxSuggestions <= 10)
+        if ($maxSuggestions > 0 && $maxSuggestions <= 10)
             $this->maxSuggestions = $maxSuggestions;
         else
             throw new \InvalidArgumentException("Max suggestions must be a positive integer no larger than 10.");
