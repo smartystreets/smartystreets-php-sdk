@@ -3,6 +3,9 @@
 namespace SmartyStreets\PhpSdk;
 
 include_once('Sender.php');
+require_once('Exceptions/TooManyRequestsException.php');
+use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
+
 
 class RetrySender implements Sender {
     const MAX_BACKOFF_DURATION = 10;
@@ -31,6 +34,8 @@ class RetrySender implements Sender {
     private function trySend(Request $request, $attempt) {
         try {
             return $this->inner->send($request);
+        } catch (TooManyRequestsException $ex) {
+            $this->backoff(5);
         } catch (\Exception $ex) {
             if ($attempt >= $this->maxRetries)
                 throw $ex;
