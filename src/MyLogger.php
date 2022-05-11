@@ -6,6 +6,6 @@ include_once('Logger.php');
 
 class MyLogger implements Logger {
     public function log($message) {
-        print("\n" . $message);
+        error_log($message);
     }
 }
