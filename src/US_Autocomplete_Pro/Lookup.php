@@ -58,8 +58,8 @@ class Lookup {
     }
 
     public function addZIPFilter($zipcode) {
-        $this->geolocateType = new GeolocateType(GEOLOCATE_TYPE_NONE);
-        $this->zipFilter = $zipcode;
+        $this->preferGeolocation = new GeolocateType(GEOLOCATE_TYPE_NONE);
+        $this->zipFilter[] = $zipcode;
     }
 
     public function addStateExclusion($stateAbbreviation) {
@@ -75,8 +75,8 @@ class Lookup {
     }
 
     public function addPreferZIPCode($zipcode) {
-        $this->geolocateType = new GeolocateType(GEOLOCATE_TYPE_NONE);
-        $this->preferZIPCodes = $zipcode;
+        $this->preferGeolocation = new GeolocateType(GEOLOCATE_TYPE_NONE);
+        $this->preferZIPCodes[] = $zipcode;
     }
 
     //region [ Getters ]
@@ -129,7 +129,7 @@ class Lookup {
         return $this->preferRatio;
     }
 
-    public function getGeolocateType() {
+    public function getPreferGeolocation() {
         return $this->preferGeolocation;
     }
 
@@ -180,7 +180,7 @@ class Lookup {
     }
 
     public function setZIPFilter($zipFilter) {
-        $this->geolocateType =  new GeolocateType(GEOLOCATE_TYPE_NONE);
+        $this->preferGeolocation = new GeolocateType(GEOLOCATE_TYPE_NONE);
         $this->zipFilter = $zipFilter;
     }
 
@@ -193,16 +193,16 @@ class Lookup {
     }
 
     public function setPreferZIPCodes($zipcodes) {
-        $this->geolocateType = new GeolocateType(GEOLOCATE_TYPE_NONE);
-        $this->$this->preferZIPCodes = $zipcodes;
+        $this->preferGeolocation = new GeolocateType(GEOLOCATE_TYPE_NONE);
+        $this->preferZIPCodes = $zipcodes;
     }
 
     public function setPreferRatio($preferRatio) {
         $this->preferRatio = $preferRatio;
     }
 
-    public function setGeolocateType(GeolocateType $geolocateType) {
-        $this->geolocateType = $geolocateType;
+    public function setPreferGeolocation(GeolocateType $geolocateType) {
+        $this->preferGeolocation = $geolocateType;
     }
 
     public function setSelected($selected) {

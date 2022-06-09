@@ -53,7 +53,7 @@ class Client {
         $request->setParameter("prefer_states", $this->buildFilterString($lookup->getPreferStates()));
         $request->setParameter("prefer_zip_codes", $this->buildFilterString($lookup->getPreferZIPCodes()));
         $request->setParameter("prefer_ratio", $lookup->getPreferRatioStringIfSet());
-        $request->setParameter("prefer_geolocation", $lookup->getGeolocateType()->getName());
+        $request->setParameter("prefer_geolocation", $lookup->getPreferGeolocation()->getName());
         $request->setParameter("selected", $lookup->getSelected());
         $request->setParameter("source", $lookup->getSource());
 
