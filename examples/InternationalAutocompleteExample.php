@@ -14,8 +14,8 @@ $lookupExample->run();
 class InternationalAutocompleteExample {
 
     public function run() {
-//        $authId = 'Your SmartyStreets Auth ID here';
-//        $authToken = 'Your SmartyStreets Auth Token here';
+        // $authId = 'Your SmartyStreets Auth ID here';
+        // $authToken = 'Your SmartyStreets Auth Token here';
 
         // We recommend storing your secret keys in environment variables instead---it's safer!
         $authId = getenv('SMARTY_AUTH_ID');
