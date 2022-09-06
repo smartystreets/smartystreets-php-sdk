@@ -1,8 +1,8 @@
 {
-    "name": "smartystreets/phpsdk",
+    "name": "vinsaj9/smartystreets",
     "type": "library",
-    "description": "The official PHP client library from SmartyStreets.",
-    "homepage": "https://github.com/smartystreets/smartystreets-php-sdk",
+    "description": "Fork of the official PHP client library from SmartyStreets.",
+    "homepage": "https://github.com/vinsaj9/smartystreets-php-sdk",
     "license": "Apache-2.0",
     "authors": [
         {
