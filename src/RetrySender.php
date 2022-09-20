@@ -9,6 +9,7 @@ use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 
 class RetrySender implements Sender {
     const MAX_BACKOFF_DURATION = 10;
+    const STATUS_TO_RETRY = [408, 429, 500, 502, 503, 504];
     private $inner,
             $maxRetries,
             $sleeper,
@@ -26,7 +27,9 @@ class RetrySender implements Sender {
             $response = $this->trySend($request, $i);
 
             if ($response != null)
+            if ($response!= null && !in_array($response->getStatusCode(), self::STATUS_TO_RETRY)){
                 return $response;
+            }
         }
         return null;
     }
