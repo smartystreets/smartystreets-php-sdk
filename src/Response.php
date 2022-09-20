@@ -2,30 +2,40 @@
 
 namespace SmartyStreets\PhpSdk;
 
-class Response {
+class Response
+{
     //region [ Fields ]
 
     private $statusCode,
-            $payload;
+        $payload,
+        $headers;
 
     //endregion
 
     //region [ Constructors ]
 
-    public function __construct($statusCode, $payload) {
+    public function __construct($statusCode, $payload, $headers)
+    {
         $this->statusCode = $statusCode;
         $this->payload = $payload;
+        $this->headers = $headers;
     }
 
     //endregion
 
     //region [ Getters ]
 
-    public function getStatusCode() {
+    public function getStatusCode()
+    {
         return $this->statusCode;
     }
 
-    public function getPayload() {
+    public function getHeaders(){
+        return $this->headers;
+    }
+
+    public function getPayload()
+    {
         return $this->payload;
     }
 
@@ -33,11 +43,13 @@ class Response {
 
     //region [ Setters ]
 
-    public function setStatusCode($statusCode) {
+    public function setStatusCode($statusCode)
+    {
         $this->statusCode = $statusCode;
     }
 
-    public function setPayload($payload) {
+    public function setPayload($payload)
+    {
         $this->payload = $payload;
     }
 

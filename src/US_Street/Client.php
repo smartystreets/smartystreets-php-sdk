@@ -8,6 +8,7 @@ require_once(dirname(dirname(__FILE__)) . '/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/Batch.php');
 require_once('Candidate.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
+use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;

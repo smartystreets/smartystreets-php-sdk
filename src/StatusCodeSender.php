@@ -12,6 +12,7 @@ require_once('Exceptions/ServiceUnavailableException.php');
 require_once('Exceptions/TooManyRequestsException.php');
 require_once('Exceptions/UnprocessableEntityException.php');
 require_once('Exceptions/GatewayTimeoutException.php');
+
 use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
 use SmartyStreets\PhpSdk\Exceptions\BadRequestException;
 use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
@@ -23,14 +24,17 @@ use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;
 
-class StatusCodeSender implements Sender {
+class StatusCodeSender implements Sender
+{
     private $inner;
 
-    public function __construct(Sender $inner) {
+    public function __construct(Sender $inner)
+    {
         $this->inner = $inner;
     }
 
-    function send(Request $request) {
+    function send(Request $request)
+    {
         $response = $this->inner->send($request);
 
         switch ($response->getStatusCode()) {
@@ -47,7 +51,10 @@ class StatusCodeSender implements Sender {
             case 422:
                 throw new UnprocessableEntityException("GET request lacked required fields." . $response->getStatusCode());
             case 429:
-                throw new TooManyRequestsException("When using public \"website key\" authentication, we restrict the number of requests coming from a given source over too short of a time." . $response->getStatusCode());
+                $message = json_decode($response->getPayload(), true, 10);
+                $tooManyRequests = new TooManyRequestsException($message['errors'][0]['message'] .  $response->getStatusCode());
+                $tooManyRequests->setHeader($response->getHeaders());
+                throw $tooManyRequests;
             case 500:
                 throw new InternalServerErrorException("Internal Server Error." . $response->getStatusCode());
             case 503:

@@ -31,7 +31,9 @@ class Candidate {
     public function __construct($obj = null) {
         if ($obj == null)
             return;
-
+        if(!array_key_exists('input_index', $obj)){
+            print_r($obj);
+        }
         $this->inputIndex = $obj['input_index'];
         $this->candidateIndex = $obj['candidate_index'];
         $this->inputId = ArrayUtil::setField($obj, 'input_id');
