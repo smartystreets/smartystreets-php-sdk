@@ -18,13 +18,15 @@ class UsStreetMultipleAddressesExample
 {
     public function run()
     {
+
+
         // $authId = 'Your SmartyStreets Auth ID here';
         // $authToken = 'Your SmartyStreets Auth Token here';
 
         // We recommend storing your secret keys in environment variables instead---it's safer!
         $authId = getenv('SMARTY_AUTH_ID');
         $authToken = getenv('SMARTY_AUTH_TOKEN');
-        print $authId . " " . $authToken;
+
         $staticCredentials = new StaticCredentials($authId, $authToken);
 
         // The appropriate license values to be used for your subscriptions
@@ -57,17 +59,13 @@ class UsStreetMultipleAddressesExample
         $address3->setZIPCode("95014"); // You can just input the street and ZIP if you want.
 
         try {
-//            $batch->add($address0);
-//            $batch->add($address2);
-//            $batch->add($address3);
-            for ($j = 0; $j < 100; $j++) {
-                $batch->add($address1);
-            }
-            for ($i = 0; $i < 10000; $i++) {
-                $client->sendBatch($batch);
-//                $this->displayResults($batch, $i);
-                echo("\n\nPosition : " . $i);
-            }
+            $batch->add($address0);
+            $batch->add($address1);
+            $batch->add($address2);
+            $batch->add($address3);
+
+            $client->sendBatch($batch);
+            $this->displayResults($batch);
         } catch (BatchFullException $ex) {
             echo("Oops! Batch was already full.");
         } catch (SmartyException $ex) {
@@ -77,7 +75,7 @@ class UsStreetMultipleAddressesExample
         }
     }
 
-    public function displayResults(Batch $batch, $position)
+    public function displayResults(Batch $batch)
     {
         $lookups = $batch->getAllLookups();
 
@@ -95,8 +93,8 @@ class UsStreetMultipleAddressesExample
                 $components = $candidate->getComponents();
                 $metadata = $candidate->getMetadata();
 
-                echo ("\n\nPosition " . $position);
-                echo("\nCandidate " . $candidate->getCandidateIndex() . ":");
+                echo("\n\nCandidate " . $candidate->getCandidateIndex() . ":");
+
                 echo("\nDelivery line 1: " . $candidate->getDeliveryLine1());
                 echo("\nLast line:       " . $candidate->getLastLine());
                 echo("\nZIP Code:        " . $components->getZIPCode() . "-" . $components->getPlus4Code());
