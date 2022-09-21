@@ -12,9 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup php
-        uses: /setup-php@v3
-
       - name: Run sdk
         run: |
           run sdk
