@@ -53,15 +53,12 @@ class StatusCodeSender implements Sender
             case 429:
                 $responseJSON = json_decode($response->getPayload(), true, 10);
 
-                if (empty($responseJSON)) {
+                if (! isset($responseJSON['errors'])) {
                     throw new TooManyRequestsException("The rate limit for the plan associated with this subscription has been exceeded. To see plans with higher rate limits, visit our pricing page." . $response->getStatusCode());
                 }
 
-                $i = 0;
-                $errorMessage = '';
                 foreach($responseJSON['errors'] as $error){
-                    $errorMessage = $errorMessage . $responseJSON['errors'][$i]['message'];
-                    $i++;
+                    $errorMessage .= isset($error['message']) ? $error['message'].' ': '';
                 }
                 $tooManyRequests = new TooManyRequestsException($errorMessage . $response->getStatusCode());
                 $tooManyRequests->setHeader($response->getHeaders());
