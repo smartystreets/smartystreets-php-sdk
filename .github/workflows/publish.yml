@@ -21,4 +21,4 @@ jobs:
 
       - name: Package
         run: |
-          @echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = ${{ env.RELEASE_VERSION }}" > src/Version.php
+          echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '${{ env.RELEASE_VERSION }}'" > src/Version.php
