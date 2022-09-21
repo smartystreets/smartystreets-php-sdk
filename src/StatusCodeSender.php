@@ -51,8 +51,19 @@ class StatusCodeSender implements Sender
             case 422:
                 throw new UnprocessableEntityException("GET request lacked required fields." . $response->getStatusCode());
             case 429:
-                $message = json_decode($response->getPayload(), true, 10);
-                $tooManyRequests = new TooManyRequestsException($message['errors'][0]['message'] .  $response->getStatusCode());
+                $responseJSON = json_decode($response->getPayload(), true, 10);
+
+                if (empty($responseJSON)) {
+                    throw new TooManyRequestsException("The rate limit for the plan associated with this subscription has been exceeded. To see plans with higher rate limits, visit our pricing page." . $response->getStatusCode());
+                }
+
+                $i = 0;
+                $errorMessage = '';
+                foreach($responseJSON['errors'] as $error){
+                    $errorMessage = $errorMessage . $responseJSON['errors'][$i]['message'];
+                    $i++;
+                }
+                $tooManyRequests = new TooManyRequestsException($errorMessage . $response->getStatusCode());
                 $tooManyRequests->setHeader($response->getHeaders());
                 throw $tooManyRequests;
             case 500:
