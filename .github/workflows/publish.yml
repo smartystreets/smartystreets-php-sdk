@@ -14,7 +14,7 @@ jobs:
 
       - name: Run sdk
         run: |
-          run sdk
+          docker-compose run sdk
 
       - name: Set Environment Variable
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
