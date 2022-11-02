@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 VERSION_FILE := src/Version.php
-VERSION      := $(shell tagit -p --dryrun)
+#VERSION      := $(shell tagit -p --dryrun)
 
 test:
 	phpunit tests
