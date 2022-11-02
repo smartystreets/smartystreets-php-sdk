@@ -30,6 +30,8 @@ class CandidateTest extends TestCase {
                 "country_iso_3" => "14",
                 "super_administrative_area" => '15',
                 "administrative_area" => "16",
+                "administrative_area_short" => "16.1",
+                "administrative_area_long" => "16.2",
                 "sub_administrative_area" => "17",
                 "dependent_locality" => "18",
                 "dependent_locality_name" => "19",
@@ -63,6 +65,8 @@ class CandidateTest extends TestCase {
                 "sub_building_number" => "46",
                 "sub_building_name" => "47",
                 "sub_building" => "48",
+                "level_type" => "48.1",
+                "level_number" => "48.2",
                 "post_box" => "49",
                 "post_box_type" => "50",
                 "post_box_number" => "51"
@@ -96,6 +100,8 @@ class CandidateTest extends TestCase {
                         "country_iso_3" => "73",
                         "super_administrative_area" => "74",
                         "administrative_area" => "75",
+                        "administrative_area_short" => "75.1",
+                        "administrative_area_long" => "75.2",
                         "sub_administrative_area" => "76",
                         "dependent_locality" => "77",
                         "dependent_locality_name" => "78",
@@ -129,6 +135,8 @@ class CandidateTest extends TestCase {
                         "sub_building_number" => "106",
                         "sub_building_name" => "107",
                         "sub_building" => "108",
+                        "level_type" => "108.1",
+                        "level_number" => "108.2",
                         "post_box" => "109",
                         "post_box_type" => "110",
                         "post_box_number" => "111"
@@ -164,6 +172,8 @@ class CandidateTest extends TestCase {
         $this->assertEquals("14", $components->getCountryIso3());
         $this->assertEquals("15", $components->getSuperAdministrativeArea());
         $this->assertEquals("16", $components->getAdministrativeArea());
+        $this->assertEquals("16.1", $components->getAdministrativeAreaShort());
+        $this->assertEquals("16.2", $components->getAdministrativeAreaLong());
         $this->assertEquals("17", $components->getSubAdministrativeArea());
         $this->assertEquals("18", $components->getDependentLocality());
         $this->assertEquals("19", $components->getDependentLocalityName());
@@ -197,6 +207,8 @@ class CandidateTest extends TestCase {
         $this->assertEquals("46", $components->getSubBuildingNumber());
         $this->assertEquals("47", $components->getSubBuildingName());
         $this->assertEquals("48", $components->getSubBuilding());
+        $this->assertEquals("48.1", $components->getLevelType());
+        $this->assertEquals("48.2", $components->getLevelNumber());
         $this->assertEquals("49", $components->getPostBox());
         $this->assertEquals("50", $components->getPostBoxType());
         $this->assertEquals("51", $components->getPostBoxNumber());
@@ -242,6 +254,8 @@ class CandidateTest extends TestCase {
         $this->assertEquals("73", $components->getCountryIso3());
         $this->assertEquals("74", $components->getSuperAdministrativeArea());
         $this->assertEquals("75", $components->getAdministrativeArea());
+        $this->assertEquals("75.1", $components->getAdministrativeAreaShort());
+        $this->assertEquals("75.2", $components->getAdministrativeAreaLong());
         $this->assertEquals("76", $components->getSubAdministrativeArea());
         $this->assertEquals("77", $components->getDependentLocality());
         $this->assertEquals("78", $components->getDependentLocalityName());
@@ -275,6 +289,8 @@ class CandidateTest extends TestCase {
         $this->assertEquals("106", $components->getSubBuildingNumber());
         $this->assertEquals("107", $components->getSubBuildingName());
         $this->assertEquals("108", $components->getSubBuilding());
+        $this->assertEquals("108.1", $components->getLevelType());
+        $this->assertEquals("108.2", $components->getLevelNumber());
         $this->assertEquals("109", $components->getPostBox());
         $this->assertEquals("110", $components->getPostBoxType());
         $this->assertEquals("111", $components->getPostBoxNumber());

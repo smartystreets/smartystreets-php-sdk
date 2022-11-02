@@ -53,6 +53,7 @@ class Client {
         $request->setParameter("address2", $lookup->getAddress2());
         $request->setParameter("address3", $lookup->getAddress3());
         $request->setParameter("address4", $lookup->getAddress4());
+        $request->setParameter("unit", $lookup->getUnit());
         $request->setParameter("organization", $lookup->getOrganization());
         $request->setParameter("locality", $lookup->getLocality());
         $request->setParameter("administrative_area", $lookup->getAdministrativeArea());
