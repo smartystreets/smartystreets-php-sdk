@@ -7,7 +7,7 @@ test:
 	phpunit tests
 
 package: test
-	@echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '$(VERSION)';" > $(VERSION_FILE)
+	@echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '${VERSION}';" > $(VERSION_FILE)
 
 ############################################################
 
