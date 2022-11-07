@@ -21,7 +21,6 @@ class Lookup {
             $address2,
             $address3,
             $address4,
-            $unit,
             $organization,
             $locality,
             $administrativeArea,
@@ -129,10 +128,6 @@ class Lookup {
         return $this->address4;
     }
 
-    public function getUnit() {
-        return $this->unit;
-    }
-
     public function getOrganization() {
         return $this->organization;
     }
@@ -204,10 +199,6 @@ class Lookup {
 
     public function setAddress4($address4) {
         $this->address4 = $address4;
-    }
-
-    public function setUnit($unit) {
-        $this->unit = $unit;
     }
 
     public function setOrganization($organization) {
