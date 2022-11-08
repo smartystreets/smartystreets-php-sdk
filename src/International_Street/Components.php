@@ -14,6 +14,8 @@ class Components {
     private $countryIso3,
             $superAdministrativeArea,
             $administrativeArea,
+            $administrativeAreaShort,
+            $administrativeAreaLong,
             $subAdministrativeArea,
             $dependentLocality,
             $dependentLocalityName,
@@ -47,6 +49,8 @@ class Components {
             $subBuildingNumber,
             $subBuildingName,
             $subBuilding,
+            $levelType,
+            $levelNumber,
             $postBox,
             $postBoxType,
             $postBoxNumber;
@@ -62,6 +66,8 @@ class Components {
         $this->countryIso3 = ArrayUtil::setField($obj,'country_iso_3');
         $this->superAdministrativeArea = ArrayUtil::setField($obj,'super_administrative_area');
         $this->administrativeArea = ArrayUtil::setField($obj,'administrative_area');
+        $this->administrativeAreaShort = ArrayUtil::setField($obj,'administrative_area_short');
+        $this->administrativeAreaLong = ArrayUtil::setField($obj,'administrative_area_long');
         $this->subAdministrativeArea = ArrayUtil::setField($obj,'sub_administrative_area');
         $this->dependentLocality = ArrayUtil::setField($obj,'dependent_locality');
         $this->dependentLocalityName = ArrayUtil::setField($obj,'dependent_locality_name');
@@ -95,6 +101,8 @@ class Components {
         $this->subBuildingNumber = ArrayUtil::setField($obj,'sub_building_number');
         $this->subBuildingName = ArrayUtil::setField($obj,'sub_building_name');
         $this->subBuilding = ArrayUtil::setField($obj,'sub_building');
+        $this->levelType = ArrayUtil::setField($obj,'level_type');
+        $this->levelNumber = ArrayUtil::setField($obj,'level_number');
         $this->postBox = ArrayUtil::setField($obj,'post_box');
         $this->postBoxType = ArrayUtil::setField($obj,'post_box_type');
         $this->postBoxNumber = ArrayUtil::setField($obj,'post_box_number');
@@ -114,6 +122,14 @@ class Components {
 
     public function getAdministrativeArea() {
         return $this->administrativeArea;
+    }
+
+    public function getAdministrativeAreaShort() {
+        return $this->administrativeAreaShort;
+    }
+
+    public function getAdministrativeAreaLong() {
+        return $this->administrativeAreaLong;
     }
 
     public function getSubAdministrativeArea() {
@@ -246,6 +262,14 @@ class Components {
 
     public function getSubBuilding() {
         return $this->subBuilding;
+    }
+
+    public function getLevelType() {
+        return $this->levelType;
+    }
+
+    public function getLevelNumber() {
+        return $this->levelNumber;
     }
 
     public function getPostBox() {
