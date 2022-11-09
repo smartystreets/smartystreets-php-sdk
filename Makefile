@@ -14,8 +14,7 @@ workspace:
 	docker-compose run sdk /bin/sh
 
 release:
-	make package \
-	&& git commit -am "Incremented version." \
+	git commit -am "Incremented version." \
 	&& tagit -p \
 	&& git push origin master --tags
 
