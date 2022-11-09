@@ -18,4 +18,4 @@ jobs:
       - name: Run sdk
         run: |
           VERSION=${GITHUB_REF#refs/*/} make release
-          docker-compose run sdk echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '${{ env.RELEASE_VERSION }}'" > src/Version.php
+#          docker-compose run sdk echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '${{ env.RELEASE_VERSION }}'" > src/Version.php
