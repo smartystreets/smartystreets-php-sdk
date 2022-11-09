@@ -5,7 +5,7 @@ VERSION_FILE := src/Version.php
 test:
 	phpunit tests
 
-package: test
+package:
 	@echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '${VERSION}';" > $(VERSION_FILE)
 
 ############################################################
@@ -14,7 +14,8 @@ workspace:
 	docker-compose run sdk /bin/sh
 
 release:
-	git commit -am "Incremented version." \
+	make package \
+	&& git commit -am "Incremented version." \
 	&& tagit -p \
 	&& git push origin master --tags
 
