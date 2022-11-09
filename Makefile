@@ -13,9 +13,9 @@ package:
 workspace:
 	docker-compose run sdk /bin/sh
 
-release: 
+release:
 	docker-compose run sdk make package \
-	&& "<?php namespace SmartyStreets\PhpSdk;const VERSION = '${VERSION}';" > $(VERSION_FILE)
+	&& echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '${VERSION}';" > $(VERSION_FILE)
 #		&& git commit -am "Incremented version." \
 #		&& tagit -p \
 #		&& git push origin master --tags
