@@ -18,4 +18,4 @@ jobs:
       - name: Package
         run: |
           echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '${{ env.RELEASE_VERSION }}'" > src/Version.php
-          VERSION='${{ env.RELEASE_VERSION }}' make release
+          VERSION=${{ env.RELEASE_VERSION }} make release
