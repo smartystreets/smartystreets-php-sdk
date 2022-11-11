@@ -7,13 +7,14 @@
     "authors": [
         {
             "name": "SmartyStreets SDK Team",
-            "email": "support@smartystreets.com"
+            "email": "support@smarty.com"
         }
     ],
     "require": {
         "php": ">=5.6"
     },
     "require-dev": {
+        "phpunit/phpunit": ">= ^9",
         "psr/log": "^1.0.1"
     },
     "suggest": {
