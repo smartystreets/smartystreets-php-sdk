@@ -27,7 +27,7 @@
     },
     "autoload-dev": {
         "psr-4": { 
-        "SmartyStreets\\PhpSdk\\Tests\\": "tests/" 
-    	}
+            "SmartyStreets\\PhpSdk\\Tests\\": "tests/" 
+        }
     }
 }
