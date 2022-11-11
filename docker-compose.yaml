@@ -1,0 +1,13 @@
+services:
+  sdk:
+    build: .
+    volumes: 
+      - .:/code
+    environment:
+      - SMARTY_AUTH_ID
+      - SMARTY_AUTH_TOKEN
+      - SMARTY_URL_INTERNATIONAL_STREET
+      - SMARTY_URL_US_AUTOCOMPLETE
+      - SMARTY_URL_US_EXTRACT
+      - SMARTY_URL_US_STREET
+      - SMARTY_URL_US_ZIP
