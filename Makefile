@@ -14,9 +14,9 @@ workspace:
 	docker-compose run sdk /bin/sh
 
 release:
-	docker-compose run sdk make package # echo "<?php namespace SmartyStreets\PhpSdk;const VERSION = '${VERSION}';" > $(VERSION_FILE)
-#	&& git commit -am "Incremented version." \
-#	&& tagit -p \
-#	&& git push origin master --tags
+	docker-compose run sdk make package
+	&& git commit -am "Incremented version." \
+	&& tagit -p \
+	&& git push origin master --tags
 
 .PHONY: test package workspace release
