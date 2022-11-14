@@ -1,0 +1,15 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - '*'
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: /setup-php@v3
+
+      - run: make test
