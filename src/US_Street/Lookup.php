@@ -50,7 +50,7 @@ class Lookup implements \JsonSerializable {
         $this->result = array();
     }
 
-    function jsonSerialize() {
+    function jsonSerialize(): mixed {
         return array(
             'input_id' => $this->input_id,
             'street' => $this->street,

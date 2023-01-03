@@ -29,7 +29,7 @@ class Lookup implements \JsonSerializable {
         $this->zipcode = $zipcode;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize() : mixed
     {
         return array(
             'input_id' => $this->inputId,
