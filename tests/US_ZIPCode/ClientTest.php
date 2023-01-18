@@ -94,7 +94,7 @@ class ClientTest extends TestCase {
         $batch->add(new Lookup());
         $batch->add(new Lookup());
 
-        $sender = new MockSender(new Response(0, "[]"));
+        $sender = new MockSender(new Response(0, "[]", ""));
         $deserializer = new MockDeserializer($rawResults);
         $client = new Client($sender, $deserializer);
 
