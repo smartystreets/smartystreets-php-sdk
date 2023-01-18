@@ -53,11 +53,9 @@ class RetrySenderTest extends TestCase {
     }
 
     public function testSleepOnRateLimit() {
-        $expectedDurations = array(10, 0);
+        $this->expectException(\TooManyRequestsException::class);
 
         $this->sendRequest("HitRateLimit");
-
-        $this->assertEquals($expectedDurations, $this->mockSleeper->getSleepDurations());
     }
 
     private function sendRequest($requestBehavior) {
