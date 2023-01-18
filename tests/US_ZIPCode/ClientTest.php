@@ -76,7 +76,7 @@ class ClientTest extends TestCase {
     //region [ Response Handling ]
 
     public function testDeserializeCalledWithResponseBody() {
-        $response = new Response(0, "Hello, World!");
+        $response = new Response(0, "Hello, World!", "");
         $sender = new MockSender($response);
         $deserializer = new MockDeserializer(null);
         $client = new Client($sender, $deserializer);

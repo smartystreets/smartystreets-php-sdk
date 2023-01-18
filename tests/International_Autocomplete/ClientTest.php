@@ -75,7 +75,7 @@ class ClientTest extends TestCase {
     }
 
     public function testDeserializeCalledWithResponseBody() {
-        $response = new Response(0, "Hello, World!");
+        $response = new Response(0, "Hello, World!", "");
         $sender = new MockSender($response);
         $deserializer = new MockDeserializer(null);
         $client = new Client($sender, $deserializer);
@@ -97,7 +97,7 @@ class ClientTest extends TestCase {
         $lookup->setCountry("0");
         $lookup->setSearch("1");
 
-        $sender = new MockSender(new Response(0, ""));
+        $sender = new MockSender(new Response(0, "", ""));
         $deserializer = new MockDeserializer($rawResults);
         $client = new Client($sender, $deserializer);
 

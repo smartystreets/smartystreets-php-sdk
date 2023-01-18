@@ -36,7 +36,7 @@ class MockCrashingSender implements Sender {
             if ($this->sendCount <= 1)
                 throw new TooManyRequestsException("Slow down");
 
-        return new Response(self::STATUS_CODE, "");
+        return new Response(self::STATUS_CODE, "", "");
     }
 
     public function getSendCount() {

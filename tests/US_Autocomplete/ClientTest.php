@@ -82,7 +82,7 @@ class ClientTest extends TestCase {
     //region [ Response Handling ]
 
     public function testDeserializeCalledWithResponseBody() {
-        $response = new Response(0, "Hello, World!");
+        $response = new Response(0, "Hello, World!", "");
         $mockSender = new MockSender($response);
         $sender = new URLPrefixSender("http://localhost/", $mockSender);
         $deserializer = new MockDeserializer(null);
@@ -100,7 +100,7 @@ class ClientTest extends TestCase {
 
         $lookup = new Lookup('1');
 
-        $mockSender = new MockSender(new Response(0, "{[]}"));
+        $mockSender = new MockSender(new Response(0, "{[]}", ""));
         $sender = new URLPrefixSender("http://localhost/", $mockSender);
         $deserializer = new MockDeserializer($rawResult);
         $client = new Client($sender, $deserializer);

@@ -17,7 +17,7 @@ class URLPrefixSenderTest extends TestCase {
         $request = new Request();
         $request->setUrlPrefix("original");
         $override = "override?";
-        $inner = new MockSender(new Response(123, null));
+        $inner = new MockSender(new Response(123, null, ""));
         $sender = new URLPrefixSender($override, $inner);
 
         $sender->send($request);

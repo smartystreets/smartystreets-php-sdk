@@ -31,7 +31,7 @@ class SigningSenderTest extends TestCase {
 
     public function testResponseReturnedCorrectly() {
         $signer = new StaticCredentials("id", "secret");
-        $expectedResponse = new Response(200, "");
+        $expectedResponse = new Response(200, "", "");
         $mockSender = new MockSender($expectedResponse);
         $sender = new SigningSender($signer, $mockSender);
 

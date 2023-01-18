@@ -19,6 +19,6 @@ class MockStatusCodeSender implements Sender {
         if ($this->statusCode == 0)
             return null;
 
-        return new Response($this->statusCode, "");
+        return new Response($this->statusCode, "", "");
     }
 }

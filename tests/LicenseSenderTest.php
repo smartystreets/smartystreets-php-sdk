@@ -16,7 +16,7 @@ class LicenseSenderTest extends TestCase {
     public function testLicensesSetOnQuery() {
         $request = new Request();
         $licenses = ["one","two","three"];
-        $inner = new MockSender(new Response(123, null));
+        $inner = new MockSender(new Response(123, null, ""));
         $sender = new LicenseSender($licenses, $inner);
 
         $sender->send($request);
@@ -26,7 +26,7 @@ class LicenseSenderTest extends TestCase {
 
     public function testLicenseNotSet() {
         $request = new Request();
-        $inner = new MockSender(new Response(123, null));
+        $inner = new MockSender(new Response(123, null, ""));
         $sender = new LicenseSender([], $inner);
 
         $sender->send($request);

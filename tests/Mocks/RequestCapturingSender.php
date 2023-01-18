@@ -16,7 +16,7 @@ class RequestCapturingSender implements Sender {
     public function send(Request $request) {
         $this->request = $request;
 
-        return new Response(200, "[]");
+        return new Response(200, "[]", "");
     }
 
     public function getRequest() {
