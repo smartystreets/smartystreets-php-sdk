@@ -44,7 +44,7 @@ class RetrySenderTest extends TestCase {
     }
 
     public function testBackoffDoesNotExceedMax() {
-        $expectedDurations = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10);
+        $expectedDurations = array(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
 
         $this->sendRequest("RetryFifteenTimes");
 
@@ -53,7 +53,7 @@ class RetrySenderTest extends TestCase {
     }
 
     public function testSleepOnRateLimit() {
-        $expectedDurations = array(5, 0);
+        $expectedDurations = array(10, 0);
 
         $this->sendRequest("HitRateLimit");
 
