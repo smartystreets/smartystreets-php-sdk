@@ -18,7 +18,7 @@ class SigningSenderTest extends TestCase {
 
     public function testSigningOfRequest() {
         $signer = new StaticCredentials("id", "secret");
-        $mockSender = new MockSender(new Response("", ""));
+        $mockSender = new MockSender(new Response("", "", ""));
         $sender = new SigningSender($signer, $mockSender);
         $request = new Request();
         $request->setUrlPrefix("http://localhost/");
