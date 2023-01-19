@@ -61,7 +61,7 @@ class Lookup {
     }
 
     public function getGeolocation(){
-        return $this->geolocation
+        return $this->geolocation;
     }
 
     public function getAdministrativeArea() {
@@ -127,11 +127,11 @@ class Lookup {
     }
 
     public function setLatitude($latitude){
-        $this->latitude = $latitude
+        $this->latitude = $latitude;
     }
 
     public function setLongitude($longitude){
-        $this->longitude = $longitude
+        $this->longitude = $longitude;
     }
 
     //endregion
