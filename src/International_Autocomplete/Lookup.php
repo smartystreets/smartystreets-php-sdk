@@ -15,10 +15,13 @@ class Lookup {
             $country,
             $search,
             $maxResults,
+            $distance,
+            $geolocation,
             $administrativeArea,
             $locality,
-            $postalCode;
-
+            $postalCode,
+            $latitude,
+            $longitude;
     //endregion
 
     /**
@@ -53,6 +56,14 @@ class Lookup {
         return $this->maxResults;
     }
 
+    public function getDistance() {
+            return $this->distance;
+    }
+
+    public function getGeolocation(){
+        return $this->geolocation
+    }
+
     public function getAdministrativeArea() {
         return $this->administrativeArea;
     }
@@ -63,6 +74,14 @@ class Lookup {
 
     public function getPostalCode() {
         return $this->postalCode;
+    }
+
+    public function getLatitude() {
+        return $this->latitude;
+    }
+
+    public function getLongitude() {
+        return $this->longitude;
     }
 
     //endregion
@@ -87,6 +106,14 @@ class Lookup {
             throw new \InvalidArgumentException("Max suggestions must be a positive integer no larger than 10.");
     }
 
+    public function setDistance($distance) {
+        $this->distance = $distance;
+    }
+
+    public function setGeolocation($geolocation) {
+        $this->geolocation = $geolocation;
+    }
+
     public function setAdministrativeArea($administrativeArea) {
         $this->administrativeArea = $administrativeArea;
     }
@@ -97,6 +124,14 @@ class Lookup {
 
     public function setPostalCode($postalCode) {
         $this->postalCode = $postalCode;
+    }
+
+    public function setLatitude($latitude){
+        $this->latitude = $latitude
+    }
+
+    public function setLongitude($longitude){
+        $this->longitude = $longitude
     }
 
     //endregion
