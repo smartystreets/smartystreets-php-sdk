@@ -39,9 +39,13 @@ class ClientTest extends TestCase {
         $lookup->setCountry("0");
         $lookup->setSearch("1");
         $lookup->setMaxResults(2);
+        $lookup->setDistance("22");
+        $lookup->SetGeolocation("6");
         $lookup->setAdministrativeArea("3");
         $lookup->setLocality("4");
         $lookup->setPostalCode("5");
+        $lookup->setLatitude("6.001");
+        $lookup->setLongitude("7.001");
 
         $client->sendLookup($lookup);
 

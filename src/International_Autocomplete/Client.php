@@ -45,9 +45,13 @@ class Client {
         $request->setParameter("country", $lookup->getCountry());
         $request->setParameter("search", $lookup->getSearch());
         $request->setParameter("max_results", $lookup->getMaxResults());
+        $request->setParameter("distance", $lookup->getDistance());
+        $request->setParameter("geolocation", $lookup->getGeolocation());
         $request->setParameter("include_only_administrative_area", $lookup->getAdministrativeArea());
         $request->setParameter("include_only_locality", $lookup->getLocality());
         $request->setParameter("include_only_postal_code", $lookup->getPostalCode());
+        $request->setParameter("latitude", $lookup->getLatitude());
+        $request->setParameter("longitude", $lookup->getLongitude());
 
         return $request;
     }

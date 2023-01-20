@@ -10,6 +10,8 @@ namespace SmartyStreets\PhpSdk\International_Autocomplete;
 class Lookup {
     //region [ Fields ]
     const MAX_RESULTS_DEFAULT = 10;
+    const DISTANCE_DEFAULT = 5;
+
 
     private $result,
             $country,
@@ -57,7 +59,7 @@ class Lookup {
     }
 
     public function getDistance() {
-            return $this->distance;
+        return $this->distance;
     }
 
     public function getGeolocation(){
@@ -107,11 +109,18 @@ class Lookup {
     }
 
     public function setDistance($distance) {
-        $this->distance = $distance;
+        if($distance < 1){
+            $this->distance = DISTANCE_DEFAULT;
+        }else{
+            $this->distance = $distance;
+        }
     }
 
     public function setGeolocation($geolocation) {
-        $this->geolocation = $geolocation;
+        if (empty($geolocation)) // todo : match go
+            $this->geolocation = null; // Do we want this to be null or empty string?
+        else
+            $this->geolocation = $geolocation;
     }
 
     public function setAdministrativeArea($administrativeArea) {
