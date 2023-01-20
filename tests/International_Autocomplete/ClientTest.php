@@ -31,8 +31,7 @@ class ClientTest extends TestCase {
     public function testSendingSingleFullyPopulatedLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost/", $capturingSender);
-        $expectedUrl = "http://localhost/?country=0&search=1&max_results=2&include_only_administrative_area=3" .
-            "&include_only_locality=4&include_only_postal_code=5";
+        $expectedUrl = "http://localhost/?country=0&search=1&max_results=2&distance=22&geolocation=6&include_only_administrative_area=3&include_only_locality=4&include_only_postal_code=5&latitude=6.001&longitude=7.001";
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();

@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - '*'
-      - 'caroline/fix-test-errors'
 
 jobs:
   publish:
