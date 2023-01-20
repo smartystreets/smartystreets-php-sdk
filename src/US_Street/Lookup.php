@@ -50,6 +50,7 @@ class Lookup implements \JsonSerializable {
         $this->result = array();
     }
 
+    #[\ReturnTypeWillChange]
     function jsonSerialize() {
         return array(
             'input_id' => $this->input_id,

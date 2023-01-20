@@ -29,6 +29,7 @@ class Lookup implements \JsonSerializable {
         $this->zipcode = $zipcode;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return array(

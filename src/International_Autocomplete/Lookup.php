@@ -109,15 +109,14 @@ class Lookup {
     }
 
     public function setDistance($distance) {
-        if($distance < 1){
+        if($distance < 1)
             $this->distance = DISTANCE_DEFAULT;
-        }else{
+        else
             $this->distance = $distance;
-        }
     }
 
     public function setGeolocation($geolocation) {
-        if (empty($geolocation)) // todo : match go
+        if (empty($geolocation))
             $this->geolocation = null; // Do we want this to be null or empty string?
         else
             $this->geolocation = $geolocation;
