@@ -16,15 +16,17 @@ class ResultTest extends TestCase {
                     "street" => "0",
                     "locality" => "1",
                     "administrative_area" => "2",
-                    "postal_code" => "3",
-                    "country_iso3" => "4"
+                    "super_administrative_area" => "3",
+                    "sub_administrative_area" => "4",
+                    "postal_code" => "5",
+                    "country_iso3" => "6"
                 ),
                 array(
-                    "street" => "5",
-                    "locality" => "6",
-                    "administrative_area" => "7",
-                    "postal_code" => "8",
-                    "country_iso3" => "9"
+                    "street" => "7",
+                    "locality" => "8",
+                    "administrative_area" => "9",
+                    "postal_code" => "10",
+                    "country_iso3" => "11"
                 )
             )
         );
@@ -38,16 +40,18 @@ class ResultTest extends TestCase {
         $this->assertEquals("0", $result->getCandidate(0)->getStreet());
         $this->assertEquals("1", $result->getCandidate(0)->getLocality());
         $this->assertEquals("2", $result->getCandidate(0)->getAdministrativeArea());
-        $this->assertEquals("3", $result->getCandidate(0)->getPostalCode());
-        $this->assertEquals("4", $result->getCandidate(0)->getCountryISO3());
+        $this->assertEquals("3", $result->getCandidate(0)->getSuperAdministrativeArea());
+        $this->assertEquals("4", $result->getCandidate(0)->getSubAdministrativeArea());
+        $this->assertEquals("5", $result->getCandidate(0)->getPostalCode());
+        $this->assertEquals("6", $result->getCandidate(0)->getCountryISO3());
         // endregion
 
         // region [ Candidates 2 ]
-        $this->assertEquals("5", $result->getCandidate(1)->getStreet());
-        $this->assertEquals("6", $result->getCandidate(1)->getLocality());
-        $this->assertEquals("7", $result->getCandidate(1)->getAdministrativeArea());
-        $this->assertEquals("8", $result->getCandidate(1)->getPostalCode());
-        $this->assertEquals("9", $result->getCandidate(1)->getCountryISO3());
+        $this->assertEquals("7", $result->getCandidate(1)->getStreet());
+        $this->assertEquals("8", $result->getCandidate(1)->getLocality());
+        $this->assertEquals("9", $result->getCandidate(1)->getAdministrativeArea());
+        $this->assertEquals("10", $result->getCandidate(1)->getPostalCode());
+        $this->assertEquals("11", $result->getCandidate(1)->getCountryISO3());
         // endregion
     }
 }
