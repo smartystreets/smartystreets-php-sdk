@@ -11,11 +11,16 @@ require_once('Result.php');
  *     @see "https://smartystreets.com/docs/cloud/us-extract-api#http-request-input-fields"
  */
 class Lookup {
+    const STRICT = "strict";
+    const INVALID = "invalid";
+    const ENHANCED = "enhanced";
+
     private $result,
             $html,
             $aggressive,
             $addressesHaveLineBreaks,
             $addressPerLine,
+            $matchStrategy,
             $text;
 
     /**
@@ -26,6 +31,7 @@ class Lookup {
         $this->aggressive = false;
         $this->addressesHaveLineBreaks = true;
         $this->addressPerLine = 0;
+        $this->matchStrategy = "";
         $this->text = $text;
     }
 
@@ -49,6 +55,10 @@ class Lookup {
 
     public function getAddressesPerLine() {
         return $this->addressPerLine;
+    }
+
+    public function getMatchStrategy() {
+        return $this->matchStrategy;
     }
 
     public function getText() {
@@ -77,6 +87,10 @@ class Lookup {
 
     public function setAddressesPerLine($addressPerLine) {
         $this->addressPerLine = $addressPerLine;
+    }
+
+    public function setMatchStrategy($matchStrategy) {
+        $this->matchStrategy = $matchStrategy;
     }
 
     public function setText($text) {

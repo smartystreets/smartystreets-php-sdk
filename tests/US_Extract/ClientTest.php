@@ -45,12 +45,13 @@ class ClientTest extends TestCase {
         $sender = new URLPrefixSender('http://localhost/', $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
-        $expectedUrl = "http://localhost/?html=true&aggressive=true&addr_line_breaks=false&addr_per_line=2";
+        $expectedUrl = "http://localhost/?html=true&aggressive=true&addr_line_breaks=false&addr_per_line=2&match=enhanced";
         $lookup = new Lookup('1');
         $lookup->specifyHtmlInput(true);
         $lookup->setAggressive(true);
         $lookup->setAddressesHaveLineBreaks(false);
         $lookup->setAddressesPerLine(2);
+        $lookup->setMatchStrategy(Lookup::ENHANCED);
 
         $client->sendLookup($lookup);
 

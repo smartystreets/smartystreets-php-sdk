@@ -49,6 +49,11 @@ class Client {
         $request->setParameter('addr_line_breaks', ArrayUtil::getStringValueOfBoolean($lookup->addressesHaveLineBreaks()));
         $request->setParameter('addr_per_line', strval($lookup->getAddressesPerLine()));
 
+        $match = strval($lookup->getMatchStrategy());
+        if ($match != ""){
+            $request->setParameter('match', $match);
+        }
+
         return $request;
     }
 }
