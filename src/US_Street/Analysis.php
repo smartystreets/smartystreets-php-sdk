@@ -13,6 +13,7 @@ class Analysis {
             $dpvFootnotes,
             $cmra,
             $vacant,
+            $noStat,
             $active,
             $isEwsMatch,
             $footnotes,
