@@ -19,7 +19,7 @@ class CandidateTest extends TestCase {
             'delivery_line_2' => '4',
             'last_line' => '5',
             'delivery_point_barcode' => '6',
-            'smarty_key' => '1112'
+            'smarty_key' => '1112',
             'components' => array(
                 'urbanization' => '7',
                 'primary_number' => '8',
