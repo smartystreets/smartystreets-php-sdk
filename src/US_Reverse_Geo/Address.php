@@ -14,7 +14,8 @@ class Address {
     private $street,
             $city,
             $state_abbreviation,
-            $zipcode;
+            $zipcode,
+            $source;
 
     //endregion
 
@@ -28,6 +29,7 @@ class Address {
         $this->city = ArrayUtil::setField($obj, 'city');
         $this->state_abbreviation = ArrayUtil::setField($obj, 'state_abbreviation');
         $this->zipcode = ArrayUtil::setField($obj, 'zipcode');
+        $this->source = ArrayUtil::setField($obj, 'source');
     }
 
     //endregion
@@ -48,6 +50,10 @@ class Address {
 
     public function getZIPCode() {
         return $this->zipcode;
+    }
+
+    public function getSource() {
+        return $this->source;
     }
 
     //endregion
