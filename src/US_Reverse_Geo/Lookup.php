@@ -21,7 +21,7 @@ class Lookup {
         $this->response = null;
         $this->latitude = round($latitude, 8);
         $this->longitude = round($longitude, 8);
-        $this->source = source;
+        $this->source = $source;
     }
 
     //endregion
