@@ -41,6 +41,7 @@ class Client {
 
         $request->setParameter("latitude", $lookup->getLatitude());
         $request->setParameter("longitude", $lookup->getLongitude());
+        $request->setParameter("source", $lookup->getSource());
 
         return $request;
     }
