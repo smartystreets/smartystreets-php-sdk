@@ -17,11 +17,10 @@ class Lookup {
 
     //region [ Constructors ]
 
-    public function __construct($latitude, $longitude, $source) {
+    public function __construct($latitude, $longitude) {
         $this->response = null;
         $this->latitude = round($latitude, 8);
         $this->longitude = round($longitude, 8);
-        $this->source = $source;
     }
 
     //endregion
@@ -42,6 +41,10 @@ class Lookup {
 
     public function getSource() {
         return $this->source;
+    }
+
+    public function setSource($source) {
+        $this->source = $source;
     }
 
     //endregion
