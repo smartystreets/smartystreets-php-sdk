@@ -19,6 +19,7 @@ class CandidateTest extends TestCase {
             'delivery_line_2' => '4',
             'last_line' => '5',
             'delivery_point_barcode' => '6',
+            'smarty_key' => '1112',
             'components' => array(
                 'urbanization' => '7',
                 'primary_number' => '8',
@@ -87,6 +88,7 @@ class CandidateTest extends TestCase {
         $this->assertEquals('4', $candidate->getDeliveryLine2());
         $this->assertEquals('5', $candidate->getLastLine());
         $this->assertEquals('6', $candidate->getDeliveryPointBarcode());
+        $this->assertEquals('1112', $candidate->getSmartyKey());
 
         $components = $candidate->getComponents();
         $this->assertEquals('7', $components->getUrbanization());

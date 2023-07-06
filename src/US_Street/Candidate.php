@@ -24,6 +24,7 @@ class Candidate {
             $deliveryLine2,
             $deliveryPointBarcode,
             $lastLine,
+            $smartyKey,
             $metadata,
             $components,
             $analysis;
@@ -42,6 +43,7 @@ class Candidate {
         $this->deliveryLine2 = ArrayUtil::setField($obj, 'delivery_line_2');
         $this->lastLine = ArrayUtil::setField($obj, 'last_line');
         $this->deliveryPointBarcode = ArrayUtil::setField($obj, 'delivery_point_barcode');
+        $this->smartyKey = ArrayUtil::setField($obj, 'smarty_key');
 
         $this->components = new Components(ArrayUtil::setField($obj, 'components', array()));
         $this->metadata = new Metadata(ArrayUtil::setField($obj, 'metadata', array()));
@@ -81,6 +83,10 @@ class Candidate {
     public function getLastLine() {
         return $this->lastLine;
     }
+
+     public function getSmartyKey() {
+            return $this->smartyKey;
+        }
 
     public function getMetadata() {
         return $this->metadata;
