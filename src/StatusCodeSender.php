@@ -46,6 +46,8 @@ class StatusCodeSender implements Sender
                 throw new BadCredentialsException("Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials." . $response->getStatusCode());
             case 402:
                 throw new PaymentRequiredException("Payment Required: There is no active subscription for the account associated with the credentials submitted with the request." . $response->getStatusCode());
+            case 408:
+                throw new RequestTimeoutException("Request timeout error.");
             case 413:
                 throw new RequestEntityTooLargeException("Request Entity Too Large: The request body has exceeded the maximum size." . $response->getStatusCode());
             case 422:
@@ -65,6 +67,8 @@ class StatusCodeSender implements Sender
                 throw $tooManyRequests;
             case 500:
                 throw new InternalServerErrorException("Internal Server Error." . $response->getStatusCode());
+            case 502:
+                throw new BadGatewayException("Bad Gateway error.");
             case 503:
                 throw new ServiceUnavailableException("Service Unavailable. Try again later." . $response->getStatusCode());
             case 504:

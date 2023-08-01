@@ -68,8 +68,6 @@ class UsStreetMultipleAddressesExample
             $this->displayResults($batch);
         } catch (BatchFullException $ex) {
             echo("Oops! Batch was already full.");
-        } catch (SmartyException $ex) {
-            echo($ex->getMessage());
         } catch (\Exception $ex) {
             echo($ex->getMessage());
         }

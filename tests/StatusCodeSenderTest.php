@@ -32,7 +32,7 @@ class StatusCodeSenderTest extends TestCase {
         $this->assertSend(401, $classType);
     }
 
-    public function test402ResponsePThrowsPaymentRequiredException() {
+    public function test402ResponseThrowsPaymentRequiredException() {
         $classType = \SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException::class;
 
         $this->assertSend(402, $classType);
