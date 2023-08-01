@@ -14,10 +14,12 @@ require_once('Exceptions/UnprocessableEntityException.php');
 require_once('Exceptions/GatewayTimeoutException.php');
 
 use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
+use SmartyStreets\PhpSdk\Exceptions\BadGatewayException;
 use SmartyStreets\PhpSdk\Exceptions\BadRequestException;
 use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
 use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
+use SmartyStreets\PhpSdk\Exceptions\RequestTimeoutException;
 use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
@@ -58,7 +60,7 @@ class StatusCodeSender implements Sender
                 if (! isset($responseJSON['errors'])) {
                     throw new TooManyRequestsException("The rate limit for the plan associated with this subscription has been exceeded. To see plans with higher rate limits, visit our pricing page." . $response->getStatusCode());
                 }
-
+                $errorMessage = '';
                 foreach($responseJSON['errors'] as $error){
                     $errorMessage .= isset($error['message']) ? $error['message'].' ': '';
                 }

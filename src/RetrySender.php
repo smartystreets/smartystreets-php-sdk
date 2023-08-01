@@ -5,7 +5,12 @@ namespace SmartyStreets\PhpSdk;
 include_once('Sender.php');
 require_once('Exceptions/TooManyRequestsException.php');
 
+use SmartyStreets\PhpSdk\Exceptions\BadGatewayException;
+use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;
+use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 use SmartyStreets\PhpSdk\Exceptions\MustRetryException;
+use SmartyStreets\PhpSdk\Exceptions\RequestTimeoutException;
+use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
 use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 
 
@@ -46,7 +51,7 @@ class RetrySender implements Sender
         try {
             return $this->inner->send($request);
         } catch (\Exception $ex) {
-            if (($ex instanceof MustRetryException || $ex instanceof TooManyRequestsException || $ex instanceof InternalServerError || $ex instanceof ServiceUnavailableException || $ex instanceof GatewayTimeoutException || $ex instanceof RequestTimeoutException || $ex instanceof BadGatewayException) && $attempt < $this->maxRetries) {
+            if (($ex instanceof MustRetryException || $ex instanceof TooManyRequestsException || $ex instanceof InternalServerErrorException || $ex instanceof ServiceUnavailableException || $ex instanceof GatewayTimeoutException || $ex instanceof RequestTimeoutException || $ex instanceof BadGatewayException) && $attempt < $this->maxRetries) {
                 $this->backoff(self::MAX_BACKOFF_DURATION);
             } else {
                 throw $ex; 
