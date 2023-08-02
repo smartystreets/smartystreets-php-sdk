@@ -54,7 +54,8 @@ class RetrySender implements Sender
             if (($ex instanceof MustRetryException || $ex instanceof TooManyRequestsException || $ex instanceof InternalServerErrorException || $ex instanceof ServiceUnavailableException || $ex instanceof GatewayTimeoutException || $ex instanceof RequestTimeoutException || $ex instanceof BadGatewayException) && $attempt < $this->maxRetries) {
                 $this->backoff(self::MAX_BACKOFF_DURATION);
             } else {
-                throw $ex; 
+                echo $ex->getCode() . "\n";
+                throw $ex;
             }
         }
 
