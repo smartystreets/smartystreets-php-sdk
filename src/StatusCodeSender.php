@@ -49,7 +49,7 @@ class StatusCodeSender implements Sender
             case 402:
                 throw new PaymentRequiredException("Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.", $response->getStatusCode());
             case 408:
-                throw new RequestTimeoutException("Request timeout error.");
+                throw new RequestTimeoutException("Request timeout error.", $response->getStatusCode());
             case 413:
                 throw new RequestEntityTooLargeException("Request Entity Too Large: The request body has exceeded the maximum size.", $response->getStatusCode());
             case 422:
@@ -70,7 +70,7 @@ class StatusCodeSender implements Sender
             case 500:
                 throw new InternalServerErrorException("Internal Server Error.", $response->getStatusCode());
             case 502:
-                throw new BadGatewayException("Bad Gateway error.");
+                throw new BadGatewayException("Bad Gateway error.", $response->getStatusCode());
             case 503:
                 throw new ServiceUnavailableException("Service Unavailable. Try again later.", $response->getStatusCode());
             case 504:
