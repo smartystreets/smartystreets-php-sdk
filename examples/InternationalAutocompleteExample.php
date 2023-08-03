@@ -36,11 +36,15 @@ class InternationalAutocompleteExample {
         $lookup->setCountry("FRA");
         $lookup->setLocality("Paris");
 
-        $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
-
-        foreach ($lookup->getResult() as $candidate) {
-            echo($candidate->getStreet() . " " . $candidate->getLocality() . " " . $candidate->getCountryISO3() . "\n");
-        };
+        try {
+            $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
+            foreach ($lookup->getResult() as $candidate) {
+                echo($candidate->getStreet() . " " . $candidate->getLocality() . " " . $candidate->getCountryISO3() . "\n");
+            };
+        }
+        catch (\Exception $ex) {
+            echo($ex->getMessage());
+        }
 
     }
 }

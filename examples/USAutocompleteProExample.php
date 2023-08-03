@@ -40,25 +40,37 @@ class USAutocompleteProExample
         // https://smartystreets.com/docs/cloud/us-autocomplete-api
 
         $lookup = new Lookup("1042 W Center");
+        try {
+            $client->sendLookup($lookup);
+            $this->displayResultsNoFilter($lookup);
 
-        $client->sendLookup($lookup);
+            $lookup->addStateFilter("CO");
+            $lookup->addStateFilter("UT");
+            $lookup->addCityFilter("Denver");
+            $lookup->addCityFilter("Orem");
+//          $lookup->addPreferState("CO");
+            $lookup->setPreferRatio(3);
+            $lookup->setMaxResults(5);
+            $lookup->setSource("all");
 
+            $client->sendLookup($lookup);
+            $this->displayResultsFilter($lookup);
+        }
+        catch (\Exception $ex) {
+            echo($ex->getMessage());
+        }
+    }
+
+    private function displayResultsNoFilter(Lookup $lookup)
+    {
         echo("*** Result with no filter ***");
         echo("\n");
         foreach ($lookup->getResult() as $suggestion)
             $this->printResults($suggestion);
+    }
 
-        $lookup->addStateFilter("CO");
-        $lookup->addStateFilter("UT");
-        $lookup->addCityFilter("Denver");
-        $lookup->addCityFilter("Orem");
-//        $lookup->addPreferState("CO");
-        $lookup->setPreferRatio(3);
-        $lookup->setMaxResults(5);
-        $lookup->setSource("all");
-
-        $client->sendLookup($lookup);
-
+    private function displayResultsFilter(Lookup $lookup)
+    {
         echo("\n");
         echo("*** Result with some filters ***\n");
         foreach($lookup->getResult() as $suggestion)

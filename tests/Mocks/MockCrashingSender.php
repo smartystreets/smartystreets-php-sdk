@@ -5,6 +5,7 @@ namespace SmartyStreets\PhpSdk\Tests\Mocks;
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Sender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
 
+use SmartyStreets\PhpSdk\Exceptions\MustRetryException;
 use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 use SmartyStreets\PhpSdk\Response;
 use SmartyStreets\PhpSdk\Request;
@@ -21,7 +22,7 @@ class MockCrashingSender implements Sender {
 
         if (strpos($request->getUrl(), "RetryThreeTimes") !== false) {
             if ($this->sendCount <= 3) {
-                throw new \Exception("You need to retry");
+                throw new MustRetryException("You need to retry");
             }
         }
 
@@ -30,7 +31,7 @@ class MockCrashingSender implements Sender {
 
         if (strpos($request->getUrl(), "RetryFifteenTimes") !== false)
             if ($this->sendCount <= 14)
-                throw new \Exception("You need to retry");
+                throw new MustRetryException("You need to retry");
 
         if (strpos($request->getUrl(), "HitRateLimit") !== false)
             if ($this->sendCount <= 1)

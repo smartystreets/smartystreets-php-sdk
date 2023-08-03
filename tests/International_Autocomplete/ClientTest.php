@@ -13,6 +13,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Autocompl
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Autocomplete/Candidate.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/Exceptions/SmartyException.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;

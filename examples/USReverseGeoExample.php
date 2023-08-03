@@ -34,8 +34,17 @@ class USReverseGeoExample
 
         $lookup = new Lookup(40.111111, -111.111111);
 
-        $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
+        try {
+            $client->sendLookup($lookup);
+            $this->displayResults($lookup);
+        }
+        catch (Exception $ex) {
+            echo($ex->getMessage());
+        }
+    }
 
+    public function displayResults(Lookup $lookup)
+    {
         echo("Results for input: " . $lookup->getLatitude() . ", " . $lookup->getLongitude() . "\n");
 
         foreach ($lookup->getResponse()->getResults() as $result) {
