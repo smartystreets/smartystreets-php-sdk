@@ -43,8 +43,16 @@ class InternationalExample {
         $lookup->setCountry("Brazil");
         $lookup->setPostalCode("02516-050");
 
-        $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
+        try {
+            $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
+            $this->displayResults($lookup);
+        }
+        catch (\Exception $ex) {
+            echo($ex->getMessage());
+        }
+    }
 
+    public function displayResults(Lookup $lookup) {
         $firstCandidate = $lookup->getResult()[0];
 
         echo("Address is " . $firstCandidate->getAnalysis()->getVerificationStatus());

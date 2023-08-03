@@ -38,9 +38,6 @@ class UsZIPCodeSingleLookupExample {
             $client->sendLookup($lookup);
             $this->displayResults($lookup);
         }
-        catch (SmartyException $ex) {
-            echo($ex->getMessage());
-        }
         catch (\Exception $ex) {
             echo($ex->getMessage());
         }

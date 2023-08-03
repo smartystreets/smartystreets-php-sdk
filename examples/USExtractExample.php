@@ -35,9 +35,17 @@ class USExtractExample {
         $lookup->isAggressive();
         $lookup->setAddressesHaveLineBreaks(false);
         $lookup->setAddressesPerLine(2);
+        try {
+            $client->sendLookup($lookup);
+            $this->displayResults($lookup);
+        }
+        catch (\Exception $ex) {
+            echo($ex->getMessage());
+        }
+    }
 
-        $client->sendLookup($lookup);
-
+    public function displayResults(Lookup $lookup)
+    {
         $result = $lookup->getResult();
         $metadata = $result->getMetadata();
         print('Found ' . $metadata->getAddressCount() . " addresses.\n");
@@ -46,7 +54,7 @@ class USExtractExample {
         $addresses = $result->getAddresses();
 
         print("Addresses: \n**********************\n");
-        foreach($addresses as $address) {
+        foreach ($addresses as $address) {
             print("\n\"" . $address->getText() . "\"\n");
             print("\nVerified? " . ArrayUtil::getStringValueOfBoolean($address->isVerified()));
             if (count($address->getCandidates()) > 0) {
