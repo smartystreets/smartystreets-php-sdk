@@ -40,7 +40,7 @@ require_once(dirname(__FILE__) . '/US_Reverse_Geo/Client.php');
  */
 class ClientBuilder {
     const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smarty.com/verify";
-    const INTERNATIONAL_AUTOCOMPLETE_API_URL = "https://international-autocomplete.api.smarty.com/lookup";
+    const INTERNATIONAL_AUTOCOMPLETE_API_URL = "https://international-autocomplete.api.smarty.com/v2/lookup";
     const US_AUTOCOMPLETE_API_URL = "https://us-autocomplete.api.smarty.com/suggest";
     const US_AUTOCOMPLETE_PRO_API_URL = "https://us-autocomplete-pro.api.smarty.com/lookup";
     const US_EXTRACT_API_URL = "https://us-extract.api.smarty.com";

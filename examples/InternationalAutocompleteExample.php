@@ -39,7 +39,11 @@ class InternationalAutocompleteExample {
         try {
             $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
             foreach ($lookup->getResult() as $candidate) {
-                echo($candidate->getStreet() . " " . $candidate->getLocality() . " " . $candidate->getCountryISO3() . "\n");
+                if ($candidate->getStreet() != null) {
+                    echo($candidate->getStreet() . " " . $candidate->getLocality() . " " . $candidate->getCountryISO3() . "\n");
+                } else {
+                    echo($candidate->getEntries() . " " . $candidate->getAddressText() . " " . $candidate->getAddressID() . "\n");
+                }
             };
         }
         catch (\Exception $ex) {

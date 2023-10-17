@@ -31,21 +31,17 @@ class ClientTest extends TestCase {
 
     public function testSendingSingleFullyPopulatedLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
-        $expectedUrl = "http://localhost/?country=0&search=1&max_results=2&distance=22&geolocation=6&include_only_administrative_area=3&include_only_locality=4&include_only_postal_code=5&latitude=6.001&longitude=7.001";
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $expectedUrl = "http://localhost/coolID?country=0&search=1&max_results=2&include_only_locality=4&include_only_postal_code=5";
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
         $lookup->setCountry("0");
         $lookup->setSearch("1");
         $lookup->setMaxResults(2);
-        $lookup->setDistance("22");
-        $lookup->SetGeolocation("6");
-        $lookup->setAdministrativeArea("3");
         $lookup->setLocality("4");
         $lookup->setPostalCode("5");
-        $lookup->setLatitude("6.001");
-        $lookup->setLongitude("7.001");
+        $lookup->setAddressID("coolID");
 
         $client->sendLookup($lookup);
 
