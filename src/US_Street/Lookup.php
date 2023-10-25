@@ -15,10 +15,7 @@ class Lookup implements \JsonSerializable {
     const ENHANCED = "enhanced";
 
     const FORMAT_DEFAULT = "default";
-
     const PROJECT_USA = "project-usa";
-
-    const CASS = "cass";
 
     private $input_id,
             $street,
