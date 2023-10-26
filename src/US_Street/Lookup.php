@@ -14,6 +14,9 @@ class Lookup implements \JsonSerializable {
     const INVALID = "invalid";
     const ENHANCED = "enhanced";
 
+    const FORMAT_DEFAULT = "default";
+    const PROJECT_USA = "project-usa";
+
     private $input_id,
             $street,
             $street2,
@@ -26,6 +29,7 @@ class Lookup implements \JsonSerializable {
             $urbanization,
             $matchStrategy,
             $maxCandidates,
+            $outputFormat,
             $result;
 
     //endregion
@@ -34,7 +38,7 @@ class Lookup implements \JsonSerializable {
      * This constructor accepts a freeform address. That means the whole address is in one string.
      */
     public function __construct($street = null, $street2 = null, $secondary = null, $city = null, $state = null, $zipcode = null,
-                                $lastline = null, $addressee = null, $urbanization = null, $matchStrategy = null, $maxCandidates = 1, $input_id = null) {
+                                $lastline = null, $addressee = null, $urbanization = null, $matchStrategy = null, $maxCandidates = 1, $input_id = null, $outputFormat = null) {
         $this->input_id = $input_id;
         $this->street = $street;
         $this->street2 = $street2;
@@ -47,6 +51,7 @@ class Lookup implements \JsonSerializable {
         $this->urbanization = $urbanization;
         $this->matchStrategy = $matchStrategy;
         $this->maxCandidates = $maxCandidates;
+        $this->outputFormat = $outputFormat;
         $this->result = array();
     }
 
@@ -64,6 +69,7 @@ class Lookup implements \JsonSerializable {
             'addressee' => $this->addressee,
             'urbanization' => $this->urbanization,
             'match' => $this->matchStrategy,
+            'format' => $this->outputFormat,
             'candidates' => $this->maxCandidates
         );
     }
@@ -116,6 +122,10 @@ class Lookup implements \JsonSerializable {
 
     public function getMaxCandidates() {
         return $this->maxCandidates;
+    }
+
+    public function getOutputFormat() {
+        return $this->outputFormat;
     }
 
     public function getResult() {
@@ -195,6 +205,10 @@ class Lookup implements \JsonSerializable {
             $this->maxCandidates = $maxCandidates;
         else
             throw new \InvalidArgumentException("Max candidates must be a positive integer.");
+    }
+
+    public function setOutputFormat($outputFormat) {
+        $this->outputFormat = $outputFormat;
     }
 
     public function setResult($result) {
