@@ -62,6 +62,10 @@ class Request {
         return $this->parameters;
     }
 
+    public function getUrlPrefix() {
+        return $this->urlPrefix;
+    }
+
     public function getPayload() {
         return $this->payload;
     }

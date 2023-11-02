@@ -10,6 +10,7 @@ use SmartyStreets\PhpSdk\International_Autocomplete\Client as InternationalAutoc
 use SmartyStreets\PhpSdk\US_Street\Client as USStreetApiClient;
 use SmartyStreets\PhpSdk\US_ZIPCode\Client as USZIPCodeApiClient;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Client as USReverseGeoApiClient;
+use SmartyStreets\PhpSdk\US_Enrichment\Client as USEnrichmentApiClient;
 
 require_once('Serializer.php');
 require_once('Request.php');
@@ -32,6 +33,7 @@ require_once(dirname(__FILE__) . '/US_Autocomplete_Pro/Client.php');
 require_once(dirname(__FILE__) . '/International_Street/Client.php');
 require_once(dirname(__FILE__) . '/International_Autocomplete/Client.php');
 require_once(dirname(__FILE__) . '/US_Reverse_Geo/Client.php');
+require_once(dirname(__FILE__) . '/US_Enrichment/Client.php');
 
 /**
  * The ClientBuilder class helps you build a client object for one of the supported SmartyStreets APIs.<br>
@@ -47,6 +49,7 @@ class ClientBuilder {
     const US_STREET_API_URL = "https://us-street.api.smarty.com/street-address";
     const US_ZIP_CODE_API_URL = "https://us-zipcode.api.smarty.com/lookup";
     const US_REVERSE_GEO_API_URL = "https://us-reverse-geo.api.smarty.com/lookup";
+    const US_ENRICHMENT_API_URL = "https://us-enrichment.api.smarty.com/lookup/";
 
     private $signer,
             $serializer,
@@ -200,6 +203,11 @@ class ClientBuilder {
     public function buildUsReverseGeoApiClient() {
         $this->ensureURLPrefixNotNull(self::US_REVERSE_GEO_API_URL);
         return new USReverseGeoApiClient($this->buildSender(), $this->serializer);
+    }
+
+    public function buildUsEnrichmentApiClient() {
+        $this->ensureURLPrefixNotNull(self::US_ENRICHMENT_API_URL);
+        return new USEnrichmentApiClient($this->buildSender(), $this->serializer);
     }
 
     private function buildSender() {
