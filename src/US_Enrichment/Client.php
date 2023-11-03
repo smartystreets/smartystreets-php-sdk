@@ -48,7 +48,7 @@ class Client {
     }
 
     private function buildResponse($objArray){
-        $response = []
+        $response = [];
         foreach($objArray as $result) {
             $response[] = new Result($result);
         }
@@ -64,6 +64,6 @@ class Client {
     }
 
     private function getUrlPrefix($lookup){
-        return "/" . $lookup->getSmartyKey() . "/" . $lookup->getDataSetName() . "/" . $lookup->getDataSubsetName();
+        return $lookup->getSmartyKey() . "/" . $lookup->getDataSetName() . "/" . $lookup->getDataSubsetName();
     }
 }

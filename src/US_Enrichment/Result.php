@@ -26,7 +26,7 @@ class Result  {
         $this->smartyKey = ArrayUtil::setField($obj, 'smarty_key');
         $this->dataSetName = ArrayUtil::setField($obj, 'data_set_name');
         $this->dataSubsetName = ArrayUtil::setField($obj, 'data_subset_name');
-        $this->attributes = createAttributes($dataSetName, $dataSubsetName, ArrayUtil::setField($obj, 'attributes'))
+        $this->attributes = createAttributes($dataSetName, $dataSubsetName, ArrayUtil::setField($obj, 'attributes'));
     }
 
     private function createAttributes($dataSetName, $dataSubsetName, $attributesObj){
@@ -35,7 +35,7 @@ class Result  {
                 return new FinancialAttributes($attributesObj);
             }
             if ($dataSubsetName == 'principal'){
-                return new PrincipalAttributes($attributesObj)
+                return new PrincipalAttributes($attributesObj);
             }
         }
     }

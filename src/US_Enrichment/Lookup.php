@@ -1,5 +1,7 @@
 <?php
 
+namespace SmartyStreets\PhpSdk\US_Enrichment;
+
 class Lookup {
 
     //region [ Fields ]
@@ -12,7 +14,7 @@ class Lookup {
     //endregion
 
     public function __construct($smartyKey, $dataSetName, $dataSubsetName) {
-        $this->smartyKey = $smartyKey
+        $this->smartyKey = $smartyKey;
         $this->dataSetName = $dataSetName;
         $this->dataSubsetName = $dataSubsetName;
         $this->response = null;
@@ -36,6 +38,6 @@ class Lookup {
     }
 
     public function setResponse($response){
-        $this->response = $response
+        $this->response = $response;
     }
 }

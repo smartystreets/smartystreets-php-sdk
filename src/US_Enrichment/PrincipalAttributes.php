@@ -1,4 +1,7 @@
 <?php
+
+namespace SmartyStreets\PhpSdk\US_Enrichment;
+
 class PrincipalAttributes {
 
     //region [ Fields ]
