@@ -9,11 +9,12 @@ use SmartyStreets\PhpSdk\US_Enrichment\Response;
 
 class ResponseTest extends TestCase
 {
-    private $obj;
+    private $financialObj,
+    $principalObj;
 
     public function setUp() : void
     {
-        $this->obj = array(
+        $this->financialObj = array(
             'results' => array(
                 array(
                     'smarty_key' => '123',
@@ -33,11 +34,25 @@ class ResponseTest extends TestCase
                 )
             )
         );
+
+        $this->principalObj = array(
+            'results' => array(
+                array(
+                    'smarty_key' => '123',
+                    'data_set_name' => 'property',
+                    'data_subset_name' => 'principal',
+                    'attributes' => array(
+                        'bedrooms' => '2',
+                        'assessor_taxroll_update' => 'test_update'
+                    ),
+                )
+            )
+        );
     }
 
-    public function testAllFieldsFilledCorrectly()
+    public function testAllFinancialFieldsFilledCorrectly()
     {
-        $response = new Response($this->obj);
+        $response = new Response($this->financialObj);
         $result = $response->getResults()[0];
 
         $this->assertEquals("123", $result->smartyKey);
@@ -53,5 +68,20 @@ class ResponseTest extends TestCase
         $this->assertEquals(2, count($financialHistory));
         $this->assertEquals('test_company1', $financialHistory[0]->codeTitleCompany);
         $this->assertEquals('test_company2', $financialHistory[1]->codeTitleCompany);
+    }
+
+    public function testAllPrincipalFieldsFilledCorrectly()
+    {
+        $response = new Response($this->principalObj);
+        $result = $response->getResults()[0];
+
+        $this->assertEquals("123", $result->smartyKey);
+        $this->assertEquals('property', $result->dataSetName);
+        $this->assertEquals('principal', $result->dataSubsetName);
+
+        $attributes = $result->attributes;
+
+        $this->assertEquals('2', $attributes->bedrooms);
+        $this->assertEquals('test_update', $attributes->assessorTaxrollUpdate);
     }
 }
