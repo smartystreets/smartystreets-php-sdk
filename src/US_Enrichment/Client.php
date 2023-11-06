@@ -6,16 +6,11 @@ require_once(dirname(dirname(__FILE__)) . '/Exceptions/UnprocessableEntityExcept
 require_once(dirname(dirname(__FILE__)) . '/Sender.php');
 require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Request.php');
-require_once('Response.php');
 require_once('Lookup.php');
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;
 
-/**
- * This client sends lookups to the SmartyStreets US Reverse Geocoding API, <br>
- *     and attaches the results to the appropriate Lookup objects.
- */
 class Client {
     private $sender,
             $serializer;

@@ -2,10 +2,10 @@
 
 namespace SmartyStreets\PhpSdk\Tests\US_Enrichment;
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Response.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Result.php');
 
 use PHPUnit\Framework\TestCase;
-use SmartyStreets\PhpSdk\US_Enrichment\Response;
+use SmartyStreets\PhpSdk\US_Enrichment\Result;
 
 class ResponseTest extends TestCase
 {
@@ -15,45 +15,36 @@ class ResponseTest extends TestCase
     public function setUp() : void
     {
         $this->financialObj = array(
-            'results' => array(
-                array(
-                    'smarty_key' => '123',
-                    'data_set_name' => 'property',
-                    'data_subset_name' => 'financial',
-                    'attributes' => array(
-                        'deed_transaction_id' => 'test_id',
-                        'financial_history' => array(
-                            array(
-                                'code_title_company' => 'test_company1'
-                            ),
-                            array(
-                                'code_title_company' => 'test_company2'
-                            )
-                        ),
+            'smarty_key' => '123',
+            'data_set_name' => 'property',
+            'data_subset_name' => 'financial',
+            'attributes' => array(
+                'deed_transaction_id' => 'test_id',
+                'financial_history' => array(
+                    array(
+                        'code_title_company' => 'test_company1'
                     ),
-                )
-            )
+                    array(
+                        'code_title_company' => 'test_company2'
+                    )
+                ),
+            ),
         );
 
         $this->principalObj = array(
-            'results' => array(
-                array(
-                    'smarty_key' => '123',
-                    'data_set_name' => 'property',
-                    'data_subset_name' => 'principal',
-                    'attributes' => array(
-                        'bedrooms' => '2',
-                        'assessor_taxroll_update' => 'test_update'
-                    ),
-                )
-            )
+            'smarty_key' => '123',
+            'data_set_name' => 'property',
+            'data_subset_name' => 'principal',
+            'attributes' => array(
+                'bedrooms' => '2',
+                'assessor_taxroll_update' => 'test_update'
+            ),
         );
     }
 
     public function testAllFinancialFieldsFilledCorrectly()
     {
-        $response = new Response($this->financialObj);
-        $result = $response->getResults()[0];
+        $result = new Result($this->financialObj);
 
         $this->assertEquals("123", $result->smartyKey);
         $this->assertEquals('property', $result->dataSetName);
@@ -72,8 +63,7 @@ class ResponseTest extends TestCase
 
     public function testAllPrincipalFieldsFilledCorrectly()
     {
-        $response = new Response($this->principalObj);
-        $result = $response->getResults()[0];
+        $result = new Result($this->principalObj);
 
         $this->assertEquals("123", $result->smartyKey);
         $this->assertEquals('property', $result->dataSetName);

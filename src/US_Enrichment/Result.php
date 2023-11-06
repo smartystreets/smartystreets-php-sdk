@@ -7,9 +7,7 @@ require_once('FinancialAttributes.php');
 require_once('PrincipalAttributes.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
-/**
- * docs here
- */
+
 class Result  {
 
     //region [ Fields ]
