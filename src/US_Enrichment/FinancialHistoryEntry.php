@@ -1,8 +1,9 @@
 <?php
 
 namespace SmartyStreets\PhpSdk\US_Enrichment;
+use SmartyStreets\PhpSdk\ArrayUtil;
 
-class FinancialHistory {
+class FinancialHistoryEntry {
     //region [ Fields ]
 
     public $codeTitleCompany,

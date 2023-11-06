@@ -52,6 +52,7 @@ class Client {
         foreach($objArray as $result) {
             $response[] = new Result($result);
         }
+        return $response;
     }
 
 

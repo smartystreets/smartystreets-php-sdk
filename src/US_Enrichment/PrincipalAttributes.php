@@ -1,6 +1,7 @@
 <?php
 
 namespace SmartyStreets\PhpSdk\US_Enrichment;
+use SmartyStreets\PhpSdk\ArrayUtil;
 
 class PrincipalAttributes {
 
@@ -81,7 +82,7 @@ class PrincipalAttributes {
     $courtyardArea,
     $deck,
     $deckArea,
-    $deed DocumentPage,
+    $deedDocumentPage,
     $deedDocumentBook,
     $deedDocumentNumber,
     $deedOwnerFirstName,
@@ -444,7 +445,7 @@ class PrincipalAttributes {
         $this->courtyardArea = ArrayUtil::setField($obj, "courtyard_area");
         $this->deck = ArrayUtil::setField($obj, "deck");
         $this->deckArea = ArrayUtil::setField($obj, "deck_area");
-        $this->deed DocumentPage = ArrayUtil::setField($obj, "deed_ document_page");
+        $this->deedDocumentPage = ArrayUtil::setField($obj, "deed_ document_page");
         $this->deedDocumentBook = ArrayUtil::setField($obj, "deed_document_book");
         $this->deedDocumentNumber = ArrayUtil::setField($obj, "deed_document_number");
         $this->deedOwnerFirstName = ArrayUtil::setField($obj, "deed_owner_first_name");

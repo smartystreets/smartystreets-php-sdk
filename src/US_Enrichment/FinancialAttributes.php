@@ -1,7 +1,8 @@
 <?php
 namespace SmartyStreets\PhpSdk\US_Enrichment;
+use SmartyStreets\PhpSdk\ArrayUtil;
 
-require_once('FinancialHistory.php');
+require_once('FinancialHistoryEntry.php');
 
 class FinancialAttributes {
 
@@ -161,7 +162,7 @@ class FinancialAttributes {
         $this->deedSalePrice = ArrayUtil::setField($obj, "deed_sale_price");
         $this->deedTransactionId = ArrayUtil::setField($obj, "deed_transaction_id");
         $this->disabledTaxExemption = ArrayUtil::setField($obj, "disabled_tax_exemption");
-        $this->financialHistory = new FinancialHistory(ArrayUtil::setField($obj, "financial_history"));
+        $this->createFinancialHistory(ArrayUtil::setField($obj, "financial_history"));
         $this->firstName = ArrayUtil::setField($obj, "first_name");
         $this->firstName2 = ArrayUtil::setField($obj, "first_name_2");
         $this->firstName3 = ArrayUtil::setField($obj, "first_name_3");
@@ -209,5 +210,11 @@ class FinancialAttributes {
         $this->trustDescription = ArrayUtil::setField($obj, "trust_description");
         $this->veteranTaxExemption = ArrayUtil::setField($obj, "veteran_tax_exemption");
         $this->widowTaxExemption = ArrayUtil::setField($obj, "widow_tax_exemption");
+    }
+
+    private function createFinancialHistory($financialHistoryArray){
+        foreach($financialHistoryArray as $value){
+            $this->financialHistory[] = new FinancialHistoryEntry($value);
+        }
     }
 }
