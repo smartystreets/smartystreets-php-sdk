@@ -16,10 +16,11 @@ class Candidate {
     private $street,
             $locality,
             $administrativeArea,
-            $superAdministrativeArea,
-            $subAdministrativeArea,
             $postalCode,
-            $countryISO3;
+            $countryISO3,
+            $entries,
+            $address_text,
+            $address_id;
 
     public function __construct($obj = null) {
         if ($obj == null)
@@ -28,10 +29,11 @@ class Candidate {
         $this->street = ArrayUtil::setField($obj, 'street');
         $this->locality = ArrayUtil::setField($obj, 'locality');
         $this->administrativeArea = ArrayUtil::setField($obj, 'administrative_area');
-        $this->superAdministrativeArea = ArrayUtil::setField($obj, 'super_administrative_area');
-        $this->subAdministrativeArea = ArrayUtil::setField($obj, 'sub_administrative_area');
         $this->postalCode = ArrayUtil::setField($obj, 'postal_code');
         $this->countryISO3 = ArrayUtil::setField($obj, 'country_iso3');
+        $this->entries = ArrayUtil::setField($obj, 'entries');
+        $this->address_text = ArrayUtil::setField($obj, 'address_text');
+        $this->address_id = ArrayUtil::setField($obj, 'address_id');
     }
 
     //region [Getters]
@@ -48,20 +50,24 @@ class Candidate {
         return $this->administrativeArea;
     }
 
-    public function getSuperAdministrativeArea() {
-        return $this->superAdministrativeArea;
-    }
-
-    public function getSubAdministrativeArea() {
-        return $this->subAdministrativeArea;
-    }
-
     public function getPostalCode() {
         return $this->postalCode;
     }
 
     public function getCountryISO3() {
         return $this->countryISO3;
+    }
+
+    public function getEntries() {
+        return $this->entries;
+    }
+
+    public function getAddressText() {
+        return $this->address_text;
+    }
+
+    public function getAddressID() {
+        return $this->address_id;
     }
 
     //endregion
