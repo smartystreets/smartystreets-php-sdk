@@ -45,6 +45,9 @@ class Client {
 
     private function buildResponse($objArray){
         $response = [];
+        if($objArray == null){
+            return $response;
+        }
         foreach($objArray as $result) {
             $response[] = new Result($result);
         }

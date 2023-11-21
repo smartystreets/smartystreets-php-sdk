@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 test:
-	phpunit tests
+	phpunit tests --display-warnings
 
 package: test
 	#@echo -n ""
