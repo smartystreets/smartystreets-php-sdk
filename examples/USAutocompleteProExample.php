@@ -44,10 +44,8 @@ class USAutocompleteProExample
             $client->sendLookup($lookup);
             $this->displayResultsNoFilter($lookup);
 
-            $lookup->addStateFilter("CO");
-            $lookup->addStateFilter("UT");
-            $lookup->addCityFilter("Denver");
-            $lookup->addCityFilter("Orem");
+            $lookup->addCityFilter("Denver,Aurora,CO");
+            $lookup->addCityFilter("Orem,UT");
 //          $lookup->addPreferState("CO");
             $lookup->setPreferRatio(3);
             $lookup->setMaxResults(5);

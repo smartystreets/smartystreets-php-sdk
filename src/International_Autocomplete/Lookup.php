@@ -10,20 +10,15 @@ namespace SmartyStreets\PhpSdk\International_Autocomplete;
 class Lookup {
     //region [ Fields ]
     const MAX_RESULTS_DEFAULT = 10;
-    const DISTANCE_DEFAULT = 5;
 
 
     private $result,
             $country,
             $search,
+            $address_id,
             $maxResults,
-            $distance,
-            $geolocation,
-            $administrativeArea,
             $locality,
-            $postalCode,
-            $latitude,
-            $longitude;
+            $postalCode;
     //endregion
 
     /**
@@ -54,20 +49,12 @@ class Lookup {
         return $this->search;
     }
 
+    public function getAddressID() {
+        return $this->address_id;
+    }
+
     public function getMaxResults() {
         return $this->maxResults;
-    }
-
-    public function getDistance() {
-        return $this->distance;
-    }
-
-    public function getGeolocation(){
-        return $this->geolocation;
-    }
-
-    public function getAdministrativeArea() {
-        return $this->administrativeArea;
     }
 
     public function getLocality() {
@@ -76,14 +63,6 @@ class Lookup {
 
     public function getPostalCode() {
         return $this->postalCode;
-    }
-
-    public function getLatitude() {
-        return $this->latitude;
-    }
-
-    public function getLongitude() {
-        return $this->longitude;
     }
 
     //endregion
@@ -101,29 +80,15 @@ class Lookup {
         $this->search = $search;
     }
 
+    public function setAddressID($address_id) {
+        $this->address_id= $address_id;
+    }
+
     public function setMaxResults($maxResults) {
         if ($maxResults > 0 && $this->maxResults <= 10)
             $this->maxResults = $maxResults;
         else
             throw new \InvalidArgumentException("Max suggestions must be a positive integer no larger than 10.");
-    }
-
-    public function setDistance($distance) {
-        if($distance < 1)
-            $this->distance = DISTANCE_DEFAULT;
-        else
-            $this->distance = $distance;
-    }
-
-    public function setGeolocation($geolocation) {
-        if (empty($geolocation))
-            $this->geolocation = null; // Do we want this to be null or empty string?
-        else
-            $this->geolocation = $geolocation;
-    }
-
-    public function setAdministrativeArea($administrativeArea) {
-        $this->administrativeArea = $administrativeArea;
     }
 
     public function setLocality($locality) {
@@ -132,14 +97,6 @@ class Lookup {
 
     public function setPostalCode($postalCode) {
         $this->postalCode = $postalCode;
-    }
-
-    public function setLatitude($latitude){
-        $this->latitude = $latitude;
-    }
-
-    public function setLongitude($longitude){
-        $this->longitude = $longitude;
     }
 
     //endregion
