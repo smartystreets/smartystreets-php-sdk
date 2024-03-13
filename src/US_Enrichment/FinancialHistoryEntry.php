@@ -7,6 +7,7 @@ class FinancialHistoryEntry {
     //region [ Fields ]
 
     public $codeTitleCompany,
+    $documentTypeDescription,
     $instrumentDate,
     $interestRateType2,
     $lenderAddress,
@@ -55,6 +56,7 @@ class FinancialHistoryEntry {
         if ($obj == null)
             return;
         $this->codeTitleCompany = ArrayUtil::setField($obj, "code_title_company");
+        $this->documentTypeDescription = ArrayUtil::setField($obj, "document_type_description");
         $this->instrumentDate = ArrayUtil::setField($obj, "instrument_date");
         $this->interestRateType2 = ArrayUtil::setField($obj, "interest_rate_type_2");
         $this->lenderAddress = ArrayUtil::setField($obj, "lender_address");
