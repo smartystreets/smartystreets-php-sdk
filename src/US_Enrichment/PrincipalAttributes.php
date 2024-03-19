@@ -110,6 +110,7 @@ class PrincipalAttributes {
     $deedTransactionId,
     $depthLinearFootage,
     $disabledTaxExemption,
+    $documentTypeDescription,
     $drivewaySqft,
     $drivewayType,
     $effectiveYearBuilt,
@@ -473,6 +474,7 @@ class PrincipalAttributes {
         $this->deedTransactionId = ArrayUtil::setField($obj, "deed_transaction_id");
         $this->depthLinearFootage = ArrayUtil::setField($obj, "depth_linear_footage");
         $this->disabledTaxExemption = ArrayUtil::setField($obj, "disabled_tax_exemption");
+        $this->documentTypeDescription = ArrayUtil::setField($obj, "document_type_description");
         $this->drivewaySqft = ArrayUtil::setField($obj, "driveway_sqft");
         $this->drivewayType = ArrayUtil::setField($obj, "driveway_type");
         $this->effectiveYearBuilt = ArrayUtil::setField($obj, "effective_year_built");
