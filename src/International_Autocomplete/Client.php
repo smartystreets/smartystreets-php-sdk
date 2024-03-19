@@ -44,7 +44,7 @@ class Client {
         $request = new Request();
 
         if ($lookup->getAddressID() != null) {
-            $request->setUrlPrefix("/" . $lookup->getAddressID());
+            $request->setUrlComponents("/" . $lookup->getAddressID());
         }
 
         $request->setParameter("country", $lookup->getCountry());

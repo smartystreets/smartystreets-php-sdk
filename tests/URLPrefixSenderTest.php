@@ -16,7 +16,7 @@ class URLPrefixSenderTest extends TestCase {
     public function testProvidedURLPresent() {
         $request = new Request();
         $fake_url_prefix = "/fake_address_id";
-        $request->setUrlPrefix($fake_url_prefix); 
+        $request->setUrlComponents($fake_url_prefix); 
         $original_url_prefix = "http://mysite.com/lookup";
 
         $inner = new MockSender(new Response(123, null, ""));
@@ -37,5 +37,20 @@ class URLPrefixSenderTest extends TestCase {
         $sender->send($request);
 
         $this->assertEquals("http://mysite.com/lookup?", $request->getUrl());
+    }
+
+    public function testMultipleSends() {
+        $request = new Request();
+        $fake_url_prefix = "/fake_address_id";
+        $request->setUrlComponents($fake_url_prefix); 
+        $original_url_prefix = "http://mysite.com/lookup";
+
+        $inner = new MockSender(new Response(123, null, ""));
+        $sender = new URLPrefixSender($original_url_prefix, $inner);
+
+        $sender->send($request);
+        $sender->send($request);
+
+        $this->assertEquals("http://mysite.com/lookup/fake_address_id?",$request->getUrl());
     }
 }

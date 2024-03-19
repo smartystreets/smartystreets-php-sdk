@@ -58,7 +58,7 @@ class Client {
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
 
-        $request->setUrlPrefix($this->getUrlPrefix($lookup));
+        $request->setUrlComponents($this->getUrlPrefix($lookup));
 
         return $request;
     }
