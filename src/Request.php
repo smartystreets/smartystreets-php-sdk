@@ -9,6 +9,7 @@ class Request {
     private $headers,
             $parameters,
             $urlPrefix,
+            $urlComponents,
             $payload,
             $referer,
             $method,
@@ -18,6 +19,7 @@ class Request {
         $this->headers = array();
         $this->parameters = array();
         $this->urlPrefix = '';
+        $this->urlComponents = '';
         $this->method = 'GET';
         $this->contentType = 'application/json';
 
@@ -96,7 +98,11 @@ class Request {
     }
 
     public function setUrlPrefix($urlPrefix) {
-        $this->urlPrefix = $urlPrefix;
+        $this->urlPrefix = $urlPrefix . $this->urlComponents;
+    }
+
+    public function setUrlComponents($urlComponents) {
+        $this->urlComponents = $urlComponents;
     }
 
     public function setContentType($contentType) {

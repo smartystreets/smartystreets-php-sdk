@@ -14,12 +14,7 @@ class URLPrefixSender implements Sender {
     }
 
     public function send(Request $request) {
-        if ($request->getUrlPrefix() != null) {
-            $request->setUrlPrefix($this->urlPrefix . $request->getUrlPrefix());
-        }
-        else {
-            $request->setUrlPrefix($this->urlPrefix);
-        }
+        $request->setUrlPrefix($this->urlPrefix);
         return $this->inner->send($request);
     }
 }
