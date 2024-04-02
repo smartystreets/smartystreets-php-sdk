@@ -31,22 +31,22 @@ class USStreetLookupsWithMatchStrategyExamples {
         $addressWithStrictStrategy->setState("utah");
         $addressWithStrictStrategy->setMatchStrategy(Lookup::STRICT);
 
-        $addressWithRangeStrategy = new Lookup();
-        $addressWithRangeStrategy->setStreet("693 W 1150 S");
-        $addressWithRangeStrategy->setCity("provo");
-        $addressWithRangeStrategy->setState("utah");
-        $addressWithRangeStrategy->setMatchStrategy(Lookup::INVALID);
-
         $addressWithInvalidStrategy = new Lookup();
-        $addressWithInvalidStrategy->setStreet("9999 W 1150 S");
+        $addressWithInvalidStrategy->setStreet("693 W 1150 S");
         $addressWithInvalidStrategy->setCity("provo");
         $addressWithInvalidStrategy->setState("utah");
-        $addressWithInvalidStrategy->setMatchStrategy(Lookup::ENHANCED);
+        $addressWithInvalidStrategy->setMatchStrategy(Lookup::INVALID);
+
+        $addressWithEnhancedStrategy = new Lookup();
+        $addressWithEnhancedStrategy->setStreet("9999 W 1150 S");
+        $addressWithEnhancedStrategy->setCity("provo");
+        $addressWithEnhancedStrategy->setState("utah");
+        $addressWithEnhancedStrategy->setMatchStrategy(Lookup::ENHANCED);
 
         try {
             $batch->add($addressWithStrictStrategy);
-            $batch->add($addressWithRangeStrategy);
             $batch->add($addressWithInvalidStrategy);
+            $batch->add($addressWithEnhancedStrategy);
 
             $client->sendBatch($batch);
             $this->displayResults($batch);
