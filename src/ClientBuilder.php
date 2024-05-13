@@ -177,11 +177,6 @@ class ClientBuilder {
         return $this;
     }
 
-    public function buildUSAutocompleteApiClient() {
-        $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_API_URL);
-        return new USAutoCompleteApiClient($this->buildSender(), $this->serializer);
-    }
-
     public function buildUSAutocompleteProApiClient() {
         $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_PRO_API_URL);
         return new USAutoCompleteProApiClient($this->buildSender(), $this->serializer);
