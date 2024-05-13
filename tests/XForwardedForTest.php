@@ -32,7 +32,8 @@ class XForwardedForTest extends TestCase {
         $sender = new NativeSender();
 
         $sender->send($request);
+        $headers = $request->getHeaders();
 
-        $this->assertEquals(null, $request->getHeaders()["X_FORWARDED_FOR"]);
+        $this->assertEquals(false, array_key_exists("X_FORWARDED_FOR", $headers));
     }
 }
