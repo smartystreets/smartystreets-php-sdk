@@ -18,13 +18,15 @@ class NativeSender implements Sender
 
     private $maxTimeOut,
         $proxy,
-        $debugMode;
+        $debugMode,
+        $ip;
 
-    public function __construct($maxTimeOut = 10000, Proxy $proxy = null, $debugMode = false)
+    public function __construct($maxTimeOut = 10000, Proxy $proxy = null, $debugMode = false, $ip = null)
     {
         $this->maxTimeOut = $maxTimeOut;
         $this->proxy = $proxy;
         $this->debugMode = $debugMode;
+        $this->ip = $ip;
     }
 
     function send(Request $smartyRequest)
@@ -80,6 +82,10 @@ class NativeSender implements Sender
 
         if ($smartyRequest->getReferer() != null)
             curl_setopt($ch, CURLOPT_REFERER, $smartyRequest->getReferer());
+        if ($this->ip != null) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array("X_FORWARDED_FOR: $this->ip"));
+            $smartyRequest->setHeader('X_FORWARDED_FOR', $this->ip);
+        }
 
         return $ch;
     }

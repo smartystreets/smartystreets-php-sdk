@@ -60,7 +60,8 @@ class ClientBuilder {
             $proxy,
             $logger,
             $debugMode,
-            $licenses;
+            $licenses,
+            $ip;
 
     public function __construct(Credentials $signer = null) {
         $this->serializer = new NativeSerializer();
@@ -70,6 +71,7 @@ class ClientBuilder {
         $this->logger = new MyLogger();
         $this->debugMode = false;
         $this->licenses = [];
+        $this->ip = null;
     }
 
     /**
@@ -165,6 +167,16 @@ class ClientBuilder {
         return $this;
     }
 
+    /**
+     * Allows the caller to include an X-Forwarded-For header in their request, passing on the end user's IP address
+     * @param string $ip The IP of the end user
+     * @return $this Returns <b>this</b> to accommodate method chaining.
+     */
+    public function withXForwardedFor($ip) {
+        $this->ip = $ip;
+        return $this;
+    }
+
     public function buildUSAutocompleteApiClient() {
         $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_API_URL);
         return new USAutoCompleteApiClient($this->buildSender(), $this->serializer);
@@ -214,7 +226,7 @@ class ClientBuilder {
         if ($this->httpSender != null)
             return $this->httpSender;
 
-        $sender = new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode);
+        $sender = new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode, $this->ip);
 
         $sender = new StatusCodeSender($sender);
 
