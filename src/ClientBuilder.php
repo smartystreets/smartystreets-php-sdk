@@ -28,7 +28,6 @@ require_once('Proxy.php');
 require_once(dirname(__FILE__) . '/US_Street/Client.php');
 require_once(dirname(__FILE__) . '/US_ZIPCode/Client.php');
 require_once(dirname(__FILE__) . '/US_Extract/Client.php');
-require_once(dirname(__FILE__) . '/US_Autocomplete/Client.php');
 require_once(dirname(__FILE__) . '/US_Autocomplete_Pro/Client.php');
 require_once(dirname(__FILE__) . '/International_Street/Client.php');
 require_once(dirname(__FILE__) . '/International_Autocomplete/Client.php');

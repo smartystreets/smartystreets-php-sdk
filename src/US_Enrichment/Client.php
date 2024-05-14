@@ -36,8 +36,7 @@ class Client {
     private function sendLookup(Lookup $lookup) {
         $request = $this->buildRequest($lookup);
         $response = $this->sender->send($request);
-
-        echo($response->getPayload());
+        
         $lookupResponse = $this->buildResponse($this->serializer->deserialize($response->getPayload()));
 
         $lookup->setResponse($lookupResponse);
