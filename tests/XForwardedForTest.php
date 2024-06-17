@@ -23,7 +23,7 @@ class XForwardedForTest extends TestCase {
 
         $sender->send($request);
 
-        $this->assertEquals("0.0.0.0", $request->getHeaders()["X_FORWARDED_FOR"]);
+        $this->assertEquals("0.0.0.0", $request->getHeaders()["X-Forwarded-For"]);
     }
 
     public function testNativeNotSet() {
@@ -34,6 +34,6 @@ class XForwardedForTest extends TestCase {
         $sender->send($request);
         $headers = $request->getHeaders();
 
-        $this->assertEquals(false, array_key_exists("X_FORWARDED_FOR", $headers));
+        $this->assertEquals(false, array_key_exists("X-Forwarded-For", $headers));
     }
 }

@@ -83,8 +83,8 @@ class NativeSender implements Sender
         if ($smartyRequest->getReferer() != null)
             curl_setopt($ch, CURLOPT_REFERER, $smartyRequest->getReferer());
         if ($this->ip != null) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array("X_FORWARDED_FOR: $this->ip"));
-            $smartyRequest->setHeader('X_FORWARDED_FOR', $this->ip);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-Forwarded-For: $this->ip"));
+            $smartyRequest->setHeader('X-Forwarded-For', $this->ip);
         }
 
         return $ch;
