@@ -16,6 +16,8 @@ class Candidate {
     private $street,
             $locality,
             $administrativeArea,
+            $administrativeAreaShort,
+            $administrativeAreaLong,
             $postalCode,
             $countryISO3,
             $entries,
@@ -29,6 +31,8 @@ class Candidate {
         $this->street = ArrayUtil::setField($obj, 'street');
         $this->locality = ArrayUtil::setField($obj, 'locality');
         $this->administrativeArea = ArrayUtil::setField($obj, 'administrative_area');
+        $this->administrativeAreaShort = ArrayUtil::setField($obj, 'administrative_area_short');
+        $this->administrativeAreaLong = ArrayUtil::setField($obj, 'administrative_area_long');
         $this->postalCode = ArrayUtil::setField($obj, 'postal_code');
         $this->countryISO3 = ArrayUtil::setField($obj, 'country_iso3');
         $this->entries = ArrayUtil::setField($obj, 'entries');
@@ -48,6 +52,14 @@ class Candidate {
 
     public function getAdministrativeArea() {
         return $this->administrativeArea;
+    }
+
+    public function getAdministrativeAreaShort() {
+        return $this->administrativeAreaShort;
+    }
+
+    public function getAdministrativeAreaLong() {
+        return $this->administrativeAreaLong;
     }
 
     public function getPostalCode() {

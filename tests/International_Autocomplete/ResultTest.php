@@ -16,6 +16,8 @@ class ResultTest extends TestCase {
                     "street" => "0",
                     "locality" => "1",
                     "administrative_area" => "2",
+                    "administrative_area_short" => "2.0",
+                    "administrative_area_long" => "2.1",
                     "postal_code" => "3",
                     "country_iso3" => "4"
                 ),
@@ -36,6 +38,8 @@ class ResultTest extends TestCase {
         $this->assertEquals("0", $result->getCandidate(0)->getStreet());
         $this->assertEquals("1", $result->getCandidate(0)->getLocality());
         $this->assertEquals("2", $result->getCandidate(0)->getAdministrativeArea());
+        $this->assertEquals("2.0", $result->getCandidate(0)->getAdministrativeAreaShort());
+        $this->assertEquals("2.1", $result->getCandidate(0)->getAdministrativeAreaLong());
         $this->assertEquals("3", $result->getCandidate(0)->getPostalCode());
         $this->assertEquals("4", $result->getCandidate(0)->getCountryISO3());
         // endregion
