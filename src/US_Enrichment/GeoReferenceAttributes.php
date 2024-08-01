@@ -47,14 +47,14 @@ class GeoReferenceAttributes {
     }
     
     private function createCensusTract($censusTractArray){
-            $this->censusTract = new CensusTractEntry($censusTractArray);
+        $this->censusTract = new CensusTractEntry($censusTractArray);
     }
 
     private function createCoreBasedStatArea($coreBasedStatAreaArray){
-            $this->coreBasedStatArea = new CoreBasedStatAreaEntry($coreBasedStatAreaArray);
+        $this->coreBasedStatArea = new CoreBasedStatAreaEntry($coreBasedStatAreaArray);
     }
 
     private function createPlace($placeArray){
-            $this->place = new PlaceEntry($placeArray);
+        $this->place = new PlaceEntry($placeArray);
     }
 }
