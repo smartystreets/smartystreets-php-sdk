@@ -37,24 +37,24 @@ class GeoReferenceAttributes {
             $this->createCoreBasedStatArea(ArrayUtil::setField($obj, "core_based_stat_area"));
             $this->createPlace(ArrayUtil::setField($obj, "place"));
     }
-    
+
     private function createCensusBlock($censusBlockArray){
-        $this->censusBlock[] = new CensusBlockEntry($censusBlockArray);
+        $this->censusBlock = new CensusBlockEntry($censusBlockArray);
     }
 
     private function createCensusCountyDivision($censusCountyDivisionArray){
-        $this->censusCountyDivision[] = new CensusCountyDivisionEntry($censusCountyDivisionArray);
+        $this->censusCountyDivision = new CensusCountyDivisionEntry($censusCountyDivisionArray);
     }
     
     private function createCensusTract($censusTractArray){
-            $this->censusTract[] = new CensusTractEntry($censusTractArray);
+            $this->censusTract = new CensusTractEntry($censusTractArray);
     }
 
     private function createCoreBasedStatArea($coreBasedStatAreaArray){
-            $this->coreBasedStatArea[] = new CoreBasedStatAreaEntry($coreBasedStatAreaArray);
+            $this->coreBasedStatArea = new CoreBasedStatAreaEntry($coreBasedStatAreaArray);
     }
 
     private function createPlace($placeArray){
-            $this->place[] = new PlaceEntry($placeArray);
+            $this->place = new PlaceEntry($placeArray);
     }
 }
