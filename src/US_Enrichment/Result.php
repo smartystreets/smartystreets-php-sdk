@@ -5,6 +5,7 @@ namespace SmartyStreets\PhpSdk\US_Enrichment;
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once('FinancialAttributes.php');
 require_once('PrincipalAttributes.php');
+require_once('GeoReferenceAttributes.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 
@@ -36,6 +37,9 @@ class Result  {
             if ($dataSubsetName == 'principal'){
                 return new PrincipalAttributes($attributesObj);
             }
+        }
+        if ($dataSetName == 'geo-reference'){
+            return new GeoReferenceAttributes($attributesObj);
         }
     }
 }
