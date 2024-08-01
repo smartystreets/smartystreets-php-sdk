@@ -39,6 +39,12 @@ class Client {
         return $lookup->getResponse();
     }
 
+    public function sendGenericLookup($smartyKey, $dataSetName, $dataSubsetName){
+        $lookup = new Lookup($smartyKey, $dataSetName, $dataSubsetName);
+        $this->sendLookup($lookup);
+        return $lookup->getResponse();
+    }
+
     private function sendLookup(Lookup $lookup) {
         $request = $this->buildRequest($lookup);
         $response = $this->sender->send($request);
