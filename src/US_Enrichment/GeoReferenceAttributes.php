@@ -1,7 +1,6 @@
 <?php
 namespace SmartyStreets\PhpSdk\US_Enrichment;
 
-use PSpell\Dictionary;
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/CensusBlockEntry.php');
@@ -38,23 +37,23 @@ class GeoReferenceAttributes {
             $this->createPlace(ArrayUtil::setField($obj, "place"));
     }
 
-    private function createCensusBlock($censusBlockArray){
-        $this->censusBlock = new CensusBlockEntry($censusBlockArray);
+    private function createCensusBlock($censusBlock){
+        $this->censusBlock = new CensusBlockEntry($censusBlock);
     }
 
-    private function createCensusCountyDivision($censusCountyDivisionArray){
-        $this->censusCountyDivision = new CensusCountyDivisionEntry($censusCountyDivisionArray);
+    private function createCensusCountyDivision($censusCountyDivision){
+        $this->censusCountyDivision = new CensusCountyDivisionEntry($censusCountyDivision);
     }
     
-    private function createCensusTract($censusTractArray){
-        $this->censusTract = new CensusTractEntry($censusTractArray);
+    private function createCensusTract($censusTract){
+        $this->censusTract = new CensusTractEntry($censusTract);
     }
 
-    private function createCoreBasedStatArea($coreBasedStatAreaArray){
-        $this->coreBasedStatArea = new CoreBasedStatAreaEntry($coreBasedStatAreaArray);
+    private function createCoreBasedStatArea($coreBasedStatArea){
+        $this->coreBasedStatArea = new CoreBasedStatAreaEntry($coreBasedStatArea);
     }
 
-    private function createPlace($placeArray){
-        $this->place = new PlaceEntry($placeArray);
+    private function createPlace($place){
+        $this->place = new PlaceEntry($place);
     }
 }
