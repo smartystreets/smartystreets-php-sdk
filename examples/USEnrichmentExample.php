@@ -31,7 +31,7 @@ class USEnrichmentExample
         $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-property-data-principal-cloud"])
             ->buildUsEnrichmentApiClient();
         
-            $smartyKey = "1682393594";
+        $smartyKey = "1682393594";
 
         try {
             $result = $client->sendPropertyPrincipalLookup($smartyKey);
