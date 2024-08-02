@@ -33,6 +33,30 @@ class Client {
         return $lookup->getResponse();
     }
 
+    public function sendGeoReferenceLookup($smartyKey){
+        $lookup = new Lookup($smartyKey, "geo-reference", null);
+        $this->sendLookup($lookup);
+        return $lookup->getResponse();
+    }
+
+    public function sendSecondaryLookup($smartyKey){
+        $lookup = new Lookup($smartyKey, "secondary", null);
+        $this->sendLookup($lookup);
+        return $lookup->getResponse();
+    }
+
+    public function sendSecondaryCountLookup($smartyKey){
+        $lookup = new Lookup($smartyKey, "secondary", "count");
+        $this->sendLookup($lookup);
+        return $lookup->getResponse();
+    }
+
+    public function sendGenericLookup($smartyKey, $dataSetName, $dataSubsetName){
+        $lookup = new Lookup($smartyKey, $dataSetName, $dataSubsetName);
+        $this->sendLookup($lookup);
+        return $lookup->getResponse();
+    }
+
     private function sendLookup(Lookup $lookup) {
         $request = $this->buildRequest($lookup);
         $response = $this->sender->send($request);
@@ -63,6 +87,9 @@ class Client {
     }
 
     private function getUrlPrefix($lookup){
+        if ($lookup->getDataSubsetName() == null) {
+            return $lookup->getSmartyKey() . "/" . $lookup->getDataSetName();
+        }
         return $lookup->getSmartyKey() . "/" . $lookup->getDataSetName() . "/" . $lookup->getDataSubsetName();
     }
 }

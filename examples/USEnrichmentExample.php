@@ -20,8 +20,8 @@ class USEnrichmentExample
         // $authToken = 'Your SmartyStreets Auth Token here';
 
         // We recommend storing your secret keys in environment variables instead---it's safer!
-       $authId = getenv('SMARTY_AUTH_ID');
-       $authToken = getenv('SMARTY_AUTH_TOKEN');
+        $authId = getenv('SMARTY_AUTH_ID');
+        $authToken = getenv('SMARTY_AUTH_TOKEN');
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
 
@@ -35,7 +35,12 @@ class USEnrichmentExample
 
         try {
             $result = $client->sendPropertyPrincipalLookup($smartyKey);
-            $this->displayResult($result[0]);
+            if ($result != null) {
+                $this->displayResult($result[0]);
+            }
+            else {
+                echo("No results found. This means the Smartykey is likely not valid.");
+            }
         }
         catch (Exception $ex) {
             echo($ex->getMessage());
@@ -44,8 +49,17 @@ class USEnrichmentExample
 
     public function displayResult(Result $result)
     {
-        echo("Results for input: " . $result->smartyKey . ", " . $result->dataSetName . "," . $result->dataSubsetName . "\n");
+        if ($result->dataSubsetName == 'principal' || $result->dataSubsetName == 'financial' || $result->dataSetName == 'geo-reference'){
+            echo("Results for input: " . $result->smartyKey . ", " . $result->dataSetName . "," . $result->dataSubsetName . "\n");
 
-        var_dump($result->attributes);
+            var_dump($result->attributes);
+        }
+        else if ($result->dataSetName == 'secondary') {
+            if ($result->dataSubsetName == 'count') {
+                echo("smarty_key: " . $result->smartyKey . "\n" . "count: " . $result->count);
+                return;
+            }
+            var_dump($result);
+        }
     }
 }
