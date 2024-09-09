@@ -10,7 +10,10 @@ use SmartyStreets\PhpSdk\US_Enrichment\Result;
 class ResponseTest extends TestCase
 {
     private $financialObj,
-    $principalObj;
+    $principalObj,
+    $geoReferenceObj,
+    $secondaryObj,
+    $secondaryCountObj;
 
     public function setUp() : void
     {
@@ -40,6 +43,53 @@ class ResponseTest extends TestCase
                 'assessor_taxroll_update' => 'test_update'
             ),
         );
+
+        $this->geoReferenceObj = array(
+            'smarty_key' => '123',
+            'data_set_name' => 'geo-reference',
+            'data_subset_name' => null,
+            'attributes' => array(
+                'census_block' => array(
+                    'accuracy' => 'test_accuracy',
+                    'geoid' => 'test_id',
+                )
+            ),
+        );
+
+        $this->secondaryObj = array(
+            'smarty_key' => '123',
+            'root_address' => array(
+                'secondary_count' => 2,
+                'smarty_key' => '123',
+            ),
+            'aliases' => array(
+                array(
+                    'smarty_key' => '123',
+                    'primary_number' => '1234',
+                ),
+                array(
+                    'smarty_key' => '123',
+                    'primary_number' => '2345',
+                )
+            ),
+            'secondaries' => array(
+                array(
+                    'smarty_key' => '234',
+                    'secondary_designator' => 'apt',
+                ),
+                array(
+                    'smarty_key' => '345',
+                    'secondary_designator' => 'apt',
+                )
+            ),
+        );
+
+        $this->secondaryCountObj = array(
+            'smarty_key' => '123',
+            'count' => 2,
+        );
+
+
     }
 
     public function testAllFinancialFieldsFilledCorrectly()
@@ -73,5 +123,56 @@ class ResponseTest extends TestCase
 
         $this->assertEquals('2', $attributes->bedrooms);
         $this->assertEquals('test_update', $attributes->assessorTaxrollUpdate);
+    }
+
+    public function testAllGeoReferenceFieldsFilledCorrectly()
+    {
+        $result = new Result($this->geoReferenceObj);
+
+        $this->assertEquals('123', $result->smartyKey);
+        $this->assertEquals('geo-reference', $result->dataSetName);
+        $this->assertNull($result->dataSubsetName);
+
+        $attributes = $result->attributes;
+        $censusBlock = $attributes->censusBlock;
+
+        $this->assertEquals('test_accuracy', $censusBlock->accuracy);
+        $this->assertEquals('test_id', $censusBlock->geoid);
+    }
+
+    public function testAllSecondaryFieldsFilledCorrectly()
+    {
+        $result = new Result($this->secondaryObj);
+
+        $this->assertEquals('123', $result->smartyKey);
+        
+        $rootAddress = $result->rootAddress;
+
+        $this->assertEquals(2, $rootAddress->secondaryCount);
+        $this->assertEquals('123', $rootAddress->smartyKey);
+
+        $aliases = $result->aliases;
+
+        $this->assertEquals('123', $aliases[0][0]->smartyKey);
+        $this->assertEquals('1234', $aliases[0][0]->primaryNumber);
+
+        $this->assertEquals('123', $aliases[0][1]->smartyKey);
+        $this->assertEquals('2345', $aliases[0][1]->primaryNumber);
+
+        $secondaries = $result->secondaries;
+
+        $this->assertEquals('234', $secondaries[0][0]->smartyKey);
+        $this->assertEquals('apt', $secondaries[0][0]->secondaryDesignator);
+
+        $this->assertEquals('345', $secondaries[0][1]->smartyKey);
+        $this->assertEquals('apt', $secondaries[0][1]->secondaryDesignator);
+    }
+
+    public function testAllSecondaryCountFieldsFilledCorrectly()
+    {
+        $result = new Result($this->secondaryCountObj);
+
+        $this->assertEquals('123', $result->smartyKey);
+        $this->assertEquals(2, $result->count);
     }
 }
