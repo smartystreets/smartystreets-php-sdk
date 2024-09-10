@@ -64,13 +64,15 @@ class Result  {
     }
 
     private function createSecondaryData($responseObj, $dataSubsetName) {
-        if ($dataSubsetName = 'count'){
+        if ($dataSubsetName == 'count'){
             $attributes = new SecondaryCountAttributes($responseObj);
             $this->count = $attributes->count;
         }
-        $attributes = new SecondaryAttributes($responseObj);
-        $this->rootAddress = $attributes->rootAddress;
-        $this->aliases[] = $attributes->aliases;
-        $this->secondaries[] = $attributes->secondaries;
+        else {
+            $attributes = new SecondaryAttributes($responseObj);
+            $this->rootAddress = $attributes->rootAddress;
+            $this->aliases[] = $attributes->aliases;
+            $this->secondaries[] = $attributes->secondaries;
+        }
     }
 }

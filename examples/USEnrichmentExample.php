@@ -3,10 +3,12 @@
 require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
 require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
 require_once(dirname(dirname(__FILE__)) . '/src/US_Enrichment/Client.php');
+require_once(dirname(dirname(__FILE__)) . '/src/US_Enrichment/Lookup.php');
 
 use SmartyStreets\PhpSdk\StaticCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Enrichment\Result;
+use SmartyStreets\PhpSdk\US_Enrichment\Lookup;
 
 $lookupExample = new USEnrichmentExample();
 $lookupExample->run();
@@ -31,10 +33,25 @@ class USEnrichmentExample
         $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-property-data-principal-cloud"])
             ->buildUsEnrichmentApiClient();
         
-        $smartyKey = "1682393594";
+        $smartyKey = "325023201";
+
+        $lookup = new Lookup();
+        
+        $lookup->setStreet("56 Union Ave");
+        $lookup->setCity("Somerville");
+        $lookup->setState("NJ");
+        $lookup->setZipcode("08876");
+        
+        // You can also send an address in freeform by uncommenting the line below
+        // $lookup->setFreeform("56 Union Ave Somerville NJ 08876");
 
         try {
+            // Call the API with only a smarty key using the line below
             $result = $client->sendPropertyPrincipalLookup($smartyKey);
+
+            // Or call the API with an address using the lookup object with the commented line below
+            // $result = $client->sendPropertyPrincipalLookup($lookup);
+
             if ($result != null) {
                 $this->displayResult($result[0]);
             }

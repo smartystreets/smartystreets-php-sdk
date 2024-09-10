@@ -34,14 +34,16 @@ class SecondaryAttributes {
     }
 
     private function createAliases($aliasesArray){
-        foreach($aliasesArray as $value){
-            $this->aliases = new AliasesEntry($value);
+        if ($aliasesArray != null) {
+            foreach($aliasesArray as $value){
+                $this->aliases[] = new AliasesEntry($value);
+            }
         }
     }
     
     private function createSecondaries($secondariesArray){
         foreach($secondariesArray as $value){
-            $this->secondaries = new SecondariesEntry($value);
+            $this->secondaries[] = new SecondariesEntry($value);
         }
     }
 }
