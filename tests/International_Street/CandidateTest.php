@@ -69,7 +69,14 @@ class CandidateTest extends TestCase {
                 "level_number" => "48.2",
                 "post_box" => "49",
                 "post_box_type" => "50",
-                "post_box_number" => "51"
+                "post_box_number" => "51",
+                "additional_content" => "112",
+                "delivery_installation" => "113",
+                "delivery_installation_type" => "114",
+                "delivery_installation_qualifier_name" => "115",
+                "route" => "116",
+                "route_number" => "117",
+                "route_type" => "118"
             ),
             "metadata" => array(
                 "latitude" => 52.0,
@@ -212,6 +219,13 @@ class CandidateTest extends TestCase {
         $this->assertEquals("49", $components->getPostBox());
         $this->assertEquals("50", $components->getPostBoxType());
         $this->assertEquals("51", $components->getPostBoxNumber());
+        $this->assertEquals("112", $components->getAdditionalContent());
+        $this->assertEquals("113", $components->getDeliveryInstallation());
+        $this->assertEquals("114", $components->getDeliveryInstallationType());
+        $this->assertEquals("115", $components->getDeliveryInstallationQualifierName());
+        $this->assertEquals("116", $components->getRoute());
+        $this->assertEquals("117", $components->getRouteNumber());
+        $this->assertEquals("118", $components->getRouteType());
         //endregion
 
         //region [ Metadata ]
