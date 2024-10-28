@@ -53,7 +53,14 @@ class Components {
             $levelNumber,
             $postBox,
             $postBoxType,
-            $postBoxNumber;
+            $postBoxNumber,
+            $additionalContent,
+            $deliveryInstallation,
+            $deliveryInstallationType,
+            $deliveryInstallationQualifierName,
+            $route,
+            $routeNumber,
+            $routeType;
 
     //endregion
 
@@ -106,12 +113,47 @@ class Components {
         $this->postBox = ArrayUtil::setField($obj,'post_box');
         $this->postBoxType = ArrayUtil::setField($obj,'post_box_type');
         $this->postBoxNumber = ArrayUtil::setField($obj,'post_box_number');
+        $this->additionalContent = ArrayUtil::setField($obj,'additional_content');
+        $this->deliveryInstallation = ArrayUtil::setField($obj,'delivery_installation');
+        $this->deliveryInstallationType = ArrayUtil::setField($obj,'delivery_installation_type');
+        $this->deliveryInstallationQualifierName = ArrayUtil::setField($obj,'delivery_installation_qualifier_name');
+        $this->route = ArrayUtil::setField($obj,'route');
+        $this->routeNumber = ArrayUtil::setField($obj,'route_number');
+        $this->routeType = ArrayUtil::setField($obj,'route_type');
     }
 
     //endregion
 
     //region [ Getters ]
 
+    public function getAdditionalContent() {
+        return $this->additionalContent;
+    }
+
+    public function getDeliveryInstallation() {
+        return $this->deliveryInstallation;
+    }
+    
+    public function getDeliveryInstallationType() {
+        return $this->deliveryInstallationType;
+    }
+    
+    public function getDeliveryInstallationQualifierName() {
+        return $this->deliveryInstallationQualifierName;
+    }
+    
+    public function getRoute() {
+        return $this->route;
+    }
+    
+    public function getRouteNumber() {
+        return $this->routeNumber;
+    }
+    
+    public function getRouteType() {
+        return $this->routeType;
+    }
+    
     public function getCountryIso3() {
         return $this->countryIso3;
     }
