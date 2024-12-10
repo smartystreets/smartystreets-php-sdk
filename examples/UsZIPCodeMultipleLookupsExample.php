@@ -35,6 +35,9 @@ class UsZIPCodeMultipleLookupsExample {
         $lookup0 = new Lookup();
         $lookup0->setZIPCode("12345");  // A Lookup may have a ZIP Code, city and state, or city, state, and ZIP Code
 
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup0->addCustomParameter("parameter","value");
+
         $lookup1 = new Lookup();
         $lookup1->setInputId("01189998819991197253"); // Optional ID from your system
         $lookup1->setCity("Phoenix");

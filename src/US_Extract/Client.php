@@ -54,6 +54,10 @@ class Client {
             $request->setParameter('match', $match);
         }
 
+        foreach ($lookup->getCustomParamArray() as $key => $value) {
+            $request->setParameter($key, $value);
+        }
+
         return $request;
     }
 }

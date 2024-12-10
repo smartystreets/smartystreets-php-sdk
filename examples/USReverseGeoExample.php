@@ -34,6 +34,9 @@ class USReverseGeoExample
 
         $lookup = new Lookup(40.111111, -111.111111);
 
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup->addCustomParameter("parameter", "value");
+
         try {
             $client->sendLookup($lookup);
             $this->displayResults($lookup);

@@ -156,6 +156,11 @@ class Client {
             $request->setParameter("state", $lookup->getState());
             $request->setParameter("zipcode", $lookup->getZipcode());
         }
+
+        foreach ($lookup->getCustomParamArray() as $key => $value) {
+            $request->setParameter($key, $value);
+        }
+
         return $request;
     }
 

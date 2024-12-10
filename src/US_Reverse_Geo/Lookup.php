@@ -11,7 +11,8 @@ class Lookup {
     private $response,
             $latitude,
             $longitude,
-            $source;
+            $source,
+            $customParamArray;
 
     //endregion
 
@@ -21,6 +22,7 @@ class Lookup {
         $this->response = null;
         $this->latitude = round($latitude, 8);
         $this->longitude = round($longitude, 8);
+        $this->customParamArray = array();
     }
 
     //endregion
@@ -43,17 +45,27 @@ class Lookup {
         return $this->source;
     }
 
-    public function setSource($source) {
-        $this->source = $source;
+    public function getCustomParamArray() {
+        return $this->customParamArray;
     }
+
+    
 
     //endregion
 
     //region [ Setters ]
+
+    public function setSource($source) {
+        $this->source = $source;
+    }
 
     public function setResponse($response) {
         $this->response = $response;
     }
 
     //endregion
+
+    public function addCustomParameter($parameter, $value) {
+        $this->customParamArray[$parameter] = $value;
+    }
 }

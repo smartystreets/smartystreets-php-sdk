@@ -34,6 +34,9 @@ class UsZIPCodeSingleLookupExample {
         $lookup->setCity("Mountain View");
         $lookup->setState("California");
 
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup->addCustomParameter("parameter", "value");
+
         try {
             $client->sendLookup($lookup);
             $this->displayResults($lookup);

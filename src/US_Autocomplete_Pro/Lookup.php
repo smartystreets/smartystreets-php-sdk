@@ -27,7 +27,8 @@ class Lookup {
             $preferRatio,
             $preferGeolocation,
             $selected,
-            $source;
+            $source,
+            $customParamArray;
 
     //endregion
 
@@ -47,6 +48,7 @@ class Lookup {
         $this->preferZIPCodes = array();
         $this->preferRatio = Lookup::PREFER_RATIO_DEFAULT;
         $this->preferGeolocation = new GeolocateType(GEOLOCATE_TYPE_CITY);
+        $this->customParamArray = array();
     }
 
     public function addCityFilter($city) {
@@ -77,6 +79,10 @@ class Lookup {
     public function addPreferZIPCode($zipcode) {
         $this->preferGeolocation = new GeolocateType(GEOLOCATE_TYPE_NONE);
         $this->preferZIPCodes[] = $zipcode;
+    }
+
+    public function addCustomParameter($parameter, $value) {
+        $this->customParamArray[$parameter] = $value;
     }
 
     //region [ Getters ]
@@ -141,6 +147,10 @@ class Lookup {
         return $this->source;
     }
 
+    public function getCustomParamArray() {
+        return $this->customParamArray;
+    }
+
     function getMaxResultsStringIfSet() {
         if ($this->maxResults == Lookup::MAX_RESULTS_DEFAULT)
             return null;
@@ -152,6 +162,7 @@ class Lookup {
             return null;
         return strval($this->preferRatio);
     }
+
     //endregion
 
     //region [ Setter ]

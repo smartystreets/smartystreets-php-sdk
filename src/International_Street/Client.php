@@ -58,6 +58,10 @@ class Client {
         $request->setParameter("administrative_area", $lookup->getAdministrativeArea());
         $request->setParameter("postal_code", $lookup->getPostalCode());
 
+        foreach ($lookup->getCustomParamArray() as $key => $value) {
+            $request->setParameter($key, $value);
+        }
+
         return $request;
     }
 

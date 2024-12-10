@@ -14,7 +14,8 @@ class Lookup {
         $zipcode,
         $dataSetName,
         $dataSubsetName,
-        $response;
+        $response,
+        $customParamArray;
 
     //endregion
 
@@ -29,6 +30,7 @@ class Lookup {
         $this->state = $state;
         $this->zipcode = $zipcode;
         $this->response = null;
+        $this->customParamArray = array();
     }
 
     public function getSmartyKey(){
@@ -67,6 +69,10 @@ class Lookup {
         return $this->response;
     }
 
+    public function getCustomParamArray() {
+        return $this->customParamArray;
+    }
+
     public function setSmartyKey($smartyKey) {
         $this->smartyKey = $smartyKey;
     }
@@ -101,5 +107,9 @@ class Lookup {
 
     public function setResponse($response){
         $this->response = $response;
+    }
+
+    public function addCustomParameter($parameter, $value) {
+        $this->customParamArray[$parameter] = $value;
     }
 }

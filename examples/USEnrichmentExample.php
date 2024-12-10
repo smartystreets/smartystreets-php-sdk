@@ -41,6 +41,9 @@ class USEnrichmentExample
         $lookup->setCity("Somerville");
         $lookup->setState("NJ");
         $lookup->setZipcode("08876");
+
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup->addCustomParameter("parameter", "value");
         
         // You can also send an address in freeform by uncommenting the line below
         // $lookup->setFreeform("56 Union Ave Somerville NJ 08876");

@@ -43,6 +43,9 @@ class InternationalExample {
         $lookup->setCountry("Brazil");
         $lookup->setPostalCode("02516-050");
 
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup->addCustomParameter("parameter", "value");
+
         try {
             $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
             $this->displayResults($lookup);

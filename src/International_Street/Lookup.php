@@ -24,7 +24,8 @@ class Lookup {
             $organization,
             $locality,
             $administrativeArea,
-            $postalCode;
+            $postalCode,
+            $customParamArray;
 
     //endregion
 
@@ -32,6 +33,7 @@ class Lookup {
 
     public function __construct() {
         $this->result = array();
+        $this->customParamArray = array();
     }
 
     public function setFreeformInput($freeform, $country) {
@@ -144,6 +146,10 @@ class Lookup {
         return $this->postalCode;
     }
 
+    public function getCustomParamArray() {
+        return $this->customParamArray;
+    }
+
     //endregion
 
     //region [ Setters ]
@@ -218,4 +224,8 @@ class Lookup {
     }
 
     //endregion
+
+    public function addCustomParameter($parameter, $value) {
+        $this->customParamArray[$parameter] = $value;
+    }
 }

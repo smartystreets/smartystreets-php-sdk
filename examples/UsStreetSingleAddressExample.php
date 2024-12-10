@@ -44,9 +44,13 @@ class UsStreetSingleAddressExample {
         $lookup->setState("CA");
         $lookup->setZipcode("21229");
         $lookup->setMaxCandidates(3);
+        $lookup->setCountySource(lookup::GEOGRAPHIC);
         $lookup->setMatchStrategy(Lookup::INVALID); // "invalid" is the most permissive match,
                                                                  // this will always return at least one result even if the address is invalid.
                                                                  // Refer to the documentation for additional MatchStrategy options.
+
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup->addCustomParameter("parameter","value");
 
         try {
             $client->sendLookup($lookup);
