@@ -166,6 +166,10 @@ class Lookup implements \JsonSerializable {
         return $this->result;
     }
 
+    public function getCustomParamArray() {
+        return $this->customParamArray;
+    }
+
     //endregion
 
     //region [ Setters ]

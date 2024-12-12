@@ -67,7 +67,37 @@ class ClientTest extends TestCase {
 
         $this->assertEquals($expectedURL, $capturingSender->getRequest()->getURL());
         $this->assertEquals("GET", $capturingSender->getRequest()->getMethod());
-}
+    }
+
+    public function testSendingCustomParameterLookup() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $serializer = new NativeSerializer();
+        $expectedURL = ("http://localhost/?input_id=1&street=2&street2=3&secondary=4&city=5&" .
+            "state=6&zipcode=7&lastline=8&addressee=9&" .
+            "urbanization=10&match=enhanced&candidates=5&parameter=custom&second=parameter");
+
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setInputId(1);
+        $lookup->setStreet("2");
+        $lookup->setStreet2("3");
+        $lookup->setSecondary("4");
+        $lookup->setCity("5");
+        $lookup->setState("6");
+        $lookup->setZipCode("7");
+        $lookup->setLastline("8");
+        $lookup->setAddressee("9");
+        $lookup->setUrbanization("10");
+        $lookup->setMatchStrategy(Lookup::ENHANCED);
+        $lookup->addCustomParameter("parameter", "custom");
+        $lookup->addCustomParameter("second", "parameter");
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals($expectedURL, $capturingSender->getRequest()->getURL());
+        $this->assertEquals("GET", $capturingSender->getRequest()->getMethod());
+    }
 
     public function testSendingSingleFullyPopulatedLookupWithFormatField() {
         $capturingSender = new RequestCapturingSender();

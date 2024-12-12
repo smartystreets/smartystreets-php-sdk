@@ -57,6 +57,28 @@ class ClientTest extends TestCase {
         $this->assertEquals("GET", $capturingSender->getRequest()->getMethod());
     }
 
+    public function testSendingCustomParameterLookup() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $serializer = new MockSerializer("");
+        $expectedURL = ("http://localhost/?input_id=1&city=2&state=3&zipcode=4&parameter=custom&second=parameter");
+
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setInputId("1");
+        $lookup->setCity("2");
+        $lookup->setState("3");
+        $lookup->setZipCode("4");
+        $lookup->addCustomParameter("parameter", "custom");
+        $lookup->addCustomParameter("second", "parameter");
+
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals($expectedURL, $capturingSender->getRequest()->getURL());
+        $this->assertEquals("GET", $capturingSender->getRequest()->getMethod());
+    }
+
     public function testSuccessfullySendsBatchOfLookups() {
         $expectedPayload = "Hello, World!";
         $sender = new RequestCapturingSender();
