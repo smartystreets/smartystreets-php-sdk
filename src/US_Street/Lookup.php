@@ -34,7 +34,6 @@ class Lookup implements \JsonSerializable {
             $outputFormat,
             $countySource,
             $customParamArray,
-            $jsonArray,
             $result;
 
     //endregion
@@ -59,22 +58,6 @@ class Lookup implements \JsonSerializable {
         $this->outputFormat = $outputFormat;
         $this->countySource = $countySource;
         $this->customParamArray = array();
-        $this->jsonArray = array(
-            'input_id' => $this->input_id,
-            'street' => $this->street,
-            'street2' => $this->street2,
-            'secondary' => $this->secondary,
-            'city' => $this->city,
-            'state' => $this->state,
-            'zipcode' => $this->zipcode,
-            'lastline' => $this->lastline,
-            'addressee' => $this->addressee,
-            'urbanization' => $this->urbanization,
-            'match' => $this->matchStrategy,
-            'format' => $this->outputFormat,
-            'county_source' => $this->countySource,
-            'candidates' => $this->maxCandidates
-        );
         $this->result = array();
     }
 
@@ -82,7 +65,7 @@ class Lookup implements \JsonSerializable {
 
     #[\ReturnTypeWillChange]
     function jsonSerialize() {
-        $this->jsonArray = array(
+        $jsonArray = array(
             'input_id' => $this->input_id,
             'street' => $this->street,
             'street2' => $this->street2,
@@ -99,9 +82,9 @@ class Lookup implements \JsonSerializable {
             'candidates' => $this->maxCandidates
         );
         foreach ($this->customParamArray as $key => $value) {
-            $this->jsonArray[$key] = $value;
+            $jsonArray[$key] = $value;
         }
-        return $this->jsonArray;
+        return $jsonArray;
     }
 
     //region [ Getters ]
