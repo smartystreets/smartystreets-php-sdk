@@ -42,6 +42,19 @@ class USEnrichmentExample
         $lookup->setState("NJ");
         $lookup->setZipcode("08876");
 
+        // Use the setIncludeArray function to set the include or exclude parameter using an existing array:
+        // $tempArray = array("assessed_improvement_percent", "assessed_improvement_value");
+        // $lookup->setIncludeArray($tempArray);
+        // OR
+        // $lookup->setExcludeArray($tempArray);
+
+        // Or use the addIncludeAttributes function to set the attributes you would like to include or exclude one by one:
+        // $lookup->addIncludeAttribute("assessed_improvement_percent");
+        // $lookup->addIncludeAttribute("assessed_improvement_value");
+        // OR
+        // $lookup->addExcludeAttribute("assessed_improvement_percent");
+        // $lookup->addExcludeAttribute("assessed_improvement_value");
+
         // Uncomment the below line to add a custom parameter to the API call
         // $lookup->addCustomParameter("parameter", "value");
         

@@ -14,13 +14,15 @@ class Lookup {
         $zipcode,
         $dataSetName,
         $dataSubsetName,
+        $include,
+        $exclude,
         $response,
         $customParamArray;
 
     //endregion
 
     public function __construct($smartyKey = null, $dataSetName = null, $dataSubsetName = null, $freeform = null, $street = null, $city = null, $state = null,
-    $zipcode = null) {
+    $zipcode = null, $include = null, $exclude = null) {
         $this->smartyKey = $smartyKey;
         $this->dataSetName = $dataSetName;
         $this->dataSubsetName = $dataSubsetName;
@@ -29,6 +31,8 @@ class Lookup {
         $this->city = $city;
         $this->state = $state;
         $this->zipcode = $zipcode;
+        $this->include = array();
+        $this->exclude = array();
         $this->response = null;
         $this->customParamArray = array();
     }
@@ -63,6 +67,14 @@ class Lookup {
 
     public function getDataSubsetName(){
         return $this->dataSubsetName;
+    }
+    
+    public function getIncludeArray() {
+        return $this->include;
+    }
+
+    public function getExcludeArray() {
+        return $this->exclude;
     }
 
     public function getResponse() {
@@ -105,8 +117,24 @@ class Lookup {
         $this->zipcode = $zipcode;
     }
 
+    public function setIncludeArray($include) {
+        $this->include = $include;
+    }
+
+    public function setExcludeArray($exclude) {
+        $this->exclude = $exclude;
+    }
+
     public function setResponse($response){
         $this->response = $response;
+    }
+
+    public function addIncludeAttribute($attribute) {
+        array_push($this->include, $attribute);
+    }
+
+    public function addExcludeAttribute($attribute) {
+        array_push($this->exclude, $attribute);
     }
 
     public function addCustomParameter($parameter, $value) {
