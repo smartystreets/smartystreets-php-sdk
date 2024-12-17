@@ -16,7 +16,8 @@ class Lookup implements \JsonSerializable {
             $inputId,
             $city,
             $state,
-            $zipcode;
+            $zipcode,
+            $customParamArray;
 
     //endregion
 
@@ -27,17 +28,22 @@ class Lookup implements \JsonSerializable {
         $this->city = $city;
         $this->state = $state;
         $this->zipcode = $zipcode;
+        $this->customParamArray = array();
     }
 
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-        return array(
+        $jsonArray = array(
             'input_id' => $this->inputId,
             'city' => $this->city,
             'state' => $this->state,
             'zipcode' => $this->zipcode
         );
+        foreach ($this->customParamArray as $key => $value) {
+            $jsonArray[$key] = $value;
+        }
+        return $jsonArray;
     }
 
     //endregion
@@ -64,6 +70,10 @@ class Lookup implements \JsonSerializable {
         return $this->zipcode;
     }
 
+    public function getCustomParamArray() {
+        return $this->customParamArray;
+    }
+
     //endregion
 
     //region [ Setters ]
@@ -88,5 +98,10 @@ class Lookup implements \JsonSerializable {
         $this->inputId = $inputId;
         return $this;
     }
+
     //endregion
+
+    public function addCustomParameter($parameter, $value) {
+        $this->customParamArray[$parameter] = $value;
+    }
 }

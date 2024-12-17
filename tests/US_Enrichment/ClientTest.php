@@ -30,6 +30,7 @@ class ClientTest extends TestCase {
 
         $this->assertEquals("http://localhost/123/property/principal?", $capturingSender->getRequest()->getUrl());
     }
+
     public function testSendingAddressComponentLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost/", $capturingSender);
@@ -40,10 +41,36 @@ class ClientTest extends TestCase {
         $lookup->setCity("Test City");
         $lookup->setState("Test State");
         $lookup->setZipcode("Test Zipcode");
+        $lookup->addIncludeAttribute("Test Include 1");
+        $lookup->addIncludeAttribute("Test Include 2");
+        $lookup->addExcludeAttribute("Test Exclude 1");
+        $lookup->addExcludeAttribute("Test Exclude 2");
 
         $client->sendPropertyPrincipalLookup($lookup);
 
-        $this->assertEquals("http://localhost/search/property/principal?street=123+Test+Street&city=Test+City&state=Test+State&zipcode=Test+Zipcode", $capturingSender->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/search/property/principal?street=123+Test+Street&city=Test+City&state=Test+State&zipcode=Test+Zipcode&include=Test+Include+1%2CTest+Include+2&exclude=Test+Exclude+1%2CTest+Exclude+2", $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testSendingCustomParameterLookup() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setStreet("123 Test Street");
+        $lookup->setCity("Test City");
+        $lookup->setState("Test State");
+        $lookup->setZipcode("Test Zipcode");
+        $lookup->addCustomParameter("parameter", "custom");
+        $lookup->addCustomParameter("second", "parameter");
+        $includeArray = array("Test Include 1","Test Include 2");
+        $excludeArray = array("Test Exclude 1","Test Exclude 2");
+        $lookup->setIncludeArray($includeArray);
+        $lookup->setExcludeArray($excludeArray);
+
+        $client->sendPropertyPrincipalLookup($lookup);
+
+        $this->assertEquals("http://localhost/search/property/principal?street=123+Test+Street&city=Test+City&state=Test+State&zipcode=Test+Zipcode&include=Test+Include+1%2CTest+Include+2&exclude=Test+Exclude+1%2CTest+Exclude+2&parameter=custom&second=parameter", $capturingSender->getRequest()->getUrl());
     }
     
     public function testSendingFreeformLookup() {

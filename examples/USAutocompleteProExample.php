@@ -51,6 +51,9 @@ class USAutocompleteProExample
             $lookup->setMaxResults(5);
             $lookup->setSource("all");
 
+            // Uncomment the below line to add a custom parameter to the API call
+            // $lookup->addCustomParameter("parameter", "value");
+
             $client->sendLookup($lookup);
             $this->displayResultsFilter($lookup);
         }

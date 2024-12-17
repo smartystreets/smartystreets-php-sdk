@@ -42,6 +42,10 @@ class Client {
         $request->setParameter("longitude", $lookup->getLongitude());
         $request->setParameter("source", $lookup->getSource());
 
+        foreach ($lookup->getCustomParamArray() as $key => $value) {
+            $request->setParameter($key, $value);
+        }
+
         return $request;
     }
 }

@@ -31,6 +31,9 @@ class USStreetLookupsWithMatchStrategyExamples {
         $addressWithStrictStrategy->setState("utah");
         $addressWithStrictStrategy->setMatchStrategy(Lookup::STRICT);
 
+        // Uncomment the below line to add a custom parameter to the API call
+        // $addressWithStrictStrategy->addCustomParameter("parameter", "value");
+
         $addressWithInvalidStrategy = new Lookup();
         $addressWithInvalidStrategy->setStreet("693 W 1150 S");
         $addressWithInvalidStrategy->setCity("provo");

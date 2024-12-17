@@ -36,6 +36,9 @@ class InternationalAutocompleteExample {
         $lookup->setCountry("FRA");
         $lookup->setLocality("Paris");
 
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup->addCustomParameter("parameter", "value");
+
         try {
             $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
             foreach ($lookup->getResult() as $candidate) {

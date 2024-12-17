@@ -21,7 +21,8 @@ class Lookup {
             $addressesHaveLineBreaks,
             $addressPerLine,
             $matchStrategy,
-            $text;
+            $text,
+            $customParamArray;
 
     /**
      * @param $text string The text that is to have addresses extracted out of it for verification
@@ -33,6 +34,7 @@ class Lookup {
         $this->addressPerLine = 0;
         $this->matchStrategy = "";
         $this->text = $text;
+        $this->customParamArray = array();
     }
 
     //region [ Getters ]
@@ -63,6 +65,10 @@ class Lookup {
 
     public function getText() {
         return $this->text;
+    }
+
+    public function getCustomParamArray() {
+        return $this->customParamArray;
     }
 
     //endregion
@@ -98,4 +104,8 @@ class Lookup {
     }
 
     //endregion
+
+    public function addCustomParameter($parameter, $value) {
+        $this->customParamArray[$parameter] = $value;
+    }
 }

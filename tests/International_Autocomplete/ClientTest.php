@@ -48,6 +48,26 @@ class ClientTest extends TestCase {
         $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
     }
 
+    public function testSendingCustomParameterLookup() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $expectedUrl = "http://localhost/coolID?country=0&search=1&max_results=2&include_only_locality=4&include_only_postal_code=5&parameter=value";
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("0");
+        $lookup->setSearch("1");
+        $lookup->setMaxResults(2);
+        $lookup->setLocality("4");
+        $lookup->setPostalCode("5");
+        $lookup->setAddressID("coolID");
+        $lookup->addCustomParameter("parameter", "value");
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
+    }
+
     public function testEmptyLookupRejected() {
         $this->assertLookupRejected(new Lookup());
     }

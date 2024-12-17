@@ -16,6 +16,9 @@ class Lookup implements \JsonSerializable {
     const FORMAT_DEFAULT = "default";
     const PROJECT_USA = "project-usa";
 
+    const GEOGRAPHIC = "geographic";
+    const POSTAL = "postal";
+
     private $input_id,
             $street,
             $street2,
@@ -29,6 +32,8 @@ class Lookup implements \JsonSerializable {
             $matchStrategy,
             $maxCandidates,
             $outputFormat,
+            $countySource,
+            $customParamArray,
             $result;
 
     //endregion
@@ -37,7 +42,7 @@ class Lookup implements \JsonSerializable {
      * This constructor accepts a freeform address. That means the whole address is in one string.
      */
     public function __construct($street = null, $street2 = null, $secondary = null, $city = null, $state = null, $zipcode = null,
-                                $lastline = null, $addressee = null, $urbanization = null, $matchStrategy = null, $maxCandidates = 1, $input_id = null, $outputFormat = null) {
+                                $lastline = null, $addressee = null, $urbanization = null, $matchStrategy = null, $maxCandidates = 1, $input_id = null, $outputFormat = null, $countySource = null) {
         $this->input_id = $input_id;
         $this->street = $street;
         $this->street2 = $street2;
@@ -51,12 +56,16 @@ class Lookup implements \JsonSerializable {
         $this->matchStrategy = $matchStrategy;
         $this->maxCandidates = $maxCandidates;
         $this->outputFormat = $outputFormat;
+        $this->countySource = $countySource;
+        $this->customParamArray = array();
         $this->result = array();
     }
 
+    
+
     #[\ReturnTypeWillChange]
     function jsonSerialize() {
-        return array(
+        $jsonArray = array(
             'input_id' => $this->input_id,
             'street' => $this->street,
             'street2' => $this->street2,
@@ -69,8 +78,13 @@ class Lookup implements \JsonSerializable {
             'urbanization' => $this->urbanization,
             'match' => $this->matchStrategy,
             'format' => $this->outputFormat,
+            'county_source' => $this->countySource,
             'candidates' => $this->maxCandidates
         );
+        foreach ($this->customParamArray as $key => $value) {
+            $jsonArray[$key] = $value;
+        }
+        return $jsonArray;
     }
 
     //region [ Getters ]
@@ -127,8 +141,16 @@ class Lookup implements \JsonSerializable {
         return $this->outputFormat;
     }
 
+    public function getCountySource() {
+        return $this->countySource;
+    }
+
     public function getResult() {
         return $this->result;
+    }
+
+    public function getCustomParamArray() {
+        return $this->customParamArray;
     }
 
     //endregion
@@ -210,9 +232,17 @@ class Lookup implements \JsonSerializable {
         $this->outputFormat = $outputFormat;
     }
 
+    public function setCountySource($countySource) {
+        $this->countySource = $countySource;
+    }
+
     public function setResult($result) {
         $this->result[] = $result;
     }
 
     //endregion
+
+    public function addCustomParameter($parameter, $value) {
+        $this->customParamArray[$parameter] = $value;
+    }
 }

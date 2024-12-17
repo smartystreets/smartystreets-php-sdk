@@ -156,6 +156,14 @@ class Client {
             $request->setParameter("state", $lookup->getState());
             $request->setParameter("zipcode", $lookup->getZipcode());
         }
+
+        $request->setParameter("include", $this->buildFilterString($lookup->getIncludeArray()));
+        $request->setParameter("exclude", $this->buildFilterString($lookup->getExcludeArray()));
+
+        foreach ($lookup->getCustomParamArray() as $key => $value) {
+            $request->setParameter($key, $value);
+        }
+
         return $request;
     }
 
@@ -172,5 +180,12 @@ class Client {
             }
             return $lookup->getSmartyKey() . "/" . $lookup->getDataSetName() . "/" . $lookup->getDataSubsetName();
         }
+    }
+
+    private function buildFilterString($list) {
+        if (empty($list))
+            return null;
+
+        return join(',', $list);
     }
 }

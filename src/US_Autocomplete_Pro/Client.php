@@ -57,6 +57,10 @@ class Client {
         $request->setParameter("selected", $lookup->getSelected());
         $request->setParameter("source", $lookup->getSource());
 
+        foreach ($lookup->getCustomParamArray() as $key => $value) {
+            $request->setParameter($key, $value);
+        }
+
         return $request;
     }
 

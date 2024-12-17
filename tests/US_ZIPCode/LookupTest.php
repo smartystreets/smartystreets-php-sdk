@@ -35,4 +35,11 @@ class LookupTest extends TestCase {
         $this->assertEquals("state", $lookup->getState());
         $this->assertEquals("12345", $lookup->getZIPCode());
     }
+
+    function testCustomParameterAddition() {
+        $lookup = new Lookup("city", "state", "12345");
+        $lookup->addCustomParameter("parameter", "value");
+
+        $this->assertEquals($lookup->getCustomParamArray()["parameter"], "value");
+    }
 }
