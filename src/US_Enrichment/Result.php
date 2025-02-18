@@ -8,6 +8,7 @@ require_once('PrincipalAttributes.php');
 require_once('GeoReferenceAttributes.php');
 require_once('SecondaryAttributes.php');
 require_once('SecondaryCountAttributes.php');
+require_once('MatchedAddress.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 
@@ -18,6 +19,7 @@ class Result  {
     public $smartyKey,
         $dataSetName,
         $dataSubsetName,
+        $matchedAddress,
         $attributes,
         $rootAddress,
         $aliases,
@@ -30,6 +32,9 @@ class Result  {
         if ($obj == null)
             return;
         $this->smartyKey = ArrayUtil::setField($obj, 'smarty_key');
+        if (array_key_exists('matched_address', $obj)) {
+            $this->matchedAddress = new MatchedAddress(ArrayUtil::setField($obj, 'matched_address'));
+        }
         if (array_key_exists('data_set_name', $obj)) {
             $this->dataSetName = ArrayUtil::setField($obj, 'data_set_name');
             $this->dataSubsetName = ArrayUtil::setField($obj, 'data_subset_name');

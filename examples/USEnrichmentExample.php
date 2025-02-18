@@ -85,6 +85,7 @@ class USEnrichmentExample
         if ($result->dataSubsetName == 'principal' || $result->dataSubsetName == 'financial' || $result->dataSetName == 'geo-reference'){
             echo("Results for input: " . $result->smartyKey . ", " . $result->dataSetName . "," . $result->dataSubsetName . "\n");
 
+            var_dump($result->matchedAddress);
             var_dump($result->attributes);
         }
         else if ($result->dataSetName == 'secondary') {
