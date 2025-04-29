@@ -20,12 +20,12 @@ class Client {
     private $sender,
         $serializer;
 
-    public function __construct(Sender $sender, Serializer $serializer = null) {
+    public function __construct(Sender $sender, ?Serializer $serializer = null) {
         $this->sender = $sender;
         $this->serializer = $serializer;
     }
 
-    public function sendLookup(Lookup $lookup = null) {
+    public function sendLookup(?Lookup $lookup = null) {
         if ($lookup == null || $lookup->getText() == null || strlen($lookup->getText()) == 0)
             throw new SmartyException("sendLookup() requires a Lookup with the 'text' field set");
 

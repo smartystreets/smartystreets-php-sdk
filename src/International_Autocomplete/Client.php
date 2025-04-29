@@ -20,7 +20,7 @@ class Client {
     private $sender,
         $serializer;
 
-    public function __construct(Sender $sender, Serializer $serializer = null) {
+    public function __construct(Sender $sender, ?Serializer $serializer = null) {
         $this->sender = $sender;
         $this->serializer = $serializer;
     }
