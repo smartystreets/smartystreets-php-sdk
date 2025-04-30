@@ -60,9 +60,10 @@ class ClientBuilder {
             $logger,
             $debugMode,
             $licenses,
+            $customHeaders,
             $ip;
 
-    public function __construct(Credentials $signer = null) {
+    public function __construct(?Credentials $signer = null) {
         $this->serializer = new NativeSerializer();
         $this->maxRetries = 5;
         $this->maxTimeout = 10000;
@@ -70,6 +71,7 @@ class ClientBuilder {
         $this->logger = new MyLogger();
         $this->debugMode = false;
         $this->licenses = [];
+        $this->customHeaders = [];
         $this->ip = null;
     }
 
@@ -167,12 +169,22 @@ class ClientBuilder {
     }
 
     /**
-     * Allows the caller to include an X-Forwarded-For header in their request, passing on the end user's IP address
-     * @param string $ip The IP of the end user
+     * Allows the caller to include an X-Forwarded-For header in their request
+     * @param string $header The header to be included with the request
      * @return $this Returns <b>this</b> to accommodate method chaining.
      */
     public function withXForwardedFor($ip) {
         $this->ip = $ip;
+        return $this;
+    }
+
+    /**
+     * Allows the caller to include a custom header in their request, passing on the end user's IP address
+     * @param string $ip The IP of the end user
+     * @return $this Returns <b>this</b> to accommodate method chaining.
+     */
+    public function withCustomHeader($header, $value) {
+        $this->customHeaders[$header] = $value;
         return $this;
     }
 
@@ -220,7 +232,7 @@ class ClientBuilder {
         if ($this->httpSender != null)
             return $this->httpSender;
 
-        $sender = new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode, $this->ip);
+        $sender = new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode, $this->ip, $this->customHeaders);
 
         $sender = new StatusCodeSender($sender);
 
