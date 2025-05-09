@@ -30,8 +30,9 @@ class CandidateTest extends TestCase {
                 "country_iso_3" => "14",
                 "super_administrative_area" => '15',
                 "administrative_area" => "16",
-                "administrative_area_short" => "16.1",
-                "administrative_area_long" => "16.2",
+                "administrative_area_iso2" => "16.1",
+                "administrative_area_short" => "16.2",
+                "administrative_area_long" => "16.3",
                 "sub_administrative_area" => "17",
                 "dependent_locality" => "18",
                 "dependent_locality_name" => "19",
@@ -179,8 +180,9 @@ class CandidateTest extends TestCase {
         $this->assertEquals("14", $components->getCountryIso3());
         $this->assertEquals("15", $components->getSuperAdministrativeArea());
         $this->assertEquals("16", $components->getAdministrativeArea());
-        $this->assertEquals("16.1", $components->getAdministrativeAreaShort());
-        $this->assertEquals("16.2", $components->getAdministrativeAreaLong());
+        $this->assertEquals("16.1", $components->getAdministrativeAreaISO2());
+        $this->assertEquals("16.2", $components->getAdministrativeAreaShort());
+        $this->assertEquals("16.3", $components->getAdministrativeAreaLong());
         $this->assertEquals("17", $components->getSubAdministrativeArea());
         $this->assertEquals("18", $components->getDependentLocality());
         $this->assertEquals("19", $components->getDependentLocalityName());

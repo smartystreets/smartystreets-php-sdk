@@ -14,6 +14,7 @@ class Components {
     private $countryIso3,
             $superAdministrativeArea,
             $administrativeArea,
+            $administrativeAreaISO2,
             $administrativeAreaShort,
             $administrativeAreaLong,
             $subAdministrativeArea,
@@ -73,6 +74,7 @@ class Components {
         $this->countryIso3 = ArrayUtil::setField($obj,'country_iso_3');
         $this->superAdministrativeArea = ArrayUtil::setField($obj,'super_administrative_area');
         $this->administrativeArea = ArrayUtil::setField($obj,'administrative_area');
+        $this->administrativeAreaISO2 = ArrayUtil::setField($obj,'administrative_area_iso2');
         $this->administrativeAreaShort = ArrayUtil::setField($obj,'administrative_area_short');
         $this->administrativeAreaLong = ArrayUtil::setField($obj,'administrative_area_long');
         $this->subAdministrativeArea = ArrayUtil::setField($obj,'sub_administrative_area');
@@ -164,6 +166,10 @@ class Components {
 
     public function getAdministrativeArea() {
         return $this->administrativeArea;
+    }
+
+    public function getAdministrativeAreaISO2() {
+        return $this->administrativeAreaISO2;
     }
 
     public function getAdministrativeAreaShort() {
