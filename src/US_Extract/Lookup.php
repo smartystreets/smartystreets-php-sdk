@@ -3,7 +3,7 @@
 namespace SmartyStreets\PhpSdk\US_Extract;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once('Result.php');
+require_once(dirname(dirname(__FILE___)) . '/US_Extract/Result.php');
 
 /**
  * In addition to holding all of the input data for this lookup, this class also<br>
