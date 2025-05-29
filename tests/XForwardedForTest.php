@@ -6,7 +6,7 @@ require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Response.php');
 require_once(dirname(dirname(__FILE__)) . '/src/NativeSender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Proxy.php');
-require_once('Mocks/MockSender.php');
+require_once(dirname(__FILE__) . 'Mocks/MockSender.php');
 use SmartyStreets\PhpSdk\Proxy;
 use SmartyStreets\PhpSdk\Request;
 use SmartyStreets\PhpSdk\Response;

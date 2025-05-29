@@ -3,7 +3,7 @@
 namespace SmartyStreets\PhpSdk\US_Autocomplete_Pro;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once('Suggestion.php');
+require_once(dirname(__FILE__) . 'Suggestion.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 class Result {

@@ -2,10 +2,10 @@
 
 namespace SmartyStreets\PhpSdk;
 
-include_once('Sender.php');
-require_once('Response.php');
-require_once('Version.php');
-require_once('Proxy.php');
+include_once(dirname(__FILE__) . 'Sender.php');
+require_once(dirname(__FILE__) . 'Response.php');
+require_once(dirname(__FILE__) . 'Version.php');
+require_once(dirname(__FILE__) . 'Proxy.php');
 
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 

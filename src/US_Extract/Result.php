@@ -3,8 +3,8 @@
 namespace SmartyStreets\PhpSdk\US_Extract;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Extract/Metadata.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Extract/Address.php');
+require_once(dirname(__FILE__) . '/Metadata.php');
+require_once(dirname(__FILE__) . '/Address.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**

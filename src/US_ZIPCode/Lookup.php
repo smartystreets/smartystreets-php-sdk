@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
-require_once(dirname(dirname(__FILE)) . '/US_ZIPCode/Result.php');
+require_once(dirname(__FILE__) . '/Result.php');
 
 /**
  * In addition to holding all of the input data for this lookup, this class also<br>

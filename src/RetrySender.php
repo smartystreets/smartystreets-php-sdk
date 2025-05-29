@@ -2,8 +2,8 @@
 
 namespace SmartyStreets\PhpSdk;
 
-include_once('Sender.php');
-require_once('Exceptions/TooManyRequestsException.php');
+include_once(dirname(__FILE__) . 'Sender.php');
+require_once(dirname(__FILE__) . 'Exceptions/TooManyRequestsException.php');
 
 use SmartyStreets\PhpSdk\Exceptions\BadGatewayException;
 use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;

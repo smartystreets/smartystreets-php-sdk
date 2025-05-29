@@ -7,7 +7,7 @@ require_once(dirname(dirname(__FILE__)) . '/Sender.php');
 require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/Batch.php');
-require_once('Response.php');
+require_once(dirname(__FILE__)  .'Response.php');
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;

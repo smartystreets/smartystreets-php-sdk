@@ -6,7 +6,7 @@ require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 require_once(dirname(dirname(__FILE__)) . '/Sender.php');
 require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Request.php');
-require_once('Result.php');
+require_once(dirname(__FILE__) . 'Result.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;

@@ -6,8 +6,8 @@ require_once(dirname(dirname(__FILE__)) . '/Exceptions/UnprocessableEntityExcept
 require_once(dirname(dirname(__FILE__)) . '/Sender.php');
 require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Request.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/Result.php');
+require_once(dirname(__FILE__) . '/Lookup.php');
+require_once(dirname(__FILE__) . '/Result.php');
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;

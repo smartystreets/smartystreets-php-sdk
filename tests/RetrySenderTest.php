@@ -2,9 +2,9 @@
 
 namespace SmartyStreets\PhpSdk\Tests;
 
-require_once('Mocks/MockCrashingSender.php');
-require_once('Mocks/MockLogger.php');
-require_once('Mocks/MockSleeper.php');
+require_once(dirname(__FILE__) . 'Mocks/MockCrashingSender.php');
+require_once(dirname(__FILE__) . 'Mocks/MockLogger.php');
+require_once(dirname(__FILE__) . 'Mocks/MockSleeper.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Exceptions/MustRetryException.php');
 require_once(dirname(dirname(__FILE__)) . '/src/RetrySender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');

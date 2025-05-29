@@ -2,9 +2,9 @@
 
 namespace SmartyStreets\PhpSdk\US_Street;
 
-require_once(dirname(dirname(__FILE__)) . '/US_Street/Components.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Street/Metadata.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Street/Analysis.php');
+require_once(dirname(__FILE__) . '/Components.php');
+require_once(dirname(__FILE__) . '/Metadata.php');
+require_once(dirname(__FILE__) . '/Analysis.php');
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
