@@ -2,8 +2,8 @@
 
 namespace SmartyStreets\PhpSdk\International_Street;
 
-require_once(dirname(__FILE__) . 'RootLevel.php');
-require_once(dirname(__FILE__) . 'Components.php');
+require_once(dirname(__FILE__) . '/RootLevel.php');
+require_once(dirname(__FILE__) . '/Components.php');
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 

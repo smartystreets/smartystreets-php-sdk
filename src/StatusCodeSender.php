@@ -2,16 +2,16 @@
 
 namespace SmartyStreets\PhpSdk;
 
-include_once(dirname(__FILE__) . 'Sender.php');
-require_once(dirname(__FILE__) . 'Exceptions/BadCredentialsException.php');
-require_once(dirname(__FILE__) . 'Exceptions/BadRequestException.php');
-require_once(dirname(__FILE__) . 'Exceptions/InternalServerErrorException.php');
-require_once(dirname(__FILE__) . 'Exceptions/PaymentRequiredException.php');
-require_once(dirname(__FILE__) . 'Exceptions/RequestEntityTooLargeException.php');
-require_once(dirname(__FILE__) . 'Exceptions/ServiceUnavailableException.php');
-require_once(dirname(__FILE__) . 'Exceptions/TooManyRequestsException.php');
-require_once(dirname(__FILE__) . 'Exceptions/UnprocessableEntityException.php');
-require_once(dirname(__FILE__) . 'Exceptions/GatewayTimeoutException.php');
+include_once(dirname(__FILE__) . '/Sender.php');
+require_once(dirname(__FILE__) . '/Exceptions/BadCredentialsException.php');
+require_once(dirname(__FILE__) . '/Exceptions/BadRequestException.php');
+require_once(dirname(__FILE__) . '/Exceptions/InternalServerErrorException.php');
+require_once(dirname(__FILE__) . '/Exceptions/PaymentRequiredException.php');
+require_once(dirname(__FILE__) . '/Exceptions/RequestEntityTooLargeException.php');
+require_once(dirname(__FILE__) . '/Exceptions/ServiceUnavailableException.php');
+require_once(dirname(__FILE__) . '/Exceptions/TooManyRequestsException.php');
+require_once(dirname(__FILE__) . '/Exceptions/UnprocessableEntityException.php');
+require_once(dirname(__FILE__) . '/Exceptions/GatewayTimeoutException.php');
 
 use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
 use SmartyStreets\PhpSdk\Exceptions\BadGatewayException;

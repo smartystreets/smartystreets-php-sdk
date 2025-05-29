@@ -3,7 +3,7 @@
 namespace SmartyStreets\PhpSdk\International_Autocomplete;
 
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once(dirname(__FILE__) . 'Candidate.php');
+require_once(dirname(__FILE__) . '/Candidate.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 class Result {
