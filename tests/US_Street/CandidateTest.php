@@ -73,6 +73,22 @@ class CandidateTest extends TestCase {
                 'suitelink_match' => true,
                 'dpv_no_stat' => '51',
                 'enhanced_match' => '52',
+                'components' => array(
+                    'urbanization' => ['status' => 'A', 'change' => 'A1'],
+                    'primary_number' => ['status' => 'B', 'change' => 'B1'],
+                    'street_name' => ['status' => 'C', 'change' => 'C1'],
+                    'street_predirection' => ['status' => 'D', 'change' => 'D1'],
+                    'street_postdirection' => ['status' => 'E', 'change' => 'E1'],
+                    'street_suffix' => ['status' => 'F', 'change' => 'F1'],
+                    'secondary_number' => ['status' => 'G', 'change' => 'G1'],
+                    'secondary_designator' => ['status' => 'H', 'change' => 'H1'],
+                    'extra_secondary_number' => ['status' => 'I', 'change' => 'I1'],
+                    'extra_secondary_designator' => ['status' => 'J', 'change' => 'J1'],
+                    'city_name' => ['status' => 'M', 'change' => 'M1'],
+                    'state_abbreviation' => ['status' => 'O', 'change' => 'O1'],
+                    'zipcode' => ['status' => 'P', 'change' => 'P1'],
+                    'plus4_code' => ['status' => 'Q']
+                )
             )
         );
     }
@@ -142,5 +158,37 @@ class CandidateTest extends TestCase {
         $this->assertEquals(true, $analysis->isSuiteLinkMatch());
         $this->assertEquals('51', $analysis->getNoStat());
         $this->assertEquals('52', $analysis->getEnhancedMatch());
+
+        $comp_analysis = $analysis->getComponents();
+
+        $this->assertEquals('A', $comp_analysis->getUrbanization()->getStatus());
+        $this->assertEquals('A1', $comp_analysis->getUrbanization()->getChange());
+        $this->assertEquals('B', $comp_analysis->getPrimaryNumber()->getStatus());
+        $this->assertEquals('B1', $comp_analysis->getPrimaryNumber()->getChange());
+        $this->assertEquals('C', $comp_analysis->getStreetName()->getStatus());
+        $this->assertEquals('C1', $comp_analysis->getStreetName()->getChange());
+        $this->assertEquals('D', $comp_analysis->getStreetPredirection()->getStatus());
+        $this->assertEquals('D1', $comp_analysis->getStreetPredirection()->getChange());
+        $this->assertEquals('E', $comp_analysis->getStreetPostdirection()->getStatus());
+        $this->assertEquals('E1', $comp_analysis->getStreetPostdirection()->getChange());
+        $this->assertEquals('F', $comp_analysis->getStreetSuffix()->getStatus());
+        $this->assertEquals('F1', $comp_analysis->getStreetSuffix()->getChange());
+        $this->assertEquals('G', $comp_analysis->getSecondaryNumber()->getStatus());
+        $this->assertEquals('G1', $comp_analysis->getSecondaryNumber()->getChange());
+        $this->assertEquals('H', $comp_analysis->getSecondaryDesignator()->getStatus());
+        $this->assertEquals('H1', $comp_analysis->getSecondaryDesignator()->getChange());
+        $this->assertEquals('I', $comp_analysis->getExtraSecondaryNumber()->getStatus());
+        $this->assertEquals('I1', $comp_analysis->getExtraSecondaryNumber()->getChange());
+        $this->assertEquals('J', $comp_analysis->getExtraSecondaryDesignator()->getStatus());
+        $this->assertEquals('J1', $comp_analysis->getExtraSecondaryDesignator()->getChange());
+        $this->assertEquals('M', $comp_analysis->getCityName()->getStatus());
+        $this->assertEquals('M1', $comp_analysis->getCityName()->getChange());
+        $this->assertEquals('O', $comp_analysis->getStateAbbreviation()->getStatus());
+        $this->assertEquals('O1', $comp_analysis->getStateAbbreviation()->getChange());
+        $this->assertEquals(null, $comp_analysis->getZipcode());
+        $this->assertEquals('P', $comp_analysis->getZipcode()->getStatus());
+        $this->assertEquals('P1', $comp_analysis->getZipcode()->getChange());
+        $this->assertEquals('Q', $comp_analysis->getPlus4Code()->getStatus());
+        $this->assertEquals(null, $comp_analysis->getPlus4Code()->getChange());
     }
 }

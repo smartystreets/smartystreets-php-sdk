@@ -2,6 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\US_Street;
 
+require_once('ComponentAnalysis.php');
 require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
@@ -20,7 +21,8 @@ class Analysis {
             $lacsLinkCode,
             $lacsLinkIndicator,
             $isSuiteLinkMatch,
-            $enhancedMatch;
+            $enhancedMatch,
+            $components;
 
     public function __construct($obj) {
         $this->dpvMatchCode = ArrayUtil::setField($obj, 'dpv_match_code');
@@ -35,6 +37,9 @@ class Analysis {
         $this->lacsLinkIndicator = ArrayUtil::setField($obj, 'lacslink_indicator');
         $this->isSuiteLinkMatch = ArrayUtil::setField($obj, 'suitelink_match');
         $this->enhancedMatch = ArrayUtil::setField($obj, "enhanced_match");
+        
+        if (isset($obj['components']))
+            $this->components = new ComponentAnalysis($obj['components']);
     }
 
     //region [ Getters ]
@@ -85,6 +90,10 @@ class Analysis {
 
     public function getEnhancedMatch() {
         return $this->enhancedMatch;
+    }
+
+    public function getComponents() {
+        return $this->components;
     }
 
     //endregion
