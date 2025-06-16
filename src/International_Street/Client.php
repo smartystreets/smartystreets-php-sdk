@@ -2,12 +2,12 @@
 
 namespace SmartyStreets\PhpSdk\International_Street;
 
-require_once(dirname(dirname(__FILE__)) . '/Exceptions/UnprocessableEntityException.php');
-require_once(dirname(dirname(__FILE__)) . '/Sender.php');
-require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Request.php');
-require_once(dirname(dirname(__FILE__)) . '/Batch.php');
-require_once('Candidate.php');
+require_once(__DIR__ . '/../Exceptions/UnprocessableEntityException.php');
+require_once(__DIR__ . '/../Sender.php');
+require_once(__DIR__ . '/../Serializer.php');
+require_once(__DIR__ . '/../Request.php');
+require_once(__DIR__ . '/../Batch.php');
+require_once(__DIR__ . '/Candidate.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 use SmartyStreets\PhpSdk\Sender;

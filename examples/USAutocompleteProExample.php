@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/SharedCredentials.php');
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Autocomplete_Pro/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Autocomplete_Pro/Client.php');
+require_once(__DIR__ . '/../src/SharedCredentials.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_Autocomplete_Pro/Lookup.php');
+require_once(__DIR__ . '/../src/US_Autocomplete_Pro/Client.php');
 
 use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\StaticCredentials;

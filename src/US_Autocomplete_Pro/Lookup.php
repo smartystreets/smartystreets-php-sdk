@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\US_Autocomplete_Pro;
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete_Pro/GeolocateType.php');
+require_once(dirname(dirname(__DIR__)) . '/src/US_Autocomplete_Pro/GeolocateType.php');
 
 /**
  * In addition to holding all of the input data for this lookup, this class also<br>

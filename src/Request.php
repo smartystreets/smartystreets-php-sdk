@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk;
 
-require_once('ArrayUtil.php');
+require_once(__DIR__ . '/ArrayUtil.php');
 
 class Request {
     const CHARSET = "UTF-8";

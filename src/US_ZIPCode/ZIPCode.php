@@ -2,8 +2,8 @@
 
 namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once('AlternateCounties.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
+require_once(__DIR__ . '/AlternateCounties.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
