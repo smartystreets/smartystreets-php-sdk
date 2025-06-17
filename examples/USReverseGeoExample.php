@@ -29,7 +29,7 @@ class USReverseGeoExample
         // The appropriate license values to be used for your subscriptions
         // can be found on the Subscriptions page the account dashboard.
         // https://www.smartystreets.com/docs/cloud/licensing
-        $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-reverse-geocoding-cloud"])
+        $client = (new ClientBuilder($staticCredentials))
             ->buildUsReverseGeoApiClient();
 
         $lookup = new Lookup(40.111111, -111.111111);

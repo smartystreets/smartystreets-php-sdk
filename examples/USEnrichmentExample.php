@@ -30,7 +30,7 @@ class USEnrichmentExample
         // The appropriate license values to be used for your subscriptions
         // can be found on the Subscriptions page the account dashboard.
         // https://www.smartystreets.com/docs/cloud/licensing
-        $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-property-data-principal-cloud"])
+        $client = (new ClientBuilder($staticCredentials))
             ->buildUsEnrichmentApiClient();
         
         $smartyKey = "325023201";
