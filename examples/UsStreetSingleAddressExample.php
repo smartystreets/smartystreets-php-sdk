@@ -23,9 +23,6 @@ class UsStreetSingleAddressExample {
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
 
-        // The appropriate license values to be used for your subscriptions
-        // can be found on the Subscriptions page the account dashboard.
-        // https://www.smartystreets.com/docs/cloud/licensing
         $client = (new ClientBuilder($staticCredentials))
 //                        ->viaProxy("http://localhost:8080", "username", "password") // uncomment this line to point to the specified proxy.
                         ->buildUsStreetApiClient();

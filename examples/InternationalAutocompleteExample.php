@@ -23,9 +23,6 @@ class InternationalAutocompleteExample {
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
 
-        // The appropriate license values to be used for your subscriptions
-        // can be found on the Subscriptions page the account dashboard.
-        // https://www.smartystreets.com/docs/cloud/licensing
         $client = (new ClientBuilder($staticCredentials))
             ->buildInternationalAutocompleteApiClient();
 
