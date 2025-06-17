@@ -63,6 +63,7 @@ class USReverseGeoExample
             echo("\nState Abbreviation: " . $address->getStateAbbreviation());
             echo("\nZIP Code: " . $address->getZIPCode());
             echo("\nLicense: " . $coordinate->getLicense());
+            echo("\nSmartykey: " . $address->getSmartykey());
             echo("\n");
         }
     }
