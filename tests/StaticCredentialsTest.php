@@ -22,7 +22,7 @@ class StaticCredentialsTest extends TestCase {
     private function assertSignedRequest($id, $secret, $expected) {
         $credentials = new StaticCredentials($id, $secret);
         $request = new Request();
-        $request->setUrlPrefix("https://us-street.api.smarty.com/street-address?");
+        $request->setUrlPrefix("https://us-street.api.smarty.com", '/street-address?');
 
         $credentials->sign($request);
 

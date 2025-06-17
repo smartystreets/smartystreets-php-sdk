@@ -97,7 +97,14 @@ class Request {
         $this->referer = $referer;
     }
 
-    public function setUrlPrefix($urlPrefix) {
+    public function setUrlPrefix($urlPrefix, $apiPath) {
+        if ($apiPath == '' || str_contains($urlPrefix, 'localhost')) {
+            $this->urlPrefix = $urlPrefix . $this->urlComponents;
+            return;
+        }
+        if (!str_ends_with($urlPrefix, $apiPath)) {
+            $urlPrefix = $urlPrefix . $apiPath;
+        }
         $this->urlPrefix = $urlPrefix . $this->urlComponents;
     }
 

@@ -13,10 +13,10 @@ class LicenseSender implements Sender {
         $this->inner = $inner;
     }
 
-    public function send(Request $request) {
+    public function send(Request $request, $apiPath) {
         if (count($this->licenses) > 0) {
             $request->setParameter("license", join(",", $this->licenses));
         }
-        return $this->inner->send($request);
+        return $this->inner->send($request, $apiPath);
     }
 }

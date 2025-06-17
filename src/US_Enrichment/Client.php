@@ -125,7 +125,7 @@ class Client {
 
     private function sendLookup(Lookup $lookup) {
         $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request);
+        $response = $this->sender->send($request, '/lookup');
         
         $lookupResponse = $this->buildResponse($this->serializer->deserialize($response->getPayload()));
 

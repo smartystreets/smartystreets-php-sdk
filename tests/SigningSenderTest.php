@@ -21,9 +21,9 @@ class SigningSenderTest extends TestCase {
         $mockSender = new MockSender(new Response("", "", ""));
         $sender = new SigningSender($signer, $mockSender);
         $request = new Request();
-        $request->setUrlPrefix("http://localhost/");
+        $request->setUrlPrefix("http://localhost/", '');
 
-        $sender->send($request);
+        $sender->send($request, '');
 
         $actualRequest = $mockSender->getRequest();
         $this->assertEquals("http://localhost/?auth-id=id&auth-token=secret", $actualRequest->getUrl());
@@ -35,7 +35,7 @@ class SigningSenderTest extends TestCase {
         $mockSender = new MockSender($expectedResponse);
         $sender = new SigningSender($signer, $mockSender);
 
-        $actualResponse = $sender->send(new Request());
+        $actualResponse = $sender->send(new Request(), '');
 
         $this->assertEquals($expectedResponse, $actualResponse);
     }

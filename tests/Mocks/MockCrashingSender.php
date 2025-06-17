@@ -17,7 +17,7 @@ class MockCrashingSender implements Sender {
 
     public function __construct() { }
 
-    function send(Request $request) {
+    function send(Request $request, $apiPath) {
         $this->sendCount++;
 
         if (strpos($request->getUrl(), "RetryThreeTimes") !== false) {

@@ -56,7 +56,7 @@ class Client {
         else
             $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
 
-        $response = $this->sender->send($request);
+        $response = $this->sender->send($request, '/street-address');
 
         $candidates = $this->serializer->deserialize($response->getPayload());
         if ($candidates == null)

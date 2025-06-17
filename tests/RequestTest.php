@@ -27,7 +27,7 @@ class RequestTest extends TestCase {
 
     private function assertQueryStringParameters($name, $value, $expected) {
         $request = new Request();
-        $request->setUrlPrefix(self::LOCAL_HOST);
+        $request->setUrlPrefix(self::LOCAL_HOST, '');
 
         $request->setParameter($name, $value);
 
@@ -36,7 +36,7 @@ class RequestTest extends TestCase {
 
     public function testMultipleQueryStringParameters() {
         $request = new Request();
-        $request->setUrlPrefix(self::LOCAL_HOST);
+        $request->setUrlPrefix(self::LOCAL_HOST, '');
 
         $request->setParameter("name1", "value1");
         $request->setParameter("name2", "value2");
@@ -48,7 +48,7 @@ class RequestTest extends TestCase {
 
     public function testUrlEncodingOfQueryStringParameters() {
         $request = new Request();
-        $request->setUrlPrefix(self::LOCAL_HOST);
+        $request->setUrlPrefix(self::LOCAL_HOST, '');
 
         $request->setParameter("name&", "value");
         $request->setParameter("name1", "other !value$");
@@ -60,7 +60,7 @@ class RequestTest extends TestCase {
 
     public function testUrlEncodingOfUnicodeCharacters() {
     	$request = new Request();
-    	        $request->setUrlPrefix(self::LOCAL_HOST);
+    	        $request->setUrlPrefix(self::LOCAL_HOST, '');
 
         $request->setParameter("needs_encoding", "&foo=bar");
         $request->setParameter("unicode", "Sjömadsvägen");
@@ -72,7 +72,7 @@ class RequestTest extends TestCase {
 
     public function testHeadersAddedToRequest() {
         $request = new Request();
-        $request->setUrlPrefix(self::LOCAL_HOST);
+        $request->setUrlPrefix(self::LOCAL_HOST, '');
 
         $request->setHeader("header1", "value1");
         $request->setHeader("header2", "value2");
@@ -83,7 +83,7 @@ class RequestTest extends TestCase {
 
     public function testPost() {
         $request = new Request();
-        $request->setUrlPrefix(self::LOCAL_HOST);
+        $request->setUrlPrefix(self::LOCAL_HOST, '');
 
         $request->setPayload("bytes");
         $actualPayload = $request->getPayload();
@@ -93,7 +93,7 @@ class RequestTest extends TestCase {
 
     public function testUrlWithoutTrailingQuestionMark() {
         $request = new Request();
-        $request->setUrlPrefix("http://localhost/");
+        $request->setUrlPrefix("http://localhost/", '');
 
         $request->setParameter("name1", "value1");
         $request->setParameter("name2", "value2");
@@ -105,7 +105,7 @@ class RequestTest extends TestCase {
 
     public function testBooleanValuesAndOnesAndZerosAreAppendedCorrectlyToUrl() {
         $request = new Request();
-        $request->setUrlPrefix("http://localhost/");
+        $request->setUrlPrefix("http://localhost/", '');
 
         $request->setParameter("key1", "0");
         $request->setParameter("key2", "1");

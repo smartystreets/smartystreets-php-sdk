@@ -15,7 +15,7 @@ class MockStatusCodeSender implements Sender {
         $this->statusCode = $statusCode;
     }
 
-    function send(Request $request) {
+    function send(Request $request, $apiPath) {
         if ($this->statusCode == 0)
             return null;
 

@@ -31,7 +31,7 @@ class Client {
 
         $request = $this->buildRequest($lookup);
 
-        $response = $this->sender->send($request);
+        $response = $this->sender->send($request, '/v2/lookup');
 
         $result = $this->serializer->deserialize($response->getPayload());
         if ($result == null)
@@ -42,7 +42,7 @@ class Client {
 
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
-
+        
         if ($lookup->getAddressID() != null) {
             $request->setUrlComponents("/" . $lookup->getAddressID());
         }

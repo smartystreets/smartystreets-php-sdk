@@ -25,7 +25,7 @@ class StatusCodeSenderTest extends TestCase {
     public function test200Response() {
         $sender = new StatusCodeSender(new MockStatusCodeSender(200));
 
-        $response = $sender->send(new Request());
+        $response = $sender->send(new Request(), '');
 
         $this->assertEquals(200, $response->getStatusCode());
     }
@@ -89,6 +89,6 @@ class StatusCodeSenderTest extends TestCase {
 
         $this->expectException($classType);
 
-        $sender->send(new Request());
+        $sender->send(new Request(), '');
     }
 }

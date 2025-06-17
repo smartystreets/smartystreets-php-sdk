@@ -13,7 +13,7 @@ class RequestCapturingSender implements Sender {
 
     public function __construct() { }
 
-    public function send(Request $request) {
+    public function send(Request $request, $apiPath) {
         $this->request = $request;
 
         return new Response(200, "[]", "");

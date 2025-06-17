@@ -3,5 +3,5 @@
 namespace SmartyStreets\PhpSdk;
 
 interface Sender {
-    function send(Request $request);
+    function send(Request $request, $apiPath);
 }

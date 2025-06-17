@@ -19,7 +19,7 @@ class CustomHeaderTest extends TestCase {
         $request = new Request();
         $sender = new NativeSender(10000, null, false, null, ["Header" => "Custom"]);
 
-        $sender->send($request);
+        $sender->send($request, '');
 
         $this->assertEquals("Custom", $request->getHeaders()["Header"]);
     }

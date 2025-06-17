@@ -34,7 +34,7 @@ class RetrySender implements Sender
         $this->maxRetries = $maxRetries;
     }
 
-    public function send(Request $request)
+    public function send(Request $request, $apiPath)
     {
         for ($i = 0; $i <= $this->maxRetries; $i++) {
             $response = $this->trySend($request, $i);
@@ -49,7 +49,7 @@ class RetrySender implements Sender
     private function trySend(Request $request, $attempt)
     {
         try {
-            return $this->inner->send($request);
+            return $this->inner->send($request, '');
         } catch (TooManyRequestsException $ex) {
             $this->backoff($ex->getHeader());
             return null;

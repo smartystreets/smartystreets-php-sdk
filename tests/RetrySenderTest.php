@@ -61,10 +61,10 @@ class RetrySenderTest extends TestCase {
 
     private function sendRequest($requestBehavior) {
         $request = new Request();
-        $request->setUrlPrefix($requestBehavior);
+        $request->setUrlPrefix($requestBehavior, '');
 
         $retrySender = new RetrySender(15, $this->mockSleeper, $this->mockLogger, $this->mockCrashingSender);
 
-        $retrySender->send($request);
+        $retrySender->send($request, '');
     }
 }

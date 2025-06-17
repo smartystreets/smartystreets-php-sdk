@@ -19,7 +19,7 @@ class LicenseSenderTest extends TestCase {
         $inner = new MockSender(new Response(123, null, ""));
         $sender = new LicenseSender($licenses, $inner);
 
-        $sender->send($request);
+        $sender->send($request, '');
 
         $this->assertEquals("one,two,three", $request->getParameters()["license"]);
     }
@@ -29,7 +29,7 @@ class LicenseSenderTest extends TestCase {
         $inner = new MockSender(new Response(123, null, ""));
         $sender = new LicenseSender([], $inner);
 
-        $sender->send($request);
+        $sender->send($request, '');
 
         $this->assertEquals(0, count($request->getParameters()));
     }

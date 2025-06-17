@@ -30,7 +30,7 @@ class Client {
     public function sendLookup(Lookup $lookup) {
         $this->ensureEnoughInfo($lookup);
         $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request);
+        $response = $this->sender->send($request, '/verify');
 
         $candidates = $this->serializer->deserialize($response->getPayload());
         if ($candidates == null)

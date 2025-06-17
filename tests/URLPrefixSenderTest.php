@@ -17,24 +17,24 @@ class URLPrefixSenderTest extends TestCase {
         $request = new Request();
         $fake_url_prefix = "/fake_address_id";
         $request->setUrlComponents($fake_url_prefix); 
-        $original_url_prefix = "http://mysite.com/lookup";
+        $original_url_prefix = "http://mysite.com";
 
         $inner = new MockSender(new Response(123, null, ""));
         $sender = new URLPrefixSender($original_url_prefix, $inner);
 
-        $sender->send($request);
+        $sender->send($request, '/lookup');
 
         $this->assertEquals("http://mysite.com/lookup/fake_address_id?",$request->getUrl());
     }
 
     public function testProvidedURLNotPresent() {
         $request = new Request();
-        $original_url_prefix = "http://mysite.com/lookup";
+        $original_url_prefix = "http://mysite.com";
 
         $inner = new MockSender(new Response(123, null, ""));
         $sender = new URLPrefixSender($original_url_prefix, $inner);
 
-        $sender->send($request);
+        $sender->send($request, '/lookup');
 
         $this->assertEquals("http://mysite.com/lookup?", $request->getUrl());
     }
@@ -43,13 +43,13 @@ class URLPrefixSenderTest extends TestCase {
         $request = new Request();
         $fake_url_prefix = "/fake_address_id";
         $request->setUrlComponents($fake_url_prefix); 
-        $original_url_prefix = "http://mysite.com/lookup";
+        $original_url_prefix = "http://mysite.com";
 
         $inner = new MockSender(new Response(123, null, ""));
         $sender = new URLPrefixSender($original_url_prefix, $inner);
 
-        $sender->send($request);
-        $sender->send($request);
+        $sender->send($request, '/lookup');
+        $sender->send($request, '/lookup');
 
         $this->assertEquals("http://mysite.com/lookup/fake_address_id?",$request->getUrl());
     }

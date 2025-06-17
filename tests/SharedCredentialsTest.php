@@ -25,7 +25,7 @@ class SharedCredentialsTest extends TestCase {
     private function createSignedRequest() {
         $mobile = new SharedCredentials("3516378604772256", "example.com");
         $request = new Request();
-        $request->setUrlPrefix("https://us-street.api.smarty.com/street-address?");
+        $request->setUrlPrefix("https://us-street.api.smarty.com", '/street-address?');
 
         $mobile->sign($request);
         return $request;
