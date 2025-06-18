@@ -18,6 +18,9 @@ international_street_api:
 us_autocomplete_pro_api:
 	php examples/USAutocompleteProExample.php
 
+us_enrichment_api:
+	php examples/USEnrichmentExample.php
+
 us_extract_api:
 	php examples/USExtractExample.php
 
@@ -30,6 +33,6 @@ us_street_api:
 us_zipcode_api:
 	php examples/UsZIPCodeSingleLookupExample.php && php examples/UsZIPCodeMultipleLookupsExample.php
 
-examples: international_autocomplete_api international_street_api us_autocomplete_pro_api us_extract_api us_reverse_geo_api us_street_api us_zipcode_api
+examples: international_autocomplete_api international_street_api us_autocomplete_pro_api us_enrichment_api us_extract_api us_reverse_geo_api us_street_api us_zipcode_api
 
-.PHONY: test package release examples international_autocomplete_api international_street_api us_autocomplete_pro_api us_extract_api us_reverse_geo_api us_street_api us_zipcode_api
+.PHONY: test package release examples international_autocomplete_api international_street_api us_autocomplete_pro_api us_enrichment_api us_extract_api us_reverse_geo_api us_street_api us_zipcode_api
