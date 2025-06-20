@@ -16,7 +16,7 @@ class MockSender implements Sender {
         $this->response = $response;
     }
 
-    function send(Request $request, $apiPath) {
+    function send(Request $request) {
         $this->request = $request;
         return $this->response;
     }

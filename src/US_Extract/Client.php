@@ -30,7 +30,7 @@ class Client {
             throw new SmartyException("sendLookup() requires a Lookup with the 'text' field set");
 
         $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request, '');
+        $response = $this->sender->send($request);
 
         $result = $this->serializer->deserialize($response->getPayload());
         if ($result == null)

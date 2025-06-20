@@ -35,9 +35,9 @@ class StatusCodeSender implements Sender
         $this->inner = $inner;
     }
 
-    function send(Request $request, $apiPath)
+    function send(Request $request)
     {
-        $response = $this->inner->send($request, $apiPath);
+        $response = $this->inner->send($request);
 
         switch ($response->getStatusCode()) {
             case 200:

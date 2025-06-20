@@ -30,7 +30,7 @@ class Client {
     public function sendLookup(Lookup $lookup) {
         $this->ensureEnoughInfo($lookup);
         $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request, '/verify');
+        $response = $this->sender->send($request);
 
         $candidates = $this->serializer->deserialize($response->getPayload());
         if ($candidates == null)
@@ -42,6 +42,8 @@ class Client {
 
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
+
+        $request->setUrlComponents("/verify");
 
         $request->setParameter("input_id", $lookup->getInputId());
         $request->setParameter("country", $lookup->getCountry());

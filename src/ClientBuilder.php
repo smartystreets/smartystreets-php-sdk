@@ -40,14 +40,14 @@ require_once(__DIR__ . '/US_Enrichment/Client.php');
  * are chainable, so you can usually get set up with one line of code.
  */
 class ClientBuilder {
-    const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smarty.com/verify";
-    const INTERNATIONAL_AUTOCOMPLETE_API_URL = "https://international-autocomplete.api.smarty.com/v2/lookup";
-    const US_AUTOCOMPLETE_PRO_API_URL = "https://us-autocomplete-pro.api.smarty.com/lookup";
+    const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smarty.com";
+    const INTERNATIONAL_AUTOCOMPLETE_API_URL = "https://international-autocomplete.api.smarty.com";
+    const US_AUTOCOMPLETE_PRO_API_URL = "https://us-autocomplete-pro.api.smarty.com/";
     const US_EXTRACT_API_URL = "https://us-extract.api.smarty.com";
     const US_STREET_API_URL = "https://us-street.api.smarty.com/street-address";
     const US_ZIP_CODE_API_URL = "https://us-zipcode.api.smarty.com/lookup";
-    const US_REVERSE_GEO_API_URL = "https://us-reverse-geo.api.smarty.com/lookup";
-    const US_ENRICHMENT_API_URL = "https://us-enrichment.api.smarty.com/lookup/";
+    const US_REVERSE_GEO_API_URL = "https://us-reverse-geo.api.smarty.com";
+    const US_ENRICHMENT_API_URL = "https://us-enrichment.api.smarty.com";
 
     private $signer,
             $serializer,
@@ -241,7 +241,7 @@ class ClientBuilder {
         if ($this->signer != null)
             $sender = new SigningSender($this->signer, $sender);
 
-        $sender = new URLPrefixSender($this->urlPrefix, $sender);
+        $sender = new URLPrefixSender($this->stripUrlToPrefix($this->urlPrefix), $sender);
 
         $sender = new LicenseSender($this->licenses, $sender);
 
@@ -251,5 +251,15 @@ class ClientBuilder {
     private function ensureURLPrefixNotNull($url) {
         if ($this->urlPrefix == null)
             $this->urlPrefix = $url;
+    }
+
+    private function stripUrlToPrefix($url) {
+        $parts = parse_url($url);
+        $base = $parts['scheme'] . '://' . $parts['host'];
+        if (isset($parts['port'])) {
+            $base .= ':' . $parts['port'];
+        }
+
+        return $base;
     }
 }

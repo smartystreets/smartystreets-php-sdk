@@ -31,7 +31,7 @@ class Client {
             throw new SmartyException("sendLookup() must be passed a Lookup with the prefix field set.");
 
         $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request, '/lookup');
+        $response = $this->sender->send($request);
 
         $result = $this->serializer->deserialize($response->getPayload());
         if ($result == null)
@@ -42,6 +42,8 @@ class Client {
 
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
+
+        $request->setUrlComponents("/lookup");
 
         $request->setParameter("search", $lookup->getSearch());
         $request->setParameter("max_results", $lookup->getMaxResultsStringIfSet());

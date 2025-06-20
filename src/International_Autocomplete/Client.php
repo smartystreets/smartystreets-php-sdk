@@ -31,7 +31,7 @@ class Client {
 
         $request = $this->buildRequest($lookup);
 
-        $response = $this->sender->send($request, '/v2/lookup');
+        $response = $this->sender->send($request);
 
         $result = $this->serializer->deserialize($response->getPayload());
         if ($result == null)
@@ -42,9 +42,11 @@ class Client {
 
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
+
+        $request->setUrlComponents("/v2/lookup");
         
         if ($lookup->getAddressID() != null) {
-            $request->setUrlComponents("/" . $lookup->getAddressID());
+            $request->setUrlComponents("/v2/lookup/" . $lookup->getAddressID());
         }
 
         $request->setParameter("country", $lookup->getCountry());

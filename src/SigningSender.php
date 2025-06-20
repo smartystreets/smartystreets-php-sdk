@@ -13,8 +13,8 @@ class SigningSender implements Sender {
         $this->inner = $inner;
     }
 
-    function send(Request $request, $apiPath) {
+    function send(Request $request) {
         $this->signer->sign($request);
-        return $this->inner->send($request, $apiPath);
+        return $this->inner->send($request);
     }
 }

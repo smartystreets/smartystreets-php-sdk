@@ -26,19 +26,19 @@ class ClientTest extends TestCase {
 
     public function testSendingLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup(44.888888888, -111.111111111);
 
         $client->sendLookup($lookup);
 
-        $this->assertEquals("http://localhost/?latitude=44.88888889&longitude=-111.11111111", $capturingSender->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup?latitude=44.88888889&longitude=-111.11111111", $capturingSender->getRequest()->getUrl());
     }
 
     public function testSendingCustomParameterLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup(44.888888888, -111.111111111);
@@ -47,6 +47,6 @@ class ClientTest extends TestCase {
 
         $client->sendLookup($lookup);
 
-        $this->assertEquals("http://localhost/?latitude=44.88888889&longitude=-111.11111111&parameter=custom&second=parameter", $capturingSender->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup?latitude=44.88888889&longitude=-111.11111111&parameter=custom&second=parameter", $capturingSender->getRequest()->getUrl());
     }
 }

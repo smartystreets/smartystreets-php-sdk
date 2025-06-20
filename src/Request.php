@@ -37,7 +37,7 @@ class Request {
     }
 
     public function getUrl() {
-        $url = $this->urlPrefix;
+        $url = $this->urlPrefix . $this->urlComponents;
 
         if (!strpos($url, "?"))
             $url .= "?";
@@ -97,15 +97,8 @@ class Request {
         $this->referer = $referer;
     }
 
-    public function setUrlPrefix($urlPrefix, $apiPath) {
-        if ($apiPath == '' || str_contains($urlPrefix, 'localhost')) {
-            $this->urlPrefix = $urlPrefix . $this->urlComponents;
-            return;
-        }
-        if (!str_ends_with($urlPrefix, $apiPath)) {
-            $urlPrefix = $urlPrefix . $apiPath;
-        }
-        $this->urlPrefix = $urlPrefix . $this->urlComponents;
+    public function setUrlPrefix($urlPrefix) {
+        $this->urlPrefix = $urlPrefix;
     }
 
     public function setUrlComponents($urlComponents) {

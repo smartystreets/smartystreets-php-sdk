@@ -32,7 +32,7 @@ class ClientTest extends TestCase {
 
     public function testSendingFreeformLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -40,13 +40,13 @@ class ClientTest extends TestCase {
 
         $client->sendLookup($lookup);
 
-        $this->assertEquals("http://localhost/?country=USA&freeform=freeform", $capturingSender->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/verify?country=USA&freeform=freeform", $capturingSender->getRequest()->getUrl());
     }
 
     public function testSendingSingleFullyPopulatedLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
-        $expectedUrl = "http://localhost/?input_id=1234&country=0&geocode=true&language=native&freeform=1" .
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $expectedUrl = "http://localhost/verify?input_id=1234&country=0&geocode=true&language=native&freeform=1" .
             "&address1=2&address2=3&address3=4&address4=5&organization=6&locality=7&administrative_area=8&postal_code=9";
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
@@ -72,8 +72,8 @@ class ClientTest extends TestCase {
 
     public function testSendingCustomParameterLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
-        $expectedUrl = "http://localhost/?input_id=1234&country=0&geocode=true&language=native&freeform=1" .
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $expectedUrl = "http://localhost/verify?input_id=1234&country=0&geocode=true&language=native&freeform=1" .
             "&address1=2&address2=3&address3=4&address4=5&organization=6&locality=7&administrative_area=8&postal_code=9&parameter=value";
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);

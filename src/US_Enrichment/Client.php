@@ -125,7 +125,7 @@ class Client {
 
     private function sendLookup(Lookup $lookup) {
         $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request, '/lookup');
+        $response = $this->sender->send($request);
         
         $lookupResponse = $this->buildResponse($this->serializer->deserialize($response->getPayload()));
 
@@ -147,7 +147,7 @@ class Client {
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
 
-        $request->setUrlComponents($this->getUrlPrefix($lookup));
+        $request->setUrlComponents("/lookup/". $this->getUrlPrefix($lookup));
 
         if ($lookup->getSmartyKey() == null) {
             $request->setParameter("freeform", $lookup->getFreeform());

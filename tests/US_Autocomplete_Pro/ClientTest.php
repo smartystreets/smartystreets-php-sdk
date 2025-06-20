@@ -24,7 +24,7 @@ class ClientTest extends TestCase {
 
     public function testSendingLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
 
@@ -33,12 +33,12 @@ class ClientTest extends TestCase {
 
         $client->sendLookup($lookup);
 
-        $this->assertEquals('http://localhost/?search=testSearch&prefer_cities=testCity&prefer_geolocation=city', $capturingSender->getRequest()->getUrl());
+        $this->assertEquals('http://localhost/lookup?search=testSearch&prefer_cities=testCity&prefer_geolocation=city', $capturingSender->getRequest()->getUrl());
     }
 
     public function testSendingCustomParameterLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
 
@@ -48,6 +48,6 @@ class ClientTest extends TestCase {
 
         $client->sendLookup($lookup);
 
-        $this->assertEquals('http://localhost/?search=testSearch&prefer_cities=testCity&prefer_geolocation=city&parameter=value', $capturingSender->getRequest()->getUrl());
+        $this->assertEquals('http://localhost/lookup?search=testSearch&prefer_cities=testCity&prefer_geolocation=city&parameter=value', $capturingSender->getRequest()->getUrl());
     }
 }

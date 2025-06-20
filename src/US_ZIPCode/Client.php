@@ -48,7 +48,9 @@ class Client {
         else
             $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
 
-        $response = $this->sender->send($request, "/lookup");
+        $request->setUrlComponents("/lookup");
+
+        $response = $this->sender->send($request);
 
         $results = $this->serializer->deserialize($response->getPayload());
         if ($results == null)

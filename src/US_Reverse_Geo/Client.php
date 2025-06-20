@@ -27,7 +27,7 @@ class Client {
 
     public function sendLookup(Lookup $lookup) {
         $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request, '/lookup');
+        $response = $this->sender->send($request);
 
         $lookupResponse = new Response($this->serializer->deserialize($response->getPayload()));
 
@@ -37,6 +37,8 @@ class Client {
 
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
+
+        $request->setUrlComponents("/lookup");
 
         $request->setParameter("latitude", $lookup->getLatitude());
         $request->setParameter("longitude", $lookup->getLongitude());

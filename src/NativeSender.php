@@ -31,7 +31,7 @@ class NativeSender implements Sender
         $this->customHeaders = $customHeaders;
     }
 
-    function send(Request $smartyRequest, $apiPath)
+    function send(Request $smartyRequest)
     {
         $ch = $this->buildRequest($smartyRequest);
         $this->setHeaders($smartyRequest, $ch);
