@@ -3,7 +3,7 @@
 namespace SmartyStreets\PhpSdk;
 
 include_once('Sender.php');
-require_once('Exceptions/TooManyRequestsException.php');
+require_once(__DIR__ . '/Exceptions/TooManyRequestsException.php');
 
 use SmartyStreets\PhpSdk\Exceptions\BadGatewayException;
 use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;

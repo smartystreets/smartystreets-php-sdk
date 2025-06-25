@@ -2,12 +2,12 @@
 
 namespace SmartyStreets\PhpSdk\US_Enrichment;
 
-require_once(dirname(dirname(__FILE__)) . '/Exceptions/UnprocessableEntityException.php');
-require_once(dirname(dirname(__FILE__)) . '/Sender.php');
-require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Request.php');
-require_once('Lookup.php');
-require_once('Result.php');
+require_once(__DIR__ . '/../Exceptions/UnprocessableEntityException.php');
+require_once(__DIR__ . '/../Sender.php');
+require_once(__DIR__ . '/../Serializer.php');
+require_once(__DIR__ . '/../Request.php');
+require_once(__DIR__ . '/Lookup.php');
+require_once(__DIR__ . '/Result.php');
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;
@@ -147,7 +147,7 @@ class Client {
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
 
-        $request->setUrlComponents($this->getUrlPrefix($lookup));
+        $request->setUrlComponents("/lookup/". $this->getUrlPrefix($lookup));
 
         if ($lookup->getSmartyKey() == null) {
             $request->setParameter("freeform", $lookup->getFreeform());

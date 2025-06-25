@@ -1,9 +1,9 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/International_Autocomplete/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/International_Autocomplete/Client.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/International_Autocomplete/Lookup.php');
+require_once(__DIR__ . '/../src/International_Autocomplete/Client.php');
 use SmartyStreets\PhpSdk\StaticCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\International_Autocomplete\Lookup;
@@ -23,10 +23,7 @@ class InternationalAutocompleteExample {
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
 
-        // The appropriate license values to be used for your subscriptions
-        // can be found on the Subscriptions page the account dashboard.
-        // https://www.smartystreets.com/docs/cloud/licensing
-        $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["international-autocomplete-v2-cloud"])
+        $client = (new ClientBuilder($staticCredentials))
             ->buildInternationalAutocompleteApiClient();
 
         // Documentation for input fields can be found at:

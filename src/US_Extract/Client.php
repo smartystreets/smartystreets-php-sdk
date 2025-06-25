@@ -2,10 +2,10 @@
 
 namespace SmartyStreets\PhpSdk\US_Extract;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once(dirname(dirname(__FILE__)) . '/Sender.php');
-require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Request.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
+require_once(__DIR__ . '/../Sender.php');
+require_once(__DIR__ . '/../Serializer.php');
+require_once(__DIR__ . '/../Request.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\ArrayUtil;
 use SmartyStreets\PhpSdk\Sender;

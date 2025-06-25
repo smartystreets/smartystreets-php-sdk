@@ -2,9 +2,9 @@
 
 namespace SmartyStreets\PhpSdk\International_Street;
 
-require_once ('RootLevel.php');
-require_once ('Components.php');
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once (__DIR__ . '/RootLevel.php');
+require_once (__DIR__ . '/Components.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 class Changes extends RootLevel {

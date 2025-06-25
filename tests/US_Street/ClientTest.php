@@ -31,7 +31,7 @@ class ClientTest extends TestCase {
     //region [ Single Lookup ]
 
     public function testSendingSingleFreeformLookup() {
-        $expectedPayload = "?street=freeform&candidates=1";
+        $expectedPayload = "/street-address?street=freeform&candidates=1";
         $sender = new RequestCapturingSender();
         $serializer = new MockSerializer($expectedPayload);
         $client = new Client($sender, $serializer);
@@ -43,9 +43,9 @@ class ClientTest extends TestCase {
 
     public function testSendingSingleFullyPopulatedLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new NativeSerializer();
-        $expectedURL = ("http://localhost/?input_id=1&street=2&street2=3&secondary=4&city=5&" .
+        $expectedURL = ("http://localhost/street-address?input_id=1&street=2&street2=3&secondary=4&city=5&" .
             "state=6&zipcode=7&lastline=8&addressee=9&" .
             "urbanization=10&match=enhanced&candidates=5");
 
@@ -71,9 +71,9 @@ class ClientTest extends TestCase {
 
     public function testSendingCustomParameterLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new NativeSerializer();
-        $expectedURL = ("http://localhost/?input_id=1&street=2&street2=3&secondary=4&city=5&" .
+        $expectedURL = ("http://localhost/street-address?input_id=1&street=2&street2=3&secondary=4&city=5&" .
             "state=6&zipcode=7&lastline=8&addressee=9&" .
             "urbanization=10&match=enhanced&candidates=5&parameter=custom&second=parameter");
 
@@ -101,9 +101,9 @@ class ClientTest extends TestCase {
 
     public function testSendingSingleFullyPopulatedLookupWithFormatField() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new NativeSerializer();
-        $expectedURL = ("http://localhost/?input_id=1&street=2&street2=3&secondary=4&city=5&" .
+        $expectedURL = ("http://localhost/street-address?input_id=1&street=2&street2=3&secondary=4&city=5&" .
             "state=6&zipcode=7&lastline=8&addressee=9&" .
             "urbanization=10&match=enhanced&format=project-usa&candidates=5");
 

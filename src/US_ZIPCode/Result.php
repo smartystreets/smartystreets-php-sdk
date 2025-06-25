@@ -2,9 +2,9 @@
 
 namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once('City.php');
-require_once('ZIPCode.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
+require_once(__DIR__ . '/City.php');
+require_once(__DIR__ . '/ZIPCode.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**

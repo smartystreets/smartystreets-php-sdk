@@ -32,7 +32,7 @@ class ClientTest extends TestCase {
     public function testSendingSingleFullyPopulatedLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $expectedUrl = "http://localhost/coolID?country=0&search=1&max_results=2&include_only_locality=4&include_only_postal_code=5";
+        $expectedUrl = "http://localhost/v2/lookup/coolID?country=0&search=1&max_results=2&include_only_locality=4&include_only_postal_code=5";
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -51,7 +51,7 @@ class ClientTest extends TestCase {
     public function testSendingCustomParameterLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $expectedUrl = "http://localhost/coolID?country=0&search=1&max_results=2&include_only_locality=4&include_only_postal_code=5&parameter=value";
+        $expectedUrl = "http://localhost/v2/lookup/coolID?country=0&search=1&max_results=2&include_only_locality=4&include_only_postal_code=5&parameter=value";
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();

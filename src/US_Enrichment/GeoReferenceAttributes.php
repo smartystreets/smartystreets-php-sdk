@@ -3,11 +3,11 @@ namespace SmartyStreets\PhpSdk\US_Enrichment;
 
 use SmartyStreets\PhpSdk\ArrayUtil;
 
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/CensusBlockEntry.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/CensusCountyDivisionEntry.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/CensusTractEntry.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/CoreBasedStatAreaEntry.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/PlaceEntry.php');
+require_once(__DIR__ . '/../US_Enrichment/GeoReference/CensusBlockEntry.php');
+require_once(__DIR__ . '/../US_Enrichment/GeoReference/CensusCountyDivisionEntry.php');
+require_once(__DIR__ . '/../US_Enrichment/GeoReference/CensusTractEntry.php');
+require_once(__DIR__ . '/../US_Enrichment/GeoReference/CoreBasedStatAreaEntry.php');
+require_once(__DIR__ . '/../US_Enrichment/GeoReference/PlaceEntry.php');
 
 use SmartyStreets\PhpSdk\US_Enrichment\GeoReference\CensusBlockEntry;
 use SmartyStreets\PhpSdk\US_Enrichment\GeoReference\CensusCountyDivisionEntry;

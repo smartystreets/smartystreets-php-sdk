@@ -22,18 +22,18 @@ class ClientTest extends TestCase {
 
     public function testSendingLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $smartyKey = "123";
         $client->sendPropertyPrincipalLookup($smartyKey);
 
-        $this->assertEquals("http://localhost/123/property/principal?", $capturingSender->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/123/property/principal?", $capturingSender->getRequest()->getUrl());
     }
 
     public function testSendingAddressComponentLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -48,12 +48,12 @@ class ClientTest extends TestCase {
 
         $client->sendPropertyPrincipalLookup($lookup);
 
-        $this->assertEquals("http://localhost/search/property/principal?street=123+Test+Street&city=Test+City&state=Test+State&zipcode=Test+Zipcode&include=Test+Include+1%2CTest+Include+2&exclude=Test+Exclude+1%2CTest+Exclude+2", $capturingSender->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/search/property/principal?street=123+Test+Street&city=Test+City&state=Test+State&zipcode=Test+Zipcode&include=Test+Include+1%2CTest+Include+2&exclude=Test+Exclude+1%2CTest+Exclude+2", $capturingSender->getRequest()->getUrl());
     }
 
     public function testSendingCustomParameterLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -70,12 +70,12 @@ class ClientTest extends TestCase {
 
         $client->sendPropertyPrincipalLookup($lookup);
 
-        $this->assertEquals("http://localhost/search/property/principal?street=123+Test+Street&city=Test+City&state=Test+State&zipcode=Test+Zipcode&include=Test+Include+1%2CTest+Include+2&exclude=Test+Exclude+1%2CTest+Exclude+2&parameter=custom&second=parameter", $capturingSender->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/search/property/principal?street=123+Test+Street&city=Test+City&state=Test+State&zipcode=Test+Zipcode&include=Test+Include+1%2CTest+Include+2&exclude=Test+Exclude+1%2CTest+Exclude+2&parameter=custom&second=parameter", $capturingSender->getRequest()->getUrl());
     }
     
     public function testSendingFreeformLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -83,6 +83,6 @@ class ClientTest extends TestCase {
 
         $client->sendPropertyPrincipalLookup($lookup);
 
-        $this->assertEquals("http://localhost/search/property/principal?freeform=123+Test+Street+City+State+Zipcode", $capturingSender->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/search/property/principal?freeform=123+Test+Street+City+State+Zipcode", $capturingSender->getRequest()->getUrl());
     }
 }

@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\US_Autocomplete_Pro;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**

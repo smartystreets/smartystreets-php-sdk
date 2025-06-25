@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class SharedCredentialsTest extends TestCase {
     public function testSignedRequest() {
         $request = $this->createSignedRequest();
-        $expected = "https://us-street.api.smarty.com/street-address?key=3516378604772256";
+        $expected = "https://us-street.api.smarty.com?key=3516378604772256";
 
         $this->assertEquals($expected, $request->getUrl());
     }
@@ -25,7 +25,7 @@ class SharedCredentialsTest extends TestCase {
     private function createSignedRequest() {
         $mobile = new SharedCredentials("3516378604772256", "example.com");
         $request = new Request();
-        $request->setUrlPrefix("https://us-street.api.smarty.com/street-address?");
+        $request->setUrlPrefix("https://us-street.api.smarty.com");
 
         $mobile->sign($request);
         return $request;

@@ -1,9 +1,9 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Enrichment/Client.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Enrichment/Lookup.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_Enrichment/Client.php');
+require_once(__DIR__ . '/../src/US_Enrichment/Lookup.php');
 
 use SmartyStreets\PhpSdk\StaticCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
@@ -27,10 +27,7 @@ class USEnrichmentExample
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
 
-        // The appropriate license values to be used for your subscriptions
-        // can be found on the Subscriptions page the account dashboard.
-        // https://www.smartystreets.com/docs/cloud/licensing
-        $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-property-data-principal-cloud"])
+        $client = (new ClientBuilder($staticCredentials))
             ->buildUsEnrichmentApiClient();
         
         $smartyKey = "325023201";

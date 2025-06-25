@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Street/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_Street/Lookup.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\StaticCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
@@ -23,10 +23,7 @@ class UsStreetSingleAddressExample {
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
 
-        // The appropriate license values to be used for your subscriptions
-        // can be found on the Subscriptions page the account dashboard.
-        // https://www.smartystreets.com/docs/cloud/licensing
-        $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-core-cloud"])
+        $client = (new ClientBuilder($staticCredentials))
 //                        ->viaProxy("http://localhost:8080", "username", "password") // uncomment this line to point to the specified proxy.
                         ->buildUsStreetApiClient();
 

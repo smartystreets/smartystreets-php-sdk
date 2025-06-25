@@ -2,8 +2,8 @@
 
 namespace SmartyStreets\PhpSdk\US_Extract;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Street/Candidate.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
+require_once(__DIR__ . '/../US_Street/Candidate.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 use SmartyStreets\PhpSdk\US_Street\Candidate;
 

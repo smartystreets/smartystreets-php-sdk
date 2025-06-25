@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Result.php');
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
-require_once(dirname(dirname(__FILE__)) . '/src/SharedCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_ZIPCode/Lookup.php');
+require_once(__DIR__ . '/../src/US_ZIPCode/Result.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/SharedCredentials.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
 use SmartyStreets\PhpSdk\StaticCredentials;

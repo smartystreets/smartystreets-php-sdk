@@ -2,10 +2,10 @@
 
 namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
-require_once(dirname(dirname(__FILE__)) . '/Sender.php');
-require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Request.php');
-require_once(dirname(dirname(__FILE__)) . '/Batch.php');
+require_once(__DIR__ . '/../Sender.php');
+require_once(__DIR__ . '/../Serializer.php');
+require_once(__DIR__ . '/../Request.php');
+require_once(__DIR__ . '/../Batch.php');
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;
@@ -47,6 +47,8 @@ class Client {
             $this->buildParameters($request, $batch->getLookupByIndex(0));
         else
             $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
+
+        $request->setUrlComponents("/lookup");
 
         $response = $this->sender->send($request);
 

@@ -39,9 +39,9 @@ class ClientTest extends TestCase {
 
     public function testSendingSingleFullyPopulatedLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer("");
-        $expectedURL = ("http://localhost/?input_id=1&city=2&state=3&zipcode=4");
+        $expectedURL = ("http://localhost/lookup?input_id=1&city=2&state=3&zipcode=4");
 
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -59,9 +59,9 @@ class ClientTest extends TestCase {
 
     public function testSendingCustomParameterLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer("");
-        $expectedURL = ("http://localhost/?input_id=1&city=2&state=3&zipcode=4&parameter=custom&second=parameter");
+        $expectedURL = ("http://localhost/lookup?input_id=1&city=2&state=3&zipcode=4&parameter=custom&second=parameter");
 
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();

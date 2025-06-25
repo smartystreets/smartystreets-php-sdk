@@ -12,27 +12,27 @@ use SmartyStreets\PhpSdk\US_ZIPCode\Client as USZIPCodeApiClient;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Client as USReverseGeoApiClient;
 use SmartyStreets\PhpSdk\US_Enrichment\Client as USEnrichmentApiClient;
 
-require_once('Serializer.php');
-require_once('Request.php');
-require_once('NativeSerializer.php');
-require_once('NativeSender.php');
-require_once('StatusCodeSender.php');
-require_once('SigningSender.php');
-require_once('LicenseSender.php');
-require_once('RetrySender.php');
-require_once('URLPrefixSender.php');
-require_once('Batch.php');
-require_once('MyLogger.php');
-require_once('MySleeper.php');
-require_once('Proxy.php');
-require_once(dirname(__FILE__) . '/US_Street/Client.php');
-require_once(dirname(__FILE__) . '/US_ZIPCode/Client.php');
-require_once(dirname(__FILE__) . '/US_Extract/Client.php');
-require_once(dirname(__FILE__) . '/US_Autocomplete_Pro/Client.php');
-require_once(dirname(__FILE__) . '/International_Street/Client.php');
-require_once(dirname(__FILE__) . '/International_Autocomplete/Client.php');
-require_once(dirname(__FILE__) . '/US_Reverse_Geo/Client.php');
-require_once(dirname(__FILE__) . '/US_Enrichment/Client.php');
+require_once(__DIR__ . '/Serializer.php');
+require_once(__DIR__ . '/Request.php');
+require_once(__DIR__ . '/NativeSerializer.php');
+require_once(__DIR__ . '/NativeSender.php');
+require_once(__DIR__ . '/StatusCodeSender.php');
+require_once(__DIR__ . '/SigningSender.php');
+require_once(__DIR__ . '/LicenseSender.php');
+require_once(__DIR__ . '/RetrySender.php');
+require_once(__DIR__ . '/URLPrefixSender.php');
+require_once(__DIR__ . '/Batch.php');
+require_once(__DIR__ . '/MyLogger.php');
+require_once(__DIR__ . '/MySleeper.php');
+require_once(__DIR__ . '/Proxy.php');
+require_once(__DIR__ . '/US_Street/Client.php');
+require_once(__DIR__ . '/US_ZIPCode/Client.php');
+require_once(__DIR__ . '/US_Extract/Client.php');
+require_once(__DIR__ . '/US_Autocomplete_Pro/Client.php');
+require_once(__DIR__ . '/International_Street/Client.php');
+require_once(__DIR__ . '/International_Autocomplete/Client.php');
+require_once(__DIR__ . '/US_Reverse_Geo/Client.php');
+require_once(__DIR__ . '/US_Enrichment/Client.php');
 
 /**
  * The ClientBuilder class helps you build a client object for one of the supported SmartyStreets APIs.<br>
@@ -40,15 +40,14 @@ require_once(dirname(__FILE__) . '/US_Enrichment/Client.php');
  * are chainable, so you can usually get set up with one line of code.
  */
 class ClientBuilder {
-    const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smarty.com/verify";
-    const INTERNATIONAL_AUTOCOMPLETE_API_URL = "https://international-autocomplete.api.smarty.com/v2/lookup";
-    const US_AUTOCOMPLETE_API_URL = "https://us-autocomplete.api.smarty.com/suggest";
-    const US_AUTOCOMPLETE_PRO_API_URL = "https://us-autocomplete-pro.api.smarty.com/lookup";
+    const INTERNATIONAL_STREET_API_URL = "https://international-street.api.smarty.com";
+    const INTERNATIONAL_AUTOCOMPLETE_API_URL = "https://international-autocomplete.api.smarty.com";
+    const US_AUTOCOMPLETE_PRO_API_URL = "https://us-autocomplete-pro.api.smarty.com/";
     const US_EXTRACT_API_URL = "https://us-extract.api.smarty.com";
     const US_STREET_API_URL = "https://us-street.api.smarty.com/street-address";
     const US_ZIP_CODE_API_URL = "https://us-zipcode.api.smarty.com/lookup";
-    const US_REVERSE_GEO_API_URL = "https://us-reverse-geo.api.smarty.com/lookup";
-    const US_ENRICHMENT_API_URL = "https://us-enrichment.api.smarty.com/lookup/";
+    const US_REVERSE_GEO_API_URL = "https://us-reverse-geo.api.smarty.com";
+    const US_ENRICHMENT_API_URL = "https://us-enrichment.api.smarty.com";
 
     private $signer,
             $serializer,
@@ -242,7 +241,7 @@ class ClientBuilder {
         if ($this->signer != null)
             $sender = new SigningSender($this->signer, $sender);
 
-        $sender = new URLPrefixSender($this->urlPrefix, $sender);
+        $sender = new URLPrefixSender($this->stripUrlToPrefix($this->urlPrefix), $sender);
 
         $sender = new LicenseSender($this->licenses, $sender);
 
@@ -252,5 +251,15 @@ class ClientBuilder {
     private function ensureURLPrefixNotNull($url) {
         if ($this->urlPrefix == null)
             $this->urlPrefix = $url;
+    }
+
+    private function stripUrlToPrefix($url) {
+        $parts = parse_url($url);
+        $base = $parts['scheme'] . '://' . $parts['host'];
+        if (isset($parts['port'])) {
+            $base .= ':' . $parts['port'];
+        }
+
+        return $base;
     }
 }

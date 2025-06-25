@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\US_Reverse_Geo;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -15,7 +15,8 @@ class Address {
             $city,
             $state_abbreviation,
             $zipcode,
-            $source;
+            $source,
+            $smarty_key;
 
     //endregion
 
@@ -30,6 +31,7 @@ class Address {
         $this->state_abbreviation = ArrayUtil::setField($obj, 'state_abbreviation');
         $this->zipcode = ArrayUtil::setField($obj, 'zipcode');
         $this->source = ArrayUtil::setField($obj, 'source');
+        $this->smarty_key = ArrayUtil::setField($obj, 'smarty_key');
     }
 
     //endregion
@@ -54,6 +56,10 @@ class Address {
 
     public function getSource() {
         return $this->source;
+    }
+
+    public function getSmartykey() {
+        return $this->smarty_key;
     }
 
     //endregion

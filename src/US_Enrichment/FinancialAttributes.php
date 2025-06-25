@@ -2,7 +2,7 @@
 namespace SmartyStreets\PhpSdk\US_Enrichment;
 use SmartyStreets\PhpSdk\ArrayUtil;
 
-require_once('FinancialHistoryEntry.php');
+require_once(__DIR__ . '/FinancialHistoryEntry.php');
 
 class FinancialAttributes {
 

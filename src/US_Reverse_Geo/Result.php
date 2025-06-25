@@ -2,9 +2,9 @@
 
 namespace SmartyStreets\PhpSdk\US_Reverse_Geo;
 
-require_once('Address.php');
-require_once('Coordinate.php');
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once(__DIR__ . '/Address.php');
+require_once(__DIR__ . '/Coordinate.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**

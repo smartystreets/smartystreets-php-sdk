@@ -36,7 +36,7 @@ class RequestTest extends TestCase {
 
     public function testMultipleQueryStringParameters() {
         $request = new Request();
-        $request->setUrlPrefix(self::LOCAL_HOST);
+        $request->setUrlPrefix(self::LOCAL_HOST, '');
 
         $request->setParameter("name1", "value1");
         $request->setParameter("name2", "value2");
@@ -83,7 +83,7 @@ class RequestTest extends TestCase {
 
     public function testPost() {
         $request = new Request();
-        $request->setUrlPrefix(self::LOCAL_HOST);
+        $request->setUrlPrefix(self::LOCAL_HOST, '');
 
         $request->setPayload("bytes");
         $actualPayload = $request->getPayload();

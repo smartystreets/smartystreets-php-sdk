@@ -2,12 +2,12 @@
 
 namespace SmartyStreets\PhpSdk\US_Reverse_Geo;
 
-require_once(dirname(dirname(__FILE__)) . '/Exceptions/UnprocessableEntityException.php');
-require_once(dirname(dirname(__FILE__)) . '/Sender.php');
-require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Request.php');
-require_once(dirname(dirname(__FILE__)) . '/Batch.php');
-require_once('Response.php');
+require_once(__DIR__ . '/../Exceptions/UnprocessableEntityException.php');
+require_once(__DIR__ . '/../Sender.php');
+require_once(__DIR__ . '/../Serializer.php');
+require_once(__DIR__ . '/../Request.php');
+require_once(__DIR__ . '/../Batch.php');
+require_once(__DIR__ . '/Response.php');
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;
@@ -37,6 +37,8 @@ class Client {
 
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
+
+        $request->setUrlComponents("/lookup");
 
         $request->setParameter("latitude", $lookup->getLatitude());
         $request->setParameter("longitude", $lookup->getLongitude());

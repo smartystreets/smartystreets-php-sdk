@@ -1,9 +1,9 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Reverse_Geo/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Reverse_Geo/Client.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_Reverse_Geo/Lookup.php');
+require_once(__DIR__ . '/../src/US_Reverse_Geo/Client.php');
 
 use SmartyStreets\PhpSdk\StaticCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
@@ -26,10 +26,7 @@ class USReverseGeoExample
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
 
-        // The appropriate license values to be used for your subscriptions
-        // can be found on the Subscriptions page the account dashboard.
-        // https://www.smartystreets.com/docs/cloud/licensing
-        $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-reverse-geocoding-cloud"])
+        $client = (new ClientBuilder($staticCredentials))
             ->buildUsReverseGeoApiClient();
 
         $lookup = new Lookup(40.111111, -111.111111);
@@ -63,6 +60,7 @@ class USReverseGeoExample
             echo("\nState Abbreviation: " . $address->getStateAbbreviation());
             echo("\nZIP Code: " . $address->getZIPCode());
             echo("\nLicense: " . $coordinate->getLicense());
+            echo("\nSmartykey: " . $address->getSmartykey());
             echo("\n");
         }
     }

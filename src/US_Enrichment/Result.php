@@ -2,13 +2,13 @@
 
 namespace SmartyStreets\PhpSdk\US_Enrichment;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once('FinancialAttributes.php');
-require_once('PrincipalAttributes.php');
-require_once('GeoReferenceAttributes.php');
-require_once('SecondaryAttributes.php');
-require_once('SecondaryCountAttributes.php');
-require_once('MatchedAddress.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
+require_once(__DIR__ . '/FinancialAttributes.php');
+require_once(__DIR__ . '/PrincipalAttributes.php');
+require_once(__DIR__ . '/GeoReferenceAttributes.php');
+require_once(__DIR__ . '/SecondaryAttributes.php');
+require_once(__DIR__ . '/SecondaryCountAttributes.php');
+require_once(__DIR__ . '/MatchedAddress.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 
