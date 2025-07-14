@@ -12,7 +12,27 @@ use SmartyStreets\PhpSdk\US_ZIPCode\Client as USZIPCodeApiClient;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Client as USReverseGeoApiClient;
 use SmartyStreets\PhpSdk\US_Enrichment\Client as USEnrichmentApiClient;
 
-// Removed all require_once statements for internal classes. Composer autoloading will be used.
+require_once(__DIR__ . '/Serializer.php');
+require_once(__DIR__ . '/Request.php');
+require_once(__DIR__ . '/NativeSerializer.php');
+require_once(__DIR__ . '/NativeSender.php');
+require_once(__DIR__ . '/StatusCodeSender.php');
+require_once(__DIR__ . '/SigningSender.php');
+require_once(__DIR__ . '/LicenseSender.php');
+require_once(__DIR__ . '/RetrySender.php');
+require_once(__DIR__ . '/URLPrefixSender.php');
+require_once(__DIR__ . '/Batch.php');
+require_once(__DIR__ . '/MyLogger.php');
+require_once(__DIR__ . '/MySleeper.php');
+require_once(__DIR__ . '/Proxy.php');
+require_once(__DIR__ . '/US_Street/Client.php');
+require_once(__DIR__ . '/US_ZIPCode/Client.php');
+require_once(__DIR__ . '/US_Extract/Client.php');
+require_once(__DIR__ . '/US_Autocomplete_Pro/Client.php');
+require_once(__DIR__ . '/International_Street/Client.php');
+require_once(__DIR__ . '/International_Autocomplete/Client.php');
+require_once(__DIR__ . '/US_Reverse_Geo/Client.php');
+require_once(__DIR__ . '/US_Enrichment/Client.php');
 
 /**
  * The ClientBuilder class helps you build a client object for one of the supported SmartyStreets APIs.<br>

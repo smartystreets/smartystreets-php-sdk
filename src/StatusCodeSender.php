@@ -2,6 +2,17 @@
 
 namespace SmartyStreets\PhpSdk;
 
+include_once('Sender.php');
+require_once(__DIR__ . '/Exceptions/BadCredentialsException.php');
+require_once(__DIR__ . '/Exceptions/BadRequestException.php');
+require_once(__DIR__ . '/Exceptions/InternalServerErrorException.php');
+require_once(__DIR__ . '/Exceptions/PaymentRequiredException.php');
+require_once(__DIR__ . '/Exceptions/RequestEntityTooLargeException.php');
+require_once(__DIR__ . '/Exceptions/ServiceUnavailableException.php');
+require_once(__DIR__ . '/Exceptions/TooManyRequestsException.php');
+require_once(__DIR__ . '/Exceptions/UnprocessableEntityException.php');
+require_once(__DIR__ . '/Exceptions/GatewayTimeoutException.php');
+
 use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
 use SmartyStreets\PhpSdk\Exceptions\BadGatewayException;
 use SmartyStreets\PhpSdk\Exceptions\BadRequestException;

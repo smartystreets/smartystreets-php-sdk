@@ -2,10 +2,12 @@
 
 namespace SmartyStreets\PhpSdk;
 
-// Removed all require_once and include_once statements for internal classes. Composer autoloading will be used.
+include_once('Sender.php');
+require_once(__DIR__ . '/Response.php');
+require_once(__DIR__ . '/Version.php');
+require_once(__DIR__ . '/Proxy.php');
 
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
-use SmartyStreets\PhpSdk\Version;
 
 const DEFAULT_BACKOFF_DURATION = 10;
 const STATUS_TOO_MANY_REQUESTS = 429;
@@ -75,7 +77,7 @@ class NativeSender implements Sender
         $allHeaders = $this->mergeAllHeaders($smartyRequest);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $allHeaders);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->maxTimeOut);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'smartystreets (sdk:php@' . Version::SDK . ')');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'smartystreets (sdk:php@' . VERSION . ')');
         if ($this->debugMode && defined("STDERR"))
             curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         if ($this->proxy != null)

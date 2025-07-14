@@ -2,6 +2,8 @@
 
 namespace SmartyStreets\PhpSdk;
 
+include_once('Credentials.php');
+
 /**
  * SharedCredentials is useful if you want to use a website key.
  */

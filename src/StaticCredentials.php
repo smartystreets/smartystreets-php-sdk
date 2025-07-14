@@ -2,6 +2,8 @@
 
 namespace SmartyStreets\PhpSdk;
 
+include_once('Credentials.php');
+
 /**
  * StaticCredentials takes a SmartyStreets Secret Key Pair, and 'signs' the request with it so the<br>
  * SmartyStreets API knows which SmartyStreets account and subscription is sending it.
