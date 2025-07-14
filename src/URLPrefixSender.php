@@ -2,8 +2,6 @@
 
 namespace SmartyStreets\PhpSdk;
 
-include_once('Sender.php');
-
 class URLPrefixSender implements Sender {
     private $urlPrefix,
             $inner;

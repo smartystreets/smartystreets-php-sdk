@@ -2,11 +2,11 @@
 
 namespace SmartyStreets\PhpSdk;
 
-require_once(__DIR__ . '/ArrayUtil.php');
+// Removed all require_once and include_once statements for internal classes. Composer autoloading will be used.
 
 class Request {
     const CHARSET = "UTF-8";
-    private $headers,
+    private $headers, $originalHeaderNames,
             $parameters,
             $urlPrefix,
             $urlComponents,
@@ -17,6 +17,7 @@ class Request {
 
     public function __construct() {
         $this->headers = array();
+        $this->originalHeaderNames = array();
         $this->parameters = array();
         $this->urlPrefix = '';
         $this->urlComponents = '';
@@ -28,6 +29,7 @@ class Request {
     public function setHeader($header, $value) {
         $canonicalHeader = $this->canonicalizeHeaderName($header);
         $this->headers[$canonicalHeader] = $value;
+        $this->originalHeaderNames[$canonicalHeader] = $header;
     }
 
     public function setParameter($name, $value) {
@@ -58,7 +60,12 @@ class Request {
     //region [ Getters ]
 
     public function getHeaders() {
-        return $this->headers;
+        $result = array();
+        foreach ($this->headers as $canonical => $value) {
+            $original = $this->originalHeaderNames[$canonical];
+            $result[$original] = $value;
+        }
+        return $result;
     }
 
     public function getParameters() {
