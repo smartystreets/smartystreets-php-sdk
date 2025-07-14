@@ -26,7 +26,8 @@ class Request {
     }
 
     public function setHeader($header, $value) {
-        $this->headers[$header] = $value;
+        $canonicalHeader = $this->canonicalizeHeaderName($header);
+        $this->headers[$canonicalHeader] = $value;
     }
 
     public function setParameter($name, $value) {
@@ -110,4 +111,13 @@ class Request {
     }
 
     //endregion
+
+    private function canonicalizeHeaderName($header) {
+        // Canonicalize header: e.g., 'content-type' => 'Content-Type', 'x-test-header' => 'X-Test-Header'
+        $parts = explode('-', $header);
+        $parts = array_map(function($part) {
+            return ucfirst(strtolower($part));
+        }, $parts);
+        return implode('-', $parts);
+    }
 }

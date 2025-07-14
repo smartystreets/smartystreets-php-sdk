@@ -34,7 +34,6 @@ class NativeSender implements Sender
     function send(Request $smartyRequest)
     {
         $ch = $this->buildRequest($smartyRequest);
-        $this->setHeaders($smartyRequest, $ch);
         $result = curl_exec($ch);
 
         $headerSize = curl_getinfo( $ch , CURLINFO_HEADER_SIZE );
@@ -74,7 +73,9 @@ class NativeSender implements Sender
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $smartyRequest->getMethod());
         curl_setopt($ch, CURLOPT_POSTFIELDS, ($smartyRequest->getPayload()));
         curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->setHeaders($smartyRequest));
+        // Merge all headers into one array and set only once
+        $allHeaders = $this->mergeAllHeaders($smartyRequest);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $allHeaders);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->maxTimeOut);
         curl_setopt($ch, CURLOPT_USERAGENT, 'smartystreets (sdk:php@' . VERSION . ')');
         if ($this->debugMode && defined("STDERR"))
@@ -84,20 +85,43 @@ class NativeSender implements Sender
 
         if ($smartyRequest->getReferer() != null)
             curl_setopt($ch, CURLOPT_REFERER, $smartyRequest->getReferer());
-        if ($this->ip != null) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-Forwarded-For: $this->ip"));
-            $smartyRequest->setHeader('X-Forwarded-For', $this->ip);
-        }
-        if (count($this->customHeaders) != 0) {
-            $headerArray = [];
-            foreach ($this->customHeaders as $key => $value) {
-                $headerArray = array_merge($headerArray, ["$key: $value"]);
-                $smartyRequest->setHeader($key, $value);
-            }
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArray);
-        }
 
         return $ch;
+    }
+
+    // Merge all headers from Request, customHeaders, X-Forwarded-For, and Content-Type
+    private function mergeAllHeaders(Request $smartyRequest)
+    {
+        $headers = [];
+        // Normalize and add headers from Request
+        foreach ($smartyRequest->getHeaders() as $key => $value) {
+            $headers[$key] = "$key: $value";
+        }
+        // Add custom headers (overrides Request headers if same key)
+        foreach ($this->customHeaders as $key => $value) {
+            $canonicalKey = $this->canonicalizeHeaderName($key);
+            $headers[$canonicalKey] = "$canonicalKey: $value";
+            $smartyRequest->setHeader($canonicalKey, $value);
+        }
+        // Add X-Forwarded-For if set (overrides previous)
+        if ($this->ip != null) {
+            $headers['X-Forwarded-For'] = "X-Forwarded-For: $this->ip";
+            $smartyRequest->setHeader('X-Forwarded-For', $this->ip);
+        }
+        // Always set Content-Type (overrides previous)
+        $contentType = $smartyRequest->getContentType();
+        $headers['Content-Type'] = 'Content-Type: ' . $contentType;
+        $smartyRequest->setHeader('Content-Type', $contentType);
+        // Return as a numerically indexed array
+        return array_values($headers);
+    }
+
+    private function canonicalizeHeaderName($header) {
+        $parts = explode('-', $header);
+        $parts = array_map(function($part) {
+            return ucfirst(strtolower($part));
+        }, $parts);
+        return implode('-', $parts);
     }
 
     private function setProxy(&$ch)
@@ -106,19 +130,6 @@ class NativeSender implements Sender
 
         if ($this->proxy->getCredentials() != null)
             curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxy->getCredentials());
-    }
-
-    private function setHeaders(Request $smartyRequest)
-    {
-        $headers = array();
-
-        foreach (array_keys($smartyRequest->getHeaders()) as $key) {
-            $headers[$key] = $smartyRequest->getHeaders()[$key];
-        }
-
-        $headers[] = 'Content-Type: ' . $smartyRequest->getContentType();
-
-        return $headers;
     }
 
     private function printDebugInfo($ch, Request $smartyRequest, $responsePayload)
