@@ -58,10 +58,16 @@ class Result {
     //region [ Getters ]
 
     public function getCityAtIndex($index) {
+        if (!is_array($this->cities) || !isset($this->cities[$index])) {
+            return new City([]);
+        }
         return $this->cities[$index];
     }
 
     public function getZIPCodeAtIndex($index) {
+        if (!is_array($this->zipCodes) || !isset($this->zipCodes[$index])) {
+            return new ZIPCode([]);
+        }
         return $this->zipCodes[$index];
     }
 
@@ -86,11 +92,11 @@ class Result {
     }
 
     public function getCities() {
-        return $this->cities;
+        return is_array($this->cities) ? $this->cities : [];
     }
 
     public function getZIPCodes() {
-        return $this->zipCodes;
+        return is_array($this->zipCodes) ? $this->zipCodes : [];
     }
 
     //endregion

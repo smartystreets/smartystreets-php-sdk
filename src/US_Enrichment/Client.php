@@ -3,21 +3,24 @@
 namespace SmartyStreets\PhpSdk\US_Enrichment;
 
 require_once(__DIR__ . '/../Exceptions/UnprocessableEntityException.php');
-require_once(__DIR__ . '/../Sender.php');
-require_once(__DIR__ . '/../Serializer.php');
-require_once(__DIR__ . '/../Request.php');
 require_once(__DIR__ . '/Lookup.php');
 require_once(__DIR__ . '/Result.php');
-use SmartyStreets\PhpSdk\Sender;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use SmartyStreets\PhpSdk\Serializer;
-use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 class Client {
-    private $sender,
-            $serializer;
+    private $httpClient;
+    private $requestFactory;
+    private $streamFactory;
+    private $serializer;
 
-    public function __construct(Sender $sender, ?Serializer $serializer = null) {
-        $this->sender = $sender;
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer) {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->streamFactory = $streamFactory;
         $this->serializer = $serializer;
     }
 
@@ -123,13 +126,43 @@ class Client {
         }
     }
 
-    private function sendLookup(Lookup $lookup) {
-        $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request);
-        
-        $lookupResponse = $this->buildResponse($this->serializer->deserialize($response->getPayload()));
+    public function sendLookup(Lookup $lookup) {
+        // Validate input: require at least one of freeform, street, city, state, or zipcode
+        if ($lookup == null || (
+            empty($lookup->getFreeform()) &&
+            empty($lookup->getStreet()) &&
+            empty($lookup->getCity()) &&
+            empty($lookup->getState()) &&
+            empty($lookup->getZipcode())
+        )) {
+            throw new SmartyException('At least one of freeform, street, city, state, or zipcode must be provided.');
+        }
+        $url = '/enrichment';
+        $request = $this->requestFactory->createRequest('POST', $url)
+            ->withHeader('Content-Type', 'application/json');
+        $payload = $this->serializer->serialize([$lookup]);
+        $stream = $this->streamFactory->createStream($payload);
+        $request = $request->withBody($stream);
 
-        $lookup->setResponse($lookupResponse);
+        $response = $this->httpClient->sendRequest($request);
+        if ($response->getStatusCode() >= 400) {
+            throw new SmartyException('HTTP error: ' . $response->getStatusCode());
+        }
+        try {
+            $result = $this->serializer->deserialize((string)$response->getBody());
+        } catch (\Throwable $e) {
+            throw new SmartyException('Malformed JSON in API response', 0, $e);
+        }
+        if ($result == null || !is_array($result) || count($result) === 0) {
+            $lookup->setResponse([]);
+            return;
+        }
+        // Always wrap in Result objects
+        $responseObjs = [];
+        foreach ($result as $item) {
+            $responseObjs[] = new Result($item);
+        }
+        $lookup->setResponse($responseObjs);
     }
 
     private function buildResponse($objArray){

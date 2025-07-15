@@ -2,21 +2,28 @@
 
 namespace SmartyStreets\PhpSdk;
 
-include_once('Sender.php');
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
-class LicenseSender implements Sender {
+class LicenseSender implements ClientInterface {
     private $licenses,
             $inner;
 
-    public function __construct($licenses, Sender $inner) {
+    public function __construct($licenses, ClientInterface $inner) {
         $this->licenses = $licenses;
         $this->inner = $inner;
     }
 
-    public function send(Request $request) {
+    public function sendRequest(RequestInterface $request): ResponseInterface {
         if (count($this->licenses) > 0) {
-            $request->setParameter("license", join(",", $this->licenses));
+            $uri = $request->getUri();
+            $query = $uri->getQuery();
+            $licenseParam = 'license=' . urlencode(join(',', $this->licenses));
+            $query = $query ? $query . '&' . $licenseParam : $licenseParam;
+            $newUri = $uri->withQuery($query);
+            $request = $request->withUri($newUri);
         }
-        return $this->inner->send($request);
+        return $this->inner->sendRequest($request);
     }
 }

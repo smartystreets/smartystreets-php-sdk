@@ -2,73 +2,86 @@
 
 namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
-require_once(__DIR__ . '/../Sender.php');
-require_once(__DIR__ . '/../Serializer.php');
-require_once(__DIR__ . '/../Request.php');
-require_once(__DIR__ . '/../Batch.php');
-use SmartyStreets\PhpSdk\Sender;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use SmartyStreets\PhpSdk\Serializer;
-use SmartyStreets\PhpSdk\Request;
 use SmartyStreets\PhpSdk\Batch;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
-/**
- * This client sends lookups to the SmartyStreets US ZIP Code API, <br>
- *     and attaches the results to the appropriate Lookup objects.
- */
 class Client {
-    private $sender,
-            $serializer;
+    private $httpClient;
+    private $requestFactory;
+    private $streamFactory;
+    private $serializer;
 
-    public function __construct(Sender $sender, ?Serializer $serializer = null) {
-        $this->sender = $sender;
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer) {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->streamFactory = $streamFactory;
         $this->serializer = $serializer;
     }
 
     public function sendLookup(Lookup $lookup) {
+        // Validate input: require at least one of city, state, or zipcode, and must be non-empty and plausible
+        $city = $lookup->getCity();
+        $state = $lookup->getState();
+        $zip = $lookup->getZIPCode();
+        if ((empty($city) || !preg_match('/^[a-zA-Z .\'-]+$/', $city)) &&
+            (empty($state) || !preg_match('/^[A-Z]{2}$/', $state)) &&
+            (empty($zip) || !preg_match('/^\d{5}(-\d{4})?$/', $zip))) {
+            throw new SmartyException('At least one of city, state, or zipcode must be provided and valid.');
+        }
         $batch = new Batch();
         $batch->add($lookup);
         $this->sendBatch($batch);
     }
 
-    /**
-     * Sends a batch of no more than 100 lookups.
-     *
-     * @param batch Batch Must contain between 1 and 100 Lookup objects
-     * @throws SmartyException
-     * @throws IOException
-     */
     public function sendBatch(Batch $batch) {
-        $request = new Request();
-
         if ($batch->size() == 0)
+            throw new SmartyException('Batch must contain at least one lookup.');
+
+        $url = '/lookup';
+        $request = $this->requestFactory->createRequest('POST', $url)
+            ->withHeader('Content-Type', 'application/json');
+        $payload = $this->serializer->serialize($batch->getAllLookups());
+        $stream = $this->streamFactory->createStream($payload);
+        $request = $request->withBody($stream);
+
+        $response = $this->httpClient->sendRequest($request);
+        if ($response->getStatusCode() >= 400) {
+            throw new SmartyException('HTTP error: ' . $response->getStatusCode());
+        }
+        try {
+            $results = $this->serializer->deserialize((string)$response->getBody());
+        } catch (\Throwable $e) {
+            throw new SmartyException('Malformed JSON in API response', 0, $e);
+        }
+        if ($results == null || !is_array($results) || count($results) === 0) {
+            foreach ($batch->getAllLookups() as $lookup) {
+                $lookup->setResult(new Result());
+            }
             return;
-
-        if ($batch->size() == 1)
-            $this->buildParameters($request, $batch->getLookupByIndex(0));
-        else
-            $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
-
-        $request->setUrlComponents("/lookup");
-
-        $response = $this->sender->send($request);
-
-        $results = $this->serializer->deserialize($response->getPayload());
-        if ($results == null)
-            return;
-
-        $this->assignResultsToLookups($batch, $results);
+        }
+        // Group results by input index
+        $lookupResults = [];
+        foreach ($results as $rawResult) {
+            $result = new Result($rawResult);
+            $inputIndex = $result->getInputIndex();
+            $lookupResults[$inputIndex] = $result;
+        }
+        foreach ($batch->getAllLookups() as $i => $lookup) {
+            $lookup->setResult($lookupResults[$i] ?? new Result());
+        }
     }
 
     private function assignResultsToLookups(Batch $batch, $results) {
         foreach ($results as $rawResult) {
             $result = new Result($rawResult);
-            $batch->getLookupByIndex($result->getInputIndex())->setResult($result);
-        }
-    }
-
-    private function buildParameters(Request $request, Lookup $lookup) {
-        foreach ($lookup->jsonSerialize() as $key => $value) {
-            $request->setParameter($key, $value);
+            $lookup = $batch->getLookupByIndex($result->getInputIndex());
+            if ($lookup !== null) {
+                $lookup->setResult($result);
+            }
         }
     }
 }

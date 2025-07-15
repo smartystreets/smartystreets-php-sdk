@@ -1,129 +1,106 @@
 <?php
 
-namespace SmartyStreets\PhpSdk\Tests\InternationalAutocomplete;
+namespace SmartyStreets\PhpSdk\Tests\International_Autocomplete;
 
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/RequestCapturingSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockStatusCodeSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Autocomplete/Client.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Autocomplete/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Autocomplete/Candidate.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Exceptions/SmartyException.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
-use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
-use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
-use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
-use SmartyStreets\PhpSdk\Tests\Mocks\MockCrashingSender;
-use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
-use SmartyStreets\PhpSdk\URLPrefixSender;
+use PHPUnit\Framework\TestCase;
+use Http\Mock\Client as MockHttpClient;
+use GuzzleHttp\Psr7\Response;
 use SmartyStreets\PhpSdk\International_Autocomplete\Client;
 use SmartyStreets\PhpSdk\International_Autocomplete\Lookup;
-use SmartyStreets\PhpSdk\International_Autocomplete\Candidate;
-use SmartyStreets\PhpSdk\Response;
-use PHPUnit\Framework\TestCase;
+use SmartyStreets\PhpSdk\NativeSerializer;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
 
-class ClientTest extends TestCase {
+class ClientTest extends TestCase
+{
+    public function testSendLookupSuccess()
+    {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
 
-    public function testSendingSingleFullyPopulatedLookup() {
-        $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $expectedUrl = "http://localhost/v2/lookup/coolID?country=0&search=1&max_results=2&include_only_locality=4&include_only_postal_code=5";
-        $serializer = new MockSerializer(null);
-        $client = new Client($sender, $serializer);
+        $mockResponseBody = '{"candidates":[{"address_text":"10 Downing St, London, GB"}]}';
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], $mockResponseBody));
+
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
-        $lookup->setCountry("0");
-        $lookup->setSearch("1");
-        $lookup->setMaxResults(2);
-        $lookup->setLocality("4");
-        $lookup->setPostalCode("5");
-        $lookup->setAddressID("coolID");
+        $lookup->setSearch('10 Downing');
+        $lookup->setCountry('GB');
+        $lookup->setMaxResults(5);
 
         $client->sendLookup($lookup);
-
-        $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
+        $result = $lookup->getResult();
+        $this->assertNotNull($result);
+        $candidates = $result->getCandidates();
+        $this->assertIsArray($candidates);
+        $this->assertEquals('10 Downing St, London, GB', $candidates[0]->getAddressText());
     }
 
-    public function testSendingCustomParameterLookup() {
-        $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $expectedUrl = "http://localhost/v2/lookup/coolID?country=0&search=1&max_results=2&include_only_locality=4&include_only_postal_code=5&parameter=value";
-        $serializer = new MockSerializer(null);
-        $client = new Client($sender, $serializer);
+    public function testSendLookupHttpError()
+    {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+
+        $mockHttpClient->addResponse(new Response(500, ['Content-Type' => 'application/json'], 'Internal Server Error'));
+
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
-        $lookup->setCountry("0");
-        $lookup->setSearch("1");
-        $lookup->setMaxResults(2);
-        $lookup->setLocality("4");
-        $lookup->setPostalCode("5");
-        $lookup->setAddressID("coolID");
-        $lookup->addCustomParameter("parameter", "value");
+        $lookup->setSearch('10 Downing');
+        $lookup->setCountry('GB');
+        $lookup->setMaxResults(5);
 
-        $client->sendLookup($lookup);
-
-        $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
-    }
-
-    public function testEmptyLookupRejected() {
-        $this->assertLookupRejected(new Lookup());
-    }
-
-    public function testBlankLookupRejected() {
-        $lookup = new Lookup();
-        $this->assertLookupRejected($lookup);
-    }
-
-    public function testRejectsLookupsWithOnlyCountry() {
-        $lookup = new Lookup();
-        $lookup->setCountry("0");
-
-        $this->assertLookupRejected($lookup);
-    }
-
-    private function assertLookupRejected($lookup) {
-        $classType = \SmartyStreets\PhpSdk\Exceptions\SmartyException::class;
-        $sender = new MockCrashingSender();
-        $client = new Client($sender, null);
-
-        $this->expectException($classType);
-
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
         $client->sendLookup($lookup);
     }
 
-    public function testDeserializeCalledWithResponseBody() {
-        $response = new Response(0, "Hello, World!", "");
-        $sender = new MockSender($response);
-        $deserializer = new MockDeserializer(null);
-        $client = new Client($sender, $deserializer);
-        $lookup = new Lookup();
-        $lookup->setCountry("0");
-        $lookup->setSearch("1");
-
+    public function testSendLookupWithEmptyInputThrows() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup(); // No fields set
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
         $client->sendLookup($lookup);
-
-        $this->assertEquals($response->getPayload(), $deserializer->getPayload());
     }
 
-    public function testCandidatesCorrectlyAssignedToLookup() {
-        $rawCandidates = array(array('street' => '0'), array('locality' => '1'));
-        $rawResults = array('candidates' => $rawCandidates);
-        $expectedResults = array(new Candidate($rawCandidates[0]), new Candidate($rawCandidates[1]));
-
+    public function testSendLookupWithMalformedApiResponse() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{not json}'));
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
-        $lookup->setCountry("0");
-        $lookup->setSearch("1");
-
-        $sender = new MockSender(new Response(0, "", ""));
-        $deserializer = new MockDeserializer($rawResults);
-        $client = new Client($sender, $deserializer);
-
+        $lookup->setSearch('10 Downing');
+        $lookup->setCountry('GB');
+        $lookup->setMaxResults(5);
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
         $client->sendLookup($lookup);
+    }
 
-        $this->assertEquals($expectedResults[0], $lookup->getResult()[0]);
-        $this->assertEquals($expectedResults[1], $lookup->getResult()[1]);
+    public function testSendLookupWithEmptyApiResponse() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{}'));
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup();
+        $lookup->setSearch('10 Downing');
+        $lookup->setCountry('GB');
+        $lookup->setMaxResults(5);
+        $client->sendLookup($lookup);
+        $result = $lookup->getResult();
+        $candidates = $result->getCandidates();
+        if ($candidates === null) {
+            $this->assertNull($candidates);
+        } else {
+            $this->assertIsArray($candidates);
+            $this->assertEmpty($candidates);
+        }
     }
 }

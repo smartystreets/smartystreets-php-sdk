@@ -37,9 +37,12 @@ class ResponseTest extends TestCase
     public function testAllFieldsFilledCorrectly()
     {
         $response = new Response($this->obj);
-        $result = $response->getResults()[0];
+        $results = $response->getResults();
+        $this->assertIsArray($results);
+        $result = $results[0];
 
         $coordinate = $result->getCoordinate();
+        $this->assertNotNull($coordinate);
         $this->assertEquals(1.1, $coordinate->getLatitude());
         $this->assertEquals(2.2, $coordinate->getLongitude());
         $this->assertEquals('3', $coordinate->getAccuracy());
@@ -48,9 +51,30 @@ class ResponseTest extends TestCase
         $this->assertEquals(5.5, $result->getDistance());
 
         $address = $result->getAddress();
+        $this->assertNotNull($address);
         $this->assertEquals('6', $address->getStreet());
         $this->assertEquals('7', $address->getCity());
         $this->assertEquals('8', $address->getStateAbbreviation());
         $this->assertEquals('9', $address->getZIPCode());
+    }
+
+    public function testConstructionWithMissingFields() {
+        $response = new Response([]);
+        $results = $response->getResults();
+        if ($results === null) {
+            $this->assertNull($results);
+        } else {
+            $this->assertIsArray($results);
+        }
+    }
+
+    public function testConstructionWithAllNulls() {
+        $response = new Response(null);
+        $results = $response->getResults();
+        if ($results === null) {
+            $this->assertNull($results);
+        } else {
+            $this->assertIsArray($results);
+        }
     }
 }

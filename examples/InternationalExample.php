@@ -1,71 +1,44 @@
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once(__DIR__ . '/../src/StaticCredentials.php');
-require_once(__DIR__ . '/../src/ClientBuilder.php');
-require_once(__DIR__ . '/../src/International_Street/Lookup.php');
-require_once(__DIR__ . '/../src/International_Street/Client.php');
-use SmartyStreets\PhpSdk\StaticCredentials;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
 use SmartyStreets\PhpSdk\ClientBuilder;
+use SmartyStreets\PhpSdk\NativeSerializer;
 use SmartyStreets\PhpSdk\International_Street\Lookup;
 
-$lookupExample = new InternationalExample();
-$lookupExample->run();
+$example = new InternationalExample();
+$example->run();
 
 class InternationalExample {
-
     public function run() {
-       // $authId = 'Your SmartyStreets Auth ID here';
-       // $authToken = 'Your SmartyStreets Auth Token here';
+        $httpClient = new GuzzleClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
 
-        // We recommend storing your secret keys in environment variables instead---it's safer!
-       $authId = getenv('SMARTY_AUTH_ID');
-       $authToken = getenv('SMARTY_AUTH_TOKEN');
-
-        $staticCredentials = new StaticCredentials($authId, $authToken);
-
-        $client = (new ClientBuilder($staticCredentials))
+        $client = (new ClientBuilder($httpClient, $requestFactory, $streamFactory, $serializer))
             ->buildInternationalStreetApiClient();
 
-        // Documentation for input fields can be found at:
-        // https://smartystreets.com/docs/cloud/international-street-api
-
         $lookup = new Lookup();
-        $lookup->setInputId("ID-8675309");
-        $lookup->setGeocode(true); // Must be expressly set to get latitude and longitude.
-        $lookup->setOrganization("John Doe");
-        $lookup->setAddress1("Rua Padre Antonio D'Angelo 121");
-        $lookup->setAddress2("Casa Verde");
-        $lookup->setLocality("Sao Paulo");
-        $lookup->setAdministrativeArea("SP");
-        $lookup->setCountry("Brazil");
-        $lookup->setPostalCode("02516-050");
-
-        // Uncomment the below line to add a custom parameter to the API call
-        // $lookup->addCustomParameter("parameter", "value");
+        $lookup->setCountry("GB");
+        $lookup->setFreeform("10 Downing St, London");
 
         try {
-            $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
+            $client->sendLookup($lookup);
             $this->displayResults($lookup);
-        }
-        catch (\Exception $ex) {
+        } catch (Exception $ex) {
             echo($ex->getMessage());
         }
     }
 
     public function displayResults(Lookup $lookup) {
-        $firstCandidate = $lookup->getResult()[0];
-
-        echo("Address is " . $firstCandidate->getAnalysis()->getVerificationStatus());
-        echo("\nAddress precision: " . $firstCandidate->getAnalysis()->getAddressPrecision() . "\n");
-
-        echo("\nFirst Line: " . $firstCandidate->getAddress1());
-        echo("\nSecond Line: " . $firstCandidate->getAddress2());
-        echo("\nThird Line: " . $firstCandidate->getAddress3());
-        echo("\nFourth Line: " . $firstCandidate->getAddress4());
-
-        $metadata = $firstCandidate->getMetadata();
-        echo("\nAddress Format: " . $metadata->getAddressFormat());
-        echo("\nLatitude: " . $metadata->getLatitude());
-        echo("\nLongitude: " . $metadata->getLongitude());
+        $result = $lookup->getResult();
+        if (empty($result)) {
+            echo("\nNo candidates found.");
+            return;
+        }
+        print_r($result);
     }
 }

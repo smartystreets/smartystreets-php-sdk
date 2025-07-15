@@ -42,4 +42,24 @@ class LookupTest extends TestCase {
 
         $this->assertEquals($lookup->getCustomParamArray()["parameter"], "value");
     }
+
+    function testConstructionWithMissingFields() {
+        $lookup = new Lookup();
+        $this->assertNull($lookup->getCity());
+        $this->assertNull($lookup->getState());
+        $this->assertNull($lookup->getZIPCode());
+    }
+
+    function testConstructionWithExtraFields() {
+        $lookup = new Lookup('city', 'state', '12345');
+        $lookup->addCustomParameter('extra', 'value');
+        $this->assertEquals('value', $lookup->getCustomParamArray()['extra']);
+    }
+
+    function testConstructionWithAllNulls() {
+        $lookup = new Lookup(null, null, null);
+        $this->assertNull($lookup->getCity());
+        $this->assertNull($lookup->getState());
+        $this->assertNull($lookup->getZIPCode());
+    }
 }

@@ -314,4 +314,18 @@ class CandidateTest extends TestCase {
         //endregion
         //endregion
     }
+
+    public function testConstructionWithMissingFields() {
+        $candidate = new Candidate([]);
+        $this->assertNotNull($candidate->getComponents());
+        $this->assertNotNull($candidate->getMetadata());
+        $this->assertNotNull($candidate->getAnalysis());
+    }
+
+    public function testConstructionWithAllNulls() {
+        $candidate = new Candidate(null);
+        $this->assertNotNull($candidate->getComponents());
+        $this->assertNotNull($candidate->getMetadata());
+        $this->assertNotNull($candidate->getAnalysis());
+    }
 }

@@ -237,7 +237,7 @@ class Lookup implements \JsonSerializable {
     }
 
     public function setResult($result) {
-        $this->result[] = $result;
+        $this->result = $result;
     }
 
     //endregion

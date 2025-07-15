@@ -1,62 +1,46 @@
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once(__DIR__ . '/../src/ClientBuilder.php');
-require_once(__DIR__ . '/../src/US_Street/Lookup.php');
-require_once(__DIR__ . '/../src/StaticCredentials.php');
-
-use SmartyStreets\PhpSdk\Exceptions\SmartyException;
-use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
-use SmartyStreets\PhpSdk\StaticCredentials;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
 use SmartyStreets\PhpSdk\ClientBuilder;
+use SmartyStreets\PhpSdk\NativeSerializer;
 use SmartyStreets\PhpSdk\US_Street\Lookup;
 use SmartyStreets\PhpSdk\Batch;
 
-$lookupExample = new UsStreetMultipleAddressesExample();
-$lookupExample->run();
+$example = new UsStreetMultipleAddressesExample();
+$example->run();
 
 class UsStreetMultipleAddressesExample
 {
     public function run()
     {
+        $httpClient = new GuzzleClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
 
-
-        // $authId = 'Your SmartyStreets Auth ID here';
-        // $authToken = 'Your SmartyStreets Auth Token here';
-
-        // We recommend storing your secret keys in environment variables instead---it's safer!
-        $authId = getenv('SMARTY_AUTH_ID');
-        $authToken = getenv('SMARTY_AUTH_TOKEN');
-
-        $staticCredentials = new StaticCredentials($authId, $authToken);
-
-        $client = (new ClientBuilder($staticCredentials))
+        $client = (new ClientBuilder($httpClient, $requestFactory, $streamFactory, $serializer))
             ->buildUsStreetApiClient();
         $batch = new Batch();
 
-        // Documentation for input fields can be found at:
-        // https://smartystreets.com/docs/cloud/us-street-api
-
         $address0 = new Lookup();
-        $address0->setInputId("24601"); // Optional ID from your system
+        $address0->setInputId("24601");
         $address0->setStreet("1600 amphitheatre parkway");
         $address0->setLastline("Mountain view, California");
         $address0->setMaxCandidates(5);
-        $address0->setMatchStrategy(LOOKUP::INVALID); // "invalid" is the most permissive match,
-        // this will always return at least one result even if the address is invalid.
-        // Refer to the documentation for additional MatchStrategy options.
+        $address0->setMatchStrategy(Lookup::INVALID);
 
-        // Uncomment the below line to add a custom parameter to the API call
-        // $address0->addCustomParameter("parameter","value");
-
-        $address1 = new Lookup("1 Rosedale, Baltimore, Maryland"); // Freeform addresses work too.
-        $address1->setMaxCandidates(1); // Allows up to ten possible matches to be returned (default is 1).
+        $address1 = new Lookup("1 Rosedale, Baltimore, Maryland");
+        $address1->setMaxCandidates(1);
 
         $address2 = new Lookup("123 Bogus Street, Pretend Lake, Oklahoma");
         $address2->setInputId("8675309");
 
         $address3 = new Lookup();
         $address3->setStreet("1 Infinite Loop");
-        $address3->setZIPCode("95014"); // You can just input the street and ZIP if you want.
+        $address3->setZIPCode("95014");
 
         try {
             $batch->add($address0);
@@ -66,8 +50,6 @@ class UsStreetMultipleAddressesExample
 
             $client->sendBatch($batch);
             $this->displayResults($batch);
-        } catch (BatchFullException $ex) {
-            echo("Oops! Batch was already full.");
         } catch (\Exception $ex) {
             echo($ex->getMessage());
         }
@@ -92,7 +74,6 @@ class UsStreetMultipleAddressesExample
                 $metadata = $candidate->getMetadata();
 
                 echo("\n\nCandidate " . $candidate->getCandidateIndex() . ":");
-
                 echo("\nDelivery line 1: " . $candidate->getDeliveryLine1());
                 echo("\nLast line:       " . $candidate->getLastLine());
                 echo("\nZIP Code:        " . $components->getZIPCode() . "-" . $components->getPlus4Code());

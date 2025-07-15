@@ -20,8 +20,8 @@ class Lookup {
 
     public function __construct($latitude, $longitude) {
         $this->response = null;
-        $this->latitude = round($latitude, 8);
-        $this->longitude = round($longitude, 8);
+        $this->latitude = is_numeric($latitude) ? round($latitude, 8) : null;
+        $this->longitude = is_numeric($longitude) ? round($longitude, 8) : null;
         $this->customParamArray = array();
     }
 

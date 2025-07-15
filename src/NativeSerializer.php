@@ -14,6 +14,10 @@ class NativeSerializer implements Serializer {
     }
 
     public function deserialize($payload) {
-        return json_decode($payload, true);
+        $result = json_decode($payload, true);
+        if ($result === null && json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException('Malformed JSON: ' . json_last_error_msg());
+        }
+        return $result;
     }
 }

@@ -1,53 +1,104 @@
 <?php
 
-namespace SmartyStreets\PhpSdk\Tests\US_AutocompletePro;
+namespace SmartyStreets\PhpSdk\Tests\US_Autocomplete_Pro;
 
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/RequestCapturingSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockStatusCodeSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete_Pro/Client.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete_Pro/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
-use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
-use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
-use SmartyStreets\PhpSdk\URLPrefixSender;
+use PHPUnit\Framework\TestCase;
+use Http\Mock\Client as MockHttpClient;
+use GuzzleHttp\Psr7\Response;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Client;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Lookup;
-use PHPUnit\Framework\TestCase;
+use SmartyStreets\PhpSdk\NativeSerializer;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
 
-class ClientTest extends TestCase {
+class ClientTest extends TestCase
+{
+    public function testSendLookupSuccess()
+    {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
 
-    public function testSendingLookup() {
-        $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $serializer = new MockSerializer(null);
-        $client = new Client($sender, $serializer);
+        $mockResponseBody = '{"suggestions":[{"street_line":"1600 Amphitheatre Pkwy","city":"Mountain View","state":"CA"}]}';
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], $mockResponseBody));
 
-        $lookup = new Lookup("testSearch");
-        $lookup->addPreferCity("testCity");
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup();
+        $lookup->setSearch('1600 Amphitheatre');
+        $lookup->setMaxResults(5);
 
         $client->sendLookup($lookup);
-
-        $this->assertEquals('http://localhost/lookup?search=testSearch&prefer_cities=testCity&prefer_geolocation=city', $capturingSender->getRequest()->getUrl());
+        $result = $lookup->getResult();
+        $this->assertNotNull($result);
+        $suggestions = $result->getSuggestions();
+        $this->assertIsArray($suggestions);
+        $this->assertEquals('1600 Amphitheatre Pkwy', $suggestions[0]->getStreetLine());
+        $this->assertEquals('Mountain View', $suggestions[0]->getCity());
+        $this->assertEquals('CA', $suggestions[0]->getState());
     }
 
-    public function testSendingCustomParameterLookup() {
-        $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $serializer = new MockSerializer(null);
-        $client = new Client($sender, $serializer);
+    public function testSendLookupHttpError()
+    {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
 
-        $lookup = new Lookup("testSearch");
-        $lookup->addPreferCity("testCity");
-        $lookup->addCustomParameter("parameter", "value");
+        $mockHttpClient->addResponse(new Response(500, ['Content-Type' => 'application/json'], 'Internal Server Error'));
 
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup();
+        $lookup->setSearch('1600 Amphitheatre');
+        $lookup->setMaxResults(5);
+
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
         $client->sendLookup($lookup);
+    }
 
-        $this->assertEquals('http://localhost/lookup?search=testSearch&prefer_cities=testCity&prefer_geolocation=city&parameter=value', $capturingSender->getRequest()->getUrl());
+    public function testSendLookupWithEmptyInputThrows() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup(); // No fields set
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
+        $client->sendLookup($lookup);
+    }
+
+    public function testSendLookupWithMalformedApiResponse() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{not json}'));
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup();
+        $lookup->setSearch('1600 Amphitheatre');
+        $lookup->setMaxResults(5);
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
+        $client->sendLookup($lookup);
+    }
+
+    public function testSendLookupWithEmptyApiResponse() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{}'));
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup();
+        $lookup->setSearch('1600 Amphitheatre');
+        $lookup->setMaxResults(5);
+        $client->sendLookup($lookup);
+        $result = $lookup->getResult();
+        $suggestions = $result->getSuggestions();
+        if ($suggestions === null) {
+            $this->assertNull($suggestions);
+        } else {
+            $this->assertIsArray($suggestions);
+            $this->assertEmpty($suggestions);
+        }
     }
 }

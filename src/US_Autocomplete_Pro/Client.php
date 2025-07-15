@@ -2,27 +2,22 @@
 
 namespace SmartyStreets\PhpSdk\US_Autocomplete_Pro;
 
-require_once(__DIR__ . '/../ArrayUtil.php');
-require_once(__DIR__ . '/../Sender.php');
-require_once(__DIR__ . '/../Serializer.php');
-require_once(__DIR__ . '/../Request.php');
-require_once(__DIR__ . '/GeolocateType.php');
-require_once(__DIR__ . '/Result.php');
-use SmartyStreets\PhpSdk\Exceptions\SmartyException;
-use SmartyStreets\PhpSdk\Sender;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use SmartyStreets\PhpSdk\Serializer;
-use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
-/**
- * This client sends lookups to the SmartyStreets US Autocomplete Pro API, <br>
- *     and attaches the results to the appropriate Lookup objects.
- */
 class Client {
-    private $sender,
-        $serializer;
+    private $httpClient;
+    private $requestFactory;
+    private $streamFactory;
+    private $serializer;
 
-    public function __construct(Sender $sender, ?Serializer $serializer = null) {
-        $this->sender = $sender;
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer) {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->streamFactory = $streamFactory;
         $this->serializer = $serializer;
     }
 
@@ -30,46 +25,27 @@ class Client {
         if ($lookup == null || $lookup->getSearch() == null || strlen($lookup->getSearch()) == 0)
             throw new SmartyException("sendLookup() must be passed a Lookup with the prefix field set.");
 
-        $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request);
+        $url = '/autocomplete-pro';
+        $request = $this->requestFactory->createRequest('POST', $url)
+            ->withHeader('Content-Type', 'application/json');
+        $payload = $this->serializer->serialize([$lookup]);
+        $stream = $this->streamFactory->createStream($payload);
+        $request = $request->withBody($stream);
 
-        $result = $this->serializer->deserialize($response->getPayload());
-        if ($result == null)
-            return;
-
-        $lookup->setResult((new Result($result))->getSuggestions());
-    }
-
-    private function buildRequest(Lookup $lookup) {
-        $request = new Request();
-
-        $request->setUrlComponents("/lookup");
-
-        $request->setParameter("search", $lookup->getSearch());
-        $request->setParameter("max_results", $lookup->getMaxResultsStringIfSet());
-        $request->setParameter("include_only_cities", $this->buildFilterString($lookup->getCityFilter()));
-        $request->setParameter("include_only_states", $this->buildFilterString($lookup->getStateFilter()));
-        $request->setParameter("include_only_zip_codes", $this->buildFilterString($lookup->getZIPFilter()));
-        $request->setParameter("exclude_states", $this->buildFilterString($lookup->getStateExclusions()));
-        $request->setParameter("prefer_cities", $this->buildFilterString($lookup->getPreferCities()));
-        $request->setParameter("prefer_states", $this->buildFilterString($lookup->getPreferStates()));
-        $request->setParameter("prefer_zip_codes", $this->buildFilterString($lookup->getPreferZIPCodes()));
-        $request->setParameter("prefer_ratio", $lookup->getPreferRatioStringIfSet());
-        $request->setParameter("prefer_geolocation", $lookup->getPreferGeolocation()->getName());
-        $request->setParameter("selected", $lookup->getSelected());
-        $request->setParameter("source", $lookup->getSource());
-
-        foreach ($lookup->getCustomParamArray() as $key => $value) {
-            $request->setParameter($key, $value);
+        $response = $this->httpClient->sendRequest($request);
+        if ($response->getStatusCode() >= 400) {
+            throw new SmartyException('HTTP error: ' . $response->getStatusCode());
         }
-
-        return $request;
-    }
-
-    private function buildFilterString($list) {
-        if (empty($list))
-            return null;
-
-        return join(';', $list);
+        try {
+            $result = $this->serializer->deserialize((string)$response->getBody());
+        } catch (\Throwable $e) {
+            $lookup->setResult(new Result());
+            throw new SmartyException('Malformed JSON in API response', 0, $e);
+        }
+        if ($result == null || !is_array($result)) {
+            $lookup->setResult(new Result());
+            return;
+        }
+        $lookup->setResult(new Result($result));
     }
 }

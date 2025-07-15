@@ -64,10 +64,13 @@ class Address {
     }
 
     public function getCandidates() {
-        return $this->candidates;
+        return is_array($this->candidates) ? $this->candidates : [];
     }
 
     public function getCandidate($index) {
+        if (!is_array($this->candidates) || !isset($this->candidates[$index])) {
+            return new Candidate([]);
+        }
         return $this->candidates[$index];
     }
 

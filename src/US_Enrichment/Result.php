@@ -80,4 +80,37 @@ class Result  {
             $this->secondaries[] = $attributes->secondaries;
         }
     }
+
+    public function getMatchedAddress() {
+        if ($this->matchedAddress === null) {
+            $this->matchedAddress = new MatchedAddress([]);
+        }
+        return $this->matchedAddress;
+    }
+
+    public function getAttributes() {
+        if ($this->attributes === null) {
+            $this->attributes = new \stdClass();
+        }
+        return $this->attributes;
+    }
+
+    public function getRootAddress() {
+        if ($this->rootAddress === null) {
+            $this->rootAddress = new \stdClass();
+        }
+        return $this->rootAddress;
+    }
+
+    public function getAliases() {
+        return is_array($this->aliases) ? $this->aliases : [];
+    }
+
+    public function getSecondaries() {
+        return is_array($this->secondaries) ? $this->secondaries : [];
+    }
+
+    public function getCount() {
+        return $this->count !== null ? $this->count : 0;
+    }
 }

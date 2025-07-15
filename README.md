@@ -1,11 +1,41 @@
-#### SMARTY DISCLAIMER: Subject to the terms of the associated license agreement, this software is freely available for your use. This software is FREE, AS IN PUPPIES, and is a gift. Enjoy your new responsibility. This means that while we may consider enhancement requests, we may or may not choose to entertain requests at our sole and absolute discretion.
+# SmartyStreets PHP SDK
 
-#### smartystreets-php-sdk
+## Modern Usage (PSR-7/17/18)
 
-The official client libraries for accessing SmartyStreets APIs from PHP.
+This SDK now uses [PSR-7](https://www.php-fig.org/psr/psr-7/), [PSR-17](https://www.php-fig.org/psr/psr-17/), and [PSR-18](https://www.php-fig.org/psr/psr-18/) for HTTP abstraction. You can use any compatible HTTP client and factories, such as [Guzzle](https://docs.guzzlephp.org/en/stable/).
 
-[![asciicast](https://asciinema.org/a/120313.png)](https://asciinema.org/a/120313)
+### Example: Setup with Guzzle
 
-You may have noticed this page is curiously sparse. Don't panic, there's [documentation](https://smartystreets.com/docs/sdk/php) and [examples](examples).
+```php
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
+use SmartyStreets\PhpSdk\ClientBuilder;
+use SmartyStreets\PhpSdk\NativeSerializer;
 
-[Apache 2.0 License](LICENSE.md)
+$httpClient = new GuzzleClient();
+$requestFactory = new RequestFactory();
+$streamFactory = new StreamFactory();
+$serializer = new NativeSerializer();
+
+$builder = new ClientBuilder($httpClient, $requestFactory, $streamFactory, $serializer);
+$usStreetClient = $builder->buildUsStreetApiClient();
+```
+
+### Making a Request
+
+```php
+$lookup = new SmartyStreets\PhpSdk\US_Street\Lookup();
+// ... set lookup fields ...
+$usStreetClient->sendLookup($lookup);
+// ... handle results ...
+```
+
+## Requirements
+- PHP 7.2+
+- PSR-7, PSR-17, PSR-18 compatible HTTP client (e.g., Guzzle)
+
+## Migration from Legacy Version
+- All custom HTTP abstractions (`Sender`, `Request`, `Response`, etc.) are deprecated.
+- Use PSR-18 client and PSR-17 factories for all HTTP operations.
+- See `examples/` for more usage patterns.

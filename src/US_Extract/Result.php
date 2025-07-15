@@ -33,14 +33,20 @@ class Result {
     }
 
     public function getMetadata() {
+        if ($this->metadata === null) {
+            $this->metadata = new Metadata([]);
+        }
         return $this->metadata;
     }
 
     public function getAddresses() {
-        return $this->addresses;
+        return is_array($this->addresses) ? $this->addresses : [];
     }
 
     public function getAddress($index) {
+        if (!is_array($this->addresses) || !isset($this->addresses[$index])) {
+            return new Address([]);
+        }
         return $this->addresses[$index];
     }
 }

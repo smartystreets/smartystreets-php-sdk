@@ -33,8 +33,8 @@ class ResultTest extends TestCase {
     public function testAllFieldsFilledCorrectly() {
         $result = new Result($this->obj);
 
-
-        // region [ Candidates 1 ]
+        $candidates = $result->getCandidates();
+        $this->assertIsArray($candidates);
         $this->assertEquals("0", $result->getCandidate(0)->getStreet());
         $this->assertEquals("1", $result->getCandidate(0)->getLocality());
         $this->assertEquals("2", $result->getCandidate(0)->getAdministrativeArea());
@@ -42,12 +42,28 @@ class ResultTest extends TestCase {
         $this->assertEquals("2.1", $result->getCandidate(0)->getAdministrativeAreaLong());
         $this->assertEquals("3", $result->getCandidate(0)->getPostalCode());
         $this->assertEquals("4", $result->getCandidate(0)->getCountryISO3());
-        // endregion
-
-        // region [ Candidates 2 ]
         $this->assertEquals("5", $result->getCandidate(1)->getEntries());
         $this->assertEquals("6", $result->getCandidate(1)->getAddressID());
         $this->assertEquals("7", $result->getCandidate(1)->getAddressText());
-        // endregion
+    }
+
+    public function testConstructionWithMissingFields() {
+        $result = new Result([]);
+        $candidates = $result->getCandidates();
+        if ($candidates === null) {
+            $this->assertNull($candidates);
+        } else {
+            $this->assertIsArray($candidates);
+        }
+    }
+
+    public function testConstructionWithAllNulls() {
+        $result = new Result(null);
+        $candidates = $result->getCandidates();
+        if ($candidates === null) {
+            $this->assertNull($candidates);
+        } else {
+            $this->assertIsArray($candidates);
+        }
     }
 }

@@ -1,59 +1,45 @@
 <?php
 
-require_once(__DIR__ . '/../src/ClientBuilder.php');
-require_once(__DIR__ . '/../src/US_Street/Lookup.php');
-require_once(__DIR__ . '/../src/StaticCredentials.php');
-use SmartyStreets\PhpSdk\Exceptions\SmartyException;
-use SmartyStreets\PhpSdk\StaticCredentials;
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
 use SmartyStreets\PhpSdk\ClientBuilder;
+use SmartyStreets\PhpSdk\NativeSerializer;
 use SmartyStreets\PhpSdk\US_Street\Lookup;
 
 $lookupExample = new UsStreetSingleAddressExample();
 $lookupExample->run();
 
 class UsStreetSingleAddressExample {
-
     public function run() {
-       // $authId = 'Your SmartyStreets Auth ID here';
-       // $authToken = 'Your SmartyStreets Auth Token here';
+        $httpClient = new GuzzleClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
 
-        // We recommend storing your secret keys in environment variables instead---it's safer!
-       $authId = getenv('SMARTY_AUTH_ID');
-       $authToken = getenv('SMARTY_AUTH_TOKEN');
-
-        $staticCredentials = new StaticCredentials($authId, $authToken);
-
-        $client = (new ClientBuilder($staticCredentials))
-//                        ->viaProxy("http://localhost:8080", "username", "password") // uncomment this line to point to the specified proxy.
-                        ->buildUsStreetApiClient();
-
-        // Documentation for input fields can be found at:
-        // https://smartystreets.com/docs/cloud/us-street-api
+        $client = (new ClientBuilder($httpClient, $requestFactory, $streamFactory, $serializer))
+            ->buildUsStreetApiClient();
 
         $lookup = new Lookup();
-        $lookup->setInputId("24601"); // Optional ID from your system
+        $lookup->setInputId("24601");
         $lookup->setAddressee("John Doe");
         $lookup->setStreet("1600 Amphitheatre Pkwy");
         $lookup->setStreet2("closet under the stairs");
         $lookup->setSecondary("APT 2");
-        $lookup->setUrbanization("");  // Only applies to Puerto Rico addresses
+        $lookup->setUrbanization("");
         $lookup->setCity("Mountain View");
         $lookup->setState("CA");
         $lookup->setZipcode("21229");
         $lookup->setMaxCandidates(3);
-        $lookup->setCountySource(lookup::GEOGRAPHIC);
-        $lookup->setMatchStrategy(Lookup::INVALID); // "invalid" is the most permissive match,
-                                                                 // this will always return at least one result even if the address is invalid.
-                                                                 // Refer to the documentation for additional MatchStrategy options.
-
-        // Uncomment the below line to add a custom parameter to the API call
-        // $lookup->addCustomParameter("parameter","value");
+        $lookup->setCountySource(Lookup::GEOGRAPHIC);
+        $lookup->setMatchStrategy(Lookup::INVALID);
 
         try {
             $client->sendLookup($lookup);
             $this->displayResults($lookup);
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             echo($ex->getMessage());
         }
     }

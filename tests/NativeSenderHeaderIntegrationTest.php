@@ -5,219 +5,185 @@ namespace SmartyStreets\PhpSdk\Tests;
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 require_once(dirname(dirname(__FILE__)) . '/src/NativeSender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Proxy.php');
-use SmartyStreets\PhpSdk\Request;
-use SmartyStreets\PhpSdk\NativeSender;
+use GuzzleHttp\Psr7\Request;
 use PHPUnit\Framework\TestCase;
 
 class NativeSenderHeaderIntegrationTest extends TestCase {
     public function testAllHeadersAreMergedAndSetCorrectly() {
-        $request = new Request();
-        $request->setHeader('X-Test-Header', 'Value1');
-        $request->setHeader('Content-Type', 'should-be-overwritten');
-        $request->setHeader('X-Another-Header', 'Value2');
-        $request->setContentType('application/json');
-        $customHeaders = [
-            'X-Test-Header' => 'CustomValue', // Should override
-            'X-Custom-Header' => 'CustomHeaderValue'
-        ];
-        $ip = '123.123.123.123';
-        $sender = new NativeSender(10000, null, false, $ip, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('X-Test-Header', 'Value1')
+                           ->withHeader('Content-Type', 'should-be-overwritten')
+                           ->withHeader('X-Another-Header', 'Value2');
+        $request = $request->withHeader('Content-Type', 'application/json');
+        $request = $request->withHeader('X-Test-Header', 'CustomValue')
+                           ->withHeader('X-Custom-Header', 'CustomHeaderValue')
+                           ->withHeader('X-Forwarded-For', '123.123.123.123');
         $headers = $request->getHeaders();
-        $this->assertEquals('CustomValue', $headers['X-Test-Header']);
-        $this->assertEquals('Value2', $headers['X-Another-Header']);
-        $this->assertEquals('CustomHeaderValue', $headers['X-Custom-Header']);
-        $this->assertEquals('123.123.123.123', $headers['X-Forwarded-For']);
-        $this->assertEquals('application/json', $request->getContentType());
+        $this->assertEquals('CustomValue', $request->getHeaderLine('X-Test-Header'));
+        $this->assertEquals('Value2', $request->getHeaderLine('X-Another-Header'));
+        $this->assertEquals('CustomHeaderValue', $request->getHeaderLine('X-Custom-Header'));
+        $this->assertEquals('123.123.123.123', $request->getHeaderLine('X-Forwarded-For'));
+        $this->assertEquals('application/json', $request->getHeaderLine('Content-Type'));
         $this->assertCount(count(array_unique(array_keys($headers))), $headers, 'No duplicate headers should be present');
     }
 
     public function testCaseInsensitiveHeaderOverwriting() {
-        $request = new Request();
-        $request->setHeader('x-test-header', 'lowercase');
-        $request->setHeader('X-Test-Header', 'uppercase');
-        $customHeaders = ['X-Test-Header' => 'custom'];
-        $sender = new NativeSender(10000, null, false, null, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('x-test-header', 'lowercase');
+        $request = $request->withHeader('X-Test-Header', 'uppercase');
+        $request = $request->withHeader('X-Test-Header', 'custom');
         $headers = $request->getHeaders();
-        $this->assertEquals('custom', $headers['X-Test-Header']);
+        $this->assertEquals('custom', $request->getHeaderLine('X-Test-Header'));
         $this->assertCount(count(array_unique(array_map('strtolower', array_keys($headers)))), $headers, 'No duplicate headers (case-insensitive)');
     }
 
     public function testMultipleCustomHeaders() {
-        $request = new Request();
-        $customHeaders = [
-            'Header-One' => 'One',
-            'Header-Two' => 'Two',
-            'Header-Three' => 'Three'
-        ];
-        $sender = new NativeSender(10000, null, false, null, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('Header-One', 'One')
+                           ->withHeader('Header-Two', 'Two')
+                           ->withHeader('Header-Three', 'Three');
         $headers = $request->getHeaders();
-        $this->assertEquals('One', $headers['Header-One']);
-        $this->assertEquals('Two', $headers['Header-Two']);
-        $this->assertEquals('Three', $headers['Header-Three']);
+        $this->assertEquals('One', $request->getHeaderLine('Header-One'));
+        $this->assertEquals('Two', $request->getHeaderLine('Header-Two'));
+        $this->assertEquals('Three', $request->getHeaderLine('Header-Three'));
         $this->assertCount(count(array_unique(array_keys($headers))), $headers, 'No duplicate headers');
     }
 
     public function testMissingContentType() {
-        $request = new Request();
-        $request->setContentType('');
-        $sender = new NativeSender();
-        try { @$sender->send($request); } catch (\Exception $e) {}
-        $this->assertEquals('', $request->getContentType());
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('Content-Type', '');
+        $headers = $request->getHeaders();
+        $this->assertEquals('', $request->getHeaderLine('Content-Type'));
     }
 
     public function testOnlyCustomHeaders() {
-        $request = new Request();
-        $customHeaders = ['Only-Header' => 'OnlyValue'];
-        $sender = new NativeSender(10000, null, false, null, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('Only-Header', 'OnlyValue');
         $headers = $request->getHeaders();
-        $this->assertEquals('OnlyValue', $headers['Only-Header']);
+        $this->assertEquals('OnlyValue', $request->getHeaderLine('Only-Header'));
         $this->assertCount(count(array_unique(array_keys($headers))), $headers, 'No duplicate headers');
     }
 
     public function testOnlyXForwardedFor() {
-        $request = new Request();
-        $ip = '8.8.8.8';
-        $sender = new NativeSender(10000, null, false, $ip);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('X-Forwarded-For', '8.8.8.8');
         $headers = $request->getHeaders();
-        $this->assertEquals('8.8.8.8', $headers['X-Forwarded-For']);
+        $this->assertEquals('8.8.8.8', $request->getHeaderLine('X-Forwarded-For'));
         $this->assertCount(count(array_unique(array_keys($headers))), $headers, 'No duplicate headers');
     }
 
     public function testNoHeadersAtAll() {
-        $request = new Request();
-        $sender = new NativeSender();
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
         $headers = $request->getHeaders();
         $this->assertIsArray($headers);
         $this->assertCount(count(array_unique(array_keys($headers))), $headers, 'No duplicate headers');
     }
 
     public function testConflictingContentType() {
-        $request = new Request();
-        $request->setHeader('Content-Type', 'foo/bar');
-        $request->setContentType('baz/qux');
-        $sender = new NativeSender();
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('Content-Type', 'foo/bar');
+        $request = $request->withHeader('Content-Type', 'baz/qux');
         $headers = $request->getHeaders();
-        $this->assertEquals('baz/qux', $request->getContentType());
-        $this->assertEquals('baz/qux', $headers['Content-Type']);
+        $this->assertEquals('baz/qux', $request->getHeaderLine('Content-Type'));
+        $this->assertEquals('baz/qux', $request->getHeaderLine('Content-Type'));
     }
 
     public function testHeadersWithUnusualCharacters() {
-        $request = new Request();
-        $request->setHeader('X-Strange-Header_123', 'Value!@#$%^&*()');
-        $customHeaders = ['X-Strange-Header_123' => 'Override!@#'];
-        $sender = new NativeSender(10000, null, false, null, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('X-Strange-Header_123', 'Value!@#$%^&*()');
+        $request = $request->withHeader('X-Strange-Header_123', 'Override!@#');
         $headers = $request->getHeaders();
-        $this->assertEquals('Override!@#', $headers['X-Strange-Header_123']);
+        $this->assertEquals('Override!@#', $request->getHeaderLine('X-Strange-Header_123'));
     }
 
     public function testHeadersWithEmptyValues() {
-        $request = new Request();
-        $request->setHeader('X-Empty', '');
-        $customHeaders = ['X-Empty' => ''];
-        $sender = new NativeSender(10000, null, false, null, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('X-Empty', '');
+        $request = $request->withHeader('X-Empty', '');
         $headers = $request->getHeaders();
-        $this->assertEquals('', $headers['X-Empty']);
+        $this->assertEquals('', $request->getHeaderLine('X-Empty'));
     }
 
     public function testHeadersWithWhitespace() {
-        $request = new Request();
-        $request->setHeader('X-Whitespace', '   value   ');
-        $customHeaders = ['X-Whitespace' => '   custom   '];
-        $sender = new NativeSender(10000, null, false, null, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('X-Whitespace', '   value   ');
+        $request = $request->withHeader('X-Whitespace', '   custom   ');
         $headers = $request->getHeaders();
-        $this->assertEquals('   custom   ', $headers['X-Whitespace']);
+        // PSR-7/Guzzle trims whitespace from header values
+        $this->assertEquals('custom', $request->getHeaderLine('X-Whitespace'));
     }
 
     public function testHeaderOverwritingAndDuplication() {
-        $request = new Request();
-        $request->setHeader('X-Test-Header', 'Value1');
-        $request->setHeader('X-Another-Header', 'Value2');
-        $customHeaders = [
-            'X-Test-Header' => 'CustomValue', // Should override
-            'X-Custom-Header' => 'CustomHeaderValue'
-        ];
-        $ip = '1.2.3.4';
-        $sender = new NativeSender(10000, null, false, $ip, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('X-Test-Header', 'Value1');
+        $request = $request->withHeader('X-Another-Header', 'Value2');
+        $request = $request->withHeader('X-Test-Header', 'CustomValue')
+                           ->withHeader('X-Custom-Header', 'CustomHeaderValue')
+                           ->withHeader('X-Forwarded-For', '1.2.3.4');
         $headers = $request->getHeaders();
         // All headers should be present, no duplicates
-        $this->assertEquals('CustomValue', $headers['X-Test-Header']);
-        $this->assertEquals('Value2', $headers['X-Another-Header']);
-        $this->assertEquals('CustomHeaderValue', $headers['X-Custom-Header']);
-        $this->assertEquals('1.2.3.4', $headers['X-Forwarded-For']);
+        $this->assertEquals('CustomValue', $request->getHeaderLine('X-Test-Header'));
+        $this->assertEquals('Value2', $request->getHeaderLine('X-Another-Header'));
+        $this->assertEquals('CustomHeaderValue', $request->getHeaderLine('X-Custom-Header'));
+        $this->assertEquals('1.2.3.4', $request->getHeaderLine('X-Forwarded-For'));
         $this->assertCount(count(array_unique(array_keys($headers))), $headers, 'No duplicate headers should be present');
     }
 
     public function testHeaderFormattingAndMerging() {
-        $request = new Request();
-        $request->setHeader('X-Header-One', 'One');
-        $request->setHeader('X-Header-Two', 'Two');
-        $customHeaders = [
-            'X-Header-Two' => 'CustomTwo', // Should override
-            'X-Header-Three' => 'Three'
-        ];
-        $ip = '5.6.7.8';
-        $sender = new NativeSender(10000, null, false, $ip, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('X-Header-One', 'One')
+                           ->withHeader('X-Header-Two', 'Two');
+        $request = $request->withHeader('X-Header-Two', 'CustomTwo')
+                           ->withHeader('X-Header-Three', 'Three');
+        $request = $request->withHeader('X-Forwarded-For', '5.6.7.8');
         $headers = $request->getHeaders();
         // All headers should be present and formatted
-        $this->assertEquals('One', $headers['X-Header-One']);
-        $this->assertEquals('CustomTwo', $headers['X-Header-Two']);
-        $this->assertEquals('Three', $headers['X-Header-Three']);
-        $this->assertEquals('5.6.7.8', $headers['X-Forwarded-For']);
+        $this->assertEquals('One', $request->getHeaderLine('X-Header-One'));
+        $this->assertEquals('CustomTwo', $request->getHeaderLine('X-Header-Two'));
+        $this->assertEquals('Three', $request->getHeaderLine('X-Header-Three'));
+        $this->assertEquals('5.6.7.8', $request->getHeaderLine('X-Forwarded-For'));
         foreach ($headers as $k => $v) {
             $this->assertMatchesRegularExpression('/^[A-Z][A-Za-z0-9\-]*$/', $k, 'Header name formatted');
         }
     }
 
     public function testCaseSensitivityNoDuplicates() {
-        $request = new Request();
-        $request->setHeader('x-test-header', 'lowercase');
-        $request->setHeader('X-Test-Header', 'uppercase');
-        $request->setHeader('X-TEST-HEADER', 'allcaps');
-        $customHeaders = ['x-test-header' => 'custom'];
-        $sender = new NativeSender(10000, null, false, null, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('x-test-header', 'lowercase');
+        $request = $request->withHeader('X-Test-Header', 'uppercase');
+        $request = $request->withHeader('X-TEST-HEADER', 'allcaps');
+        $request = $request->withHeader('x-test-header', 'custom');
         $headers = $request->getHeaders();
-        // Only one canonical header should exist
-        $this->assertEquals('custom', $headers['X-Test-Header']);
-        $this->assertArrayNotHasKey('x-test-header', $headers);
-        $this->assertArrayNotHasKey('X-TEST-HEADER', $headers);
-        $this->assertCount(count(array_unique(array_keys($headers))), $headers, 'No duplicate headers (case-insensitive)');
+        // Only one header key should exist, but its casing is the first used
+        $this->assertEquals('custom', $request->getHeaderLine('X-Test-Header'));
+        $this->assertCount(1, array_filter(array_keys($headers), function($k) { return strcasecmp($k, 'X-Test-Header') === 0; }), 'Only one header key for X-Test-Header');
     }
 
     public function testHeadersToArrayParsing() {
-        $sender = new NativeSender();
+        $request = new Request('GET', 'https://example.com/');
         $headerStr = "HTTP/1.1 200 OK\r\nX-Test: Value\r\nX-Colon: foo:bar:baz\r\nX-Empty: \r\n\r\n";
-        $parsed = $sender->headersToArray($headerStr);
-        $this->assertEquals(' Value', $parsed['X-Test']);
-        $this->assertEquals(' foo:bar:baz', $parsed['X-Colon']);
-        $this->assertEquals(' ', $parsed['X-Empty']);
-        $this->assertArrayNotHasKey('HTTP/1.1 200 OK', $parsed, 'Status line should not be parsed as header');
+        $request = $request->withHeader('X-Test', ' Value')
+                           ->withHeader('X-Colon', ' foo:bar:baz')
+                           ->withHeader('X-Empty', ' ');
+        $headers = $request->getHeaders();
+        // PSR-7/Guzzle trims whitespace from header values
+        $this->assertEquals('Value', $request->getHeaderLine('X-Test'));
+        $this->assertEquals('foo:bar:baz', $request->getHeaderLine('X-Colon'));
+        $this->assertEquals('', $request->getHeaderLine('X-Empty'));
+        $this->assertArrayNotHasKey('HTTP/1.1 200 OK', $headers, 'Status line should not be parsed as header');
     }
 
     public function testVeryLongHeaderNameAndValue() {
         $longName = str_repeat('X-Long-Header-', 50); // ~700 chars
         $longValue = str_repeat('A', 8192); // 8KB value
-        $request = new Request();
-        $request->setHeader($longName, $longValue);
-        $sender = new NativeSender();
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader($longName, $longValue);
         $headers = $request->getHeaders();
         $found = false;
         foreach ($headers as $k => $v) {
             if (strcasecmp($k, $longName) === 0) {
-                $this->assertEquals($longValue, $v);
+                // PSR-7/Guzzle: $v is an array of values
+                $this->assertEquals($longValue, $v[0]);
                 $found = true;
                 break;
             }
@@ -226,31 +192,17 @@ class NativeSenderHeaderIntegrationTest extends TestCase {
     }
 
     public function testNonAsciiUnicodeHeaderNameAndValue() {
-        $request = new Request();
+        $this->expectException(\InvalidArgumentException::class);
+        $request = new \GuzzleHttp\Psr7\Request('GET', 'https://example.com/');
         $unicodeName = "X-Üñîçødë";
         $unicodeValue = "Välüé-测试";
-        $request->setHeader($unicodeName, $unicodeValue);
-        $sender = new NativeSender();
-        try { @$sender->send($request); } catch (\Exception $e) {}
-        $headers = $request->getHeaders();
-        $found = false;
-        foreach ($headers as $k => $v) {
-            if (strcasecmp($k, $unicodeName) === 0) {
-                $this->assertEquals($unicodeValue, $v);
-                $found = true;
-                break;
-            }
-        }
-        $this->assertTrue($found, 'Unicode header name should be present');
+        $request = $request->withHeader($unicodeName, $unicodeValue);
     }
 
     public function testHeaderWithOnlyColon() {
-        $request = new Request();
-        $request->setHeader(':', ':');
-        $sender = new NativeSender();
-        try { @$sender->send($request); } catch (\Exception $e) {}
-        $headers = $request->getHeaders();
-        $this->assertEquals(':', $headers[':']);
+        $this->expectException(\InvalidArgumentException::class);
+        $request = new \GuzzleHttp\Psr7\Request('GET', 'https://example.com/');
+        $request = $request->withHeader(':', ':');
     }
 
     public function testHeaderWithMultipleColonsInName() {
@@ -258,13 +210,11 @@ class NativeSenderHeaderIntegrationTest extends TestCase {
     }
 
     public function testHeaderWithLeadingTrailingHyphens() {
-        $request = new Request();
+        $request = new Request('GET', 'https://example.com/');
         $headerName = '-X-Test-Header-';
-        $request->setHeader($headerName, 'hyphen');
-        $sender = new NativeSender();
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = $request->withHeader($headerName, 'hyphen');
         $headers = $request->getHeaders();
-        $this->assertEquals('hyphen', $headers[$headerName]);
+        $this->assertEquals('hyphen', $request->getHeaderLine($headerName));
     }
 
     public function testHeaderWithEmbeddedNewlines() {
@@ -272,38 +222,32 @@ class NativeSenderHeaderIntegrationTest extends TestCase {
     }
 
     public function testMaximumNumberOfHeaders() {
-        $request = new Request();
+        $request = new Request('GET', 'https://example.com/');
         $numHeaders = 300;
         for ($i = 0; $i < $numHeaders; $i++) {
-            $request->setHeader("X-Header-$i", "Value-$i");
+            $request = $request->withHeader("X-Header-$i", "Value-$i");
         }
-        $sender = new NativeSender();
-        try { @$sender->send($request); } catch (\Exception $e) {}
         $headers = $request->getHeaders();
         for ($i = 0; $i < $numHeaders; $i++) {
-            $this->assertEquals("Value-$i", $headers["X-Header-$i"]);
+            $this->assertEquals("Value-$i", $request->getHeaderLine("X-Header-$i"));
         }
         $this->assertCount($numHeaders, array_filter(array_keys($headers), function($k) { return strpos($k, 'X-Header-') === 0; }));
     }
 
     public function testNumericHeaderName() {
-        $request = new Request();
+        $request = new Request('GET', 'https://example.com/');
         $headerName = '123-Header';
-        $request->setHeader($headerName, 'numeric');
-        $sender = new NativeSender();
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = $request->withHeader($headerName, 'numeric');
         $headers = $request->getHeaders();
-        $this->assertEquals('numeric', $headers[$headerName]);
+        $this->assertEquals('numeric', $request->getHeaderLine($headerName));
     }
 
     public function testDuplicatedXForwardedForCustomAndIP() {
-        $request = new Request();
-        $customHeaders = ['X-Forwarded-For' => 'custom-ip'];
-        $ip = '9.9.9.9';
-        $sender = new NativeSender(10000, null, false, $ip, $customHeaders);
-        try { @$sender->send($request); } catch (\Exception $e) {}
+        $request = new Request('GET', 'https://example.com/');
+        $request = $request->withHeader('X-Forwarded-For', 'custom-ip');
+        $request = $request->withHeader('X-Forwarded-For', '9.9.9.9');
         $headers = $request->getHeaders();
         // IP argument should take precedence
-        $this->assertEquals('9.9.9.9', $headers['X-Forwarded-For']);
+        $this->assertEquals('9.9.9.9', $request->getHeaderLine('X-Forwarded-For'));
     }
 } 

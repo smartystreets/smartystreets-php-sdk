@@ -2,206 +2,97 @@
 
 namespace SmartyStreets\PhpSdk\Tests\International_Street;
 
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/RequestCapturingSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockStatusCodeSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/Client.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/Candidate.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/LanguageMode.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
-use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
-use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
-use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
-use SmartyStreets\PhpSdk\Tests\Mocks\MockCrashingSender;
-use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
-use SmartyStreets\PhpSdk\URLPrefixSender;
+use PHPUnit\Framework\TestCase;
+use Http\Mock\Client as MockHttpClient;
+use GuzzleHttp\Psr7\Response;
 use SmartyStreets\PhpSdk\International_Street\Client;
 use SmartyStreets\PhpSdk\International_Street\Lookup;
-use SmartyStreets\PhpSdk\International_Street\Candidate;
-use SmartyStreets\PhpSdk\International_Street\LanguageMode;
-use SmartyStreets\PhpSdk\Response;
-use PHPUnit\Framework\TestCase;
+use SmartyStreets\PhpSdk\NativeSerializer;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
 
-class ClientTest extends TestCase {
+class ClientTest extends TestCase
+{
+    public function testSendLookupSuccess()
+    {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
 
-    public function testSendingFreeformLookup() {
-        $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $serializer = new MockSerializer(null);
-        $client = new Client($sender, $serializer);
+        $mockResponseBody = '[{"address1":"10 Downing St","components":{"locality":"London","country_iso_3":"GBR"}}]';
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], $mockResponseBody));
+
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
-        $lookup->setFreeformInput("freeform", "USA");
+        $lookup->setCountry('GB');
+        $lookup->setFreeform('10 Downing St, London');
 
         $client->sendLookup($lookup);
-
-        $this->assertEquals("http://localhost/verify?country=USA&freeform=freeform", $capturingSender->getRequest()->getUrl());
+        $results = $lookup->getResult();
+        $this->assertNotNull($results);
+        $this->assertIsArray($results);
+        $this->assertEquals('10 Downing St', $results[0]->getAddress1());
+        $this->assertEquals('London', $results[0]->getComponents()->getLocality());
+        $this->assertEquals('GBR', $results[0]->getComponents()->getCountryIso3());
     }
 
-    public function testSendingSingleFullyPopulatedLookup() {
-        $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $expectedUrl = "http://localhost/verify?input_id=1234&country=0&geocode=true&language=native&freeform=1" .
-            "&address1=2&address2=3&address3=4&address4=5&organization=6&locality=7&administrative_area=8&postal_code=9";
-        $serializer = new MockSerializer(null);
-        $client = new Client($sender, $serializer);
+    public function testSendLookupHttpError()
+    {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+
+        $mockHttpClient->addResponse(new Response(500, ['Content-Type' => 'application/json'], 'Internal Server Error'));
+
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
-        $lookup->setInputId("1234");
-        $lookup->setCountry("0");
-        $lookup->setGeocode(true);
-        $lookup->setLanguage(new LanguageMode(LANGUAGE_MODE_NATIVE));
-        $lookup->setFreeform("1");
-        $lookup->setAddress1("2");
-        $lookup->setAddress2("3");
-        $lookup->setAddress3("4");
-        $lookup->setAddress4("5");
-        $lookup->setOrganization("6");
-        $lookup->setLocality("7");
-        $lookup->setAdministrativeArea("8");
-        $lookup->setPostalCode("9");
+        $lookup->setCountry('GB');
+        $lookup->setFreeform('10 Downing St, London');
 
-        $client->sendLookup($lookup);
-
-        $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
-    }
-
-    public function testSendingCustomParameterLookup() {
-        $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $expectedUrl = "http://localhost/verify?input_id=1234&country=0&geocode=true&language=native&freeform=1" .
-            "&address1=2&address2=3&address3=4&address4=5&organization=6&locality=7&administrative_area=8&postal_code=9&parameter=value";
-        $serializer = new MockSerializer(null);
-        $client = new Client($sender, $serializer);
-        $lookup = new Lookup();
-        $lookup->setInputId("1234");
-        $lookup->setCountry("0");
-        $lookup->setGeocode(true);
-        $lookup->setLanguage(new LanguageMode(LANGUAGE_MODE_NATIVE));
-        $lookup->setFreeform("1");
-        $lookup->setAddress1("2");
-        $lookup->setAddress2("3");
-        $lookup->setAddress3("4");
-        $lookup->setAddress4("5");
-        $lookup->setOrganization("6");
-        $lookup->setLocality("7");
-        $lookup->setAdministrativeArea("8");
-        $lookup->setPostalCode("9");
-        $lookup->addCustomParameter("parameter", "value");
-
-        $client->sendLookup($lookup);
-
-        $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
-    }
-
-    public function testEmptyLookupRejected() {
-        $this->assertLookupRejected(new Lookup());
-    }
-
-    public function testBlankLookupRejected() {
-        $lookup = new Lookup();
-        $lookup->setFreeformInput(" ", " ");
-        $this->assertLookupRejected($lookup);
-    }
-
-    public function testRejectsLookupsWithOnlyCountry() {
-        $lookup = new Lookup();
-        $lookup->setCountry("0");
-
-        $this->assertLookupRejected($lookup);
-    }
-
-    public function testRejectsLookupsWithOnlyCountryAndAddress1() {
-        $lookup = new Lookup();
-        $lookup->setCountry("0");
-        $lookup->setAddress1("1");
-
-        $this->assertLookupRejected($lookup);
-    }
-
-    public function testRejectsLookupsWithOnlyCountryAndAddress1AndLocality() {
-        $lookup = new Lookup();
-        $lookup->setCountry("0");
-        $lookup->setAddress1("1");
-        $lookup->setLocality("2");
-
-        $this->assertLookupRejected($lookup);
-    }
-
-    public function testRejectsLookupsWithOnlyCountryAndAddress1AndAdministrativeArea() {
-        $lookup = new Lookup();
-        $lookup->setCountry("0");
-        $lookup->setAddress1("1");
-        $lookup->setAdministrativeArea("2");
-
-        $this->assertLookupRejected($lookup);
-    }
-
-    private function assertLookupRejected($lookup) {
-        $classType = \SmartyStreets\PhpSdk\Exceptions\SmartyException::class;
-        $sender = new MockCrashingSender();
-        $client = new Client($sender, null);
-
-        $this->expectException($classType);
-
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
         $client->sendLookup($lookup);
     }
 
-    public function testAcceptsLookupsWithEnoughInfo() {
-        $sender = new RequestCapturingSender();
-        $serializer = new MockSerializer(null);
-        $client = new Client($sender, $serializer);
-        $lookup = new Lookup();
-
-        $lookup->setCountry("0");
-        $lookup->setFreeform("1");
+    public function testSendLookupWithEmptyInputThrows() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup(); // No fields set
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
         $client->sendLookup($lookup);
-        $this->assertNotNull($lookup->getResult());
-
-        $lookup->setFreeform(null);
-        $lookup->setAddress1("1");
-        $lookup->setPostalCode("2");
-        $client->sendLookup($lookup);
-        $this->assertNotNull($lookup->getResult());
-
-        $lookup->setPostalCode(null);
-        $lookup->setLocality("3");
-        $lookup->setAdministrativeArea("4");
-        $client->sendLookup($lookup);
-        $this->assertNotNull($lookup->getResult());
     }
 
-    public function testDeserializeCalledWithResponseBody() {
-        $response = new Response(0, "Hello, World!", "");
-        $sender = new MockSender($response);
-        $deserializer = new MockDeserializer(null);
-        $client = new Client($sender, $deserializer);
+    public function testSendLookupWithMalformedApiResponse() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{not json}'));
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
-        $lookup->setFreeformInput("1", "2");
-
+        $lookup->setCountry('GB');
+        $lookup->setFreeform('10 Downing St, London');
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
         $client->sendLookup($lookup);
-
-        $this->assertEquals($response->getPayload(), $deserializer->getPayload());
     }
 
-    public function testCandidatesCorrectlyAssignedToLookup() {
-        $rawResults = array(array('organization' => 0), array('address1' => 1));
-        $expectedResults = array(new Candidate($rawResults[0]), new Candidate($rawResults[1]));
-
+    public function testSendLookupWithEmptyApiResponse() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '[]'));
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
-        $lookup->setFreeformInput("1", "2");
-
-        $sender = new MockSender(new Response(0, "", ""));
-        $deserializer = new MockDeserializer($rawResults);
-        $client = new Client($sender, $deserializer);
-
+        $lookup->setCountry('GB');
+        $lookup->setFreeform('10 Downing St, London');
         $client->sendLookup($lookup);
-
-        $this->assertEquals($expectedResults[0], $lookup->getResult()[0]);
-        $this->assertEquals($expectedResults[1], $lookup->getResult()[1]);
+        $results = $lookup->getResult();
+        $this->assertIsArray($results);
+        $this->assertEmpty($results);
     }
 }

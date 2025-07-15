@@ -2,86 +2,61 @@
 
 namespace SmartyStreets\PhpSdk\International_Street;
 
-require_once(__DIR__ . '/../Exceptions/UnprocessableEntityException.php');
-require_once(__DIR__ . '/../Sender.php');
-require_once(__DIR__ . '/../Serializer.php');
-require_once(__DIR__ . '/../Request.php');
-require_once(__DIR__ . '/../Batch.php');
-require_once(__DIR__ . '/Candidate.php');
-use SmartyStreets\PhpSdk\Exceptions\SmartyException;
-use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
-use SmartyStreets\PhpSdk\Sender;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use SmartyStreets\PhpSdk\Serializer;
-use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 /**
  * This client sends lookups to the SmartyStreets International Street API, <br>
  *     and attaches the results to the appropriate Lookup objects.
  */
 class Client {
-    private $sender,
-            $serializer;
+    private $httpClient;
+    private $requestFactory;
+    private $streamFactory;
+    private $serializer;
 
-    public function __construct(Sender $sender, ?Serializer $serializer = null) {
-        $this->sender = $sender;
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer) {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->streamFactory = $streamFactory;
         $this->serializer = $serializer;
     }
 
     public function sendLookup(Lookup $lookup) {
-        $this->ensureEnoughInfo($lookup);
-        $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request);
-
-        $candidates = $this->serializer->deserialize($response->getPayload());
-        if ($candidates == null)
-            return;
-
-        $this->assignResultsToLookup($lookup, $candidates);
-    }
-
-
-    private function buildRequest(Lookup $lookup) {
-        $request = new Request();
-
-        $request->setUrlComponents("/verify");
-
-        $request->setParameter("input_id", $lookup->getInputId());
-        $request->setParameter("country", $lookup->getCountry());
-        $request->setParameter("geocode", $lookup->getGeocode());
-        if ($lookup->getLanguage() != null)
-            $request->setParameter("language", $lookup->getLanguage()->getName());
-        $request->setParameter("freeform", $lookup->getFreeform());
-        $request->setParameter("address1", $lookup->getAddress1());
-        $request->setParameter("address2", $lookup->getAddress2());
-        $request->setParameter("address3", $lookup->getAddress3());
-        $request->setParameter("address4", $lookup->getAddress4());
-        $request->setParameter("organization", $lookup->getOrganization());
-        $request->setParameter("locality", $lookup->getLocality());
-        $request->setParameter("administrative_area", $lookup->getAdministrativeArea());
-        $request->setParameter("postal_code", $lookup->getPostalCode());
-
-        foreach ($lookup->getCustomParamArray() as $key => $value) {
-            $request->setParameter($key, $value);
+        try {
+            $this->ensureEnoughInfo($lookup);
+        } catch (\Throwable $e) {
+            throw new SmartyException($e->getMessage(), 0, $e);
         }
+        $url = '/international-street';
+        $request = $this->requestFactory->createRequest('POST', $url)
+            ->withHeader('Content-Type', 'application/json');
+        $payload = $this->serializer->serialize([$lookup]);
+        $stream = $this->streamFactory->createStream($payload);
+        $request = $request->withBody($stream);
 
-        return $request;
-    }
-
-    private function ensureEnoughInfo(Lookup $lookup) {
-        if ($lookup->missingCountry())
-            throw new UnprocessableEntityException("Country field is required.");
-
-        if ($lookup->hasFreeform())
+        $response = $this->httpClient->sendRequest($request);
+        if ($response->getStatusCode() >= 400) {
+            throw new SmartyException('HTTP error: ' . $response->getStatusCode());
+        }
+        try {
+            $candidates = $this->serializer->deserialize((string)$response->getBody());
+        } catch (\Throwable $e) {
+            throw new SmartyException('Malformed JSON in API response', 0, $e);
+        }
+        if ($candidates == null || !is_array($candidates) || count($candidates) === 0) {
+            $lookup->setResult([]);
             return;
-
-        if ($lookup->missingAddress1())
-            throw new UnprocessableEntityException("Either freeform or address1 is required.");
-
-        if ($lookup->hasPostalCode())
-            return;
-
-        if ($lookup->missingLocalityOrAdministrativeArea())
-            throw new UnprocessableEntityException("Insufficient information: One or more required fields were not set on the lookup.");
+        }
+        $result = array();
+        foreach ($candidates as $c) {
+            $candidate = new Candidate($c);
+            $result[] = $candidate;
+        }
+        $lookup->setResult($result);
     }
 
     private function assignResultsToLookup(Lookup $lookup, $candidates) {
@@ -93,5 +68,22 @@ class Client {
         }
 
         $lookup->setResult($result);
+    }
+
+    private function ensureEnoughInfo(Lookup $lookup) {
+        if ($lookup->missingCountry())
+            throw new SmartyException("Country field is required.");
+
+        if ($lookup->hasFreeform())
+            return;
+
+        if ($lookup->missingAddress1())
+            throw new SmartyException("Either freeform or address1 is required.");
+
+        if ($lookup->hasPostalCode())
+            return;
+
+        if ($lookup->missingLocalityOrAdministrativeArea())
+            throw new SmartyException("Insufficient information: One or more required fields were not set on the lookup.");
     }
 }

@@ -17,16 +17,15 @@ use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockStatusCodeSender;
 use SmartyStreets\PhpSdk\StatusCodeSender;
-use SmartyStreets\PhpSdk\Request;
 use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Client\ClientInterface;
 
 class StatusCodeSenderTest extends TestCase {
 
     public function test200Response() {
         $sender = new StatusCodeSender(new MockStatusCodeSender(200));
-
-        $response = $sender->send(new Request());
-
+        $response = $sender->sendRequest(new Request('GET', 'https://example.com/'));
         $this->assertEquals(200, $response->getStatusCode());
     }
 
@@ -86,9 +85,7 @@ class StatusCodeSenderTest extends TestCase {
 
     private function assertSend($statusCode, $classType) {
         $sender = new StatusCodeSender(new MockStatusCodeSender($statusCode));
-
         $this->expectException($classType);
-
-        $sender->send(new Request());
+        $sender->sendRequest(new Request('GET', 'https://example.com/'));
     }
 }

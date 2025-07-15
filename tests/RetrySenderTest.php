@@ -12,7 +12,8 @@ use SmartyStreets\PhpSdk\Tests\Mocks\MockCrashingSender;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockLogger;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSleeper;
 use SmartyStreets\PhpSdk\RetrySender;
-use SmartyStreets\PhpSdk\Request;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Client\ClientInterface;
 use PHPUnit\Framework\TestCase;
 
 class RetrySenderTest extends TestCase {
@@ -60,11 +61,8 @@ class RetrySenderTest extends TestCase {
     //}
 
     private function sendRequest($requestBehavior) {
-        $request = new Request();
-        $request->setUrlPrefix($requestBehavior);
-
+        $request = new Request('GET', 'https://example.com/' . $requestBehavior);
         $retrySender = new RetrySender(15, $this->mockSleeper, $this->mockLogger, $this->mockCrashingSender);
-
-        $retrySender->send($request);
+        $retrySender->sendRequest($request);
     }
 }

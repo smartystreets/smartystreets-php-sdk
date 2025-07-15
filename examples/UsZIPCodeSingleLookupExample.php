@@ -1,66 +1,49 @@
 <?php
 
-require_once(__DIR__ . '/../src/ClientBuilder.php');
-require_once(__DIR__ . '/../src/US_ZIPCode/Lookup.php');
-require_once(__DIR__ . '/../src/US_ZIPCode/Result.php');
-require_once(__DIR__ . '/../src/StaticCredentials.php');
-require_once(__DIR__ . '/../src/SharedCredentials.php');
-use SmartyStreets\PhpSdk\Exceptions\SmartyException;
-use SmartyStreets\PhpSdk\StaticCredentials;
-use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
-use SmartyStreets\PhpSdk\ClientBuilder;
+require_once __DIR__ . '/../vendor/autoload.php';
 
-$lookupExample = new UsZIPCodeSingleLookupExample();
-$lookupExample->run();
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
+use SmartyStreets\PhpSdk\ClientBuilder;
+use SmartyStreets\PhpSdk\NativeSerializer;
+use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
+
+$example = new UsZIPCodeSingleLookupExample();
+$example->run();
 
 class UsZIPCodeSingleLookupExample {
-
     public function run() {
-        // $authId = 'Your SmartyStreets Auth ID here';
-        // $authToken = 'Your SmartyStreets Auth Token here';
+        $httpClient = new GuzzleClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
 
-        // We recommend storing your secret keys in environment variables instead---it's safer!
-        $authId = getenv('SMARTY_AUTH_ID');
-        $authToken = getenv('SMARTY_AUTH_TOKEN');
-
-        $staticCredentials = new StaticCredentials($authId, $authToken);
-        $client = (new ClientBuilder($staticCredentials))->buildUsZIPCodeApiClient();
-
-        // Documentation for input fields can be found at:
-        // https://smartystreets.com/docs/cloud/us-zipcode-api
+        $client = (new ClientBuilder($httpClient, $requestFactory, $streamFactory, $serializer))
+            ->buildUsZIPCodeApiClient();
 
         $lookup = new Lookup();
-        $lookup->setInputId("dfc33cb6-829e-4fea-aa1b-b6d6580f0817"); // Optional ID from you system
         $lookup->setCity("Mountain View");
-        $lookup->setState("California");
-
-        // Uncomment the below line to add a custom parameter to the API call
-        // $lookup->addCustomParameter("parameter", "value");
+        $lookup->setState("CA");
+        $lookup->setZipCode("94043");
 
         try {
             $client->sendLookup($lookup);
             $this->displayResults($lookup);
-        }
-        catch (\Exception $ex) {
+        } catch (Exception $ex) {
             echo($ex->getMessage());
         }
     }
 
     public function displayResults(Lookup $lookup) {
         $result = $lookup->getResult();
-        $zipCodes = $result->getZIPCodes();
-        $cities = $result->getCities();
-
-        foreach ($cities as $city) {
-            echo("\nCity: " . $city->getCity());
-            echo("\nState: " . $city->getState());
-            echo("\nMailable City: " . json_encode($city->getMailableCity()));
+        if (empty($result)) {
+            echo("\nNo results found.");
+            return;
         }
-
-        foreach ($zipCodes as $zip) {
-            echo("\n\nZIP Code: " . $zip->getZIPCode());
-            echo("\nLatitude: " . $zip->getLatitude());
-            echo("\nLongitude: " . $zip->getLongitude());
-        }
+        $firstResult = $result[0];
+        echo("\nCity: " . $firstResult->getCity());
+        echo("\nState: " . $firstResult->getState());
+        echo("\nZIP Code: " . $firstResult->getZipCode());
     }
 }

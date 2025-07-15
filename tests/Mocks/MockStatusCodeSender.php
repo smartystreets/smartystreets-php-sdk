@@ -4,21 +4,21 @@ namespace SmartyStreets\PhpSdk\Tests\Mocks;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Sender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
-use SmartyStreets\PhpSdk\Response;
-use SmartyStreets\PhpSdk\Request;
-use SmartyStreets\PhpSdk\Sender;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Response;
 
-class MockStatusCodeSender implements Sender {
+class MockStatusCodeSender implements ClientInterface {
     private $statusCode;
 
     public function __construct($statusCode) {
         $this->statusCode = $statusCode;
     }
 
-    function send(Request $request) {
+    public function sendRequest(RequestInterface $request): ResponseInterface {
         if ($this->statusCode == 0)
             return null;
-
-        return new Response($this->statusCode, "", "");
+        return new Response($this->statusCode);
     }
 }

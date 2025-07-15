@@ -58,6 +58,12 @@ class ResultTest extends TestCase {
 
     public function testAllFieldsFilledCorrectly() {
         $result = new Result($this->obj);
+        $this->assertIsArray($result->getCities());
+        $this->assertIsArray($result->getZIPCodes());
+        $city = $result->getCities()[0];
+        $this->assertNotNull($city);
+        $zip = $result->getZIPCodes()[0];
+        $this->assertNotNull($zip);
 
         $this->assertEquals("0", $result->getStatus());
         $this->assertEquals("1", $result->getReason());
@@ -87,5 +93,31 @@ class ResultTest extends TestCase {
         $this->assertEquals('17', $altCounties->getCountyName());
         $this->assertEquals('18', $altCounties->getStateAbbreviation());
         $this->assertEquals('19', $altCounties->getState());
+    }
+
+    public function testConstructionWithMissingFields() {
+        $result = new Result([]);
+        $this->assertIsArray($result->getCities());
+        $this->assertIsArray($result->getZIPCodes());
+        $this->assertEmpty($result->getCities());
+        $this->assertEmpty($result->getZIPCodes());
+    }
+
+    public function testConstructionWithExtraFields() {
+        $obj = $this->obj;
+        $obj['extra_field'] = 'extra';
+        $result = new Result($obj);
+        $this->assertEquals('extra', $obj['extra_field']); // Should not throw
+        $this->assertIsArray($result->getCities());
+        $this->assertIsArray($result->getZIPCodes());
+    }
+
+    public function testConstructionWithAllNulls() {
+        $obj = array_map(function() { return null; }, $this->obj);
+        $result = new Result($obj);
+        $this->assertIsArray($result->getCities());
+        $this->assertIsArray($result->getZIPCodes());
+        $this->assertEmpty($result->getCities());
+        $this->assertEmpty($result->getZIPCodes());
     }
 }

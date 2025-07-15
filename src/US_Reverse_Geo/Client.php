@@ -2,52 +2,50 @@
 
 namespace SmartyStreets\PhpSdk\US_Reverse_Geo;
 
-require_once(__DIR__ . '/../Exceptions/UnprocessableEntityException.php');
-require_once(__DIR__ . '/../Sender.php');
-require_once(__DIR__ . '/../Serializer.php');
-require_once(__DIR__ . '/../Request.php');
-require_once(__DIR__ . '/../Batch.php');
-require_once(__DIR__ . '/Response.php');
-use SmartyStreets\PhpSdk\Sender;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use SmartyStreets\PhpSdk\Serializer;
-use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
-/**
- * This client sends lookups to the SmartyStreets US Reverse Geocoding API, <br>
- *     and attaches the results to the appropriate Lookup objects.
- */
 class Client {
-    private $sender,
-            $serializer;
+    private $httpClient;
+    private $requestFactory;
+    private $streamFactory;
+    private $serializer;
 
-    public function __construct(Sender $sender, ?Serializer $serializer = null) {
-        $this->sender = $sender;
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer) {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->streamFactory = $streamFactory;
         $this->serializer = $serializer;
     }
 
     public function sendLookup(Lookup $lookup) {
-        $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request);
-
-        $lookupResponse = new Response($this->serializer->deserialize($response->getPayload()));
-
-        $lookup->setResponse($lookupResponse);
-    }
-
-
-    private function buildRequest(Lookup $lookup) {
-        $request = new Request();
-
-        $request->setUrlComponents("/lookup");
-
-        $request->setParameter("latitude", $lookup->getLatitude());
-        $request->setParameter("longitude", $lookup->getLongitude());
-        $request->setParameter("source", $lookup->getSource());
-
-        foreach ($lookup->getCustomParamArray() as $key => $value) {
-            $request->setParameter($key, $value);
+        // Validate input: require latitude and longitude
+        if ($lookup == null || $lookup->getLatitude() === null || $lookup->getLongitude() === null) {
+            throw new SmartyException('Latitude and longitude must be provided.');
         }
+        $url = '/reverse-geo';
+        $request = $this->requestFactory->createRequest('POST', $url)
+            ->withHeader('Content-Type', 'application/json');
+        $payload = $this->serializer->serialize([$lookup]);
+        $stream = $this->streamFactory->createStream($payload);
+        $request = $request->withBody($stream);
 
-        return $request;
+        $response = $this->httpClient->sendRequest($request);
+        if ($response->getStatusCode() >= 400) {
+            throw new SmartyException('HTTP error: ' . $response->getStatusCode());
+        }
+        try {
+            $result = $this->serializer->deserialize((string)$response->getBody());
+        } catch (\Throwable $e) {
+            throw new SmartyException('Malformed JSON in API response', 0, $e);
+        }
+        if ($result == null || !is_array($result) || count($result) === 0) {
+            $lookup->setResponse(new Response());
+            return;
+        }
+        $lookup->setResponse(new Response($result));
     }
 }

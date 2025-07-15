@@ -40,14 +40,23 @@ class Candidate extends RootLevel {
 
 
     public function getComponents() {
+        if ($this->components === null) {
+            $this->components = new Components([]);
+        }
         return $this->components;
     }
 
     public function getMetadata() {
+        if ($this->metadata === null) {
+            $this->metadata = new Metadata([]);
+        }
         return $this->metadata;
     }
 
     public function getAnalysis() {
+        if ($this->analysis === null) {
+            $this->analysis = new Analysis([]);
+        }
         return $this->analysis;
     }
 

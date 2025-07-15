@@ -13,8 +13,12 @@ use SmartyStreets\PhpSdk\Exceptions\RequestTimeoutException;
 use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
 use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
-class RetrySender implements Sender
+
+class RetrySender implements ClientInterface
 {
     const MAX_BACKOFF_DURATION = 10;
     const STATUS_TOO_MANY_REQUESTS = 429;
@@ -26,7 +30,7 @@ class RetrySender implements Sender
         $sleeper,
         $logger;
 
-    public function __construct($maxRetries, Sleeper $sleeper, Logger $logger, Sender $inner)
+    public function __construct($maxRetries, $sleeper, $logger, ClientInterface $inner)
     {
         $this->inner = $inner;
         $this->sleeper = $sleeper;
@@ -34,33 +38,37 @@ class RetrySender implements Sender
         $this->maxRetries = $maxRetries;
     }
 
-    public function send(Request $request)
+    public function sendRequest(RequestInterface $request): ResponseInterface
     {
         for ($i = 0; $i <= $this->maxRetries; $i++) {
             $response = $this->trySend($request, $i);
-
-            if ($response!= null && !in_array($response->getStatusCode(), self::STATUS_TO_RETRY)){
+            if ($response !== null && !in_array($response->getStatusCode(), self::STATUS_TO_RETRY)) {
                 return $response;
             }
         }
-        return null;
+        throw new \RuntimeException('Max retries exceeded');
     }
 
-    private function trySend(Request $request, $attempt)
+    private function trySend(RequestInterface $request, $attempt)
     {
         try {
-            return $this->inner->send($request);
-        } catch (TooManyRequestsException $ex) {
-            $this->backoff($ex->getHeader());
-            return null;
+            return $this->inner->sendRequest($request);
+        } catch (\Psr\Http\Client\ClientExceptionInterface $ex) {
+            // Optionally, map specific exceptions to retry logic
+            $this->backoff(self::MAX_BACKOFF_DURATION);
+            if ($attempt < $this->maxRetries) {
+                return null;
+            } else {
+                throw $ex;
+            }
         } catch (\Exception $ex) {
-            if (($ex instanceof MustRetryException || $ex instanceof InternalServerErrorException || $ex instanceof ServiceUnavailableException || $ex instanceof GatewayTimeoutException || $ex instanceof RequestTimeoutException || $ex instanceof BadGatewayException) && $attempt < $this->maxRetries) {
-                $this->backoff(self::MAX_BACKOFF_DURATION);
+            $this->backoff(self::MAX_BACKOFF_DURATION);
+            if ($attempt < $this->maxRetries) {
+                return null;
             } else {
                 throw $ex;
             }
         }
-
         return null;
     }
 

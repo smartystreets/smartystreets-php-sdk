@@ -79,6 +79,9 @@ class CandidateTest extends TestCase {
 
     public function testAllFieldsFilledCorrectly() {
         $candidate = new Candidate($this->obj);
+        $this->assertNotNull($candidate->getComponents());
+        $this->assertNotNull($candidate->getMetadata());
+        $this->assertNotNull($candidate->getAnalysis());
 
         $this->assertEquals('1234', $candidate->getInputId());
         $this->assertEquals(0, $candidate->getInputIndex());
@@ -142,5 +145,36 @@ class CandidateTest extends TestCase {
         $this->assertEquals(true, $analysis->isSuiteLinkMatch());
         $this->assertEquals('51', $analysis->getNoStat());
         $this->assertEquals('52', $analysis->getEnhancedMatch());
+    }
+
+    public function testConstructionWithMissingFields() {
+        $candidate = new Candidate([]);
+        $this->assertNotNull($candidate->getComponents());
+        $this->assertNotNull($candidate->getMetadata());
+        $this->assertNotNull($candidate->getAnalysis());
+        $this->assertNull($candidate->getInputId());
+        $this->assertNull($candidate->getDeliveryLine1());
+        $this->assertNull($candidate->getComponents()->getZipcode());
+    }
+
+    public function testConstructionWithExtraFields() {
+        $obj = $this->obj;
+        $obj['extra_field'] = 'extra';
+        $candidate = new Candidate($obj);
+        $this->assertEquals('extra', $obj['extra_field']); // Should not throw
+        $this->assertNotNull($candidate->getComponents());
+        $this->assertNotNull($candidate->getMetadata());
+        $this->assertNotNull($candidate->getAnalysis());
+    }
+
+    public function testConstructionWithAllNulls() {
+        $obj = array_map(function() { return null; }, $this->obj);
+        $candidate = new Candidate($obj);
+        $this->assertNotNull($candidate->getComponents());
+        $this->assertNotNull($candidate->getMetadata());
+        $this->assertNotNull($candidate->getAnalysis());
+        $this->assertNull($candidate->getInputId());
+        $this->assertNull($candidate->getDeliveryLine1());
+        $this->assertNull($candidate->getComponents()->getZipcode());
     }
 }

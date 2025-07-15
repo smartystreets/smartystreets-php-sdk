@@ -2,26 +2,22 @@
 
 namespace SmartyStreets\PhpSdk\US_Extract;
 
-require_once(__DIR__ . '/../ArrayUtil.php');
-require_once(__DIR__ . '/../Sender.php');
-require_once(__DIR__ . '/../Serializer.php');
-require_once(__DIR__ . '/../Request.php');
-use SmartyStreets\PhpSdk\Exceptions\SmartyException;
-use SmartyStreets\PhpSdk\ArrayUtil;
-use SmartyStreets\PhpSdk\Sender;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use SmartyStreets\PhpSdk\Serializer;
-use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
-/**
- * This client sends lookups to the SmartyStreets US Extract API, <br>
- *     and attaches the results to the Lookup objects.
- */
 class Client {
-    private $sender,
-        $serializer;
+    private $httpClient;
+    private $requestFactory;
+    private $streamFactory;
+    private $serializer;
 
-    public function __construct(Sender $sender, ?Serializer $serializer = null) {
-        $this->sender = $sender;
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer) {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->streamFactory = $streamFactory;
         $this->serializer = $serializer;
     }
 
@@ -29,35 +25,26 @@ class Client {
         if ($lookup == null || $lookup->getText() == null || strlen($lookup->getText()) == 0)
             throw new SmartyException("sendLookup() requires a Lookup with the 'text' field set");
 
-        $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request);
+        $url = '/extract';
+        $request = $this->requestFactory->createRequest('POST', $url)
+            ->withHeader('Content-Type', 'application/json');
+        $payload = $this->serializer->serialize([$lookup]);
+        $stream = $this->streamFactory->createStream($payload);
+        $request = $request->withBody($stream);
 
-        $result = $this->serializer->deserialize($response->getPayload());
-        if ($result == null)
+        $response = $this->httpClient->sendRequest($request);
+        if ($response->getStatusCode() >= 400) {
+            throw new SmartyException('HTTP error: ' . $response->getStatusCode());
+        }
+        try {
+            $result = $this->serializer->deserialize((string)$response->getBody());
+        } catch (\Throwable $e) {
+            throw new SmartyException('Malformed JSON in API response', 0, $e);
+        }
+        if ($result == null || !is_array($result) || count($result) === 0) {
+            $lookup->setResult(new Result());
             return;
-
-        $lookup->setResult((new Result($result)));
-    }
-
-    private function buildRequest(Lookup $lookup) {
-        $request = new Request();
-        $request->setContentType("text/plain");
-        $request->setPayload($lookup->getText());
-
-        $request->setParameter('html', ArrayUtil::getStringValueOfBoolean($lookup->isHtml()));
-        $request->setParameter('aggressive', ArrayUtil::getStringValueOfBoolean($lookup->isAggressive()));
-        $request->setParameter('addr_line_breaks', ArrayUtil::getStringValueOfBoolean($lookup->addressesHaveLineBreaks()));
-        $request->setParameter('addr_per_line', strval($lookup->getAddressesPerLine()));
-
-        $match = strval($lookup->getMatchStrategy());
-        if ($match != ""){
-            $request->setParameter('match', $match);
         }
-
-        foreach ($lookup->getCustomParamArray() as $key => $value) {
-            $request->setParameter($key, $value);
-        }
-
-        return $request;
+        $lookup->setResult(new Result($result));
     }
 }

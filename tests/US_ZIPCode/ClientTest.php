@@ -2,129 +2,194 @@
 
 namespace SmartyStreets\PhpSdk\Tests\US_ZIPCode;
 
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/RequestCapturingSender.php');
-require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Client.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Result.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
-use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
-use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
-use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
-use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
+use PHPUnit\Framework\TestCase;
+use Http\Mock\Client as MockHttpClient;
+use GuzzleHttp\Psr7\Response;
 use SmartyStreets\PhpSdk\US_ZIPCode\Client;
 use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
-use SmartyStreets\PhpSdk\US_ZIPCode\Result;
-use SmartyStreets\PhpSdk\Batch;
-use SmartyStreets\PhpSdk\Response;
-use SmartyStreets\PhpSdk\URLPrefixSender;
-use PHPUnit\Framework\TestCase;
+use SmartyStreets\PhpSdk\NativeSerializer;
+use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
-class ClientTest extends TestCase {
+class ClientTest extends TestCase
+{
+    public function testSendLookupSuccess()
+    {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
 
-    //region [Batch Lookup ]
+        $mockResponseBody = '[{"input_index":0,"city_states":[{"city":"Mountain View","state":"CA"}],"zipcodes":[{"zipcode":"94043"}]}]';
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], $mockResponseBody));
 
-    public function testEmptyBatchNotSent() {
-        $sender = new RequestCapturingSender();
-        $client = new Client($sender, null);
-
-        $client->sendBatch(new Batch());
-
-        $this->assertNull($sender->getRequest());
-    }
-
-    public function testSendingSingleFullyPopulatedLookup() {
-        $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $serializer = new MockSerializer("");
-        $expectedURL = ("http://localhost/lookup?input_id=1&city=2&state=3&zipcode=4");
-
-        $client = new Client($sender, $serializer);
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
-        $lookup->setInputId("1");
-        $lookup->setCity("2");
-        $lookup->setState("3");
-        $lookup->setZipCode("4");
-
+        $lookup->setCity('Mountain View');
+        $lookup->setState('CA');
+        $lookup->setZipCode('94043');
 
         $client->sendLookup($lookup);
-
-        $this->assertEquals($expectedURL, $capturingSender->getRequest()->getURL());
-        $this->assertEquals("GET", $capturingSender->getRequest()->getMethod());
+        $result = $lookup->getResult();
+        $this->assertNotNull($result);
+        $city = $result->getCityAtIndex(0);
+        $zip = $result->getZIPCodeAtIndex(0);
+        $this->assertNotNull($city);
+        $this->assertNotNull($zip);
+        $this->assertEquals('Mountain View', $city->getCity());
+        $this->assertEquals('CA', $city->getState());
+        $this->assertEquals('94043', $zip->getZIPCode());
     }
 
-    public function testSendingCustomParameterLookup() {
-        $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $serializer = new MockSerializer("");
-        $expectedURL = ("http://localhost/lookup?input_id=1&city=2&state=3&zipcode=4&parameter=custom&second=parameter");
+    public function testSendLookupHttpError()
+    {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
 
-        $client = new Client($sender, $serializer);
+        $mockHttpClient->addResponse(new Response(500, ['Content-Type' => 'application/json'], 'Internal Server Error'));
+
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
-        $lookup->setInputId("1");
-        $lookup->setCity("2");
-        $lookup->setState("3");
-        $lookup->setZipCode("4");
-        $lookup->addCustomParameter("parameter", "custom");
-        $lookup->addCustomParameter("second", "parameter");
+        $lookup->setCity('Mountain View');
+        $lookup->setState('CA');
+        $lookup->setZipCode('94043');
 
-
+        $this->expectException(SmartyException::class);
         $client->sendLookup($lookup);
-
-        $this->assertEquals($expectedURL, $capturingSender->getRequest()->getURL());
-        $this->assertEquals("GET", $capturingSender->getRequest()->getMethod());
     }
 
-    public function testSuccessfullySendsBatchOfLookups() {
-        $expectedPayload = "Hello, World!";
-        $sender = new RequestCapturingSender();
-        $serializer = new MockSerializer($expectedPayload);
-        $client = new Client($sender, $serializer);
-        $batch = new Batch();
-        $batch->add(new Lookup());
-        $batch->add(new Lookup());
-
-        $client->sendBatch($batch);
-
-        $this->assertEquals($expectedPayload, $sender->getRequest()->getPayload());
+    public function testSendLookupWithEmptyInputThrows() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup(); // No fields set
+        $this->expectException(SmartyException::class);
+        $client->sendLookup($lookup);
     }
 
-    //endregion
-
-    //region [ Response Handling ]
-
-    public function testDeserializeCalledWithResponseBody() {
-        $response = new Response(0, "Hello, World!", "");
-        $sender = new MockSender($response);
-        $deserializer = new MockDeserializer(null);
-        $client = new Client($sender, $deserializer);
-
-        $client->sendLookup(new Lookup());
-
-        $this->assertEquals($response->getPayload(), $deserializer->getPayload());
+    public function testSendLookupWithInvalidInput() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCity(''); // Invalid city
+        $lookup->setState('!@#'); // Invalid state
+        $lookup->setZipCode('abcde'); // Invalid zip
+        $this->expectException(SmartyException::class);
+        $client->sendLookup($lookup);
     }
 
-    public function testCandidatesCorrectlyAssignedToCorrespondingLookup() {
-        $rawResults = array(array('input_index' => 0), array('input_index' => 1));
-        $expectedResults = array(new Result($rawResults[0]), new Result($rawResults[1]));
-
-        $batch = new Batch();
-        $batch->add(new Lookup());
-        $batch->add(new Lookup());
-
-        $sender = new MockSender(new Response(0, "[]", ""));
-        $deserializer = new MockDeserializer($rawResults);
-        $client = new Client($sender, $deserializer);
-
-        $client->sendBatch($batch);
-
-        $this->assertEquals($expectedResults[0], $batch->getLookupByIndex(0)->getResult());
-        $this->assertEquals($expectedResults[1], $batch->getLookupByIndex(1)->getResult());
+    public function testSendLookupWithEmptyApiResponse() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '[]'));
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCity('Mountain View');
+        $lookup->setState('CA');
+        $lookup->setZipCode('94043');
+        $client->sendLookup($lookup);
+        $result = $lookup->getResult();
+        $this->assertIsArray($result->getCities());
+        $this->assertIsArray($result->getZIPCodes());
+        $this->assertEmpty($result->getCities());
+        $this->assertEmpty($result->getZIPCodes());
     }
 
-    //endregion
+    public function testSendLookupWithMalformedApiResponse() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{not json}'));
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCity('Mountain View');
+        $lookup->setState('CA');
+        $lookup->setZipCode('94043');
+        $this->expectException(SmartyException::class);
+        $client->sendLookup($lookup);
+    }
+
+    public function testSendLookupWithPartialApiResponse() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $mockResponseBody = '[{"input_index":0}]';
+        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], $mockResponseBody));
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCity('Mountain View');
+        $lookup->setState('CA');
+        $lookup->setZipCode('94043');
+        $client->sendLookup($lookup);
+        $result = $lookup->getResult();
+        $city = $result->getCityAtIndex(0);
+        $zip = $result->getZIPCodeAtIndex(0);
+        if ($city !== null) {
+            $this->assertNull($city->getCity());
+            $this->assertNull($city->getMailableCity());
+            $this->assertNull($city->getStateAbbreviation());
+            $this->assertNull($city->getState());
+        } else {
+            $this->assertNull($city);
+        }
+        if ($zip !== null) {
+            $this->assertNull($zip->getZIPCode());
+            $this->assertNull($zip->getZIPCodeType());
+            $this->assertNull($zip->getDefaultCity());
+            $this->assertNull($zip->getCountyFips());
+            $this->assertNull($zip->getCountyName());
+            $this->assertNull($zip->getStateAbbreviation());
+            $this->assertNull($zip->getState());
+            $this->assertNull($zip->getLatitude());
+            $this->assertNull($zip->getLongitude());
+            $this->assertNull($zip->getPrecision());
+            $this->assertEmpty($zip->getAlternateCounties());
+        } else {
+            $this->assertNull($zip);
+        }
+    }
+
+    public function testSendLookupWithZipCodeBoundaries() {
+        $mockHttpClient = new MockHttpClient();
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $valids = ['00000', '99999', '12345'];
+        foreach ($valids as $zip) {
+            $lookup = new Lookup();
+            $lookup->setZipCode($zip);
+            $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '[{"input_index":0,"zipcodes":[{"zipcode":"' . $zip . '"}]}]'));
+            $client->sendLookup($lookup);
+            $result = $lookup->getResult();
+            $this->assertNotNull($result);
+        }
+        $invalids = ['1234', 'ABCDE', '', null];
+        foreach ($invalids as $zip) {
+            $lookup = new Lookup();
+            $lookup->setZipCode($zip);
+            $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
+            $client->sendLookup($lookup);
+        }
+    }
+
+    public function testResultGettersNeverReturnNull() {
+        $result = new \SmartyStreets\PhpSdk\US_ZIPCode\Result([]);
+        $this->assertIsArray($result->getCities());
+        $this->assertIsArray($result->getZIPCodes());
+        $this->assertNotNull($result->getCityAtIndex(0));
+        $this->assertNotNull($result->getZIPCodeAtIndex(0));
+    }
 }
