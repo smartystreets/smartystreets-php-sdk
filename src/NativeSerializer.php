@@ -14,10 +14,14 @@ class NativeSerializer implements Serializer {
     }
 
     public function deserialize($payload) {
-        $result = json_decode($payload, true);
-        if ($result === null && json_last_error() !== JSON_ERROR_NONE) {
-            throw new \RuntimeException('Malformed JSON: ' . json_last_error_msg());
+        try {
+            $result = json_decode($payload, true);
+            if ($result === null && json_last_error() !== JSON_ERROR_NONE) {
+                throw new \SmartyStreets\PhpSdk\Exceptions\SmartyException('Malformed JSON: ' . json_last_error_msg());
+            }
+            return $result;
+        } catch (\Throwable $e) {
+            throw new \SmartyStreets\PhpSdk\Exceptions\SmartyException('Malformed JSON in API response', 0, $e);
         }
-        return $result;
     }
 }

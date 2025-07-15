@@ -21,8 +21,13 @@ class Client {
         $this->serializer = $serializer;
     }
 
+    /**
+     * Sends a single lookup to the US Reverse Geo API.
+     * @param Lookup $lookup
+     * @throws \SmartyStreets\PhpSdk\Exceptions\SmartyException If input is invalid, HTTP error, or response is malformed.
+     */
     public function sendLookup(Lookup $lookup) {
-        // Validate input: require latitude and longitude
+        // Validate input: require latitude and longitude to be set (but not necessarily numeric)
         if ($lookup == null || $lookup->getLatitude() === null || $lookup->getLongitude() === null) {
             throw new SmartyException('Latitude and longitude must be provided.');
         }

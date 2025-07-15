@@ -22,6 +22,11 @@ class Client {
         $this->serializer = $serializer;
     }
 
+    /**
+     * Sends a single lookup to the US ZIPCode API.
+     * @param Lookup $lookup
+     * @throws \SmartyStreets\PhpSdk\Exceptions\SmartyException If input is invalid, HTTP error, or response is malformed.
+     */
     public function sendLookup(Lookup $lookup) {
         // Validate input: require at least one of city, state, or zipcode, and must be non-empty and plausible
         $city = $lookup->getCity();
@@ -37,6 +42,11 @@ class Client {
         $this->sendBatch($batch);
     }
 
+    /**
+     * Sends a batch of lookups to the US ZIPCode API.
+     * @param Batch $batch
+     * @throws \SmartyStreets\PhpSdk\Exceptions\SmartyException If batch is empty, HTTP error, or response is malformed.
+     */
     public function sendBatch(Batch $batch) {
         if ($batch->size() == 0)
             throw new SmartyException('Batch must contain at least one lookup.');

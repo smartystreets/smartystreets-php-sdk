@@ -27,9 +27,9 @@ class Client {
     }
 
     /**
-     * @param lookup Lookup
-     * @throws SmartyException
-     * @throws IOException
+     * Sends a single lookup to the US Street API.
+     * @param Lookup $lookup
+     * @throws \SmartyStreets\PhpSdk\Exceptions\SmartyException If input is invalid, HTTP error, or response is malformed.
      */
     public function sendLookup(Lookup $lookup) {
         // Validate input: require at least one of street, city, state, or zipcode
@@ -43,10 +43,8 @@ class Client {
 
     /**
      * Sends a batch of no more than 100 lookups.
-     *
-     * @param batch Batch must contain between 1 and 100 Lookup objects
-     * @throws SmartyException
-     * @throws IOException
+     * @param Batch $batch
+     * @throws \SmartyStreets\PhpSdk\Exceptions\SmartyException If batch is empty, HTTP error, or response is malformed.
      */
     public function sendBatch(Batch $batch) {
         if ($batch->size() == 0)

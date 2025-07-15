@@ -213,6 +213,9 @@ class FinancialAttributes {
     }
 
     private function createFinancialHistory($financialHistoryArray){
+        if (!is_array($financialHistoryArray)) {
+            return;
+        }
         foreach($financialHistoryArray as $value){
             $this->financialHistory[] = new FinancialHistoryEntry($value);
         }

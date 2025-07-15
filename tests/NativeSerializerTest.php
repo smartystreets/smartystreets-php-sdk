@@ -40,12 +40,12 @@ class NativeSerializerTest extends TestCase {
         $this->assertEquals('20500', $results[0]['zipcodes'][0]['zipcode']);
 
         $this->assertNotNull($results[1], 'Not supposed to be null');
-        $this->assertNotContains('status', $results[1]);
+        $this->assertArrayNotHasKey('status', $results[1]);
         $this->assertEquals('Utah', $results[1]['city_states'][0]['state']);
-        $this->assertEquals(38.89769, $results[1]['zipcodes'][0]['latitude'], 0.00001);
+        $this->assertEqualsWithDelta(38.89769, $results[1]['zipcodes'][0]['latitude'], 0.00001);
 
         $this->assertNotNull($results[2], 'Not supposed to be null');
-        $this->assertNotContains('city_states', $results[2]);
+        $this->assertArrayNotHasKey('city_states', $results[2]);
         $this->assertEquals('invalid_zipcode', $results[2]['status']);
         $this->assertEquals('Invalid ZIP Code.', $results[2]['reason']);
     }

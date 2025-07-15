@@ -43,43 +43,49 @@ class StatusCodeSender implements ClientInterface
     {
         $response = $this->inner->sendRequest($request);
         $status = $response->getStatusCode();
+        $body = (string)$response->getBody();
+        $errorDetail = '';
+        if ($status >= 400) {
+            $responseJSON = json_decode($body, true);
+            if (is_array($responseJSON)) {
+                if (isset($responseJSON['errors']) && is_array($responseJSON['errors'])) {
+                    foreach ($responseJSON['errors'] as $error) {
+                        $errorDetail .= isset($error['message']) ? $error['message'] . ' ' : '';
+                    }
+                } elseif (isset($responseJSON['error'])) {
+                    $errorDetail .= $responseJSON['error'] . ' ';
+                } elseif (isset($responseJSON['message'])) {
+                    $errorDetail .= $responseJSON['message'] . ' ';
+                }
+            }
+        }
         switch ($status) {
             case 200:
                 return $response;
             case 400:
-                throw new BadRequestException("Bad Request (Malformed Payload): A GET request lacked a street field or the request body of a POST request contained malformed JSON.", $status);
+                throw new BadRequestException("Bad Request: $errorDetail", $status);
             case 401:
-                throw new BadCredentialsException("Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials.", $status);
+                throw new BadCredentialsException("Unauthorized: $errorDetail", $status);
             case 402:
-                throw new PaymentRequiredException("Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.", $status);
+                throw new PaymentRequiredException("Payment Required: $errorDetail", $status);
             case 408:
-                throw new RequestTimeoutException("Request timeout error.", $status);
+                throw new RequestTimeoutException("Request timeout error: $errorDetail", $status);
             case 413:
-                throw new RequestEntityTooLargeException("Request Entity Too Large: The request body has exceeded the maximum size.", $status);
+                throw new RequestEntityTooLargeException("Request Entity Too Large: $errorDetail", $status);
             case 422:
-                throw new UnprocessableEntityException("GET request lacked required fields.", $status);
+                throw new UnprocessableEntityException("Unprocessable Entity: $errorDetail", $status);
             case 429:
-                $responseJSON = json_decode((string)$response->getBody(), true, 10);
-                if (! isset($responseJSON['errors'])) {
-                    throw new TooManyRequestsException("The rate limit for the plan associated with this subscription has been exceeded. To see plans with higher rate limits, visit our pricing page.", $status);
-                }
-                $errorMessage = '';
-                foreach($responseJSON['errors'] as $error){
-                    $errorMessage .= isset($error['message']) ? $error['message'].' ': '';
-                }
-                $tooManyRequests = new TooManyRequestsException($errorMessage, $status);
-                // No setHeader on PSR-7, so just throw
-                throw $tooManyRequests;
+                throw new TooManyRequestsException("Too Many Requests: $errorDetail", $status);
             case 500:
-                throw new InternalServerErrorException("Internal Server Error.", $status);
+                throw new InternalServerErrorException("Internal Server Error: $errorDetail", $status);
             case 502:
-                throw new BadGatewayException("Bad Gateway error.", $status);
+                throw new BadGatewayException("Bad Gateway error: $errorDetail", $status);
             case 503:
-                throw new ServiceUnavailableException("Service Unavailable. Try again later.", $status);
+                throw new ServiceUnavailableException("Service Unavailable: $errorDetail", $status);
             case 504:
-                throw new GatewayTimeoutException("The upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed.", $status);
+                throw new GatewayTimeoutException("Gateway Timeout: $errorDetail", $status);
             default:
-                throw new SmartyException("Error sending request. Status code is: ", $status);
+                throw new SmartyException("Error sending request. Status code is: $status $errorDetail", $status);
         }
     }
 }

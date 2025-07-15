@@ -28,7 +28,7 @@ class Result {
     }
 
     public function getSuggestions() {
-        return $this->suggestions;
+        return is_array($this->suggestions) ? $this->suggestions : [];
     }
 
     public function getSuggestion($index) {

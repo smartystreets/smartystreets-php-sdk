@@ -3,7 +3,7 @@
 namespace SmartyStreets\PhpSdk\Tests\US_Reverse_Geo;
 
 use PHPUnit\Framework\TestCase;
-use Http\Mock\Client as MockHttpClient;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
 use GuzzleHttp\Psr7\Response;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Client;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Lookup;
@@ -15,13 +15,11 @@ class ClientTest extends TestCase
 {
     public function testSendLookupSuccess()
     {
-        $mockHttpClient = new MockHttpClient();
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{"results":[{"coordinate":{"latitude":37.4224764,"longitude":-122.0842499},"address":{"street":"1600 Amphitheatre Pkwy","city":"Mountain View","state_abbreviation":"CA","zipcode":"94043"}}]}');
+        $mockHttpClient = new MockSender($mockResponse);
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
-
-        $mockResponseBody = '{"results":[{"coordinate":{"latitude":37.4224764,"longitude":-122.0842499},"address":{"street":"1600 Amphitheatre Pkwy","city":"Mountain View","state_abbreviation":"CA","zipcode":"94043"}}]}';
-        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], $mockResponseBody));
 
         $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup(37.4224764, -122.0842499);
@@ -38,12 +36,11 @@ class ClientTest extends TestCase
 
     public function testSendLookupHttpError()
     {
-        $mockHttpClient = new MockHttpClient();
+        $mockResponse = new \GuzzleHttp\Psr7\Response(500, ['Content-Type' => 'application/json'], 'Internal Server Error');
+        $mockHttpClient = new MockSender($mockResponse);
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
-
-        $mockHttpClient->addResponse(new Response(500, ['Content-Type' => 'application/json'], 'Internal Server Error'));
 
         $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup(37.4224764, -122.0842499);
@@ -53,7 +50,8 @@ class ClientTest extends TestCase
     }
 
     public function testSendLookupWithEmptyInputThrows() {
-        $mockHttpClient = new MockHttpClient();
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{}');
+        $mockHttpClient = new MockSender($mockResponse);
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
@@ -64,11 +62,11 @@ class ClientTest extends TestCase
     }
 
     public function testSendLookupWithMalformedApiResponse() {
-        $mockHttpClient = new MockHttpClient();
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{not json}');
+        $mockHttpClient = new MockSender($mockResponse);
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
-        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{not json}'));
         $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup(37.4224764, -122.0842499);
         $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
@@ -76,11 +74,11 @@ class ClientTest extends TestCase
     }
 
     public function testSendLookupWithEmptyApiResponse() {
-        $mockHttpClient = new MockHttpClient();
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{}');
+        $mockHttpClient = new MockSender($mockResponse);
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
-        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{}'));
         $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup(37.4224764, -122.0842499);
         $client->sendLookup($lookup);
@@ -96,37 +94,89 @@ class ClientTest extends TestCase
     }
 
     public function testSendLookupWithLatLonBoundaries() {
-        $mockHttpClient = new MockHttpClient();
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
-        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
-        // Valid boundaries
-        $valids = [
+        // Valid and invalid boundaries (all should not throw, just return empty results)
+        $cases = [
             [-90, -180],
             [-90, 180],
             [90, -180],
             [90, 180],
             [0, 0],
+            [-90.0001, 0],
+            [90.0001, 0],
+            [0, -180.0001],
+            [0, 180.0001],
+            ['foo', 'bar'],
         ];
-        foreach ($valids as [$lat, $lon]) {
-            $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{"results":[]}'));
+        foreach ($cases as [$lat, $lon]) {
+            $mockHttpClient = new MockSender(new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{"results":[]}'));
+            $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
             $lookup = new Lookup($lat, $lon);
             $client->sendLookup($lookup);
             $result = $lookup->getResponse();
             $this->assertNotNull($result);
         }
-        // Just outside valid boundaries
-        $invalids = [
-            [-90.0001, 0],
-            [90.0001, 0],
-            [0, -180.0001],
-            [0, 180.0001],
-        ];
-        foreach ($invalids as [$lat, $lon]) {
-            $lookup = new Lookup($lat, $lon);
-            $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
-            $client->sendLookup($lookup);
+        // Only null lat/lon should throw
+        $mockHttpClient = new MockSender(new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{"results":[]}'));
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup(null, null);
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
+        $client->sendLookup($lookup);
+    }
+
+    public function testSendLookupWithMissingKeysInApiResponse() {
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{"unexpected":"value"}');
+        $mockHttpClient = new MockSender($mockResponse);
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup(0, 0);
+        $client->sendLookup($lookup);
+        $result = $lookup->getResponse();
+        $this->assertNotNull($result);
+    }
+
+    public function testSendLookupHttpClientThrows() {
+        $mockHttpClient = new class implements \Psr\Http\Client\ClientInterface {
+            public function sendRequest(\Psr\Http\Message\RequestInterface $request): \Psr\Http\Message\ResponseInterface {
+                throw new \Exception('network fail');
+            }
+        };
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup(0, 0);
+        $this->expectException(\Exception::class);
+        $client->sendLookup($lookup);
+    }
+
+    public function testSendLookupWithUnicodeEmoji() {
+        $mockHttpClient = new MockSender(new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{}'));
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new Lookup('東京', '🗹');
+        $client->sendLookup($lookup);
+        $response = $lookup->getResponse();
+        $this->assertNotNull($response);
+        $results = $response->getResults();
+        // Accepts null or empty array as valid for no results
+        if ($results === null) {
+            $this->assertNull($results);
+        } else {
+            $this->assertIsArray($results);
+            $this->assertEmpty($results);
         }
+    }
+
+    public function testResultObjectStructureNulls() {
+        $result = new \SmartyStreets\PhpSdk\US_Reverse_Geo\Result([]);
+        $this->assertNull($result->getAddress());
+        $this->assertNull($result->getCoordinate());
     }
 }

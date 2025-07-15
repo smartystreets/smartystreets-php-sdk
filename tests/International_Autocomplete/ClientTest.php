@@ -3,7 +3,7 @@
 namespace SmartyStreets\PhpSdk\Tests\International_Autocomplete;
 
 use PHPUnit\Framework\TestCase;
-use Http\Mock\Client as MockHttpClient;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
 use GuzzleHttp\Psr7\Response;
 use SmartyStreets\PhpSdk\International_Autocomplete\Client;
 use SmartyStreets\PhpSdk\International_Autocomplete\Lookup;
@@ -15,13 +15,11 @@ class ClientTest extends TestCase
 {
     public function testSendLookupSuccess()
     {
-        $mockHttpClient = new MockHttpClient();
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{"candidates":[{"address_text":"10 Downing St, London, GB"}]}');
+        $mockHttpClient = new MockSender($mockResponse);
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
-
-        $mockResponseBody = '{"candidates":[{"address_text":"10 Downing St, London, GB"}]}';
-        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], $mockResponseBody));
 
         $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
@@ -39,12 +37,11 @@ class ClientTest extends TestCase
 
     public function testSendLookupHttpError()
     {
-        $mockHttpClient = new MockHttpClient();
+        $mockResponse = new \GuzzleHttp\Psr7\Response(500, ['Content-Type' => 'application/json'], 'Internal Server Error');
+        $mockHttpClient = new MockSender($mockResponse);
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
-
-        $mockHttpClient->addResponse(new Response(500, ['Content-Type' => 'application/json'], 'Internal Server Error'));
 
         $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
@@ -57,7 +54,8 @@ class ClientTest extends TestCase
     }
 
     public function testSendLookupWithEmptyInputThrows() {
-        $mockHttpClient = new MockHttpClient();
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{}');
+        $mockHttpClient = new MockSender($mockResponse);
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
@@ -68,11 +66,11 @@ class ClientTest extends TestCase
     }
 
     public function testSendLookupWithMalformedApiResponse() {
-        $mockHttpClient = new MockHttpClient();
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{not json}');
+        $mockHttpClient = new MockSender($mockResponse);
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
-        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{not json}'));
         $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
         $lookup->setSearch('10 Downing');
@@ -83,11 +81,11 @@ class ClientTest extends TestCase
     }
 
     public function testSendLookupWithEmptyApiResponse() {
-        $mockHttpClient = new MockHttpClient();
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{}');
+        $mockHttpClient = new MockSender($mockResponse);
         $requestFactory = new RequestFactory();
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
-        $mockHttpClient->addResponse(new Response(200, ['Content-Type' => 'application/json'], '{}'));
         $client = new Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
         $lookup = new Lookup();
         $lookup->setSearch('10 Downing');
@@ -101,6 +99,59 @@ class ClientTest extends TestCase
         } else {
             $this->assertIsArray($candidates);
             $this->assertEmpty($candidates);
+        }
+    }
+
+    public function testSendLookupWithMissingKeysInApiResponse() {
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{"unexpected":"value"}');
+        $mockHttpClient = new MockSender($mockResponse);
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new \SmartyStreets\PhpSdk\International_Autocomplete\Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new \SmartyStreets\PhpSdk\International_Autocomplete\Lookup();
+        $lookup->setSearch('test');
+        $client->sendLookup($lookup);
+        $result = $lookup->getResult();
+        $this->assertNotNull($result);
+    }
+
+    public function testSendLookupHttpClientThrows() {
+        $mockHttpClient = new class implements \Psr\Http\Client\ClientInterface {
+            public function sendRequest(\Psr\Http\Message\RequestInterface $request): \Psr\Http\Message\ResponseInterface {
+                throw new \Exception('network fail');
+            }
+        };
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new \SmartyStreets\PhpSdk\International_Autocomplete\Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new \SmartyStreets\PhpSdk\International_Autocomplete\Lookup();
+        $lookup->setSearch('test');
+        $this->expectException(\Exception::class);
+        $client->sendLookup($lookup);
+    }
+
+    public function testSendLookupWithUnicodeEmoji() {
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, ['Content-Type' => 'application/json'], '{}');
+        $mockHttpClient = new MockSender($mockResponse);
+        $requestFactory = new RequestFactory();
+        $streamFactory = new StreamFactory();
+        $serializer = new NativeSerializer();
+        $client = new \SmartyStreets\PhpSdk\International_Autocomplete\Client($mockHttpClient, $requestFactory, $streamFactory, $serializer);
+        $lookup = new \SmartyStreets\PhpSdk\International_Autocomplete\Lookup();
+        $lookup->setSearch('東京 🗹');
+        $client->sendLookup($lookup);
+        $this->assertNotNull($lookup->getResult());
+    }
+
+    public function testResultObjectStructureNulls() {
+        $result = new \SmartyStreets\PhpSdk\International_Autocomplete\Result([]);
+        $candidates = $result->getCandidates();
+        if ($candidates === null) {
+            $this->assertNull($candidates);
+        } else {
+            $this->assertArrayNotHasKey(999, $candidates);
         }
     }
 }

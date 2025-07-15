@@ -31,6 +31,9 @@ class Result  {
     public function __construct($obj = null) {
         if ($obj == null)
             return;
+        if (!is_array($obj)) {
+            $obj = [];
+        }
         $this->smartyKey = ArrayUtil::setField($obj, 'smarty_key');
         if (array_key_exists('matched_address', $obj)) {
             $this->matchedAddress = new MatchedAddress(ArrayUtil::setField($obj, 'matched_address'));

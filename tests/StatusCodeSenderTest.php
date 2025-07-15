@@ -83,6 +83,40 @@ class StatusCodeSenderTest extends TestCase {
         $this->assertSend(504, $classType);
     }
 
+    public function testDefaultCaseThrowsSmartyException() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(599));
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
+        $sender->sendRequest(new Request('GET', 'https://example.com/'));
+    }
+
+    public function test429WithMalformedResponseBody() {
+        $mockSender = new class implements ClientInterface {
+            public function sendRequest($request): \Psr\Http\Message\ResponseInterface {
+                return new \GuzzleHttp\Psr7\Response(429, [], 'not-json');
+            }
+        };
+        $sender = new StatusCodeSender($mockSender);
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException::class);
+        $sender->sendRequest(new Request('GET', 'https://example.com/'));
+    }
+
+    public function test429WithErrorsArrayInResponseBody() {
+        $mockSender = new class implements ClientInterface {
+            public function sendRequest($request): \Psr\Http\Message\ResponseInterface {
+                $body = json_encode(['errors' => [['message' => 'rate limit exceeded']]]);
+                return new \GuzzleHttp\Psr7\Response(429, [], $body);
+            }
+        };
+        $sender = new StatusCodeSender($mockSender);
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException::class);
+        try {
+            $sender->sendRequest(new Request('GET', 'https://example.com/'));
+        } catch (\SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException $e) {
+            $this->assertStringContainsString('rate limit exceeded', $e->getMessage());
+            throw $e;
+        }
+    }
+
     private function assertSend($statusCode, $classType) {
         $sender = new StatusCodeSender(new MockStatusCodeSender($statusCode));
         $this->expectException($classType);

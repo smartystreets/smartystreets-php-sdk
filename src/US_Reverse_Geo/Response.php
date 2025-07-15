@@ -21,7 +21,7 @@ class Response
 
     public function __construct($obj = null)
     {
-        if ($obj == null)
+        if ($obj == null || !isset($obj['results']) || !is_array($obj['results']))
             return;
 
         foreach($obj['results'] as $result) {

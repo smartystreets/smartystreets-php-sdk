@@ -43,4 +43,41 @@ class URLPrefixSenderTest extends TestCase {
         $sentRequest = $inner->getRequest();
         $this->assertEquals("http://mysite.com/lookup/fake_address_id", (string)$sentRequest->getUri());
     }
+
+    public function testAbsoluteUriNotPrefixed() {
+        $request = new Request('GET', 'https://external.com/path');
+        $original_url_prefix = "http://mysite.com/lookup";
+        $inner = new MockSender(new \GuzzleHttp\Psr7\Response(200));
+        $sender = new URLPrefixSender($original_url_prefix, $inner);
+        $sender->sendRequest($request);
+        $sentRequest = $inner->getRequest();
+        $this->assertEquals("https://external.com/path", (string)$sentRequest->getUri());
+    }
+
+    public function testQueryStringIsPreserved() {
+        $request = new Request('GET', '/foo?bar=baz');
+        $original_url_prefix = "http://mysite.com/lookup/";
+        $inner = new MockSender(new \GuzzleHttp\Psr7\Response(200));
+        $sender = new URLPrefixSender($original_url_prefix, $inner);
+        $sender->sendRequest($request);
+        $sentRequest = $inner->getRequest();
+        $this->assertEquals("http://mysite.com/lookup/foo?bar=baz", (string)$sentRequest->getUri());
+    }
+
+    public function testPrefixAndPathEdgeCases() {
+        $cases = [
+            ["http://mysite.com/lookup/", "/foo", "http://mysite.com/lookup/foo"],
+            ["http://mysite.com/lookup", "foo", "http://mysite.com/lookup/foo"],
+            ["http://mysite.com/lookup/", "foo", "http://mysite.com/lookup/foo"],
+            ["http://mysite.com/lookup", "/foo", "http://mysite.com/lookup/foo"],
+        ];
+        foreach ($cases as [$prefix, $path, $expected]) {
+            $request = new Request('GET', $path);
+            $inner = new MockSender(new \GuzzleHttp\Psr7\Response(200));
+            $sender = new URLPrefixSender($prefix, $inner);
+            $sender->sendRequest($request);
+            $sentRequest = $inner->getRequest();
+            $this->assertEquals($expected, (string)$sentRequest->getUri());
+        }
+    }
 }

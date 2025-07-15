@@ -1,6 +1,6 @@
 <?php
 
-namespace SmartyStreets\PhpSdk\Tests\US_Street;
+namespace SmartyStreets\PhpSdk\Tests\US_ZIPCode;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Lookup.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_ZIPCode/Result.php');

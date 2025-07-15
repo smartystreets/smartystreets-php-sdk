@@ -25,6 +25,11 @@ class Client {
         $this->serializer = $serializer;
     }
 
+    /**
+     * Sends a single lookup to the International Street API.
+     * @param Lookup $lookup
+     * @throws \SmartyStreets\PhpSdk\Exceptions\SmartyException If input is invalid, HTTP error, or response is malformed.
+     */
     public function sendLookup(Lookup $lookup) {
         try {
             $this->ensureEnoughInfo($lookup);

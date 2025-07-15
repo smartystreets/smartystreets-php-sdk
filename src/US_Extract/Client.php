@@ -21,6 +21,11 @@ class Client {
         $this->serializer = $serializer;
     }
 
+    /**
+     * Sends a single lookup to the US Extract API.
+     * @param Lookup $lookup
+     * @throws \SmartyStreets\PhpSdk\Exceptions\SmartyException If input is invalid, HTTP error, or response is malformed.
+     */
     public function sendLookup(?Lookup $lookup = null) {
         if ($lookup == null || $lookup->getText() == null || strlen($lookup->getText()) == 0)
             throw new SmartyException("sendLookup() requires a Lookup with the 'text' field set");

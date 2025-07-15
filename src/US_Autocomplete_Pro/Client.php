@@ -21,6 +21,11 @@ class Client {
         $this->serializer = $serializer;
     }
 
+    /**
+     * Sends a single lookup to the US Autocomplete Pro API.
+     * @param Lookup $lookup
+     * @throws \SmartyStreets\PhpSdk\Exceptions\SmartyException If input is invalid, HTTP error, or response is malformed.
+     */
     public function sendLookup(Lookup $lookup) {
         if ($lookup == null || $lookup->getSearch() == null || strlen($lookup->getSearch()) == 0)
             throw new SmartyException("sendLookup() must be passed a Lookup with the prefix field set.");

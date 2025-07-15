@@ -40,6 +40,9 @@ class Lookup {
     }
 
     public function getResultAtIndex($index) {
+        if (!array_key_exists($index, $this->result)) {
+            throw new \OutOfBoundsException("No result at index $index");
+        }
         return $this->result[$index];
     }
 

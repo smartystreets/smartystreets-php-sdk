@@ -24,7 +24,7 @@ class Result {
 
         $this->status = ArrayUtil::setField($obj, "status");
         $this->reason = ArrayUtil::setField($obj, "reason");
-        $this->inputIndex = $obj["input_index"];
+        $this->inputIndex = isset($obj["input_index"]) ? $obj["input_index"] : null;
         $this->inputId = ArrayUtil::setField($obj, "input_id");
         $this->cities = ArrayUtil::setField($obj, "city_states", array());
         $this->zipCodes = ArrayUtil::setField($obj, "zipcodes", array());

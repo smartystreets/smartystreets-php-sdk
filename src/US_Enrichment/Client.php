@@ -126,6 +126,11 @@ class Client {
         }
     }
 
+    /**
+     * Sends a single lookup to the US Enrichment API.
+     * @param Lookup $lookup
+     * @throws \SmartyStreets\PhpSdk\Exceptions\SmartyException If input is invalid, HTTP error, or response is malformed.
+     */
     public function sendLookup(Lookup $lookup) {
         // Validate input: require at least one of freeform, street, city, state, or zipcode
         if ($lookup == null || (

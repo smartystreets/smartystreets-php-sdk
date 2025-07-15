@@ -21,6 +21,11 @@ class Client {
         $this->serializer = $serializer;
     }
 
+    /**
+     * Sends a single lookup to the International Autocomplete API.
+     * @param Lookup $lookup
+     * @throws \SmartyStreets\PhpSdk\Exceptions\SmartyException If input is invalid, HTTP error, or response is malformed.
+     */
     public function sendLookup(Lookup $lookup) {
         // Validate input: require search string
         if ($lookup == null || $lookup->getSearch() == null || strlen($lookup->getSearch()) == 0) {

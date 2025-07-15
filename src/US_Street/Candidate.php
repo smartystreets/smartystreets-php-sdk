@@ -32,11 +32,8 @@ class Candidate {
     public function __construct($obj = null) {
         if ($obj == null)
             return;
-        if(!array_key_exists('input_index', $obj)){
-            print_r($obj);
-        }
-        $this->inputIndex = $obj['input_index'];
-        $this->candidateIndex = $obj['candidate_index'];
+        $this->inputIndex = isset($obj['input_index']) ? $obj['input_index'] : null;
+        $this->candidateIndex = isset($obj['candidate_index']) ? $obj['candidate_index'] : null;
         $this->inputId = ArrayUtil::setField($obj, 'input_id');
         $this->addressee = ArrayUtil::setField($obj, 'addressee');
         $this->deliveryLine1 = ArrayUtil::setField($obj, 'delivery_line_1');
