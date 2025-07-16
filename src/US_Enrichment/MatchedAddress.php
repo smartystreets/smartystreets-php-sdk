@@ -15,9 +15,9 @@ class MatchedAddress {
     //endregion
 
     public function __construct($obj = null) {
-        $this->street = ArrayUtil::setField($obj, "street");
-        $this->city = ArrayUtil::setField($obj, "city");
-        $this->state = ArrayUtil::setField($obj, "state");
-        $this->zipcode = ArrayUtil::setField($obj, "zipcode");
+        $this->street = ArrayUtil::getField($obj, "street");
+        $this->city = ArrayUtil::getField($obj, "city");
+        $this->state = ArrayUtil::getField($obj, "state");
+        $this->zipcode = ArrayUtil::getField($obj, "zipcode");
     }
 }

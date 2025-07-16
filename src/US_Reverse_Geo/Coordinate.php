@@ -24,10 +24,10 @@ class Coordinate {
         if ($obj == null)
             return;
 
-        $this->latitude = ArrayUtil::setField($obj, 'latitude');
-        $this->longitude = ArrayUtil::setField($obj, 'longitude');
-        $this->accuracy = ArrayUtil::setField($obj, 'accuracy');
-        $this->license = ArrayUtil::setField($obj, 'license');
+        $this->latitude = ArrayUtil::getField($obj, 'latitude');
+        $this->longitude = ArrayUtil::getField($obj, 'longitude');
+        $this->accuracy = ArrayUtil::getField($obj, 'accuracy');
+        $this->license = ArrayUtil::getField($obj, 'license');
     }
 
     //endregion

@@ -13,7 +13,7 @@ class Result {
         if ($obj == null)
             return;
 
-        $this->candidates = ArrayUtil::setField($obj, 'candidates', array());
+        $this->candidates = ArrayUtil::getField($obj, 'candidates', array());
 
         $this->candidates = $this->convertToCandidateObjects();
     }

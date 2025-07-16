@@ -15,8 +15,8 @@ class CensusCountyDivisionEntry {
     public function __construct($obj = null){
         if ($obj == null)
             return;
-        $this->accuracy = ArrayUtil::setField($obj, "accuracy");
-        $this->code = ArrayUtil::setField($obj, "code");
-        $this->name = ArrayUtil::setField($obj, "name");
+        $this->accuracy = ArrayUtil::getField($obj, "accuracy");
+        $this->code = ArrayUtil::getField($obj, "code");
+        $this->name = ArrayUtil::getField($obj, "name");
     }
 }

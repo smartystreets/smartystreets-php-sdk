@@ -20,7 +20,7 @@ class Changes extends RootLevel {
             return;
 
         parent::__construct($obj);
-        $this->components = new Components(ArrayUtil::setField($obj, 'components'));
+        $this->components = new Components(ArrayUtil::getField($obj, 'components'));
     }
 
     public function getComponents() {

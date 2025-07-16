@@ -25,10 +25,10 @@ class City {
         if ($obj == null)
             return;
 
-        $this->city = ArrayUtil::setField($obj, "city");
-        $this->mailableCity = (ArrayUtil::setField($obj, "mailable_city", false));
-        $this->stateAbbreviation = ArrayUtil::setField($obj, "state_abbreviation");
-        $this->state = ArrayUtil::setField($obj, "state");
+        $this->city = ArrayUtil::getField($obj, "city");
+        $this->mailableCity = (ArrayUtil::getField($obj, "mailable_city", false));
+        $this->stateAbbreviation = ArrayUtil::getField($obj, "state_abbreviation");
+        $this->state = ArrayUtil::getField($obj, "state");
     }
 
     //endregion

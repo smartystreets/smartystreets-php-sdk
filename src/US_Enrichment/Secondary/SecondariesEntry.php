@@ -16,9 +16,9 @@ class SecondariesEntry {
     public function __construct($obj = null){
         if ($obj == null)
             return;
-        $this->smartyKey = ArrayUtil::setField($obj, "smarty_key");
-        $this->secondaryDesignator = ArrayUtil::setField($obj, "secondary_designator");
-        $this->secondaryNumber = ArrayUtil::setField($obj, "secondary_number");
-        $this->plus4Code = ArrayUtil::setField($obj, "plus4_code");
+        $this->smartyKey = ArrayUtil::getField($obj, "smarty_key");
+        $this->secondaryDesignator = ArrayUtil::getField($obj, "secondary_designator");
+        $this->secondaryNumber = ArrayUtil::getField($obj, "secondary_number");
+        $this->plus4Code = ArrayUtil::getField($obj, "plus4_code");
     }
 }

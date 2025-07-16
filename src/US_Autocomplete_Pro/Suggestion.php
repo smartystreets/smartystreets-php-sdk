@@ -20,12 +20,12 @@ class Suggestion {
         if ($obj == null)
             return;
 
-        $this->streetLine = ArrayUtil::setField($obj, 'street_line');
-        $this->secondary = ArrayUtil::setField($obj, 'secondary');
-        $this->city = ArrayUtil::setField($obj, 'city');
-        $this->state = ArrayUtil::setField($obj, 'state');
-        $this->zipcode = ArrayUtil::setField($obj, 'zipcode');
-        $this->entries = ArrayUtil::setField($obj, 'entries');
+        $this->streetLine = ArrayUtil::getField($obj, 'street_line');
+        $this->secondary = ArrayUtil::getField($obj, 'secondary');
+        $this->city = ArrayUtil::getField($obj, 'city');
+        $this->state = ArrayUtil::getField($obj, 'state');
+        $this->zipcode = ArrayUtil::getField($obj, 'zipcode');
+        $this->entries = ArrayUtil::getField($obj, 'entries');
     }
 
     public function getStreetLine() {

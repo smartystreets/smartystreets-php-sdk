@@ -26,17 +26,17 @@ class ZIPCode {
         if ($obj == null)
             return;
 
-        $this->zipCode = ArrayUtil::setField($obj, "zipcode");
-        $this->zipCodeType = ArrayUtil::setField($obj, "zipcode_type");
-        $this->defaultCity = ArrayUtil::setField($obj, "default_city");
-        $this->countyFips = ArrayUtil::setField($obj, "county_fips");
-        $this->countyName = ArrayUtil::setField($obj, "county_name");
-        $this->stateAbbreviation = ArrayUtil::setField($obj, "state_abbreviation");
-        $this->state = ArrayUtil::setField($obj, "state");
-        $this->latitude = ArrayUtil::setField($obj, "latitude");
-        $this->longitude = ArrayUtil::setField($obj, "longitude");
-        $this->precision = ArrayUtil::setField($obj, "precision");
-        $this->alternateCounties = ArrayUtil::setField($obj, "alternate_counties", array());
+        $this->zipCode = ArrayUtil::getField($obj, "zipcode");
+        $this->zipCodeType = ArrayUtil::getField($obj, "zipcode_type");
+        $this->defaultCity = ArrayUtil::getField($obj, "default_city");
+        $this->countyFips = ArrayUtil::getField($obj, "county_fips");
+        $this->countyName = ArrayUtil::getField($obj, "county_name");
+        $this->stateAbbreviation = ArrayUtil::getField($obj, "state_abbreviation");
+        $this->state = ArrayUtil::getField($obj, "state");
+        $this->latitude = ArrayUtil::getField($obj, "latitude");
+        $this->longitude = ArrayUtil::getField($obj, "longitude");
+        $this->precision = ArrayUtil::getField($obj, "precision");
+        $this->alternateCounties = ArrayUtil::getField($obj, "alternate_counties", array());
 
         $this->alternateCounties = $this->convertToAlternateCountyObjects();
     }

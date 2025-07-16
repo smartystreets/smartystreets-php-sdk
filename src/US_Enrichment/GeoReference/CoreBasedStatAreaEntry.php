@@ -14,7 +14,7 @@ class CoreBasedStatAreaEntry {
     public function __construct($obj = null){
         if ($obj == null)
             return;
-        $this->code = ArrayUtil::setField($obj, "code");
-        $this->name = ArrayUtil::setField($obj, "name");
+        $this->code = ArrayUtil::getField($obj, "code");
+        $this->name = ArrayUtil::getField($obj, "name");
     }
 }

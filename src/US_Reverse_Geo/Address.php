@@ -26,12 +26,12 @@ class Address {
         if ($obj == null)
             return;
 
-        $this->street = ArrayUtil::setField($obj, 'street');
-        $this->city = ArrayUtil::setField($obj, 'city');
-        $this->state_abbreviation = ArrayUtil::setField($obj, 'state_abbreviation');
-        $this->zipcode = ArrayUtil::setField($obj, 'zipcode');
-        $this->source = ArrayUtil::setField($obj, 'source');
-        $this->smarty_key = ArrayUtil::setField($obj, 'smarty_key');
+        $this->street = ArrayUtil::getField($obj, 'street');
+        $this->city = ArrayUtil::getField($obj, 'city');
+        $this->state_abbreviation = ArrayUtil::getField($obj, 'state_abbreviation');
+        $this->zipcode = ArrayUtil::getField($obj, 'zipcode');
+        $this->source = ArrayUtil::getField($obj, 'source');
+        $this->smarty_key = ArrayUtil::getField($obj, 'smarty_key');
     }
 
     //endregion
