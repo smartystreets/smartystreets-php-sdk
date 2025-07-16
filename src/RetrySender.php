@@ -51,7 +51,7 @@ class RetrySender implements Sender
         try {
             return $this->inner->send($request);
         } catch (TooManyRequestsException $ex) {
-            $this->backoff($ex->getHeader());
+            $this->backoff($ex->getRetryAfterValue());
             return null;
         } catch (\Exception $ex) {
             if (($ex instanceof MustRetryException || $ex instanceof InternalServerErrorException || $ex instanceof ServiceUnavailableException || $ex instanceof GatewayTimeoutException || $ex instanceof RequestTimeoutException || $ex instanceof BadGatewayException) && $attempt < $this->maxRetries) {

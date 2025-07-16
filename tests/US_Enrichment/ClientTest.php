@@ -11,9 +11,13 @@ require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Lookup.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
 use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
 use SmartyStreets\PhpSdk\URLPrefixSender;
+use SmartyStreets\PhpSdk\Response;
 use SmartyStreets\PhpSdk\US_Enrichment\Client;
 use SmartyStreets\PhpSdk\US_Enrichment\Lookup;
 use PHPUnit\Framework\TestCase;
@@ -72,7 +76,7 @@ class ClientTest extends TestCase {
 
         $this->assertEquals("http://localhost/lookup/search/property/principal?street=123+Test+Street&city=Test+City&state=Test+State&zipcode=Test+Zipcode&include=Test+Include+1%2CTest+Include+2&exclude=Test+Exclude+1%2CTest+Exclude+2&parameter=custom&second=parameter", $capturingSender->getRequest()->getUrl());
     }
-    
+
     public function testSendingFreeformLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost", $capturingSender);
@@ -84,5 +88,29 @@ class ClientTest extends TestCase {
         $client->sendPropertyPrincipalLookup($lookup);
 
         $this->assertEquals("http://localhost/lookup/search/property/principal?freeform=123+Test+Street+City+State+Zipcode", $capturingSender->getRequest()->getUrl());
+    }
+    
+    public function testSendingETag() {
+        $mockHeaders = [
+            'etag' => 'abcdef'
+        ];
+        $response = new Response(200, "hello world", $mockHeaders);
+        $mockSender = new MockSender($response);
+        $sender = new URLPrefixSender("http://localhost", $mockSender);
+        $mockResults = [
+            [
+                'count' => '5'
+            ],
+            [
+                'count' => '8'
+            ]
+        ];
+        $serializer = new MockDeserializer($mockResults);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setFreeform("123 Test Street City State Zipcode");
+
+        $client->sendPropertyPrincipalLookup($lookup);
+        $this->assertEquals("abcdef", $lookup->getResponse()[0]->etag);
     }
 }

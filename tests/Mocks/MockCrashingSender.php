@@ -35,7 +35,7 @@ class MockCrashingSender implements Sender {
 
         if (strpos($request->getUrl(), "HitRateLimit") !== false)
             if ($this->sendCount <= 1)
-                throw new TooManyRequestsException("Slow down");
+                throw new TooManyRequestsException("Slow down", 0, 6);
 
         return new Response(self::STATUS_CODE, "", "");
     }

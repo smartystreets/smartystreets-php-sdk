@@ -1,7 +1,10 @@
 #!/usr/bin/make -f
 
 test:
-	phpunit tests
+	phpunit --exclude-group "integration" tests
+
+test-integration:
+	./tests/run_integration_test.sh
 
 package: test
 	#@echo -n ""
