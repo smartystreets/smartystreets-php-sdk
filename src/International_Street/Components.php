@@ -61,7 +61,8 @@ class Components {
             $deliveryInstallationQualifierName,
             $route,
             $routeNumber,
-            $routeType;
+            $routeType,
+            $useIndicator;
 
     //endregion
 
@@ -122,6 +123,7 @@ class Components {
         $this->route = ArrayUtil::setField($obj,'route');
         $this->routeNumber = ArrayUtil::setField($obj,'route_number');
         $this->routeType = ArrayUtil::setField($obj,'route_type');
+        $this->useIndicator = ArrayUtil::setField($obj, 'use_indicator');
     }
 
     //endregion
@@ -330,6 +332,10 @@ class Components {
 
     public function getPostBoxNumber() {
         return $this->postBoxNumber;
+    }
+
+    public function getUseIndicator() {
+        return $this->useIndicator;
     }
 
     //endregion
