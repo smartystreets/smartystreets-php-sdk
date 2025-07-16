@@ -13,6 +13,7 @@ use SmartyStreets\PhpSdk\Exceptions\SmartyException;
  *     and attaches the results to the appropriate Lookup objects.
  */
 class Client {
+    const INTERNATIONAL_STREET_API_URL = 'https://international-street.api.smarty.com';
     private $httpClient;
     private $requestFactory;
     private $streamFactory;
@@ -36,7 +37,7 @@ class Client {
         } catch (\Throwable $e) {
             throw new SmartyException($e->getMessage(), 0, $e);
         }
-        $url = '/international-street';
+        $url = self::INTERNATIONAL_STREET_API_URL;
         $request = $this->requestFactory->createRequest('POST', $url)
             ->withHeader('Content-Type', 'application/json');
         $payload = $this->serializer->serialize([$lookup]);

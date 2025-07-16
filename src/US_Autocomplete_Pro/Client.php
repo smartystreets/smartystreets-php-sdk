@@ -9,6 +9,7 @@ use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 class Client {
+    const US_AUTOCOMPLETE_PRO_API_URL = 'https://us-autocomplete-pro.api.smarty.com/';
     private $httpClient;
     private $requestFactory;
     private $streamFactory;
@@ -30,7 +31,7 @@ class Client {
         if ($lookup == null || $lookup->getSearch() == null || strlen($lookup->getSearch()) == 0)
             throw new SmartyException("sendLookup() must be passed a Lookup with the prefix field set.");
 
-        $url = '/autocomplete-pro';
+        $url = self::US_AUTOCOMPLETE_PRO_API_URL;
         $request = $this->requestFactory->createRequest('POST', $url)
             ->withHeader('Content-Type', 'application/json');
         $payload = $this->serializer->serialize([$lookup]);

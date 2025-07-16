@@ -10,6 +10,7 @@ use SmartyStreets\PhpSdk\Batch;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 class Client {
+    const US_ZIP_CODE_API_URL = 'https://us-zipcode.api.smarty.com/lookup';
     private $httpClient;
     private $requestFactory;
     private $streamFactory;
@@ -51,7 +52,7 @@ class Client {
         if ($batch->size() == 0)
             throw new SmartyException('Batch must contain at least one lookup.');
 
-        $url = '/lookup';
+        $url = self::US_ZIP_CODE_API_URL;
         $request = $this->requestFactory->createRequest('POST', $url)
             ->withHeader('Content-Type', 'application/json');
         $payload = $this->serializer->serialize($batch->getAllLookups());

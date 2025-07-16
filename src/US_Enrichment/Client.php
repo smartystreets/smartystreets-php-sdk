@@ -12,6 +12,7 @@ use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 class Client {
+    const US_ENRICHMENT_API_URL = 'https://us-enrichment.api.smarty.com';
     private $httpClient;
     private $requestFactory;
     private $streamFactory;
@@ -142,7 +143,7 @@ class Client {
         )) {
             throw new SmartyException('At least one of freeform, street, city, state, or zipcode must be provided.');
         }
-        $url = '/enrichment';
+        $url = self::US_ENRICHMENT_API_URL;
         $request = $this->requestFactory->createRequest('POST', $url)
             ->withHeader('Content-Type', 'application/json');
         $payload = $this->serializer->serialize([$lookup]);

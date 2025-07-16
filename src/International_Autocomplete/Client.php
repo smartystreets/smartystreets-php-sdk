@@ -9,6 +9,7 @@ use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 class Client {
+    const INTERNATIONAL_AUTOCOMPLETE_API_URL = 'https://international-autocomplete.api.smarty.com';
     private $httpClient;
     private $requestFactory;
     private $streamFactory;
@@ -31,7 +32,7 @@ class Client {
         if ($lookup == null || $lookup->getSearch() == null || strlen($lookup->getSearch()) == 0) {
             throw new SmartyException('sendLookup() must be passed a Lookup with the search field set.');
         }
-        $url = '/international-autocomplete';
+        $url = self::INTERNATIONAL_AUTOCOMPLETE_API_URL;
         $request = $this->requestFactory->createRequest('POST', $url)
             ->withHeader('Content-Type', 'application/json');
         $payload = $this->serializer->serialize([$lookup]);

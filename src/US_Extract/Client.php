@@ -9,6 +9,7 @@ use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 class Client {
+    const US_EXTRACT_API_URL = 'https://us-extract.api.smarty.com';
     private $httpClient;
     private $requestFactory;
     private $streamFactory;
@@ -30,7 +31,7 @@ class Client {
         if ($lookup == null || $lookup->getText() == null || strlen($lookup->getText()) == 0)
             throw new SmartyException("sendLookup() requires a Lookup with the 'text' field set");
 
-        $url = '/extract';
+        $url = self::US_EXTRACT_API_URL;
         $request = $this->requestFactory->createRequest('POST', $url)
             ->withHeader('Content-Type', 'application/json');
         $payload = $this->serializer->serialize([$lookup]);
