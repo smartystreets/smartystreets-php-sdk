@@ -15,16 +15,18 @@ use SmartyStreets\PhpSdk\Exceptions\SmartyException;
  */
 class Client {
     const US_STREET_API_URL = 'https://us-street.api.smarty.com/street-address';
+    private $baseUrl;
     private $httpClient;
     private $requestFactory;
     private $streamFactory;
     private $serializer;
 
-    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer) {
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer, $baseUrl = null) {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
         $this->serializer = $serializer;
+        $this->baseUrl = $baseUrl ?: self::US_STREET_API_URL;
     }
 
     /**
@@ -51,7 +53,7 @@ class Client {
         if ($batch->size() == 0)
             throw new SmartyException('Batch must contain at least one lookup.');
 
-        $url = self::US_STREET_API_URL;
+        $url = $this->baseUrl;
         $request = $this->requestFactory->createRequest('POST', $url)
             ->withHeader('Content-Type', 'application/json');
         $payload = $this->serializer->serialize($batch->getAllLookups());

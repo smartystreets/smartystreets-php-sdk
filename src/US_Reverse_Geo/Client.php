@@ -10,16 +10,18 @@ use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 class Client {
     const US_REVERSE_GEO_API_URL = 'https://us-reverse-geo.api.smarty.com';
+    private $baseUrl;
     private $httpClient;
     private $requestFactory;
     private $streamFactory;
     private $serializer;
 
-    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer) {
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer, $baseUrl = null) {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
         $this->serializer = $serializer;
+        $this->baseUrl = $baseUrl ?: self::US_REVERSE_GEO_API_URL;
     }
 
     /**
@@ -32,7 +34,7 @@ class Client {
         if ($lookup == null || $lookup->getLatitude() === null || $lookup->getLongitude() === null) {
             throw new SmartyException('Latitude and longitude must be provided.');
         }
-        $url = self::US_REVERSE_GEO_API_URL;
+        $url = $this->baseUrl;
         $request = $this->requestFactory->createRequest('POST', $url)
             ->withHeader('Content-Type', 'application/json');
         $payload = $this->serializer->serialize([$lookup]);

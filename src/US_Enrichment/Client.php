@@ -13,16 +13,18 @@ use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
 class Client {
     const US_ENRICHMENT_API_URL = 'https://us-enrichment.api.smarty.com';
+    private $baseUrl;
     private $httpClient;
     private $requestFactory;
     private $streamFactory;
     private $serializer;
 
-    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer) {
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory, Serializer $serializer, $baseUrl = null) {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
         $this->serializer = $serializer;
+        $this->baseUrl = $baseUrl ?: self::US_ENRICHMENT_API_URL;
     }
 
     public function sendPropertyFinancialLookup($financialLookup){
@@ -143,7 +145,7 @@ class Client {
         )) {
             throw new SmartyException('At least one of freeform, street, city, state, or zipcode must be provided.');
         }
-        $url = self::US_ENRICHMENT_API_URL;
+        $url = $this->baseUrl;
         $request = $this->requestFactory->createRequest('POST', $url)
             ->withHeader('Content-Type', 'application/json');
         $payload = $this->serializer->serialize([$lookup]);
