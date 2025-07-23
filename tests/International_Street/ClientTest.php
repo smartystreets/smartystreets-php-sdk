@@ -47,7 +47,7 @@ class ClientTest extends TestCase {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $expectedUrl = "http://localhost/verify?input_id=1234&country=0&geocode=true&language=native&freeform=1" .
-            "&address1=2&address2=3&address3=4&address4=5&organization=6&locality=7&administrative_area=8&postal_code=9";
+            "&address1=2&address2=3&address3=4&address4=5&organization=6&locality=7&administrative_area=8&postal_code=9&features=10";
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -64,6 +64,7 @@ class ClientTest extends TestCase {
         $lookup->setLocality("7");
         $lookup->setAdministrativeArea("8");
         $lookup->setPostalCode("9");
+        $lookup->setFeatures("10");
 
         $client->sendLookup($lookup);
 
