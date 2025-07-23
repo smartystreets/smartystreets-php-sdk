@@ -84,7 +84,7 @@ class CandidateTest extends TestCase {
                 "longitude" => 53.0,
                 "geocode_precision" => "54",
                 "max_geocode_precision" => "55",
-                "address_format" => "56"
+                "address_format" => "56",
                 "occupant_use" => "56.1"
             ),
             "analysis" => array(
