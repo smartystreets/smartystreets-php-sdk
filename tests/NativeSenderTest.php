@@ -13,7 +13,9 @@ use PHPUnit\Framework\Attributes\Group;
 
 class NativeSenderTest extends TestCase {
 
-    #[Group('integration')]
+    /**
+     * @group integration
+     */
     public function testBuildRequestHeaders() {
         $request = new Request();
         $request->setUrlPrefix("http://localhost:8080");
@@ -44,7 +46,9 @@ class NativeSenderTest extends TestCase {
         $this->assertStringContainsString("Accept-Encoding: gzip", $requestHeaders);
     }
 
-    #[Group('integration')]
+    /**
+     * @group integration
+     */
     public function testBadStatusCode() {
         $request = new Request();
         $request->setUrlPrefix("http://localhost:8080/EchoServer.php?status=402");
@@ -56,7 +60,9 @@ class NativeSenderTest extends TestCase {
         $this->assertEquals("402", $status);
     }
 
-    #[Group('integration')]
+    /**
+     * @group integration
+     */
     public function testBadURL() {
         $this->expectException(SmartyException::class);
         $request = new Request();
@@ -67,7 +73,9 @@ class NativeSenderTest extends TestCase {
         $response = $nativeSender->send($request);
     }
 
-    #[Group('integration')]
+    /**
+     * @group integration
+     */
     public function testGoodResponse() {
         $request = new Request();
         $request->setUrlPrefix("http://localhost:8080/EchoServer.php");
