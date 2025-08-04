@@ -27,9 +27,9 @@ class Result  {
         if ($obj == null)
             return;
 
-        $this->address = new Address(ArrayUtil::setField($obj, 'address', array()));
-        $this->distance = ArrayUtil::setField($obj,'distance');
-        $this->coordinate = new Coordinate(ArrayUtil::setField($obj, 'coordinate', array()));
+        $this->address = new Address(ArrayUtil::getField($obj, 'address', array()));
+        $this->distance = ArrayUtil::getField($obj,'distance');
+        $this->coordinate = new Coordinate(ArrayUtil::getField($obj, 'coordinate', array()));
     }
 
     //region [ Getters ]

@@ -20,12 +20,12 @@ class Metadata {
         if ($obj == null)
             return;
 
-        $this->lines = ArrayUtil::setField($obj, 'lines');
-        $this->unicode = ArrayUtil::setField($obj, 'unicode');
-        $this->addressCount = ArrayUtil::setField($obj, 'address_count');
-        $this->verifiedCount = ArrayUtil::setField($obj, 'verified_count');
-        $this->bytes = ArrayUtil::setField($obj, 'bytes');
-        $this->characterCount = ArrayUtil::setField($obj, 'character_count');
+        $this->lines = ArrayUtil::getField($obj, 'lines');
+        $this->unicode = ArrayUtil::getField($obj, 'unicode');
+        $this->addressCount = ArrayUtil::getField($obj, 'address_count');
+        $this->verifiedCount = ArrayUtil::getField($obj, 'verified_count');
+        $this->bytes = ArrayUtil::getField($obj, 'bytes');
+        $this->characterCount = ArrayUtil::getField($obj, 'character_count');
 
     }
 

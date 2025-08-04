@@ -31,20 +31,20 @@ class RootLevel {
         if ($obj == null)
             return;
 
-        $this->inputId = ArrayUtil::setField($obj, 'input_id');
-        $this->organization = ArrayUtil::setField($obj, 'organization');
-        $this->address1 = ArrayUtil::setField($obj, 'address1');
-        $this->address2 = ArrayUtil::setField($obj, 'address2');
-        $this->address3 = ArrayUtil::setField($obj, 'address3');
-        $this->address4 = ArrayUtil::setField($obj, 'address4');
-        $this->address5 = ArrayUtil::setField($obj, 'address5');
-        $this->address6 = ArrayUtil::setField($obj, 'address6');
-        $this->address7 = ArrayUtil::setField($obj, 'address7');
-        $this->address8 = ArrayUtil::setField($obj, 'address8');
-        $this->address9 = ArrayUtil::setField($obj, 'address9');
-        $this->address10 = ArrayUtil::setField($obj, 'address10');
-        $this->address11 = ArrayUtil::setField($obj, 'address11');
-        $this->address12 = ArrayUtil::setField($obj, 'address12');
+        $this->inputId = ArrayUtil::getField($obj, 'input_id');
+        $this->organization = ArrayUtil::getField($obj, 'organization');
+        $this->address1 = ArrayUtil::getField($obj, 'address1');
+        $this->address2 = ArrayUtil::getField($obj, 'address2');
+        $this->address3 = ArrayUtil::getField($obj, 'address3');
+        $this->address4 = ArrayUtil::getField($obj, 'address4');
+        $this->address5 = ArrayUtil::getField($obj, 'address5');
+        $this->address6 = ArrayUtil::getField($obj, 'address6');
+        $this->address7 = ArrayUtil::getField($obj, 'address7');
+        $this->address8 = ArrayUtil::getField($obj, 'address8');
+        $this->address9 = ArrayUtil::getField($obj, 'address9');
+        $this->address10 = ArrayUtil::getField($obj, 'address10');
+        $this->address11 = ArrayUtil::getField($obj, 'address11');
+        $this->address12 = ArrayUtil::getField($obj, 'address12');
     }
 
     //region [ Getters ]

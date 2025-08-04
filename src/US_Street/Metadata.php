@@ -10,23 +10,23 @@ use SmartyStreets\PhpSdk\ArrayUtil;
  */
 class Metadata {
     public function __construct($obj) {
-        $this->recordType = ArrayUtil::setField($obj, 'record_type');
-        $this->zipType = ArrayUtil::setField($obj, 'zip_type');
-        $this->countyFips = ArrayUtil::setField($obj, 'county_fips');
-        $this->countyName = ArrayUtil::setField($obj, 'county_name');
-        $this->carrierRoute = ArrayUtil::setField($obj, 'carrier_route');
-        $this->congressionalDistrict = ArrayUtil::setField($obj, 'congressional_district');
-        $this->buildingDefaultIndicator = ArrayUtil::setField($obj, 'building_default_indicator');
-        $this->rdi = ArrayUtil::setField($obj, 'rdi');
-        $this->elotSequence = ArrayUtil::setField($obj, 'elot_sequence');
-        $this->elotSort = ArrayUtil::setField($obj, 'elot_sort');
-        $this->latitude = ArrayUtil::setField($obj, 'latitude');
-        $this->longitude = ArrayUtil::setField($obj, 'longitude');
-        $this->precision = ArrayUtil::setField($obj, 'precision');
-        $this->timeZone = ArrayUtil::setField($obj, 'time_zone');
-        $this->utcOffset = ArrayUtil::setField($obj, 'utc_offset');
-        $this->obeysDst = ArrayUtil::setField($obj, 'dst');
-        $this->isEwsMatch = ArrayUtil::setField($obj, 'ews_match');
+        $this->recordType = ArrayUtil::getField($obj, 'record_type');
+        $this->zipType = ArrayUtil::getField($obj, 'zip_type');
+        $this->countyFips = ArrayUtil::getField($obj, 'county_fips');
+        $this->countyName = ArrayUtil::getField($obj, 'county_name');
+        $this->carrierRoute = ArrayUtil::getField($obj, 'carrier_route');
+        $this->congressionalDistrict = ArrayUtil::getField($obj, 'congressional_district');
+        $this->buildingDefaultIndicator = ArrayUtil::getField($obj, 'building_default_indicator');
+        $this->rdi = ArrayUtil::getField($obj, 'rdi');
+        $this->elotSequence = ArrayUtil::getField($obj, 'elot_sequence');
+        $this->elotSort = ArrayUtil::getField($obj, 'elot_sort');
+        $this->latitude = ArrayUtil::getField($obj, 'latitude');
+        $this->longitude = ArrayUtil::getField($obj, 'longitude');
+        $this->precision = ArrayUtil::getField($obj, 'precision');
+        $this->timeZone = ArrayUtil::getField($obj, 'time_zone');
+        $this->utcOffset = ArrayUtil::getField($obj, 'utc_offset');
+        $this->obeysDst = ArrayUtil::getField($obj, 'dst');
+        $this->isEwsMatch = ArrayUtil::getField($obj, 'ews_match');
     }
 
     private $recordType,

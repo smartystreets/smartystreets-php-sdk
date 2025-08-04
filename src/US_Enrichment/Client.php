@@ -72,6 +72,23 @@ class Client {
         }
     }
 
+    public function sendRiskLookup($riskLookup){
+        if (is_string($riskLookup)) {
+            $lookup = new Lookup($riskLookup, "risk");
+            $this->sendLookup($lookup);
+            return $lookup->getResponse();
+        }
+        else if (is_object($riskLookup)) {
+            $riskLookup->setDataSetName("risk");
+            $riskLookup->setDataSubSetName(null);
+            $this->sendLookup($riskLookup);
+            return $riskLookup->getResponse();
+        }
+        else {
+            return null;
+        }
+    }
+
     public function sendSecondaryLookup($secondaryLookup){
         if (is_string($secondaryLookup)) {
             $lookup = new Lookup($secondaryLookup, "secondary");
@@ -127,12 +144,16 @@ class Client {
         $request = $this->buildRequest($lookup);
         $response = $this->sender->send($request);
         
-        $lookupResponse = $this->buildResponse($this->serializer->deserialize($response->getPayload()));
+        $results = $this->buildResults($this->serializer->deserialize($response->getPayload()));
+        $headers = $response->getHeaders();
+        if (count($results) > 0 && is_array($headers) && isset($headers['etag']) ) {
+            $results[0]->setETag($headers['etag']);
+        }
 
-        $lookup->setResponse($lookupResponse);
+        $lookup->setResponse($results);
     }
 
-    private function buildResponse($objArray){
+    private function buildResults($objArray){
         $response = [];
         if($objArray == null){
             return $response;
@@ -159,6 +180,7 @@ class Client {
 
         $request->setParameter("include", $this->buildFilterString($lookup->getIncludeArray()));
         $request->setParameter("exclude", $this->buildFilterString($lookup->getExcludeArray()));
+        $request->setHeader("etag", $lookup->getETag());
 
         foreach ($lookup->getCustomParamArray() as $key => $value) {
             $request->setParameter($key, $value);

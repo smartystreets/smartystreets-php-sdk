@@ -30,9 +30,9 @@ class Candidate extends RootLevel {
             return;
 
         parent::__construct($obj);
-        $this->components = new Components(ArrayUtil::setField($obj, 'components', array()));
-        $this->metadata = new Metadata(ArrayUtil::setField($obj, 'metadata', array()));
-        $this->analysis = new Analysis(ArrayUtil::setField($obj, 'analysis', array()));
+        $this->components = new Components(ArrayUtil::getField($obj, 'components', array()));
+        $this->metadata = new Metadata(ArrayUtil::getField($obj, 'metadata', array()));
+        $this->analysis = new Analysis(ArrayUtil::getField($obj, 'analysis', array()));
 
     }
 

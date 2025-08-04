@@ -13,6 +13,6 @@ class CensusTractEntry {
     public function __construct($obj = null){
         if ($obj == null)
             return;
-        $this->code = ArrayUtil::setField($obj, "code");
+        $this->code = ArrayUtil::getField($obj, "code");
     }
 }

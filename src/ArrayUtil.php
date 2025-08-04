@@ -5,9 +5,9 @@ namespace SmartyStreets\PhpSdk;
 class ArrayUtil {
 
     /**
-     * Sets field with value from the key in an array
+     * Gets field value from the key in an array
      */
-    public static function setField($obj, $key, $typeIfKeyNotFound = null) {
+    public static function getField($obj, $key, $typeIfKeyNotFound = null) {
         if (isset($obj[$key]))
             return $obj[$key];
         else

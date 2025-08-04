@@ -37,17 +37,17 @@ class Candidate {
         }
         $this->inputIndex = $obj['input_index'];
         $this->candidateIndex = $obj['candidate_index'];
-        $this->inputId = ArrayUtil::setField($obj, 'input_id');
-        $this->addressee = ArrayUtil::setField($obj, 'addressee');
-        $this->deliveryLine1 = ArrayUtil::setField($obj, 'delivery_line_1');
-        $this->deliveryLine2 = ArrayUtil::setField($obj, 'delivery_line_2');
-        $this->lastLine = ArrayUtil::setField($obj, 'last_line');
-        $this->deliveryPointBarcode = ArrayUtil::setField($obj, 'delivery_point_barcode');
-        $this->smartyKey = ArrayUtil::setField($obj, 'smarty_key');
+        $this->inputId = ArrayUtil::getField($obj, 'input_id');
+        $this->addressee = ArrayUtil::getField($obj, 'addressee');
+        $this->deliveryLine1 = ArrayUtil::getField($obj, 'delivery_line_1');
+        $this->deliveryLine2 = ArrayUtil::getField($obj, 'delivery_line_2');
+        $this->lastLine = ArrayUtil::getField($obj, 'last_line');
+        $this->deliveryPointBarcode = ArrayUtil::getField($obj, 'delivery_point_barcode');
+        $this->smartyKey = ArrayUtil::getField($obj, 'smarty_key');
 
-        $this->components = new Components(ArrayUtil::setField($obj, 'components', array()));
-        $this->metadata = new Metadata(ArrayUtil::setField($obj, 'metadata', array()));
-        $this->analysis = new Analysis(ArrayUtil::setField($obj, 'analysis', array()));
+        $this->components = new Components(ArrayUtil::getField($obj, 'components', array()));
+        $this->metadata = new Metadata(ArrayUtil::getField($obj, 'metadata', array()));
+        $this->analysis = new Analysis(ArrayUtil::getField($obj, 'analysis', array()));
     }
 
     //region [Getters]

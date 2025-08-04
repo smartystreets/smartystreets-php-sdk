@@ -13,7 +13,7 @@ class Result {
         if ($obj == null)
             return;
 
-        $this->suggestions = ArrayUtil::setField($obj, 'suggestions', array());
+        $this->suggestions = ArrayUtil::getField($obj, 'suggestions', array());
 
         $this->suggestions = $this->convertToSuggestionObjects();
     }
