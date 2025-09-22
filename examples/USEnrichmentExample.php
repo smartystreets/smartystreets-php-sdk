@@ -38,6 +38,7 @@ class USEnrichmentExample
         $lookup->setCity("Somerville");
         $lookup->setState("NJ");
         $lookup->setZipcode("08876");
+        $lookup->setFeatures("financial");
 
         // Use the setIncludeArray function to set the include or exclude parameter using an existing array:
         // $tempArray = array("assessed_improvement_percent", "assessed_improvement_value");
@@ -60,10 +61,10 @@ class USEnrichmentExample
 
         try {
             // Call the API with only a smarty key using the line below
-            $result = $client->sendPropertyPrincipalLookup($smartyKey);
+            // $result = $client->sendPropertyPrincipalLookup($smartyKey);
 
             // Or call the API with an address using the lookup object with the commented line below
-            // $result = $client->sendPropertyPrincipalLookup($lookup);
+            $result = $client->sendPropertyPrincipalLookup($lookup);
 
             if ($result != null) {
                 $this->displayResult($result[0]);

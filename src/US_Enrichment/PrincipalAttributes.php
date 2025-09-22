@@ -3,6 +3,8 @@
 namespace SmartyStreets\PhpSdk\US_Enrichment;
 use SmartyStreets\PhpSdk\ArrayUtil;
 
+require_once(__DIR__ . '/FinancialHistoryEntry.php');
+
 class PrincipalAttributes {
 
     //region [ Fields ]
@@ -123,6 +125,7 @@ class PrincipalAttributes {
     $familyRoom,
     $fence,
     $fenceArea,
+    $financialHistory,
     $fipsCode,
     $fireResistanceCode,
     $fireSprinklersFlag,
@@ -487,6 +490,7 @@ class PrincipalAttributes {
         $this->familyRoom = ArrayUtil::getField($obj, "family_room");
         $this->fence = ArrayUtil::getField($obj, "fence");
         $this->fenceArea = ArrayUtil::getField($obj, "fence_area");
+        $this->createFinancialHistory(ArrayUtil::getField($obj, "financial_history"));
         $this->fipsCode = ArrayUtil::getField($obj, "fips_code");
         $this->fireResistanceCode = ArrayUtil::getField($obj, "fire_resistance_code");
         $this->fireSprinklersFlag = ArrayUtil::getField($obj, "fire_sprinklers_flag");
@@ -731,6 +735,11 @@ class PrincipalAttributes {
         $this->wineCellar = ArrayUtil::getField($obj, "wine_cellar");
         $this->yearBuilt = ArrayUtil::getField($obj, "year_built");
         $this->zoning = ArrayUtil::getField($obj, "zoning");
+    }
 
+    private function createFinancialHistory($financialHistoryArray){
+        foreach($financialHistoryArray as $value){
+            $this->financialHistory[] = new FinancialHistoryEntry($value);
+        }
     }
 }

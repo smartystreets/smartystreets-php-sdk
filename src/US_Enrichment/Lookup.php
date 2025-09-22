@@ -16,6 +16,7 @@ class Lookup {
         $dataSubsetName,
         $include,
         $exclude,
+        $features,
         $etag,
         $response,
         $customParamArray;
@@ -23,7 +24,7 @@ class Lookup {
     //endregion
 
     public function __construct($smartyKey = null, $dataSetName = null, $dataSubsetName = null, $freeform = null, $street = null, $city = null, $state = null,
-    $zipcode = null, $include = null, $exclude = null, $etag = null) {
+    $zipcode = null, $include = null, $exclude = null, $features = null, $etag = null) {
         $this->smartyKey = $smartyKey;
         $this->dataSetName = $dataSetName;
         $this->dataSubsetName = $dataSubsetName;
@@ -34,6 +35,7 @@ class Lookup {
         $this->zipcode = $zipcode;
         $this->include = array();
         $this->exclude = array();
+        $this->features = $features;
         $this->etag = $etag;
         $this->response = null;
         $this->customParamArray = array();
@@ -77,6 +79,10 @@ class Lookup {
 
     public function getExcludeArray() {
         return $this->exclude;
+    }
+
+    public function getFeatures() {
+        return $this->features;
     }
 
     public function getETag() {
@@ -129,6 +135,10 @@ class Lookup {
 
     public function setExcludeArray($exclude) {
         $this->exclude = $exclude;
+    }
+
+    public function setFeatures($features) {
+        $this->features = $features;
     }
 
     public function setETag($etag) {

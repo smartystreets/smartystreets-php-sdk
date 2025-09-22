@@ -180,6 +180,7 @@ class Client {
 
         $request->setParameter("include", $this->buildFilterString($lookup->getIncludeArray()));
         $request->setParameter("exclude", $this->buildFilterString($lookup->getExcludeArray()));
+        $request->setParameter("features", $lookup->getFeatures());
         $request->setHeader("etag", $lookup->getETag());
 
         foreach ($lookup->getCustomParamArray() as $key => $value) {

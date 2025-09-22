@@ -45,6 +45,7 @@ class ClientTest extends TestCase {
         $lookup->setCity("Test City");
         $lookup->setState("Test State");
         $lookup->setZipcode("Test Zipcode");
+        $lookup->setFeatures("Test feature");
         $lookup->addIncludeAttribute("Test Include 1");
         $lookup->addIncludeAttribute("Test Include 2");
         $lookup->addExcludeAttribute("Test Exclude 1");
@@ -52,7 +53,7 @@ class ClientTest extends TestCase {
 
         $client->sendPropertyPrincipalLookup($lookup);
 
-        $this->assertEquals("http://localhost/lookup/search/property/principal?street=123+Test+Street&city=Test+City&state=Test+State&zipcode=Test+Zipcode&include=Test+Include+1%2CTest+Include+2&exclude=Test+Exclude+1%2CTest+Exclude+2", $capturingSender->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/search/property/principal?street=123+Test+Street&city=Test+City&state=Test+State&zipcode=Test+Zipcode&include=Test+Include+1%2CTest+Include+2&exclude=Test+Exclude+1%2CTest+Exclude+2&features=Test+feature", $capturingSender->getRequest()->getUrl());
     }
 
     public function testSendingCustomParameterLookup() {

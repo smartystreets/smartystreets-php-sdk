@@ -40,7 +40,15 @@ class ResponseTest extends TestCase
             'data_subset_name' => 'principal',
             'attributes' => array(
                 'bedrooms' => '2',
-                'assessor_taxroll_update' => 'test_update'
+                'assessor_taxroll_update' => 'test_update',
+                'financial_history' => array(
+                    array(
+                        'code_title_company' => 'test_company1'
+                    ),
+                    array(
+                        'code_title_company' => 'test_company2'
+                    )
+                ),
             ),
         );
 
@@ -88,8 +96,6 @@ class ResponseTest extends TestCase
             'smarty_key' => '123',
             'count' => 2,
         );
-
-
     }
 
     public function testAllFinancialFieldsFilledCorrectly()
@@ -105,7 +111,6 @@ class ResponseTest extends TestCase
         $this->assertEquals('test_id', $attributes->deedTransactionId);
 
         $financialHistory = $attributes->financialHistory;
-
         $this->assertEquals(2, count($financialHistory));
         $this->assertEquals('test_company1', $financialHistory[0]->codeTitleCompany);
         $this->assertEquals('test_company2', $financialHistory[1]->codeTitleCompany);
@@ -123,6 +128,11 @@ class ResponseTest extends TestCase
 
         $this->assertEquals('2', $attributes->bedrooms);
         $this->assertEquals('test_update', $attributes->assessorTaxrollUpdate);
+
+        $financialHistory = $attributes->financialHistory;
+        $this->assertEquals(2, count($financialHistory));
+        $this->assertEquals('test_company1', $financialHistory[0]->codeTitleCompany);
+        $this->assertEquals('test_company2', $financialHistory[1]->codeTitleCompany);
     }
 
     public function testAllGeoReferenceFieldsFilledCorrectly()
