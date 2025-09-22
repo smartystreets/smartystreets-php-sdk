@@ -25,6 +25,7 @@ class Lookup {
             $locality,
             $administrativeArea,
             $postalCode,
+            $features,
             $customParamArray;
 
     //endregion
@@ -146,6 +147,10 @@ class Lookup {
         return $this->postalCode;
     }
 
+    public function getFeatures() {
+        return $this->features;
+    }
+
     public function getCustomParamArray() {
         return $this->customParamArray;
     }
@@ -221,6 +226,10 @@ class Lookup {
 
     public function setPostalCode($postalCode) {
         $this->postalCode = $postalCode;
+    }
+
+    public function setFeatures($features) {
+        $this->features = $features;
     }
 
     //endregion

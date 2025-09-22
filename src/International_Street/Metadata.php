@@ -13,17 +13,19 @@ class Metadata {
             $longitude,
             $geocodePrecision,
             $maxGeocodePrecision,
-            $addressFormat;
+            $addressFormat,
+            $occupantUse;
 
     public function __construct($obj = null) {
         if ($obj == null)
             return;
 
-        $this->latitude = ArrayUtil::getField($obj,'latitude');
-        $this->longitude = ArrayUtil::getField($obj,'longitude');
-        $this->geocodePrecision = ArrayUtil::getField($obj,'geocode_precision');
-        $this->maxGeocodePrecision = ArrayUtil::getField($obj,'max_geocode_precision');
-        $this->addressFormat = ArrayUtil::getField($obj,'address_format');
+        $this->latitude = ArrayUtil::setField($obj,'latitude');
+        $this->longitude = ArrayUtil::setField($obj,'longitude');
+        $this->geocodePrecision = ArrayUtil::setField($obj,'geocode_precision');
+        $this->maxGeocodePrecision = ArrayUtil::setField($obj,'max_geocode_precision');
+        $this->addressFormat = ArrayUtil::setField($obj,'address_format');
+        $this->occupantUse = ArrayUtil::setField($obj,'occupant_use');
     }
 
     //region [ Getters ]
@@ -46,6 +48,10 @@ class Metadata {
 
     public function getAddressFormat() {
         return $this->addressFormat;
+    }
+
+    public function getOccupantUse() {
+        return $this->occupantUse;
     }
 
     //endregion

@@ -84,7 +84,8 @@ class CandidateTest extends TestCase {
                 "longitude" => 53.0,
                 "geocode_precision" => "54",
                 "max_geocode_precision" => "55",
-                "address_format" => "56"
+                "address_format" => "56",
+                "occupant_use" => "56.1"
             ),
             "analysis" => array(
                 "verification_status" => "57",
@@ -238,6 +239,7 @@ class CandidateTest extends TestCase {
         $this->assertEquals("54", $metadata->getGeocodePrecision());
         $this->assertEquals("55", $metadata->getMaxGeocodePrecision());
         $this->assertEquals("56", $metadata->getAddressFormat());
+        $this->assertEquals("56.1", $metadata->getOccupantUse());
         //endregion
 
         //region [ Analysis ]
