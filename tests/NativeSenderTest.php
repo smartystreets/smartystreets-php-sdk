@@ -12,12 +12,9 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 
 class NativeSenderTest extends TestCase {
-
-
-
-    /**
-     * @group integration
-     */
+//     /**
+//      * @group integration
+//      */
 //     public function testBuildRequestHeaders() {
 //         $request = new Request();
 //         $request->setUrlPrefix("http://localhost:8080");
