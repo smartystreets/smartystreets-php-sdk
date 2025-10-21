@@ -35,6 +35,6 @@ class CustomQueryTest extends TestCase {
         }
 
         $this->assertEquals("this", $request->getParameters()["test"]);
-        $this->assertEquals("custom", $request->getParameters()["exists"]);
+        $this->assertEquals("exists", $request->getParameters()["custom"]);
     }
 }
