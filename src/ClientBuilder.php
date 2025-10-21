@@ -33,6 +33,8 @@ require_once(__DIR__ . '/International_Street/Client.php');
 require_once(__DIR__ . '/International_Autocomplete/Client.php');
 require_once(__DIR__ . '/US_Reverse_Geo/Client.php');
 require_once(__DIR__ . '/US_Enrichment/Client.php');
+require_once(__DIR__ . '/CustomQuerySender.php');
+
 
 /**
  * The ClientBuilder class helps you build a client object for one of the supported SmartyStreets APIs.<br>
@@ -60,7 +62,8 @@ class ClientBuilder {
             $debugMode,
             $licenses,
             $customHeaders,
-            $ip;
+            $ip,
+            $customQuery;
 
     public function __construct(?Credentials $signer = null) {
         $this->serializer = new NativeSerializer();
@@ -72,6 +75,7 @@ class ClientBuilder {
         $this->licenses = [];
         $this->customHeaders = [];
         $this->ip = null;
+        $this->customQuery = [];
     }
 
     /**
@@ -186,6 +190,24 @@ class ClientBuilder {
         $this->customHeaders[$header] = $value;
         return $this;
     }
+    
+    public function withCustomQuery($key, $value) {
+        $this->customQuery[$key] = $value;
+        return $this;
+    }
+
+    public function withCustomCommaSeparatedQuery($key, $value) {
+        if (array_key_exists($key, $this->customQuery)){
+            $this->customQuery[$key] .= ",$value";
+        } else {
+            $this->customQuery[$key] = $value;
+        }
+        return $this;
+    }
+
+    public function withFeatureComponentAnalysis() {
+        return $this->withCustomCommaSeparatedQuery("features", "component-analysis");
+    }
 
     public function buildUSAutocompleteProApiClient() {
         $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_PRO_API_URL);
@@ -244,6 +266,8 @@ class ClientBuilder {
         $sender = new URLPrefixSender($this->stripUrlToPrefix($this->urlPrefix), $sender);
 
         $sender = new LicenseSender($this->licenses, $sender);
+
+        $sender = new CustomQuerySender($this->customQuery, $sender);
 
         return $sender;
     }
