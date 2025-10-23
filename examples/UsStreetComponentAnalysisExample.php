@@ -26,7 +26,7 @@ class UsStreetComponentAnalysisExample {
         $credentials = new StaticCredentials($authId, $authToken);
 
         $client = (new ClientBuilder($credentials))
-            ->withFeatureComponentAnalysis()
+            ->withFeatureComponentAnalysis() // To add component analysis feature you need to specify when you create the client.
             ->buildUsStreetApiClient();
 
         $lookup = new Lookup();
