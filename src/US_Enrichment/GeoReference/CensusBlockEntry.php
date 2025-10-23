@@ -14,7 +14,7 @@ class CensusBlockEntry {
     public function __construct($obj = null){
         if ($obj == null)
             return;
-        $this->accuracy = ArrayUtil::setField($obj, "accuracy");
-        $this->geoid = ArrayUtil::setField($obj, "geoid");
+        $this->accuracy = ArrayUtil::getField($obj, "accuracy");
+        $this->geoid = ArrayUtil::getField($obj, "geoid");
     }
 }

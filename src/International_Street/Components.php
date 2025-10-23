@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\International_Street;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -14,6 +14,7 @@ class Components {
     private $countryIso3,
             $superAdministrativeArea,
             $administrativeArea,
+            $administrativeAreaISO2,
             $administrativeAreaShort,
             $administrativeAreaLong,
             $subAdministrativeArea,
@@ -53,7 +54,14 @@ class Components {
             $levelNumber,
             $postBox,
             $postBoxType,
-            $postBoxNumber;
+            $postBoxNumber,
+            $additionalContent,
+            $deliveryInstallation,
+            $deliveryInstallationType,
+            $deliveryInstallationQualifierName,
+            $route,
+            $routeNumber,
+            $routeType;
 
     //endregion
 
@@ -63,55 +71,91 @@ class Components {
         if ($obj == null)
             return;
 
-        $this->countryIso3 = ArrayUtil::setField($obj,'country_iso_3');
-        $this->superAdministrativeArea = ArrayUtil::setField($obj,'super_administrative_area');
-        $this->administrativeArea = ArrayUtil::setField($obj,'administrative_area');
-        $this->administrativeAreaShort = ArrayUtil::setField($obj,'administrative_area_short');
-        $this->administrativeAreaLong = ArrayUtil::setField($obj,'administrative_area_long');
-        $this->subAdministrativeArea = ArrayUtil::setField($obj,'sub_administrative_area');
-        $this->dependentLocality = ArrayUtil::setField($obj,'dependent_locality');
-        $this->dependentLocalityName = ArrayUtil::setField($obj,'dependent_locality_name');
-        $this->doubleDependentLocality = ArrayUtil::setField($obj,'double_dependent_locality');
-        $this->locality = ArrayUtil::setField($obj,'locality');
-        $this->postalCode = ArrayUtil::setField($obj,'postal_code');
-        $this->postalCodeShort = ArrayUtil::setField($obj,'postal_code_short');
-        $this->postalCodeExtra = ArrayUtil::setField($obj,'postal_code_extra');
-        $this->premise = ArrayUtil::setField($obj,'premise');
-        $this->premiseExtra = ArrayUtil::setField($obj,'premise_extra');
-        $this->premiseNumber = ArrayUtil::setField($obj,'premise_number');
-        $this->premisePrefixNumber = ArrayUtil::setField($obj,'premise_prefix_number');
-        $this->premiseType = ArrayUtil::setField($obj,'premise_type');
-        $this->thoroughfare = ArrayUtil::setField($obj,'thoroughfare');
-        $this->thoroughfarePredirection = ArrayUtil::setField($obj,'thoroughfare_predirection');
-        $this->thoroughfarePostdirection = ArrayUtil::setField($obj,'thoroughfare_postdirection');
-        $this->thoroughfareName = ArrayUtil::setField($obj,'thoroughfare_name');
-        $this->thoroughfareTrailingType = ArrayUtil::setField($obj,'thoroughfare_trailing_type');
-        $this->thoroughfareType = ArrayUtil::setField($obj,'thoroughfare_type');
-        $this->dependentThoroughfare = ArrayUtil::setField($obj,'dependent_thoroughfare');
-        $this->dependentThoroughfarePredirection = ArrayUtil::setField($obj,'dependent_thoroughfare_predirection');
-        $this->dependentThoroughfarePostdirection = ArrayUtil::setField($obj,'dependent_thoroughfare_postdirection');
-        $this->dependentThoroughfareName = ArrayUtil::setField($obj,'dependent_thoroughfare_name');
-        $this->dependentThoroughfareTrailingType = ArrayUtil::setField($obj,'dependent_thoroughfare_trailing_type');
-        $this->dependentThoroughfareType = ArrayUtil::setField($obj,'dependent_thoroughfare_type');
-        $this->building = ArrayUtil::setField($obj,'building');
-        $this->buildingLeadingType = ArrayUtil::setField($obj,'building_leading_type');
-        $this->buildingName = ArrayUtil::setField($obj,'building_name');
-        $this->buildingTrailingType = ArrayUtil::setField($obj,'building_trailing_type');
-        $this->subBuildingType = ArrayUtil::setField($obj,'sub_building_type');
-        $this->subBuildingNumber = ArrayUtil::setField($obj,'sub_building_number');
-        $this->subBuildingName = ArrayUtil::setField($obj,'sub_building_name');
-        $this->subBuilding = ArrayUtil::setField($obj,'sub_building');
-        $this->levelType = ArrayUtil::setField($obj,'level_type');
-        $this->levelNumber = ArrayUtil::setField($obj,'level_number');
-        $this->postBox = ArrayUtil::setField($obj,'post_box');
-        $this->postBoxType = ArrayUtil::setField($obj,'post_box_type');
-        $this->postBoxNumber = ArrayUtil::setField($obj,'post_box_number');
+        $this->countryIso3 = ArrayUtil::getField($obj,'country_iso_3');
+        $this->superAdministrativeArea = ArrayUtil::getField($obj,'super_administrative_area');
+        $this->administrativeArea = ArrayUtil::getField($obj,'administrative_area');
+        $this->administrativeAreaISO2 = ArrayUtil::getField($obj,'administrative_area_iso2');
+        $this->administrativeAreaShort = ArrayUtil::getField($obj,'administrative_area_short');
+        $this->administrativeAreaLong = ArrayUtil::getField($obj,'administrative_area_long');
+        $this->subAdministrativeArea = ArrayUtil::getField($obj,'sub_administrative_area');
+        $this->dependentLocality = ArrayUtil::getField($obj,'dependent_locality');
+        $this->dependentLocalityName = ArrayUtil::getField($obj,'dependent_locality_name');
+        $this->doubleDependentLocality = ArrayUtil::getField($obj,'double_dependent_locality');
+        $this->locality = ArrayUtil::getField($obj,'locality');
+        $this->postalCode = ArrayUtil::getField($obj,'postal_code');
+        $this->postalCodeShort = ArrayUtil::getField($obj,'postal_code_short');
+        $this->postalCodeExtra = ArrayUtil::getField($obj,'postal_code_extra');
+        $this->premise = ArrayUtil::getField($obj,'premise');
+        $this->premiseExtra = ArrayUtil::getField($obj,'premise_extra');
+        $this->premiseNumber = ArrayUtil::getField($obj,'premise_number');
+        $this->premisePrefixNumber = ArrayUtil::getField($obj,'premise_prefix_number');
+        $this->premiseType = ArrayUtil::getField($obj,'premise_type');
+        $this->thoroughfare = ArrayUtil::getField($obj,'thoroughfare');
+        $this->thoroughfarePredirection = ArrayUtil::getField($obj,'thoroughfare_predirection');
+        $this->thoroughfarePostdirection = ArrayUtil::getField($obj,'thoroughfare_postdirection');
+        $this->thoroughfareName = ArrayUtil::getField($obj,'thoroughfare_name');
+        $this->thoroughfareTrailingType = ArrayUtil::getField($obj,'thoroughfare_trailing_type');
+        $this->thoroughfareType = ArrayUtil::getField($obj,'thoroughfare_type');
+        $this->dependentThoroughfare = ArrayUtil::getField($obj,'dependent_thoroughfare');
+        $this->dependentThoroughfarePredirection = ArrayUtil::getField($obj,'dependent_thoroughfare_predirection');
+        $this->dependentThoroughfarePostdirection = ArrayUtil::getField($obj,'dependent_thoroughfare_postdirection');
+        $this->dependentThoroughfareName = ArrayUtil::getField($obj,'dependent_thoroughfare_name');
+        $this->dependentThoroughfareTrailingType = ArrayUtil::getField($obj,'dependent_thoroughfare_trailing_type');
+        $this->dependentThoroughfareType = ArrayUtil::getField($obj,'dependent_thoroughfare_type');
+        $this->building = ArrayUtil::getField($obj,'building');
+        $this->buildingLeadingType = ArrayUtil::getField($obj,'building_leading_type');
+        $this->buildingName = ArrayUtil::getField($obj,'building_name');
+        $this->buildingTrailingType = ArrayUtil::getField($obj,'building_trailing_type');
+        $this->subBuildingType = ArrayUtil::getField($obj,'sub_building_type');
+        $this->subBuildingNumber = ArrayUtil::getField($obj,'sub_building_number');
+        $this->subBuildingName = ArrayUtil::getField($obj,'sub_building_name');
+        $this->subBuilding = ArrayUtil::getField($obj,'sub_building');
+        $this->levelType = ArrayUtil::getField($obj,'level_type');
+        $this->levelNumber = ArrayUtil::getField($obj,'level_number');
+        $this->postBox = ArrayUtil::getField($obj,'post_box');
+        $this->postBoxType = ArrayUtil::getField($obj,'post_box_type');
+        $this->postBoxNumber = ArrayUtil::getField($obj,'post_box_number');
+        $this->additionalContent = ArrayUtil::getField($obj,'additional_content');
+        $this->deliveryInstallation = ArrayUtil::getField($obj,'delivery_installation');
+        $this->deliveryInstallationType = ArrayUtil::getField($obj,'delivery_installation_type');
+        $this->deliveryInstallationQualifierName = ArrayUtil::getField($obj,'delivery_installation_qualifier_name');
+        $this->route = ArrayUtil::getField($obj,'route');
+        $this->routeNumber = ArrayUtil::getField($obj,'route_number');
+        $this->routeType = ArrayUtil::getField($obj,'route_type');
     }
 
     //endregion
 
     //region [ Getters ]
 
+    public function getAdditionalContent() {
+        return $this->additionalContent;
+    }
+
+    public function getDeliveryInstallation() {
+        return $this->deliveryInstallation;
+    }
+    
+    public function getDeliveryInstallationType() {
+        return $this->deliveryInstallationType;
+    }
+    
+    public function getDeliveryInstallationQualifierName() {
+        return $this->deliveryInstallationQualifierName;
+    }
+    
+    public function getRoute() {
+        return $this->route;
+    }
+    
+    public function getRouteNumber() {
+        return $this->routeNumber;
+    }
+    
+    public function getRouteType() {
+        return $this->routeType;
+    }
+    
     public function getCountryIso3() {
         return $this->countryIso3;
     }
@@ -122,6 +166,10 @@ class Components {
 
     public function getAdministrativeArea() {
         return $this->administrativeArea;
+    }
+
+    public function getAdministrativeAreaISO2() {
+        return $this->administrativeAreaISO2;
     }
 
     public function getAdministrativeAreaShort() {

@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Street/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_Street/Lookup.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
 
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
@@ -29,10 +29,7 @@ class UsStreetMultipleAddressesExample
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
 
-        // The appropriate license values to be used for your subscriptions
-        // can be found on the Subscriptions page the account dashboard.
-        // https://www.smartystreets.com/docs/cloud/licensing
-        $client = (new ClientBuilder($staticCredentials))->withLicenses(["us-core-cloud"])
+        $client = (new ClientBuilder($staticCredentials))
             ->buildUsStreetApiClient();
         $batch = new Batch();
 
@@ -47,6 +44,9 @@ class UsStreetMultipleAddressesExample
         $address0->setMatchStrategy(LOOKUP::INVALID); // "invalid" is the most permissive match,
         // this will always return at least one result even if the address is invalid.
         // Refer to the documentation for additional MatchStrategy options.
+
+        // Uncomment the below line to add a custom parameter to the API call
+        // $address0->addCustomParameter("parameter","value");
 
         $address1 = new Lookup("1 Rosedale, Baltimore, Maryland"); // Freeform addresses work too.
         $address1->setMaxCandidates(1); // Allows up to ten possible matches to be returned (default is 1).

@@ -2,9 +2,9 @@
 
 namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once('City.php');
-require_once('ZIPCode.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
+require_once(__DIR__ . '/City.php');
+require_once(__DIR__ . '/ZIPCode.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -22,12 +22,12 @@ class Result {
         if ($obj == null)
             return;
 
-        $this->status = ArrayUtil::setField($obj, "status");
-        $this->reason = ArrayUtil::setField($obj, "reason");
+        $this->status = ArrayUtil::getField($obj, "status");
+        $this->reason = ArrayUtil::getField($obj, "reason");
         $this->inputIndex = $obj["input_index"];
-        $this->inputId = ArrayUtil::setField($obj, "input_id");
-        $this->cities = ArrayUtil::setField($obj, "city_states", array());
-        $this->zipCodes = ArrayUtil::setField($obj, "zipcodes", array());
+        $this->inputId = ArrayUtil::getField($obj, "input_id");
+        $this->cities = ArrayUtil::getField($obj, "city_states", array());
+        $this->zipCodes = ArrayUtil::getField($obj, "zipcodes", array());
 
         $this->cities = $this->convertToCityObjects();
         $this->zipCodes = $this->convertToZIPCodeObjects();

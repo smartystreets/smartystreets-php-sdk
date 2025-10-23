@@ -2,9 +2,9 @@
 
 namespace SmartyStreets\PhpSdk\US_Reverse_Geo;
 
-require_once('Address.php');
-require_once('Coordinate.php');
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once(__DIR__ . '/Address.php');
+require_once(__DIR__ . '/Coordinate.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -27,9 +27,9 @@ class Result  {
         if ($obj == null)
             return;
 
-        $this->address = new Address(ArrayUtil::setField($obj, 'address', array()));
-        $this->distance = ArrayUtil::setField($obj,'distance');
-        $this->coordinate = new Coordinate(ArrayUtil::setField($obj, 'coordinate', array()));
+        $this->address = new Address(ArrayUtil::getField($obj, 'address', array()));
+        $this->distance = ArrayUtil::getField($obj,'distance');
+        $this->coordinate = new Coordinate(ArrayUtil::getField($obj, 'coordinate', array()));
     }
 
     //region [ Getters ]

@@ -3,11 +3,11 @@ namespace SmartyStreets\PhpSdk\US_Enrichment;
 
 use SmartyStreets\PhpSdk\ArrayUtil;
 
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/CensusBlockEntry.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/CensusCountyDivisionEntry.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/CensusTractEntry.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/CoreBasedStatAreaEntry.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Enrichment/GeoReference/PlaceEntry.php');
+require_once(__DIR__ . '/../US_Enrichment/GeoReference/CensusBlockEntry.php');
+require_once(__DIR__ . '/../US_Enrichment/GeoReference/CensusCountyDivisionEntry.php');
+require_once(__DIR__ . '/../US_Enrichment/GeoReference/CensusTractEntry.php');
+require_once(__DIR__ . '/../US_Enrichment/GeoReference/CoreBasedStatAreaEntry.php');
+require_once(__DIR__ . '/../US_Enrichment/GeoReference/PlaceEntry.php');
 
 use SmartyStreets\PhpSdk\US_Enrichment\GeoReference\CensusBlockEntry;
 use SmartyStreets\PhpSdk\US_Enrichment\GeoReference\CensusCountyDivisionEntry;
@@ -30,11 +30,11 @@ class GeoReferenceAttributes {
     public function __construct($obj = null) {
         if ($obj == null)
             return;
-            $this->createCensusBlock(ArrayUtil::setField($obj, "census_block"));
-            $this->createCensusCountyDivision(ArrayUtil::setField($obj, "census_county_division"));
-            $this->createCensusTract(ArrayUtil::setField($obj, "census_tract"));
-            $this->createCoreBasedStatArea(ArrayUtil::setField($obj, "core_based_stat_area"));
-            $this->createPlace(ArrayUtil::setField($obj, "place"));
+            $this->createCensusBlock(ArrayUtil::getField($obj, "census_block"));
+            $this->createCensusCountyDivision(ArrayUtil::getField($obj, "census_county_division"));
+            $this->createCensusTract(ArrayUtil::getField($obj, "census_tract"));
+            $this->createCoreBasedStatArea(ArrayUtil::getField($obj, "core_based_stat_area"));
+            $this->createPlace(ArrayUtil::getField($obj, "place"));
     }
 
     private function createCensusBlock($censusBlock){

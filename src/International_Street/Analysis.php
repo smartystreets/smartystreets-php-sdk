@@ -3,7 +3,7 @@
 namespace SmartyStreets\PhpSdk\International_Street;
 
 require_once ('Changes.php');
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -23,10 +23,10 @@ class Analysis {
         if ($obj == null)
             return;
 
-        $this->verificationStatus = ArrayUtil::setField($obj,'verification_status');
-        $this->addressPrecision = ArrayUtil::setField($obj,'address_precision');
-        $this->maxAddressPrecision = ArrayUtil::setField($obj,'max_address_precision');
-        $this->changes = new Changes(ArrayUtil::setField($obj, 'changes'));
+        $this->verificationStatus = ArrayUtil::getField($obj,'verification_status');
+        $this->addressPrecision = ArrayUtil::getField($obj,'address_precision');
+        $this->maxAddressPrecision = ArrayUtil::getField($obj,'max_address_precision');
+        $this->changes = new Changes(ArrayUtil::getField($obj, 'changes'));
     }
 
     public function getVerificationStatus() {

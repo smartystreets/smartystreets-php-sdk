@@ -3,67 +3,56 @@
 namespace SmartyStreets\PhpSdk;
 
 include_once('Sender.php');
-require_once('Response.php');
-require_once('Version.php');
-require_once('Proxy.php');
+require_once(__DIR__ . '/Response.php');
+require_once(__DIR__ . '/Version.php');
+require_once(__DIR__ . '/Proxy.php');
+require_once(__DIR__ . '/Exceptions/SmartyException.php');
 
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 
-const DEFAULT_BACKOFF_DURATION = 10;
-const STATUS_TOO_MANY_REQUESTS = 429;
-
 class NativeSender implements Sender
 {
-
-
     private $maxTimeOut,
         $proxy,
         $debugMode,
-        $ip;
+        $ip,
+        $customHeaders;
 
-    public function __construct($maxTimeOut = 10000, Proxy $proxy = null, $debugMode = false, $ip = null)
-    {
+    public function __construct($maxTimeOut = 10000, ?Proxy $proxy = null, $debugMode = false, $ip = null, $customHeaders = []) {
         $this->maxTimeOut = $maxTimeOut;
         $this->proxy = $proxy;
         $this->debugMode = $debugMode;
         $this->ip = $ip;
+        $this->customHeaders = $customHeaders;
     }
 
-    function send(Request $smartyRequest)
-    {
+    function send(Request $smartyRequest) {
         $ch = $this->buildRequest($smartyRequest);
-        $this->setHeaders($smartyRequest, $ch);
         $result = curl_exec($ch);
+
+        if ($result === false) {
+            $errorMessage = curl_error($ch);
+            curl_close($ch);
+            throw new SmartyException($errorMessage);
+        }
 
         $headerSize = curl_getinfo( $ch , CURLINFO_HEADER_SIZE );
         $headerStr = substr( $result , 0 , $headerSize );
         $bodyStr = substr( $result , $headerSize );
         $headers = $this->headersToArray($headerStr);
 
-        if ($this->debugMode)
+        if ($this->debugMode) {
             $this->printDebugInfo($ch, $smartyRequest, $bodyStr);
-
-        $connectCode = curl_getinfo($ch, CURLINFO_HTTP_CONNECTCODE);
-        if ($bodyStr === FALSE && $connectCode != 200) {
-            $errorMessage = curl_error($ch);
-            curl_close($ch);
-            throw new SmartyException($errorMessage);
         }
 
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        $retryHeaderValue = DEFAULT_BACKOFF_DURATION;
-        if ($statusCode == STATUS_TOO_MANY_REQUESTS){
-            $retryHeaderValue = intval($headers['retry-after']);
-        }
-
         curl_close($ch);
 
-        return new Response($statusCode, $bodyStr, $retryHeaderValue);
+        return new Response($statusCode, $bodyStr, $headers);
     }
 
-    private function buildRequest(Request $smartyRequest)
-    {
+    private function buildRequest(Request $smartyRequest) {
         $url = $smartyRequest->getUrl();
 
         $ch = curl_init($url);
@@ -72,7 +61,6 @@ class NativeSender implements Sender
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $smartyRequest->getMethod());
         curl_setopt($ch, CURLOPT_POSTFIELDS, ($smartyRequest->getPayload()));
         curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->setHeaders($smartyRequest));
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->maxTimeOut);
         curl_setopt($ch, CURLOPT_USERAGENT, 'smartystreets (sdk:php@' . VERSION . ')');
         if ($this->debugMode && defined("STDERR"))
@@ -82,37 +70,38 @@ class NativeSender implements Sender
 
         if ($smartyRequest->getReferer() != null)
             curl_setopt($ch, CURLOPT_REFERER, $smartyRequest->getReferer());
+
+        // Headers
+        $smartyRequest->setHeader('Content-Type', $smartyRequest->getContentType());
         if ($this->ip != null) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-Forwarded-For: $this->ip"));
             $smartyRequest->setHeader('X-Forwarded-For', $this->ip);
         }
+        if (count($this->customHeaders) != 0) {
+            foreach ($this->customHeaders as $key => $value) {
+                $smartyRequest->setHeader($key, $value);
+            }
+        }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getCURLOPTHeaders($smartyRequest));
 
         return $ch;
     }
 
-    private function setProxy(&$ch)
-    {
+    private function setProxy(&$ch) {
         curl_setopt($ch, CURLOPT_PROXY, $this->proxy->getAddress());
 
         if ($this->proxy->getCredentials() != null)
             curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxy->getCredentials());
     }
 
-    private function setHeaders(Request $smartyRequest)
-    {
+    private function getCURLOPTHeaders(Request $smartyRequest) {
         $headers = array();
-
-        foreach (array_keys($smartyRequest->getHeaders()) as $key) {
-            $headers[$key] = $smartyRequest->getHeaders()[$key];
+        foreach ($smartyRequest->getHeaders() as $key => $value) {
+            $headers[] = "$key: $value";
         }
-
-        $headers[] = 'Content-Type: ' . $smartyRequest->getContentType();
-
         return $headers;
     }
 
-    private function printDebugInfo($ch, Request $smartyRequest, $responsePayload)
-    {
+    private function printDebugInfo($ch, Request $smartyRequest, $responsePayload) {
         fwrite(STDERR, "*****Request*****\r\n" . curl_getinfo($ch, CURLINFO_HEADER_OUT));
         if ($smartyRequest->getPayload() != null)
             fwrite(STDERR, "Data: " . $smartyRequest->getPayload());
@@ -122,8 +111,7 @@ class NativeSender implements Sender
         fwrite(STDERR, "\r\nResponse body: " . $responsePayload);
     }
 
-    function headersToArray( $str )
-    {
+    function headersToArray( $str ) {
         $headers = array();
         $headersTmpArray = explode( "\r\n" , $str );
         for ( $i = 0 ; $i < count( $headersTmpArray ) ; ++$i )

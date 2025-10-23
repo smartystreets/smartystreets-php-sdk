@@ -16,31 +16,16 @@ use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use PHPUnit\Framework\TestCase;
 
-class XForwardedForTest extends TestCase {
+class CustomHeaderTest extends TestCase {
     public function testNativeSetOnQuery() {
         $request = new Request();
-        //$licenses = ["one","two","three"];
-        //$inner = new MockSender(new Response(123, null, ""));
-        $sender = new NativeSender(10000, null, false, "0.0.0.0");
+        $sender = new NativeSender(10000, null, false, null, ["Header" => "Custom"]);
 
         try {
-            $sender->send($request);
+        $sender->send($request);
         } catch (SmartyException $ex) {
         }
-        $this->assertEquals("0.0.0.0", $request->getHeaders()["X-Forwarded-For"]);
-    }
 
-    public function testNativeNotSet() {
-        $request = new Request();
-        //$inner = new MockSender(new Response(123, null, ""));
-        $sender = new NativeSender();
-
-        try {
-            $sender->send($request);
-        } catch (SmartyException $ex) {
-        }
-        $headers = $request->getHeaders();
-
-        $this->assertEquals(false, array_key_exists("X-Forwarded-For", $headers));
+        $this->assertEquals("Custom", $request->getHeaders()["Header"]);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Street/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_Street/Lookup.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\StaticCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
@@ -23,10 +23,7 @@ class UsStreetSingleAddressExample {
 
         $staticCredentials = new StaticCredentials($authId, $authToken);
 
-        // The appropriate license values to be used for your subscriptions
-        // can be found on the Subscriptions page the account dashboard.
-        // https://www.smartystreets.com/docs/cloud/licensing
-        $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-core-cloud"])
+        $client = (new ClientBuilder($staticCredentials))
 //                        ->viaProxy("http://localhost:8080", "username", "password") // uncomment this line to point to the specified proxy.
                         ->buildUsStreetApiClient();
 
@@ -44,9 +41,13 @@ class UsStreetSingleAddressExample {
         $lookup->setState("CA");
         $lookup->setZipcode("21229");
         $lookup->setMaxCandidates(3);
+        $lookup->setCountySource(lookup::GEOGRAPHIC);
         $lookup->setMatchStrategy(Lookup::INVALID); // "invalid" is the most permissive match,
                                                                  // this will always return at least one result even if the address is invalid.
                                                                  // Refer to the documentation for additional MatchStrategy options.
+
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup->addCustomParameter("parameter","value");
 
         try {
             $client->sendLookup($lookup);

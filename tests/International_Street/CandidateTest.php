@@ -30,8 +30,9 @@ class CandidateTest extends TestCase {
                 "country_iso_3" => "14",
                 "super_administrative_area" => '15',
                 "administrative_area" => "16",
-                "administrative_area_short" => "16.1",
-                "administrative_area_long" => "16.2",
+                "administrative_area_iso2" => "16.1",
+                "administrative_area_short" => "16.2",
+                "administrative_area_long" => "16.3",
                 "sub_administrative_area" => "17",
                 "dependent_locality" => "18",
                 "dependent_locality_name" => "19",
@@ -69,14 +70,22 @@ class CandidateTest extends TestCase {
                 "level_number" => "48.2",
                 "post_box" => "49",
                 "post_box_type" => "50",
-                "post_box_number" => "51"
+                "post_box_number" => "51",
+                "additional_content" => "112",
+                "delivery_installation" => "113",
+                "delivery_installation_type" => "114",
+                "delivery_installation_qualifier_name" => "115",
+                "route" => "116",
+                "route_number" => "117",
+                "route_type" => "118"
             ),
             "metadata" => array(
                 "latitude" => 52.0,
                 "longitude" => 53.0,
                 "geocode_precision" => "54",
                 "max_geocode_precision" => "55",
-                "address_format" => "56"
+                "address_format" => "56",
+                "occupant_use" => "56.1"
             ),
             "analysis" => array(
                 "verification_status" => "57",
@@ -172,8 +181,9 @@ class CandidateTest extends TestCase {
         $this->assertEquals("14", $components->getCountryIso3());
         $this->assertEquals("15", $components->getSuperAdministrativeArea());
         $this->assertEquals("16", $components->getAdministrativeArea());
-        $this->assertEquals("16.1", $components->getAdministrativeAreaShort());
-        $this->assertEquals("16.2", $components->getAdministrativeAreaLong());
+        $this->assertEquals("16.1", $components->getAdministrativeAreaISO2());
+        $this->assertEquals("16.2", $components->getAdministrativeAreaShort());
+        $this->assertEquals("16.3", $components->getAdministrativeAreaLong());
         $this->assertEquals("17", $components->getSubAdministrativeArea());
         $this->assertEquals("18", $components->getDependentLocality());
         $this->assertEquals("19", $components->getDependentLocalityName());
@@ -212,6 +222,13 @@ class CandidateTest extends TestCase {
         $this->assertEquals("49", $components->getPostBox());
         $this->assertEquals("50", $components->getPostBoxType());
         $this->assertEquals("51", $components->getPostBoxNumber());
+        $this->assertEquals("112", $components->getAdditionalContent());
+        $this->assertEquals("113", $components->getDeliveryInstallation());
+        $this->assertEquals("114", $components->getDeliveryInstallationType());
+        $this->assertEquals("115", $components->getDeliveryInstallationQualifierName());
+        $this->assertEquals("116", $components->getRoute());
+        $this->assertEquals("117", $components->getRouteNumber());
+        $this->assertEquals("118", $components->getRouteType());
         //endregion
 
         //region [ Metadata ]
@@ -222,6 +239,7 @@ class CandidateTest extends TestCase {
         $this->assertEquals("54", $metadata->getGeocodePrecision());
         $this->assertEquals("55", $metadata->getMaxGeocodePrecision());
         $this->assertEquals("56", $metadata->getAddressFormat());
+        $this->assertEquals("56.1", $metadata->getOccupantUse());
         //endregion
 
         //region [ Analysis ]

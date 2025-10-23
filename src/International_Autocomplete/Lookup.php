@@ -18,7 +18,8 @@ class Lookup {
             $address_id,
             $maxResults,
             $locality,
-            $postalCode;
+            $postalCode,
+            $customParamArray;
     //endregion
 
     /**
@@ -29,6 +30,7 @@ class Lookup {
         $this->result = array();
         $this->search = $search;
         $this->maxResults = Lookup::MAX_RESULTS_DEFAULT;
+        $this->customParamArray = array();
     }
 
     //region [ Getters ]
@@ -63,6 +65,10 @@ class Lookup {
 
     public function getPostalCode() {
         return $this->postalCode;
+    }
+
+    public function getCustomParamArray() {
+        return $this->customParamArray;
     }
 
     //endregion
@@ -100,4 +106,8 @@ class Lookup {
     }
 
     //endregion
+
+    public function addCustomParameter($parameter, $value) {
+        $this->customParamArray[$parameter] = $value;
+    }
 }

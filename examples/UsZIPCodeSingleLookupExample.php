@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Result.php');
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
-require_once(dirname(dirname(__FILE__)) . '/src/SharedCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_ZIPCode/Lookup.php');
+require_once(__DIR__ . '/../src/US_ZIPCode/Result.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/SharedCredentials.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\StaticCredentials;
 use SmartyStreets\PhpSdk\US_ZIPCode\Lookup;
@@ -33,6 +33,9 @@ class UsZIPCodeSingleLookupExample {
         $lookup->setInputId("dfc33cb6-829e-4fea-aa1b-b6d6580f0817"); // Optional ID from you system
         $lookup->setCity("Mountain View");
         $lookup->setState("California");
+
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup->addCustomParameter("parameter", "value");
 
         try {
             $client->sendLookup($lookup);

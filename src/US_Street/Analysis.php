@@ -2,8 +2,8 @@
 
 namespace SmartyStreets\PhpSdk\US_Street;
 
+require_once(__DIR__ . '/../ArrayUtil.php');
 require_once('ComponentAnalysis.php');
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -25,19 +25,19 @@ class Analysis {
             $components;
 
     public function __construct($obj) {
-        $this->dpvMatchCode = ArrayUtil::setField($obj, 'dpv_match_code');
-        $this->dpvFootnotes = ArrayUtil::setField($obj, 'dpv_footnotes');
-        $this->cmra = ArrayUtil::setField($obj, 'dpv_cmra');
-        $this->vacant = ArrayUtil::setField($obj, 'dpv_vacant');
-        $this->noStat = ArrayUtil::setField($obj, 'dpv_no_stat');
-        $this->active = ArrayUtil::setField($obj, 'active');
-        $this->isEwsMatch = ArrayUtil::setField('deprecated, refer to metadata->isEwsMatch', 'ews_match');
-        $this->footnotes = ArrayUtil::setField($obj, 'footnotes');
-        $this->lacsLinkCode = ArrayUtil::setField($obj, 'lacslink_code');
-        $this->lacsLinkIndicator = ArrayUtil::setField($obj, 'lacslink_indicator');
-        $this->isSuiteLinkMatch = ArrayUtil::setField($obj, 'suitelink_match');
-        $this->enhancedMatch = ArrayUtil::setField($obj, "enhanced_match");
-        
+        $this->dpvMatchCode = ArrayUtil::getField($obj, 'dpv_match_code');
+        $this->dpvFootnotes = ArrayUtil::getField($obj, 'dpv_footnotes');
+        $this->cmra = ArrayUtil::getField($obj, 'dpv_cmra');
+        $this->vacant = ArrayUtil::getField($obj, 'dpv_vacant');
+        $this->noStat = ArrayUtil::getField($obj, 'dpv_no_stat');
+        $this->active = ArrayUtil::getField($obj, 'active');
+        $this->isEwsMatch = ArrayUtil::getField('deprecated, refer to metadata->isEwsMatch', 'ews_match');
+        $this->footnotes = ArrayUtil::getField($obj, 'footnotes');
+        $this->lacsLinkCode = ArrayUtil::getField($obj, 'lacslink_code');
+        $this->lacsLinkIndicator = ArrayUtil::getField($obj, 'lacslink_indicator');
+        $this->isSuiteLinkMatch = ArrayUtil::getField($obj, 'suitelink_match');
+        $this->enhancedMatch = ArrayUtil::getField($obj, "enhanced_match");
+
         if (isset($obj['components']))
             $this->components = new ComponentAnalysis($obj['components']);
     }

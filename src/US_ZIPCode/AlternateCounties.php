@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\US_ZIPCode;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -18,10 +18,10 @@ class AlternateCounties {
         if ($obj == null)
             return;
 
-        $this->countyFips = ArrayUtil::setField($obj, 'county_fips');
-        $this->countyName = ArrayUtil::setField($obj, 'county_name');
-        $this->stateAbbreviation = ArrayUtil::setField($obj, 'state_abbreviation');
-        $this->state = ArrayUtil::setField($obj, 'state');
+        $this->countyFips = ArrayUtil::getField($obj, 'county_fips');
+        $this->countyName = ArrayUtil::getField($obj, 'county_name');
+        $this->stateAbbreviation = ArrayUtil::getField($obj, 'state_abbreviation');
+        $this->state = ArrayUtil::getField($obj, 'state');
     }
 
     public function getCountyFips() {

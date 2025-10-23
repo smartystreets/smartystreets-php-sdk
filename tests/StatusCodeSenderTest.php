@@ -61,9 +61,26 @@ class StatusCodeSenderTest extends TestCase {
     }
 
     public function test429ResponseThrowsTooManyRequestsException() {
-        $classType = TooManyRequestsException::class;
+        // Custom retry-after
+        $sender = new StatusCodeSender(new MockStatusCodeSender(429, "", ['retry-after' => '4']));
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (TooManyRequestsException $ex) {
+            $this->assertEquals(429, $ex->getCode());
+            $this->assertEquals(4, $ex->getRetryAfterValue());
+        }
 
-        $this->assertSend(429, $classType);
+        // Default retry-after
+        $sender = new StatusCodeSender(new MockStatusCodeSender(429, "", null));
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (TooManyRequestsException $ex) {
+            $this->assertEquals(429, $ex->getCode());
+            $this->assertEquals(10, $ex->getRetryAfterValue());
+        }
+
     }
 
     public function test500ResponseThrowsInternalServerErrorException() {

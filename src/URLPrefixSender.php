@@ -13,7 +13,7 @@ class URLPrefixSender implements Sender {
         $this->inner = $inner;
     }
 
-    public function send(Request $request) {
+    function send(Request $request) {
         $request->setUrlPrefix($this->urlPrefix);
         return $this->inner->send($request);
     }

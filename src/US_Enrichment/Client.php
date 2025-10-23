@@ -2,12 +2,12 @@
 
 namespace SmartyStreets\PhpSdk\US_Enrichment;
 
-require_once(dirname(dirname(__FILE__)) . '/Exceptions/UnprocessableEntityException.php');
-require_once(dirname(dirname(__FILE__)) . '/Sender.php');
-require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Request.php');
-require_once('Lookup.php');
-require_once('Result.php');
+require_once(__DIR__ . '/../Exceptions/UnprocessableEntityException.php');
+require_once(__DIR__ . '/../Sender.php');
+require_once(__DIR__ . '/../Serializer.php');
+require_once(__DIR__ . '/../Request.php');
+require_once(__DIR__ . '/Lookup.php');
+require_once(__DIR__ . '/Result.php');
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;
@@ -16,7 +16,7 @@ class Client {
     private $sender,
             $serializer;
 
-    public function __construct(Sender $sender, Serializer $serializer = null) {
+    public function __construct(Sender $sender, ?Serializer $serializer = null) {
         $this->sender = $sender;
         $this->serializer = $serializer;
     }
@@ -66,6 +66,23 @@ class Client {
             $geoReferenceLookup->setDataSubSetName(null);
             $this->sendLookup($geoReferenceLookup);
             return $geoReferenceLookup->getResponse();
+        }
+        else {
+            return null;
+        }
+    }
+
+    public function sendRiskLookup($riskLookup){
+        if (is_string($riskLookup)) {
+            $lookup = new Lookup($riskLookup, "risk");
+            $this->sendLookup($lookup);
+            return $lookup->getResponse();
+        }
+        else if (is_object($riskLookup)) {
+            $riskLookup->setDataSetName("risk");
+            $riskLookup->setDataSubSetName(null);
+            $this->sendLookup($riskLookup);
+            return $riskLookup->getResponse();
         }
         else {
             return null;
@@ -127,12 +144,16 @@ class Client {
         $request = $this->buildRequest($lookup);
         $response = $this->sender->send($request);
         
-        $lookupResponse = $this->buildResponse($this->serializer->deserialize($response->getPayload()));
+        $results = $this->buildResults($this->serializer->deserialize($response->getPayload()));
+        $headers = $response->getHeaders();
+        if (count($results) > 0 && is_array($headers) && isset($headers['etag']) ) {
+            $results[0]->setETag($headers['etag']);
+        }
 
-        $lookup->setResponse($lookupResponse);
+        $lookup->setResponse($results);
     }
 
-    private function buildResponse($objArray){
+    private function buildResults($objArray){
         $response = [];
         if($objArray == null){
             return $response;
@@ -147,7 +168,7 @@ class Client {
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
 
-        $request->setUrlComponents($this->getUrlPrefix($lookup));
+        $request->setUrlComponents("/lookup/". $this->getUrlPrefix($lookup));
 
         if ($lookup->getSmartyKey() == null) {
             $request->setParameter("freeform", $lookup->getFreeform());
@@ -156,6 +177,16 @@ class Client {
             $request->setParameter("state", $lookup->getState());
             $request->setParameter("zipcode", $lookup->getZipcode());
         }
+
+        $request->setParameter("include", $this->buildFilterString($lookup->getIncludeArray()));
+        $request->setParameter("exclude", $this->buildFilterString($lookup->getExcludeArray()));
+        $request->setParameter("features", $lookup->getFeatures());
+        $request->setHeader("etag", $lookup->getETag());
+
+        foreach ($lookup->getCustomParamArray() as $key => $value) {
+            $request->setParameter($key, $value);
+        }
+
         return $request;
     }
 
@@ -172,5 +203,12 @@ class Client {
             }
             return $lookup->getSmartyKey() . "/" . $lookup->getDataSetName() . "/" . $lookup->getDataSubsetName();
         }
+    }
+
+    private function buildFilterString($list) {
+        if (empty($list))
+            return null;
+
+        return join(',', $list);
     }
 }

@@ -14,6 +14,6 @@ class SecondaryCountAttributes {
     public function __construct($obj = null) {
         if ($obj == null)
             return;
-            $this->count = ArrayUtil::setField($obj, "count");
+            $this->count = ArrayUtil::getField($obj, "count");
     }
 }

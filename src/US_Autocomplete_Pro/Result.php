@@ -2,8 +2,8 @@
 
 namespace SmartyStreets\PhpSdk\US_Autocomplete_Pro;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once('Suggestion.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
+require_once(__DIR__ . '/Suggestion.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 class Result {
@@ -13,7 +13,7 @@ class Result {
         if ($obj == null)
             return;
 
-        $this->suggestions = ArrayUtil::setField($obj, 'suggestions', array());
+        $this->suggestions = ArrayUtil::getField($obj, 'suggestions', array());
 
         $this->suggestions = $this->convertToSuggestionObjects();
     }

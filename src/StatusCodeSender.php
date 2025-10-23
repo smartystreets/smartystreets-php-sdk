@@ -3,15 +3,16 @@
 namespace SmartyStreets\PhpSdk;
 
 include_once('Sender.php');
-require_once('Exceptions/BadCredentialsException.php');
-require_once('Exceptions/BadRequestException.php');
-require_once('Exceptions/InternalServerErrorException.php');
-require_once('Exceptions/PaymentRequiredException.php');
-require_once('Exceptions/RequestEntityTooLargeException.php');
-require_once('Exceptions/ServiceUnavailableException.php');
-require_once('Exceptions/TooManyRequestsException.php');
-require_once('Exceptions/UnprocessableEntityException.php');
-require_once('Exceptions/GatewayTimeoutException.php');
+require_once(__DIR__ . '/Exceptions/BadCredentialsException.php');
+require_once(__DIR__ . '/Exceptions/BadRequestException.php');
+require_once(__DIR__ . '/Exceptions/InternalServerErrorException.php');
+require_once(__DIR__ . '/Exceptions/PaymentRequiredException.php');
+require_once(__DIR__ . '/Exceptions/RequestEntityTooLargeException.php');
+require_once(__DIR__ . '/Exceptions/RequestNotModifiedException.php');
+require_once(__DIR__ . '/Exceptions/ServiceUnavailableException.php');
+require_once(__DIR__ . '/Exceptions/TooManyRequestsException.php');
+require_once(__DIR__ . '/Exceptions/UnprocessableEntityException.php');
+require_once(__DIR__ . '/Exceptions/GatewayTimeoutException.php');
 
 use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
 use SmartyStreets\PhpSdk\Exceptions\BadGatewayException;
@@ -19,12 +20,16 @@ use SmartyStreets\PhpSdk\Exceptions\BadRequestException;
 use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
 use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
+use SmartyStreets\PhpSdk\Exceptions\RequestNotModifiedException;
 use SmartyStreets\PhpSdk\Exceptions\RequestTimeoutException;
 use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;
+
+
+const DEFAULT_BACKOFF_DURATION = 10;
 
 class StatusCodeSender implements Sender
 {
@@ -42,6 +47,8 @@ class StatusCodeSender implements Sender
         switch ($response->getStatusCode()) {
             case 200:
                 return $response;
+            case 304:
+                throw new RequestNotModifiedException("Record has not been modified since the last request.", $response->getStatusCode());
             case 400:
                 throw new BadRequestException("Bad Request (Malformed Payload): A GET request lacked a street field or the request body of a POST request contained malformed JSON.", $response->getStatusCode());
             case 401:
@@ -57,16 +64,20 @@ class StatusCodeSender implements Sender
             case 429:
                 $responseJSON = json_decode($response->getPayload(), true, 10);
 
+                $retryAfterValue = DEFAULT_BACKOFF_DURATION;
+                if (isset($response->getHeaders()['retry-after'])){
+                    $retryAfterValue = intval($response->getHeaders()['retry-after']);
+                }
+
                 if (! isset($responseJSON['errors'])) {
-                    throw new TooManyRequestsException("The rate limit for the plan associated with this subscription has been exceeded. To see plans with higher rate limits, visit our pricing page.", $response->getStatusCode());
+                    throw new TooManyRequestsException("The rate limit for the plan associated with this subscription has been exceeded. To see plans with higher rate limits, visit our pricing page.", $response->getStatusCode(), $retryAfterValue);
                 }
                 $errorMessage = '';
                 foreach($responseJSON['errors'] as $error){
                     $errorMessage .= isset($error['message']) ? $error['message'].' ': '';
                 }
-                $tooManyRequests = new TooManyRequestsException($errorMessage, $response->getStatusCode());
-                $tooManyRequests->setHeader($response->getHeaders());
-                throw $tooManyRequests;
+
+                throw new TooManyRequestsException($errorMessage, $response->getStatusCode(), $retryAfterValue);
             case 500:
                 throw new InternalServerErrorException("Internal Server Error.", $response->getStatusCode());
             case 502:

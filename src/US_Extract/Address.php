@@ -2,8 +2,8 @@
 
 namespace SmartyStreets\PhpSdk\US_Extract;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once(dirname(dirname(__FILE__)) . '/US_Street/Candidate.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
+require_once(__DIR__ . '/../US_Street/Candidate.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 use SmartyStreets\PhpSdk\US_Street\Candidate;
 
@@ -22,13 +22,13 @@ class Address {
         if ($obj == null)
             return;
 
-        $this->text = ArrayUtil::setField($obj, 'text');
-        $this->verified = ArrayUtil::setField($obj, 'verified');
-        $this->line = ArrayUtil::setField($obj, 'line');
-        $this->start = ArrayUtil::setField($obj, 'start');
-        $this->end = ArrayUtil::setField($obj, 'end');
+        $this->text = ArrayUtil::getField($obj, 'text');
+        $this->verified = ArrayUtil::getField($obj, 'verified');
+        $this->line = ArrayUtil::getField($obj, 'line');
+        $this->start = ArrayUtil::getField($obj, 'start');
+        $this->end = ArrayUtil::getField($obj, 'end');
 
-        $this->candidates = ArrayUtil::setField($obj, 'api_output', array());
+        $this->candidates = ArrayUtil::getField($obj, 'api_output', array());
         $this->candidates = $this->convertToCandidateObjects();
     }
 

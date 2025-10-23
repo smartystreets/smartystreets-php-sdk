@@ -2,9 +2,9 @@
 
 namespace SmartyStreets\PhpSdk\US_Extract;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once('Metadata.php');
-require_once('Address.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
+require_once(__DIR__ . '/Metadata.php');
+require_once(__DIR__ . '/Address.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -18,8 +18,8 @@ class Result {
         if ($obj == null)
             return;
 
-        $this->metadata = new Metadata(ArrayUtil::setField($obj, 'meta'));
-        $this->addresses = ArrayUtil::setField($obj, 'addresses', array());
+        $this->metadata = new Metadata(ArrayUtil::getField($obj, 'meta'));
+        $this->addresses = ArrayUtil::getField($obj, 'addresses', array());
         $this->addresses = $this->convertToAddressObjects();
     }
 

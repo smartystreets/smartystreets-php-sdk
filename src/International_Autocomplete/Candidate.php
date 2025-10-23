@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\International_Autocomplete;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -28,16 +28,16 @@ class Candidate {
         if ($obj == null)
             return;
 
-        $this->street = ArrayUtil::setField($obj, 'street');
-        $this->locality = ArrayUtil::setField($obj, 'locality');
-        $this->administrativeArea = ArrayUtil::setField($obj, 'administrative_area');
-        $this->administrativeAreaShort = ArrayUtil::setField($obj, 'administrative_area_short');
-        $this->administrativeAreaLong = ArrayUtil::setField($obj, 'administrative_area_long');
-        $this->postalCode = ArrayUtil::setField($obj, 'postal_code');
-        $this->countryISO3 = ArrayUtil::setField($obj, 'country_iso3');
-        $this->entries = ArrayUtil::setField($obj, 'entries');
-        $this->address_text = ArrayUtil::setField($obj, 'address_text');
-        $this->address_id = ArrayUtil::setField($obj, 'address_id');
+        $this->street = ArrayUtil::getField($obj, 'street');
+        $this->locality = ArrayUtil::getField($obj, 'locality');
+        $this->administrativeArea = ArrayUtil::getField($obj, 'administrative_area');
+        $this->administrativeAreaShort = ArrayUtil::getField($obj, 'administrative_area_short');
+        $this->administrativeAreaLong = ArrayUtil::getField($obj, 'administrative_area_long');
+        $this->postalCode = ArrayUtil::getField($obj, 'postal_code');
+        $this->countryISO3 = ArrayUtil::getField($obj, 'country_iso3');
+        $this->entries = ArrayUtil::getField($obj, 'entries');
+        $this->address_text = ArrayUtil::getField($obj, 'address_text');
+        $this->address_id = ArrayUtil::getField($obj, 'address_id');
     }
 
     //region [Getters]

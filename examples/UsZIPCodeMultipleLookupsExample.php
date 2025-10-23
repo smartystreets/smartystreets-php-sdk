@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_ZIPCode/Result.php');
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
-require_once(dirname(dirname(__FILE__)) . '/src/SharedCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_ZIPCode/Lookup.php');
+require_once(__DIR__ . '/../src/US_ZIPCode/Result.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/SharedCredentials.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
 use SmartyStreets\PhpSdk\StaticCredentials;
@@ -34,6 +34,9 @@ class UsZIPCodeMultipleLookupsExample {
 
         $lookup0 = new Lookup();
         $lookup0->setZIPCode("12345");  // A Lookup may have a ZIP Code, city and state, or city, state, and ZIP Code
+
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup0->addCustomParameter("parameter","value");
 
         $lookup1 = new Lookup();
         $lookup1->setInputId("01189998819991197253"); // Optional ID from your system

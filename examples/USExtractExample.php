@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/ArrayUtil.php');
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Extract/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Extract/Client.php');
+require_once(__DIR__ . '/../src/ArrayUtil.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_Extract/Lookup.php');
+require_once(__DIR__ . '/../src/US_Extract/Client.php');
 use SmartyStreets\PhpSdk\StaticCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Extract\Lookup;
@@ -35,6 +35,9 @@ class USExtractExample {
         $lookup->isAggressive();
         $lookup->setAddressesHaveLineBreaks(false);
         $lookup->setAddressesPerLine(2);
+
+        // Uncomment the below line to add a custom parameter to the API call
+        // $lookup->addCustomParameter("parameter", "value");
         try {
             $client->sendLookup($lookup);
             $this->displayResults($lookup);

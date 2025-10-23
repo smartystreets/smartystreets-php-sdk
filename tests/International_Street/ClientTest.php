@@ -32,7 +32,7 @@ class ClientTest extends TestCase {
 
     public function testSendingFreeformLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -40,14 +40,14 @@ class ClientTest extends TestCase {
 
         $client->sendLookup($lookup);
 
-        $this->assertEquals("http://localhost/?country=USA&freeform=freeform", $capturingSender->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/verify?country=USA&freeform=freeform", $capturingSender->getRequest()->getUrl());
     }
 
     public function testSendingSingleFullyPopulatedLookup() {
         $capturingSender = new RequestCapturingSender();
-        $sender = new URLPrefixSender("http://localhost/", $capturingSender);
-        $expectedUrl = "http://localhost/?input_id=1234&country=0&geocode=true&language=native&freeform=1" .
-            "&address1=2&address2=3&address3=4&address4=5&organization=6&locality=7&administrative_area=8&postal_code=9";
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $expectedUrl = "http://localhost/verify?input_id=1234&country=0&geocode=true&language=native&freeform=1" .
+            "&address1=2&address2=3&address3=4&address4=5&organization=6&locality=7&administrative_area=8&postal_code=9&features=10";
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -64,6 +64,35 @@ class ClientTest extends TestCase {
         $lookup->setLocality("7");
         $lookup->setAdministrativeArea("8");
         $lookup->setPostalCode("9");
+        $lookup->setFeatures("10");
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testSendingCustomParameterLookup() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $expectedUrl = "http://localhost/verify?input_id=1234&country=0&geocode=true&language=native&freeform=1" .
+            "&address1=2&address2=3&address3=4&address4=5&organization=6&locality=7&administrative_area=8&postal_code=9&parameter=value";
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setInputId("1234");
+        $lookup->setCountry("0");
+        $lookup->setGeocode(true);
+        $lookup->setLanguage(new LanguageMode(LANGUAGE_MODE_NATIVE));
+        $lookup->setFreeform("1");
+        $lookup->setAddress1("2");
+        $lookup->setAddress2("3");
+        $lookup->setAddress3("4");
+        $lookup->setAddress4("5");
+        $lookup->setOrganization("6");
+        $lookup->setLocality("7");
+        $lookup->setAdministrativeArea("8");
+        $lookup->setPostalCode("9");
+        $lookup->addCustomParameter("parameter", "value");
 
         $client->sendLookup($lookup);
 

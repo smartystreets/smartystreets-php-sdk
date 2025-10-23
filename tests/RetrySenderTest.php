@@ -26,6 +26,13 @@ class RetrySenderTest extends TestCase {
         $this->mockSleeper = new MockSleeper();
     }
 
+    public function testHitRateLimit() {
+        $this->sendRequest("HitRateLimit");
+
+        $this->assertEquals(2, $this->mockCrashingSender->getSendCount());
+        $this->assertEquals(6, $this->mockSleeper->getSleepDurations()[0]);
+    }
+
     public function testSuccessDoesNotRetry() {
         $this->sendRequest("DoNotRetry");
 

@@ -2,11 +2,11 @@
 
 namespace SmartyStreets\PhpSdk\International_Street;
 
-require_once('Components.php');
-require_once('Metadata.php');
-require_once('Analysis.php');
-require_once('RootLevel.php');
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once(__DIR__ . '/Components.php');
+require_once(__DIR__ . '/Metadata.php');
+require_once(__DIR__ . '/Analysis.php');
+require_once(__DIR__ . '/RootLevel.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -30,9 +30,9 @@ class Candidate extends RootLevel {
             return;
 
         parent::__construct($obj);
-        $this->components = new Components(ArrayUtil::setField($obj, 'components', array()));
-        $this->metadata = new Metadata(ArrayUtil::setField($obj, 'metadata', array()));
-        $this->analysis = new Analysis(ArrayUtil::setField($obj, 'analysis', array()));
+        $this->components = new Components(ArrayUtil::getField($obj, 'components', array()));
+        $this->metadata = new Metadata(ArrayUtil::getField($obj, 'metadata', array()));
+        $this->analysis = new Analysis(ArrayUtil::getField($obj, 'analysis', array()));
 
     }
 

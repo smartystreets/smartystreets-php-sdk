@@ -2,12 +2,12 @@
 
 namespace SmartyStreets\PhpSdk\US_Autocomplete_Pro;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
-require_once(dirname(dirname(__FILE__)) . '/Sender.php');
-require_once(dirname(dirname(__FILE__)) . '/Serializer.php');
-require_once(dirname(dirname(__FILE__)) . '/Request.php');
-require_once('GeolocateType.php');
-require_once('Result.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
+require_once(__DIR__ . '/../Sender.php');
+require_once(__DIR__ . '/../Serializer.php');
+require_once(__DIR__ . '/../Request.php');
+require_once(__DIR__ . '/GeolocateType.php');
+require_once(__DIR__ . '/Result.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
@@ -21,7 +21,7 @@ class Client {
     private $sender,
         $serializer;
 
-    public function __construct(Sender $sender, Serializer $serializer = null) {
+    public function __construct(Sender $sender, ?Serializer $serializer = null) {
         $this->sender = $sender;
         $this->serializer = $serializer;
     }
@@ -43,6 +43,8 @@ class Client {
     private function buildRequest(Lookup $lookup) {
         $request = new Request();
 
+        $request->setUrlComponents("/lookup");
+
         $request->setParameter("search", $lookup->getSearch());
         $request->setParameter("max_results", $lookup->getMaxResultsStringIfSet());
         $request->setParameter("include_only_cities", $this->buildFilterString($lookup->getCityFilter()));
@@ -56,6 +58,10 @@ class Client {
         $request->setParameter("prefer_geolocation", $lookup->getPreferGeolocation()->getName());
         $request->setParameter("selected", $lookup->getSelected());
         $request->setParameter("source", $lookup->getSource());
+
+        foreach ($lookup->getCustomParamArray() as $key => $value) {
+            $request->setParameter($key, $value);
+        }
 
         return $request;
     }

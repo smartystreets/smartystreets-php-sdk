@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
-require_once(dirname(dirname(__FILE__)) . '/src/US_Street/Lookup.php');
-require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/ClientBuilder.php');
+require_once(__DIR__ . '/../src/US_Street/Lookup.php');
+require_once(__DIR__ . '/../src/StaticCredentials.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
 use SmartyStreets\PhpSdk\StaticCredentials;
@@ -18,10 +18,7 @@ class USStreetLookupsWithMatchStrategyExamples {
     public function run() {
         $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
 
-        // The appropriate license values to be used for your subscriptions
-        // can be found on the Subscriptions page the account dashboard.
-        // https://www.smartystreets.com/docs/cloud/licensing
-        $client = (new ClientBuilder($staticCredentials)) ->withLicenses(["us-core-cloud"])
+        $client = (new ClientBuilder($staticCredentials))
             ->buildUsStreetApiClient();
         $batch = new Batch();
 
@@ -30,6 +27,9 @@ class USStreetLookupsWithMatchStrategyExamples {
         $addressWithStrictStrategy->setCity("provo");
         $addressWithStrictStrategy->setState("utah");
         $addressWithStrictStrategy->setMatchStrategy(Lookup::STRICT);
+
+        // Uncomment the below line to add a custom parameter to the API call
+        // $addressWithStrictStrategy->addCustomParameter("parameter", "value");
 
         $addressWithInvalidStrategy = new Lookup();
         $addressWithInvalidStrategy->setStreet("693 W 1150 S");

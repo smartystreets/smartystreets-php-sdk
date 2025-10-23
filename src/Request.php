@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk;
 
-require_once('ArrayUtil.php');
+require_once(__DIR__ . '/ArrayUtil.php');
 
 class Request {
     const CHARSET = "UTF-8";
@@ -37,7 +37,7 @@ class Request {
     }
 
     public function getUrl() {
-        $url = $this->urlPrefix;
+        $url = $this->urlPrefix . $this->urlComponents;
 
         if (!strpos($url, "?"))
             $url .= "?";
@@ -98,7 +98,7 @@ class Request {
     }
 
     public function setUrlPrefix($urlPrefix) {
-        $this->urlPrefix = $urlPrefix . $this->urlComponents;
+        $this->urlPrefix = $urlPrefix;
     }
 
     public function setUrlComponents($urlComponents) {

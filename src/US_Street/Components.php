@@ -2,7 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\US_Street;
 
-require_once(dirname(dirname(__FILE__)) . '/ArrayUtil.php');
+require_once(__DIR__ . '/../ArrayUtil.php');
 use SmartyStreets\PhpSdk\ArrayUtil;
 
 /**
@@ -32,25 +32,25 @@ class Components {
             $deliveryPoint;
 
     public function __construct($obj) {
-        $this->urbanization = ArrayUtil::setField($obj, 'urbanization');
-        $this->primaryNumber = ArrayUtil::setField($obj, 'primary_number');
-        $this->streetName = ArrayUtil::setField($obj, 'street_name');
-        $this->streetPreDirection = ArrayUtil::setField($obj, 'street_predirection');
-        $this->streetPostDirection = ArrayUtil::setField($obj, 'street_postdirection');
-        $this->streetSuffix = ArrayUtil::setField($obj, 'street_suffix');
-        $this->secondaryNumber = ArrayUtil::setField($obj, 'secondary_number');
-        $this->secondaryDesignator = ArrayUtil::setField($obj, 'secondary_designator');
-        $this->extraSecondaryNumber = ArrayUtil::setField($obj, 'extra_secondary_number');
-        $this->extraSecondaryDesignator = ArrayUtil::setField($obj, 'extra_secondary_designator');
-        $this->pmbDesignator = ArrayUtil::setField($obj, 'pmb_designator');
-        $this->pmbNumber = ArrayUtil::setField($obj, 'pmb_number');
-        $this->cityName = ArrayUtil::setField($obj, 'city_name');
-        $this->defaultCityName = ArrayUtil::setField($obj, 'default_city_name');
-        $this->stateAbbreviation = ArrayUtil::setField($obj, 'state_abbreviation');
-        $this->zipcode = ArrayUtil::setField($obj, 'zipcode');
-        $this->plus4Code = ArrayUtil::setField($obj, 'plus4_code');
-        $this->deliveryPoint = ArrayUtil::setField($obj, 'delivery_point');
-        $this->deliveryPointCheckDigit = ArrayUtil::setField($obj, 'delivery_point_check_digit');
+        $this->urbanization = ArrayUtil::getField($obj, 'urbanization');
+        $this->primaryNumber = ArrayUtil::getField($obj, 'primary_number');
+        $this->streetName = ArrayUtil::getField($obj, 'street_name');
+        $this->streetPreDirection = ArrayUtil::getField($obj, 'street_predirection');
+        $this->streetPostDirection = ArrayUtil::getField($obj, 'street_postdirection');
+        $this->streetSuffix = ArrayUtil::getField($obj, 'street_suffix');
+        $this->secondaryNumber = ArrayUtil::getField($obj, 'secondary_number');
+        $this->secondaryDesignator = ArrayUtil::getField($obj, 'secondary_designator');
+        $this->extraSecondaryNumber = ArrayUtil::getField($obj, 'extra_secondary_number');
+        $this->extraSecondaryDesignator = ArrayUtil::getField($obj, 'extra_secondary_designator');
+        $this->pmbDesignator = ArrayUtil::getField($obj, 'pmb_designator');
+        $this->pmbNumber = ArrayUtil::getField($obj, 'pmb_number');
+        $this->cityName = ArrayUtil::getField($obj, 'city_name');
+        $this->defaultCityName = ArrayUtil::getField($obj, 'default_city_name');
+        $this->stateAbbreviation = ArrayUtil::getField($obj, 'state_abbreviation');
+        $this->zipcode = ArrayUtil::getField($obj, 'zipcode');
+        $this->plus4Code = ArrayUtil::getField($obj, 'plus4_code');
+        $this->deliveryPoint = ArrayUtil::getField($obj, 'delivery_point');
+        $this->deliveryPointCheckDigit = ArrayUtil::getField($obj, 'delivery_point_check_digit');
     }
 
     //region [ Getters ]
