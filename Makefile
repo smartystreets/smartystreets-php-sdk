@@ -31,7 +31,7 @@ us_reverse_geo_api:
 	php examples/USReverseGeoExample.php
 
 us_street_api:
-	php examples/UsStreetSingleAddressExample.php && php examples/UsStreetMultipleAddressesExample.php
+	php examples/UsStreetSingleAddressExample.php && php examples/UsStreetMultipleAddressesExample.php && php examples/UsStreetComponentAnalysisExample.php
 
 us_zipcode_api:
 	php examples/UsZIPCodeSingleLookupExample.php && php examples/UsZIPCodeMultipleLookupsExample.php

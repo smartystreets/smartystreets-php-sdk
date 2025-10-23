@@ -23,27 +23,20 @@ class ComponentAnalysis {
             $urbanization;
 
     public function __construct($obj) {
-        $this->primaryNumber = $this->initComponent($obj, 'primary_number');
-        $this->streetPredirection = $this->initComponent($obj, 'street_predirection');
-        $this->streetName = $this->initComponent($obj, 'street_name');
-        $this->streetPostdirection = $this->initComponent($obj, 'street_postdirection');
-        $this->streetSuffix = $this->initComponent($obj, 'street_suffix');
-        $this->secondaryNumber = $this->initComponent($obj, 'secondary_number');
-        $this->secondaryDesignator = $this->initComponent($obj, 'secondary_designator');
-        $this->extraSecondaryNumber = $this->initComponent($obj, 'extra_secondary_number');
-        $this->extraSecondaryDesignator = $this->initComponent($obj, 'extra_secondary_designator');
-        $this->cityName = $this->initComponent($obj, 'city_name');
-        $this->state_abbreviation = $this->initComponent($obj, 'state_abbreviation');
-        $this->zipcode = $this->initComponent($obj, 'zipcode');
-        $this->plus4Code = $this->initComponent($obj, 'plus4_code');
-        $this->urbanization = $this->initComponent($obj, 'urbanization');
-    }
-
-    private function initComponent($obj, $key) {
-        if (isset($obj[$key]) && is_array($obj[$key])) {
-            return new MatchInfo($obj[$key]);
-        }
-        return null;
+        $this->primaryNumber = new MatchInfo(ArrayUtil::getField($obj, 'primary_number', array()));
+        $this->streetPredirection = new MatchInfo(ArrayUtil::getField($obj, 'street_predirection', array()));
+        $this->streetName = new MatchInfo(ArrayUtil::getField($obj, 'street_name', array()));
+        $this->streetPostdirection = new MatchInfo(ArrayUtil::getField($obj, 'street_postdirection', array()));
+        $this->streetSuffix = new MatchInfo(ArrayUtil::getField($obj, 'street_suffix', array()));
+        $this->secondaryNumber = new MatchInfo(ArrayUtil::getField($obj, 'secondary_number', array()));
+        $this->secondaryDesignator = new MatchInfo(ArrayUtil::getField($obj, 'secondary_designator', array()));
+        $this->extraSecondaryNumber = new MatchInfo(ArrayUtil::getField($obj, 'extra_secondary_number', array()));
+        $this->extraSecondaryDesignator = new MatchInfo(ArrayUtil::getField($obj, 'extra_secondary_designator', array()));
+        $this->cityName = new MatchInfo(ArrayUtil::getField($obj, 'city_name', array()));
+        $this->state_abbreviation = new MatchInfo(ArrayUtil::getField($obj, 'state_abbreviation', array()));
+        $this->zipcode = new MatchInfo(ArrayUtil::getField($obj, 'zipcode', array()));
+        $this->plus4Code = new MatchInfo(ArrayUtil::getField($obj, 'plus4_code', array()));
+        $this->urbanization = new MatchInfo(ArrayUtil::getField($obj, 'urbanization', array()));
     }
 
     //region [ Getters ]

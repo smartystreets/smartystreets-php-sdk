@@ -185,7 +185,6 @@ class CandidateTest extends TestCase {
         $this->assertEquals('M1', $comp_analysis->getCityName()->getChange());
         $this->assertEquals('O', $comp_analysis->getStateAbbreviation()->getStatus());
         $this->assertEquals('O1', $comp_analysis->getStateAbbreviation()->getChange());
-        $this->assertEquals(null, $comp_analysis->getZipcode());
         $this->assertEquals('P', $comp_analysis->getZipcode()->getStatus());
         $this->assertEquals('P1', $comp_analysis->getZipcode()->getChange());
         $this->assertEquals('Q', $comp_analysis->getPlus4Code()->getStatus());

@@ -37,9 +37,8 @@ class Analysis {
         $this->lacsLinkIndicator = ArrayUtil::getField($obj, 'lacslink_indicator');
         $this->isSuiteLinkMatch = ArrayUtil::getField($obj, 'suitelink_match');
         $this->enhancedMatch = ArrayUtil::getField($obj, "enhanced_match");
-
-        if (isset($obj['components']))
-            $this->components = new ComponentAnalysis($obj['components']);
+        
+        $this->components = new ComponentAnalysis(ArrayUtil::getField($obj, 'components', array()));
     }
 
     //region [ Getters ]

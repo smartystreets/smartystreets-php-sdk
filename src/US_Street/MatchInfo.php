@@ -10,8 +10,8 @@ class MatchInfo {
             $change;
 
     public function __construct($obj) {
-        $this->status = ArrayUtil::setField($obj, 'status');
-        $this->change = ArrayUtil::setField($obj, 'change');
+        $this->status = ArrayUtil::getField($obj, 'status');
+        $this->change = ArrayUtil::getField($obj, 'change');
     }
 
     public function getStatus() {
