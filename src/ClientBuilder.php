@@ -9,6 +9,7 @@ use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Client as USAutoCompleteProApiClien
 use SmartyStreets\PhpSdk\US_Extract\Client as USExtractApiClient;
 use SmartyStreets\PhpSdk\International_Street\Client as InternationalStreetApiClient;
 use SmartyStreets\PhpSdk\International_Autocomplete\Client as InternationalAutocompleteApiClient;
+use SmartyStreets\PhpSdk\International_Postal_Code\Client as InternationalPostalCodeApiClient;
 use SmartyStreets\PhpSdk\US_Street\Client as USStreetApiClient;
 use SmartyStreets\PhpSdk\US_ZIPCode\Client as USZIPCodeApiClient;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Client as USReverseGeoApiClient;
@@ -27,6 +28,7 @@ class ClientBuilder {
     // Endpoint constants
     const INTERNATIONAL_STREET_API_URL = 'https://international-street.api.smarty.com';
     const INTERNATIONAL_AUTOCOMPLETE_API_URL = 'https://international-autocomplete.api.smarty.com';
+    const INTERNATIONAL_POSTAL_CODE_API_URL = 'https://international-postal-code.api.smarty.com';
     const US_AUTOCOMPLETE_PRO_API_URL = 'https://us-autocomplete-pro.api.smarty.com/';
     const US_EXTRACT_API_URL = 'https://us-extract.api.smarty.com';
     const US_STREET_API_URL = 'https://us-street.api.smarty.com/street-address';
@@ -64,7 +66,7 @@ class ClientBuilder {
         ClientInterface $httpClient,
         RequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory,
-        Serializer $serializer = null
+        ?Serializer $serializer = null
     ) {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
@@ -426,6 +428,15 @@ class ClientBuilder {
             $this->streamFactory,
             $this->serializer,
             $this->baseUrl ?: self::INTERNATIONAL_AUTOCOMPLETE_API_URL
+        );
+    }
+    public function buildInternationalPostalCodeApiClient() {
+        return new InternationalPostalCodeApiClient(
+            $this->buildHttpClient(),
+            $this->requestFactory,
+            $this->streamFactory,
+            $this->serializer,
+            $this->baseUrl ?: self::INTERNATIONAL_POSTAL_CODE_API_URL
         );
     }
     public function buildUsReverseGeoApiClient() {

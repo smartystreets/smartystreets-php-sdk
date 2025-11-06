@@ -21,6 +21,7 @@
         "phpunit/phpunit": "^12.2",
         "psr/log": "^1.0.1",
         "guzzlehttp/psr7": "^2.7",
+        "guzzlehttp/guzzle": "^7.0",
         "http-interop/http-factory-guzzle": "^1.2"
     },
     "suggest": {
@@ -34,6 +35,11 @@
     "autoload-dev": {
         "psr-4": { 
             "SmartyStreets\\PhpSdk\\Tests\\": "tests/" 
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
         }
     }
 }
