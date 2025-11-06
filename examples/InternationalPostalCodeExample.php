@@ -19,7 +19,7 @@ class InternationalPostalCodeExample {
         $streamFactory = new StreamFactory();
         $serializer = new NativeSerializer();
 
-        $client = (new ClientBuilder($httpClient, $requestFactory, $streamFactory, $serializer))\
+        $client = (new ClientBuilder($httpClient, $requestFactory, $streamFactory, $serializer))
             ->buildInternationalPostalCodeApiClient();
 
         // For complete list of input fields, refer to:
