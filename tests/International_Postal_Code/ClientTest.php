@@ -53,7 +53,7 @@ class ClientTest extends TestCase {
         $this->assertEquals("1", $lookup->getResult()[0]->getInputId());
         $this->assertEquals("2", $lookup->getResult()[1]->getAdministrativeArea());
         $this->assertEquals("3", $lookup->getResult()[2]->getLocality());
-        $this->assertEquals("4", $lookup->getResult()[3]->getPostalCodeShort());
+        $this->assertEquals("4", $lookup->getResult()[3]->getPostalCode());
     }
 
     public function testNilLookupNOP() {
@@ -137,7 +137,7 @@ class ClientTest extends TestCase {
         $this->assertEquals("4", $candidate->getAdministrativeArea());
         $this->assertEquals("5", $candidate->getSubAdministrativeArea());
         $this->assertEquals("6", $candidate->getSuperAdministrativeArea());
-        $this->assertEquals("7", $candidate->getPostalCodeShort());
+        $this->assertEquals("7", $candidate->getPostalCode());
     }
 
     public function testSendingSingleFullyPopulatedLookup() {

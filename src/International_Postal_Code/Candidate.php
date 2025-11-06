@@ -21,7 +21,7 @@ class Candidate {
             $dependentLocality,
             $dependentLocalityName,
             $doubleDependentLocality,
-            $postalCodeShort,
+            $postalCode,
             $postalCodeExtra;
 
     public function __construct($obj = null) {
@@ -37,7 +37,7 @@ class Candidate {
         $this->dependentLocality = ArrayUtil::getField($obj, 'dependent_locality');
         $this->dependentLocalityName = ArrayUtil::getField($obj, 'dependent_locality_name');
         $this->doubleDependentLocality = ArrayUtil::getField($obj, 'double_dependent_locality');
-        $this->postalCodeShort = ArrayUtil::getField($obj, 'postal_code');
+        $this->postalCode = ArrayUtil::getField($obj, 'postal_code');
         $this->postalCodeExtra = ArrayUtil::getField($obj, 'postal_code_extra');
     }
 
@@ -79,8 +79,8 @@ class Candidate {
         return $this->doubleDependentLocality;
     }
 
-    public function getPostalCodeShort() {
-        return $this->postalCodeShort;
+    public function getPostalCode() {
+        return $this->postalCode;
     }
 
     public function getPostalCodeExtra() {
