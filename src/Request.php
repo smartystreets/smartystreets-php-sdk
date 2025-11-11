@@ -84,6 +84,10 @@ class Request {
         return $this->contentType;
     }
 
+    public function getUrlComponents() {
+        return $this->urlComponents;
+    }
+
     //endregion
 
     //region [ Setters ]
