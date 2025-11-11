@@ -83,6 +83,7 @@ class CandidateTest extends TestCase {
                 "latitude" => 52.0,
                 "longitude" => 53.0,
                 "geocode_precision" => "54",
+                "geocode_classification" => "multiple-point-average",
                 "max_geocode_precision" => "55",
                 "address_format" => "56",
                 "occupant_use" => "56.1"
@@ -237,6 +238,7 @@ class CandidateTest extends TestCase {
         $this->assertEquals(52, $metadata->getLatitude());
         $this->assertEquals(53, $metadata->getLongitude());
         $this->assertEquals("54", $metadata->getGeocodePrecision());
+        $this->assertEquals("multiple-point-average", $metadata->getGeocodeClassification());
         $this->assertEquals("55", $metadata->getMaxGeocodePrecision());
         $this->assertEquals("56", $metadata->getAddressFormat());
         $this->assertEquals("56.1", $metadata->getOccupantUse());
