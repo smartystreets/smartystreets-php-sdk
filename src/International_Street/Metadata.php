@@ -12,6 +12,7 @@ class Metadata {
     private $latitude,
             $longitude,
             $geocodePrecision,
+            $geocodeClassification,
             $maxGeocodePrecision,
             $addressFormat,
             $occupantUse;
@@ -23,6 +24,7 @@ class Metadata {
         $this->latitude = ArrayUtil::getField($obj,'latitude');
         $this->longitude = ArrayUtil::getField($obj,'longitude');
         $this->geocodePrecision = ArrayUtil::getField($obj,'geocode_precision');
+        $this->geocodeClassification = ArrayUtil::getField($obj,'geocode_classification');
         $this->maxGeocodePrecision = ArrayUtil::getField($obj,'max_geocode_precision');
         $this->addressFormat = ArrayUtil::getField($obj,'address_format');
         $this->occupantUse = ArrayUtil::getField($obj,'occupant_use');
@@ -40,6 +42,10 @@ class Metadata {
 
     public function getGeocodePrecision() {
         return $this->geocodePrecision;
+    }
+
+    public function getGeocodeClassification() {
+        return $this->geocodeClassification;
     }
 
     public function getMaxGeocodePrecision() {
