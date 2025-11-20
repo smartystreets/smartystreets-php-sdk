@@ -80,7 +80,7 @@ class USEnrichmentExample
 
     public function displayResult(Result $result)
     {
-        if ($result->dataSubsetName == 'principal' || $result->dataSubsetName == 'financial' || $result->dataSetName == 'geo-reference'){
+        if ($result->dataSubsetName == 'principal' || $result->dataSetName == 'geo-reference'){
             echo("Results for input: " . $result->smartyKey . ", " . $result->dataSetName . "," . $result->dataSubsetName . "\n");
 
             var_dump($result->matchedAddress);

@@ -9,31 +9,13 @@ use SmartyStreets\PhpSdk\US_Enrichment\Result;
 
 class ResponseTest extends TestCase
 {
-    private $financialObj,
-    $principalObj,
+    private $principalObj,
     $geoReferenceObj,
     $secondaryObj,
     $secondaryCountObj;
 
     public function setUp() : void
     {
-        $this->financialObj = array(
-            'smarty_key' => '123',
-            'data_set_name' => 'property',
-            'data_subset_name' => 'financial',
-            'attributes' => array(
-                'deed_transaction_id' => 'test_id',
-                'financial_history' => array(
-                    array(
-                        'code_title_company' => 'test_company1'
-                    ),
-                    array(
-                        'code_title_company' => 'test_company2'
-                    )
-                ),
-            ),
-        );
-
         $this->principalObj = array(
             'smarty_key' => '123',
             'data_set_name' => 'property',
@@ -96,24 +78,6 @@ class ResponseTest extends TestCase
             'smarty_key' => '123',
             'count' => 2,
         );
-    }
-
-    public function testAllFinancialFieldsFilledCorrectly()
-    {
-        $result = new Result($this->financialObj);
-
-        $this->assertEquals("123", $result->smartyKey);
-        $this->assertEquals('property', $result->dataSetName);
-        $this->assertEquals('financial', $result->dataSubsetName);
-
-        $attributes = $result->attributes;
-
-        $this->assertEquals('test_id', $attributes->deedTransactionId);
-
-        $financialHistory = $attributes->financialHistory;
-        $this->assertEquals(2, count($financialHistory));
-        $this->assertEquals('test_company1', $financialHistory[0]->codeTitleCompany);
-        $this->assertEquals('test_company2', $financialHistory[1]->codeTitleCompany);
     }
 
     public function testAllPrincipalFieldsFilledCorrectly()
