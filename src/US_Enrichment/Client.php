@@ -21,23 +21,6 @@ class Client {
         $this->serializer = $serializer;
     }
 
-    public function sendPropertyFinancialLookup($financialLookup){
-        if (is_string($financialLookup)) {
-            $lookup = new Lookup($financialLookup, "property", "financial");
-            $this->sendLookup($lookup);
-            return $lookup->getResponse();
-        } 
-        else if (is_object($financialLookup)) {
-            $financialLookup->setDataSetName("property");
-            $financialLookup->setDataSubSetName("financial");
-            $this->sendLookup($financialLookup);
-            return $financialLookup->getResponse();
-        }
-        else {
-            return null;
-        }
-    }
-
     public function sendPropertyPrincipalLookup($principalLookup){
         if (is_string($principalLookup)) {
             $lookup = new Lookup($principalLookup, "property", "principal");

@@ -3,7 +3,6 @@
 namespace SmartyStreets\PhpSdk\US_Enrichment;
 
 require_once(__DIR__ . '/../ArrayUtil.php');
-require_once(__DIR__ . '/FinancialAttributes.php');
 require_once(__DIR__ . '/PrincipalAttributes.php');
 require_once(__DIR__ . '/GeoReferenceAttributes.php');
 require_once(__DIR__ . '/RiskAttributes.php');
@@ -62,9 +61,6 @@ class Result  {
 
     private function createAttributes($dataSetName, $dataSubsetName, $attributesObj){
         if ($dataSetName == 'property') {
-            if ($dataSubsetName == 'financial') {
-                return new FinancialAttributes($attributesObj);
-            }
             if ($dataSubsetName == 'principal') {
                 return new PrincipalAttributes($attributesObj);
             }
