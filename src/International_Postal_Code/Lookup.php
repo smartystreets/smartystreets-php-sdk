@@ -16,7 +16,8 @@ class Lookup {
             $country,
             $locality,
             $administrativeArea,
-            $postalCode;
+            $postalCode,
+            $customParamArray;
 
     //endregion
 
@@ -24,6 +25,7 @@ class Lookup {
 
     public function __construct() {
         $this->result = array();
+        $this->customParamArray = array();
     }
 
     //endregion
@@ -52,6 +54,10 @@ class Lookup {
 
     public function getPostalCode() {
         return $this->postalCode;
+    }
+
+    public function getCustomParamArray() {
+        return $this->customParamArray;
     }
 
     //endregion
@@ -83,5 +89,9 @@ class Lookup {
     }
 
     //endregion
+
+    public function addCustomParameter($parameter, $value) {
+        $this->customParamArray[$parameter] = $value;
+    }
 }
 
