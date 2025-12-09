@@ -211,8 +211,6 @@ class Lookup implements \JsonSerializable {
      * @param $matchStrategy string The match output strategy
      */
     public function setMatchStrategy($matchStrategy) {
-        if ($matchStrategy == self::ENHANCED && $this->maxCandidates == 1)
-            $this->maxCandidates = 5;
         $this->matchStrategy = $matchStrategy;
     }
 

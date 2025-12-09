@@ -47,7 +47,7 @@ class ClientTest extends TestCase {
         $serializer = new NativeSerializer();
         $expectedURL = ("http://localhost/street-address?input_id=1&street=2&street2=3&secondary=4&city=5&" .
             "state=6&zipcode=7&lastline=8&addressee=9&" .
-            "urbanization=10&match=enhanced&candidates=5");
+            "urbanization=10&match=enhanced&candidates=1");
 
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -75,7 +75,7 @@ class ClientTest extends TestCase {
         $serializer = new NativeSerializer();
         $expectedURL = ("http://localhost/street-address?input_id=1&street=2&street2=3&secondary=4&city=5&" .
             "state=6&zipcode=7&lastline=8&addressee=9&" .
-            "urbanization=10&match=enhanced&candidates=5&parameter=custom&second=parameter");
+            "urbanization=10&match=enhanced&candidates=1&parameter=custom&second=parameter");
 
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -105,7 +105,7 @@ class ClientTest extends TestCase {
         $serializer = new NativeSerializer();
         $expectedURL = ("http://localhost/street-address?input_id=1&street=2&street2=3&secondary=4&city=5&" .
             "state=6&zipcode=7&lastline=8&addressee=9&" .
-            "urbanization=10&match=enhanced&format=project-usa&candidates=5");
+            "urbanization=10&match=enhanced&format=project-usa&candidates=1");
 
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
