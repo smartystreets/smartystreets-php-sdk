@@ -38,6 +38,22 @@ class Client {
      * @throws IOException
      */
     public function sendBatch(Batch $batch) {
+        $this->sendBatchWithAuth($batch, null, null);
+    }
+
+    /**
+     * Sends a batch of no more than 100 lookups with per-request credentials.
+     * If authId and authToken are both non-empty, they will be used for this request
+     * instead of the client-level credentials. This is useful for multi-tenant scenarios
+     * where different requests require different credentials.
+     *
+     * @param batch Batch Must contain between 1 and 100 Lookup objects
+     * @param authId string|null Per-request auth ID
+     * @param authToken string|null Per-request auth token
+     * @throws SmartyException
+     * @throws IOException
+     */
+    public function sendBatchWithAuth(Batch $batch, $authId = null, $authToken = null) {
         $request = new Request();
 
         if ($batch->size() == 0)
@@ -49,6 +65,10 @@ class Client {
             $request->setPayload($this->serializer->serialize($batch->getAllLookups()));
 
         $request->setUrlComponents("/lookup");
+
+        if (!empty($authId) && !empty($authToken)) {
+            $request->setBasicAuth($authId, $authToken);
+        }
 
         $response = $this->sender->send($request);
 

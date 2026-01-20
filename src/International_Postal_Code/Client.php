@@ -26,10 +26,31 @@ class Client {
     }
 
     public function sendLookup(?Lookup $lookup = null) {
+        $this->sendLookupWithAuth($lookup, null, null);
+    }
+
+    /**
+     * Sends a lookup with per-request credentials.
+     * If authId and authToken are both non-empty, they will be used for this request
+     * instead of the client-level credentials. This is useful for multi-tenant scenarios
+     * where different requests require different credentials.
+     *
+     * @param lookup Lookup
+     * @param authId string|null Per-request auth ID
+     * @param authToken string|null Per-request auth token
+     * @throws SmartyException
+     * @throws IOException
+     */
+    public function sendLookupWithAuth(?Lookup $lookup = null, $authId = null, $authToken = null) {
         if ($lookup == null)
             throw new SmartyException("lookup cannot be nil");
 
         $request = $this->buildRequest($lookup);
+
+        if (!empty($authId) && !empty($authToken)) {
+            $request->setBasicAuth($authId, $authToken);
+        }
+
         $response = $this->sender->send($request);
 
         $candidates = $this->serializer->deserialize($response->getPayload());

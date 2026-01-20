@@ -1,11 +1,11 @@
 <?php
 
-require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Enrichment/Client.php');
 require_once(__DIR__ . '/../src/US_Enrichment/Lookup.php');
 
-use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\BasicAuthCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Enrichment\Result;
 use SmartyStreets\PhpSdk\US_Enrichment\Lookup;
@@ -25,9 +25,9 @@ class USEnrichmentExample
         $authId = getenv('SMARTY_AUTH_ID');
         $authToken = getenv('SMARTY_AUTH_TOKEN');
 
-        $staticCredentials = new StaticCredentials($authId, $authToken);
+        $credentials = new BasicAuthCredentials($authId, $authToken);
 
-        $client = (new ClientBuilder($staticCredentials))
+        $client = (new ClientBuilder($credentials))
             ->buildUsEnrichmentApiClient();
         
         $smartyKey = "325023201";

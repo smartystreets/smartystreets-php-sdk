@@ -4,8 +4,8 @@ use SmartyStreets\PhpSdk\SharedCredentials;
 
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Street/Lookup.php');
-require_once(__DIR__ . '/../src/StaticCredentials.php');
-use SmartyStreets\PhpSdk\StaticCredentials;
+require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
+use SmartyStreets\PhpSdk\BasicAuthCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Street\Lookup;
 

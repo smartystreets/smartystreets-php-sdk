@@ -1,11 +1,11 @@
 <?php
 
-require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Reverse_Geo/Lookup.php');
 require_once(__DIR__ . '/../src/US_Reverse_Geo/Client.php');
 
-use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\BasicAuthCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Lookup;
 
@@ -24,9 +24,9 @@ class USReverseGeoExample
        $authId = getenv('SMARTY_AUTH_ID');
        $authToken = getenv('SMARTY_AUTH_TOKEN');
 
-        $staticCredentials = new StaticCredentials($authId, $authToken);
+        $credentials = new BasicAuthCredentials($authId, $authToken);
 
-        $client = (new ClientBuilder($staticCredentials))
+        $client = (new ClientBuilder($credentials))
             ->buildUsReverseGeoApiClient();
 
         $lookup = new Lookup(40.111111, -111.111111);

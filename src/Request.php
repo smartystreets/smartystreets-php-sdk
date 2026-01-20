@@ -113,5 +113,10 @@ class Request {
         $this->contentType = $contentType;
     }
 
+    public function setBasicAuth($authId, $authToken) {
+        $credentials = base64_encode($authId . ':' . $authToken);
+        $this->setHeader('Authorization', 'Basic ' . $credentials);
+    }
+
     //endregion
 }

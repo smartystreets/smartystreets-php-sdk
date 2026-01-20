@@ -2,9 +2,9 @@
 
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Street/Lookup.php');
-require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
-use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\BasicAuthCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Street\Lookup;
 
@@ -21,9 +21,9 @@ class UsStreetSingleAddressExample {
        $authId = getenv('SMARTY_AUTH_ID');
        $authToken = getenv('SMARTY_AUTH_TOKEN');
 
-        $staticCredentials = new StaticCredentials($authId, $authToken);
+        $credentials = new BasicAuthCredentials($authId, $authToken);
 
-        $client = (new ClientBuilder($staticCredentials))
+        $client = (new ClientBuilder($credentials))
 //                        ->viaProxy("http://localhost:8080", "username", "password") // uncomment this line to point to the specified proxy.
                         ->buildUsStreetApiClient();
 
