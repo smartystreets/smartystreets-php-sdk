@@ -1,11 +1,11 @@
 <?php
 
-use SmartyStreets\PhpSdk\SharedCredentials;
-
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Street/Lookup.php');
-require_once(__DIR__ . '/../src/StaticCredentials.php');
-use SmartyStreets\PhpSdk\StaticCredentials;
+require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
+// require_once(__DIR__ . '/../src/SharedCredentials.php');
+use SmartyStreets\PhpSdk\BasicAuthCredentials;
+// use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Street\Lookup;
 
@@ -15,15 +15,15 @@ $lookupExample->run();
 class UsStreetComponentAnalysisExample {
 
     public function run() {
-        // For client-side requests (browser/mobile), use this code:
+        // For client-side requests (browser/mobile), use SharedCredentials:
         // $key = getenv('SMARTY_AUTH_WEB');
         // $referer = getenv('SMARTY_AUTH_REFERER');
         // $credentials = new SharedCredentials($key, $referer);
 
-        // For server-to-server requests, use this code:
+        // For server-to-server requests, use BasicAuthCredentials:
         $authId = getenv('SMARTY_AUTH_ID');
         $authToken = getenv('SMARTY_AUTH_TOKEN');
-        $credentials = new StaticCredentials($authId, $authToken);
+        $credentials = new BasicAuthCredentials($authId, $authToken);
 
         $client = (new ClientBuilder($credentials))
             ->withFeatureComponentAnalysis() // To add component analysis feature you need to specify when you create the client.

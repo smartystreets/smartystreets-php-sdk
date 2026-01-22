@@ -2,10 +2,12 @@
 
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Street/Lookup.php');
-require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
+// require_once(__DIR__ . '/../src/SharedCredentials.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
-use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\BasicAuthCredentials;
+// use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Street\Lookup;
 use SmartyStreets\PhpSdk\Batch;
@@ -16,9 +18,12 @@ $lookupExample->run();
 class USStreetLookupsWithMatchStrategyExamples {
 
     public function run() {
-        $staticCredentials = new StaticCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
+        // For client-side requests (browser/mobile), use SharedCredentials:
+        // $credentials = new SharedCredentials($key, $hostname);
 
-        $client = (new ClientBuilder($staticCredentials))
+        $credentials = new BasicAuthCredentials(getenv('SMARTY_AUTH_ID'), getenv('SMARTY_AUTH_TOKEN'));
+
+        $client = (new ClientBuilder($credentials))
             ->buildUsStreetApiClient();
         $batch = new Batch();
 
