@@ -66,7 +66,7 @@ class InternationalPostalCodeExample {
             $this->display($candidate->getSubAdministrativeArea());
             $this->display($candidate->getAdministrativeArea());
             $this->display($candidate->getSuperAdministrativeArea());
-            $this->display($candidate->getPostalCodeShort());
+            $this->display($candidate->getPostalCode());
             echo("\n");
         }
     }
