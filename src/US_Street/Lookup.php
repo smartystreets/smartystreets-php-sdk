@@ -42,7 +42,7 @@ class Lookup implements \JsonSerializable {
      * This constructor accepts a freeform address. That means the whole address is in one string.
      */
     public function __construct($street = null, $street2 = null, $secondary = null, $city = null, $state = null, $zipcode = null,
-                                $lastline = null, $addressee = null, $urbanization = null, $matchStrategy = null, $maxCandidates = 1, $input_id = null, $outputFormat = null, $countySource = null) {
+                                $lastline = null, $addressee = null, $urbanization = null, $matchStrategy = null, $maxCandidates = null, $input_id = null, $outputFormat = null, $countySource = null) {
         $this->input_id = $input_id;
         $this->street = $street;
         $this->street2 = $street2;
@@ -65,6 +65,20 @@ class Lookup implements \JsonSerializable {
 
     #[\ReturnTypeWillChange]
     function jsonSerialize() {
+        $matchStrategy = $this->matchStrategy;
+        if ($matchStrategy === null || $matchStrategy === '') {
+            $matchStrategy = self::ENHANCED;
+        }
+
+        $candidates = $this->maxCandidates;
+        if ($candidates !== null && $candidates > 0) {
+            // Use explicitly set candidates
+        } elseif ($matchStrategy === self::ENHANCED) {
+            $candidates = 5;
+        } else {
+            $candidates = null;
+        }
+
         $jsonArray = array(
             'input_id' => $this->input_id,
             'street' => $this->street,
@@ -76,10 +90,10 @@ class Lookup implements \JsonSerializable {
             'lastline' => $this->lastline,
             'addressee' => $this->addressee,
             'urbanization' => $this->urbanization,
-            'match' => $this->matchStrategy,
+            'match' => ($matchStrategy !== self::STRICT) ? $matchStrategy : null,
             'format' => $this->outputFormat,
             'county_source' => $this->countySource,
-            'candidates' => $this->maxCandidates
+            'candidates' => $candidates
         );
         foreach ($this->customParamArray as $key => $value) {
             $jsonArray[$key] = $value;
@@ -211,8 +225,6 @@ class Lookup implements \JsonSerializable {
      * @param $matchStrategy string The match output strategy
      */
     public function setMatchStrategy($matchStrategy) {
-        if ($matchStrategy == self::ENHANCED && $this->maxCandidates == 1)
-            $this->maxCandidates = 5;
         $this->matchStrategy = $matchStrategy;
     }
 

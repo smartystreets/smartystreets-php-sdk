@@ -31,7 +31,7 @@ class ClientTest extends TestCase {
     //region [ Single Lookup ]
 
     public function testSendingSingleFreeformLookup() {
-        $expectedPayload = "/street-address?street=freeform&candidates=1";
+        $expectedPayload = "/street-address?street=freeform&match=enhanced&candidates=5";
         $sender = new RequestCapturingSender();
         $serializer = new MockSerializer($expectedPayload);
         $client = new Client($sender, $serializer);
