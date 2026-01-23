@@ -1,11 +1,13 @@
 <?php
 
 require_once(__DIR__ . '/../src/ArrayUtil.php');
-require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
+// require_once(__DIR__ . '/../src/SharedCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Extract/Lookup.php');
 require_once(__DIR__ . '/../src/US_Extract/Client.php');
-use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\BasicAuthCredentials;
+// use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Extract\Lookup;
 use SmartyStreets\PhpSdk\ArrayUtil;
@@ -22,8 +24,11 @@ class USExtractExample {
        $authId = getenv('SMARTY_AUTH_ID');
        $authToken = getenv('SMARTY_AUTH_TOKEN');
 
-        $staticCredentials = new StaticCredentials($authId, $authToken);
-        $client = (new ClientBuilder($staticCredentials))->buildUSExtractApiClient();
+        // For client-side requests (browser/mobile), use SharedCredentials:
+        // $credentials = new SharedCredentials($key, $hostname);
+
+        $credentials = new BasicAuthCredentials($authId, $authToken);
+        $client = (new ClientBuilder($credentials))->buildUSExtractApiClient();
         $text = "Here is some text.\r\nMy address is 3785 Las Vegs Av." .
             "\r\nLos Vegas, Nevada." .
             "\r\nMeet me at 1 Rosedale Baltimore Maryland, not at 123 Phony Street, Boise Idaho.";

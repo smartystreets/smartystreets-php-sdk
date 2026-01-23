@@ -1,13 +1,13 @@
 <?php
 
-require_once(__DIR__ . '/../src/SharedCredentials.php');
-require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
+// require_once(__DIR__ . '/../src/SharedCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Autocomplete_Pro/Lookup.php');
 require_once(__DIR__ . '/../src/US_Autocomplete_Pro/Client.php');
 
-use SmartyStreets\PhpSdk\SharedCredentials;
-use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\BasicAuthCredentials;
+// use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Lookup;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Suggestion;
@@ -20,15 +20,15 @@ class USAutocompleteProExample
     public function run()
     {
         // We recommend storing your secret keys in environment variables---it's safer!
-//        $key = getenv('SMARTY_WEBSITE_KEY');
-//        $hostname = getenv('SMARTY_WEBSITE_DOMAIN');
-
-//        $credentials = new SharedCredentials($key, $hostname);
+        // For client-side requests (browser/mobile), use SharedCredentials:
+        // $key = getenv('SMARTY_WEBSITE_KEY');
+        // $hostname = getenv('SMARTY_WEBSITE_DOMAIN');
+        // $credentials = new SharedCredentials($key, $hostname);
 
         $id = getenv('SMARTY_AUTH_ID');
         $token = getenv('SMARTY_AUTH_TOKEN');
 
-        $credentials = new StaticCredentials($id, $token);
+        $credentials = new BasicAuthCredentials($id, $token);
 
         $client = (new ClientBuilder($credentials))
             ->buildUSAutocompleteProApiClient();

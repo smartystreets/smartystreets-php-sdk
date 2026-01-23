@@ -1,10 +1,12 @@
 <?php
 
-require_once(__DIR__ . '/../src/StaticCredentials.php');
+require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
+// require_once(__DIR__ . '/../src/SharedCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/International_Postal_Code/Lookup.php');
 require_once(__DIR__ . '/../src/International_Postal_Code/Client.php');
-use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\BasicAuthCredentials;
+// use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\International_Postal_Code\Lookup;
 
@@ -21,9 +23,12 @@ class InternationalPostalCodeExample {
        $authId = getenv('SMARTY_AUTH_ID');
        $authToken = getenv('SMARTY_AUTH_TOKEN');
 
-        $staticCredentials = new StaticCredentials($authId, $authToken);
+        // For client-side requests (browser/mobile), use SharedCredentials:
+        // $credentials = new SharedCredentials($key, $hostname);
 
-        $client = (new ClientBuilder($staticCredentials))
+        $credentials = new BasicAuthCredentials($authId, $authToken);
+
+        $client = (new ClientBuilder($credentials))
             ->buildInternationalPostalCodeApiClient();
 
         // Documentation for input fields can be found at:
@@ -61,7 +66,7 @@ class InternationalPostalCodeExample {
             $this->display($candidate->getSubAdministrativeArea());
             $this->display($candidate->getAdministrativeArea());
             $this->display($candidate->getSuperAdministrativeArea());
-            $this->display($candidate->getPostalCodeShort());
+            $this->display($candidate->getPostalCode());
             echo("\n");
         }
     }
