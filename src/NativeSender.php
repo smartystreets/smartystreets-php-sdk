@@ -32,7 +32,9 @@ class NativeSender implements Sender
 
         if ($result === false) {
             $errorMessage = curl_error($ch);
-            curl_close($ch);
+            if (PHP_VERSION_ID < 80000) {
+                curl_close($ch);
+            }
             throw new SmartyException($errorMessage);
         }
 
@@ -47,7 +49,9 @@ class NativeSender implements Sender
 
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        curl_close($ch);
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($ch);
+        }
 
         return new Response($statusCode, $bodyStr, $headers);
     }
