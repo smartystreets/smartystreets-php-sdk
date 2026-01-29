@@ -9,5 +9,9 @@
       "Bash(phpunit *)",
       "Bash(php *)"
     ]
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
   }
 }
