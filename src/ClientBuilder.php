@@ -65,6 +65,7 @@ class ClientBuilder {
             $debugMode,
             $licenses,
             $customHeaders,
+            $appendHeaders,
             $ip,
             $customQuery;
 
@@ -77,6 +78,7 @@ class ClientBuilder {
         $this->debugMode = false;
         $this->licenses = [];
         $this->customHeaders = [];
+        $this->appendHeaders = [];
         $this->ip = null;
         $this->customQuery = [];
     }
@@ -175,8 +177,8 @@ class ClientBuilder {
     }
 
     /**
-     * Allows the caller to include an X-Forwarded-For header in their request
-     * @param string $header The header to be included with the request
+     * Allows the caller to include an X-Forwarded-For header in their request, passing on the end user's IP address
+     * @param string $ip The IP of the end user
      * @return $this Returns <b>this</b> to accommodate method chaining.
      */
     public function withXForwardedFor($ip) {
@@ -185,15 +187,36 @@ class ClientBuilder {
     }
 
     /**
-     * Allows the caller to include a custom header in their request, passing on the end user's IP address
-     * @param string $ip The IP of the end user
+     * Allows the caller to include a custom header in their request
+     * @param string $header The header to be included with the request
+     * @param string $value The value of the header
      * @return $this Returns <b>this</b> to accommodate method chaining.
      */
     public function withCustomHeader($header, $value) {
         $this->customHeaders[$header] = $value;
+        foreach ($this->appendHeaders as $key => $separator) {
+            if (strcasecmp($key, $header) === 0) {
+                unset($this->appendHeaders[$key]);
+                break;
+            }
+        }
         return $this;
     }
-    
+
+    /**
+     * Appends the provided value to the existing header value using the specified separator,
+     * rather than replacing the header value. This is useful for single-value headers like User-Agent.
+     * @param string $header The header name
+     * @param string $value The value to append
+     * @param string $separator The separator to use when joining values (e.g., " " for User-Agent)
+     * @return $this Returns <b>this</b> to accommodate method chaining.
+     */
+    public function withAppendedHeader($header, $value, $separator = " ") {
+        $this->appendHeaders[$header] = $separator;
+        $this->customHeaders[$header] = $value;
+        return $this;
+    }
+
     public function withCustomQuery($key, $value) {
         $this->customQuery[$key] = $value;
         return $this;
@@ -261,7 +284,7 @@ class ClientBuilder {
         if ($this->httpSender != null)
             return $this->httpSender;
 
-        $sender = new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode, $this->ip, $this->customHeaders);
+        $sender = new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode, $this->ip, $this->customHeaders, $this->appendHeaders);
 
         $sender = new StatusCodeSender($sender);
 
