@@ -58,6 +58,9 @@ class CandidateTest extends TestCase {
                 'time_zone' => '39',
                 'utc_offset' => 40.0,
                 'dst' => true,
+                'iana_time_zone' => 'America/Denver',
+                'iana_utc_offset' => -7.0,
+                'iana_dst' => true,
                 'ews_match' => true
             ),
             'analysis' => array(
@@ -144,6 +147,9 @@ class CandidateTest extends TestCase {
         $this->assertEquals('39', $metadata->getTimeZone());
         $this->assertEquals(40.0, $metadata->getUtcOffset());
         $this->assertEquals(true, $metadata->obeysDst());
+        $this->assertEquals('America/Denver', $metadata->getIanaTimeZone());
+        $this->assertEquals(-7.0, $metadata->getIanaUtcOffset());
+        $this->assertEquals(true, $metadata->getIanaDst());
         $this->assertEquals(true, $metadata->isEwsMatch());
 
         $analysis = $candidate->getAnalysis();
