@@ -235,7 +235,7 @@ class ClientBuilder {
         return $this->withCustomCommaSeparatedQuery("features", "component-analysis");
     }
 
-    public function withFeatureIANATimeZone() {
+    public function withFeatureIanaTimeZone() {
         return $this->withCustomCommaSeparatedQuery("features", "iana-timezone");
     }
 

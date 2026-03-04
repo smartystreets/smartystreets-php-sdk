@@ -28,7 +28,7 @@ class Metadata {
         $this->obeysDst = ArrayUtil::getField($obj, 'dst');
         $this->ianaTimeZone = ArrayUtil::getField($obj, 'iana_time_zone');
         $this->ianaUtcOffset = ArrayUtil::getField($obj, 'iana_utc_offset');
-        $this->ianaDst = ArrayUtil::getField($obj, 'iana_dst');
+        $this->ianaObeysDst = ArrayUtil::getField($obj, 'iana_dst');
         $this->isEwsMatch = ArrayUtil::getField($obj, 'ews_match');
     }
 
@@ -50,7 +50,7 @@ class Metadata {
         $obeysDst,
         $ianaTimeZone,
         $ianaUtcOffset,
-        $ianaDst,
+        $ianaObeysDst,
         $isEwsMatch;
 
     //region [ Getters ]
@@ -127,8 +127,8 @@ class Metadata {
         return $this->ianaUtcOffset;
     }
 
-    public function getIanaDst() {
-        return $this->ianaDst;
+    public function obeysIanaDst() {
+        return $this->ianaObeysDst;
     }
 
     public function isEwsMatch() {

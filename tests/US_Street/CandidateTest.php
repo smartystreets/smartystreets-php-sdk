@@ -149,7 +149,7 @@ class CandidateTest extends TestCase {
         $this->assertEquals(true, $metadata->obeysDst());
         $this->assertEquals('America/Denver', $metadata->getIanaTimeZone());
         $this->assertEquals(-7.0, $metadata->getIanaUtcOffset());
-        $this->assertEquals(true, $metadata->getIanaDst());
+        $this->assertEquals(true, $metadata->obeysIanaDst());
         $this->assertEquals(true, $metadata->isEwsMatch());
 
         $analysis = $candidate->getAnalysis();

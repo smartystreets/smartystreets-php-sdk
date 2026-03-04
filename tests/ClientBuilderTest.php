@@ -11,7 +11,7 @@ class ClientBuilderTest extends TestCase {
 
     public function testWithFeatureIANATimeZone() {
         $builder = new ClientBuilder();
-        $builder->withFeatureIANATimeZone();
+        $builder->withFeatureIanaTimeZone();
 
         $this->assertEquals('iana-timezone', $this->getCustomQuery($builder)['features']);
     }
@@ -19,7 +19,7 @@ class ClientBuilderTest extends TestCase {
     public function testWithFeatureIANATimeZoneAndComponentAnalysis_ShouldAppend() {
         $builder = new ClientBuilder();
         $builder->withFeatureComponentAnalysis();
-        $builder->withFeatureIANATimeZone();
+        $builder->withFeatureIanaTimeZone();
 
         $this->assertEquals('component-analysis,iana-timezone', $this->getCustomQuery($builder)['features']);
     }
