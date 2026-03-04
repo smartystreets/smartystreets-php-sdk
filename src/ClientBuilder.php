@@ -235,6 +235,9 @@ class ClientBuilder {
         return $this->withCustomCommaSeparatedQuery("features", "component-analysis");
     }
 
+    /**
+     * withFeatureIanaTimeZone turns on the IANA timezone feature for the request.
+     */
     public function withFeatureIanaTimeZone() {
         return $this->withCustomCommaSeparatedQuery("features", "iana-timezone");
     }
