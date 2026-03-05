@@ -33,12 +33,15 @@ us_extract_api:
 us_reverse_geo_api:
 	php examples/USReverseGeoExample.php
 
+us_street_iana_timezone_api:
+	php examples/UsStreetIanaTimeZoneExample.php
+
 us_street_api:
-	php examples/UsStreetSingleAddressExample.php && php examples/UsStreetMultipleAddressesExample.php && php examples/UsStreetComponentAnalysisExample.php
+	php examples/UsStreetSingleAddressExample.php && php examples/UsStreetMultipleAddressesExample.php && php examples/UsStreetComponentAnalysisExample.php && php examples/UsStreetIanaTimeZoneExample.php
 
 us_zipcode_api:
 	php examples/UsZIPCodeSingleLookupExample.php && php examples/UsZIPCodeMultipleLookupsExample.php
 
 examples: international_autocomplete_api international_postal_code_api international_street_api us_autocomplete_pro_api us_enrichment_api us_extract_api us_reverse_geo_api us_street_api us_zipcode_api
 
-.PHONY: test package release examples international_autocomplete_api international_postal_code_api international_street_api us_autocomplete_pro_api us_enrichment_api us_extract_api us_reverse_geo_api us_street_api us_zipcode_api
+.PHONY: test package release examples international_autocomplete_api international_postal_code_api international_street_api us_autocomplete_pro_api us_enrichment_api us_extract_api us_reverse_geo_api us_street_api us_street_iana_timezone_api us_zipcode_api
