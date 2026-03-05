@@ -235,6 +235,13 @@ class ClientBuilder {
         return $this->withCustomCommaSeparatedQuery("features", "component-analysis");
     }
 
+    /**
+     * withFeatureIanaTimeZone turns on the IANA timezone feature for the request.
+     */
+    public function withFeatureIanaTimeZone() {
+        return $this->withCustomCommaSeparatedQuery("features", "iana-timezone");
+    }
+
     public function buildUSAutocompleteProApiClient() {
         $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_PRO_API_URL);
         return new USAutoCompleteProApiClient($this->buildSender(), $this->serializer);
