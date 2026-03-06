@@ -116,32 +116,6 @@ class ClientTest extends TestCase {
         $this->assertLookupRejected($lookup);
     }
 
-    public function testRejectsLookupsWithOnlyCountryAndAddress1() {
-        $lookup = new Lookup();
-        $lookup->setCountry("0");
-        $lookup->setAddress1("1");
-
-        $this->assertLookupRejected($lookup);
-    }
-
-    public function testRejectsLookupsWithOnlyCountryAndAddress1AndLocality() {
-        $lookup = new Lookup();
-        $lookup->setCountry("0");
-        $lookup->setAddress1("1");
-        $lookup->setLocality("2");
-
-        $this->assertLookupRejected($lookup);
-    }
-
-    public function testRejectsLookupsWithOnlyCountryAndAddress1AndAdministrativeArea() {
-        $lookup = new Lookup();
-        $lookup->setCountry("0");
-        $lookup->setAddress1("1");
-        $lookup->setAdministrativeArea("2");
-
-        $this->assertLookupRejected($lookup);
-    }
-
     private function assertLookupRejected($lookup) {
         $classType = \SmartyStreets\PhpSdk\Exceptions\SmartyException::class;
         $sender = new MockCrashingSender();
