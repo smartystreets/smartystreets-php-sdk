@@ -127,6 +127,22 @@ class ClientTest extends TestCase {
         $this->assertEquals($expectedURL, $capturingSender->getRequest()->getURL());
         $this->assertEquals("GET", $capturingSender->getRequest()->getMethod());
     }
+    public function testSendingSingleLookupWithStrictMatch() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new NativeSerializer();
+        $expectedURL = "http://localhost/street-address?street=123+Main+St&match=strict";
+
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setStreet("123 Main St");
+        $lookup->setMatchStrategy(Lookup::STRICT);
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals($expectedURL, $capturingSender->getRequest()->getURL());
+    }
+
 //endregion
 
     //region [Batch Lookup ]
@@ -152,6 +168,42 @@ class ClientTest extends TestCase {
         $client->sendBatch($batch);
 
         $this->assertEquals($expectedPayload, $sender->getRequest()->getPayload());
+    }
+
+    public function testBatchSerializationOmitsNullFields() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new NativeSerializer();
+        $client = new Client($sender, $serializer);
+
+        $lookup1 = new Lookup();
+        $lookup1->setStreet("123 Main St");
+
+        $lookup2 = new Lookup();
+        $lookup2->setStreet("456 Oak Ave");
+        $lookup2->setMatchStrategy(Lookup::STRICT);
+
+        $batch = new Batch();
+        $batch->add($lookup1);
+        $batch->add($lookup2);
+
+        $client->sendBatch($batch);
+
+        $payload = $capturingSender->getRequest()->getPayload();
+        $this->assertStringNotContainsString(':null', str_replace(' ', '', $payload));
+
+        $decoded = json_decode($payload, true);
+        // First lookup: enhanced defaults
+        $this->assertEquals('123 Main St', $decoded[0]['street']);
+        $this->assertEquals('enhanced', $decoded[0]['match']);
+        $this->assertEquals(5, $decoded[0]['candidates']);
+        $this->assertArrayNotHasKey('city', $decoded[0]);
+
+        // Second lookup: strict, no default candidates
+        $this->assertEquals('456 Oak Ave', $decoded[1]['street']);
+        $this->assertEquals('strict', $decoded[1]['match']);
+        $this->assertArrayNotHasKey('candidates', $decoded[1]);
+        $this->assertArrayNotHasKey('city', $decoded[1]);
     }
 
     //endregion

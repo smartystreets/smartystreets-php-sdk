@@ -99,13 +99,102 @@ class LookupTest extends TestCase {
     public function testQueryStringEncoding_ExplicitMatchStrict() {
         $lookup = new Lookup();
         $lookup->setMatchStrategy(Lookup::STRICT);
-        $this->assertEquals(array(), $this->encode($lookup));
+        $this->assertEquals(array('match' => 'strict'), $this->encode($lookup));
     }
 
     public function testQueryStringEncoding_ExplicitMatchStrictWithCandidates() {
         $lookup = new Lookup();
         $lookup->setMatchStrategy(Lookup::STRICT);
         $lookup->setMaxCandidates(3);
-        $this->assertEquals(array('candidates' => 3), $this->encode($lookup));
+        $this->assertEquals(array('candidates' => 3, 'match' => 'strict'), $this->encode($lookup));
+    }
+
+    public function testQueryStringEncoding_MultipleCustomParameters() {
+        $lookup = new Lookup();
+        $lookup->addCustomParameter("test_parameter_1", "hello_1");
+        $lookup->addCustomParameter("test_parameter_2", "hello_2");
+        $this->assertEquals(array(
+            'test_parameter_1' => 'hello_1',
+            'test_parameter_2' => 'hello_2',
+            'match' => 'enhanced',
+            'candidates' => 5,
+        ), $this->encode($lookup));
+    }
+
+    public function testJSONEncoding_DefaultMatchStrategyIsEnhancedWithCandidates() {
+        $result = json_decode(json_encode(new Lookup()), true);
+        $this->assertEquals('enhanced', $result['match']);
+        $this->assertEquals(5, $result['candidates']);
+    }
+
+    public function testJSONEncoding_ExplicitMatchStrict() {
+        $lookup = new Lookup();
+        $lookup->setMatchStrategy(Lookup::STRICT);
+        $result = json_decode(json_encode($lookup), true);
+        $this->assertEquals('strict', $result['match']);
+        $this->assertArrayNotHasKey('candidates', $result);
+    }
+
+    public function testJSONEncoding_ExplicitMatchStrictWithCandidates() {
+        $lookup = new Lookup();
+        $lookup->setMatchStrategy(Lookup::STRICT);
+        $lookup->setMaxCandidates(3);
+        $result = json_decode(json_encode($lookup), true);
+        $this->assertEquals('strict', $result['match']);
+        $this->assertEquals(3, $result['candidates']);
+    }
+
+    public function testJSONEncoding_MatchInvalid() {
+        $lookup = new Lookup();
+        $lookup->setMatchStrategy(Lookup::INVALID);
+        $result = json_decode(json_encode($lookup), true);
+        $this->assertEquals('invalid', $result['match']);
+        $this->assertArrayNotHasKey('candidates', $result);
+    }
+
+    public function testJSONEncoding_CustomParameters() {
+        $lookup = new Lookup();
+        $lookup->addCustomParameter("test_parameter", "hello");
+        $result = json_decode(json_encode($lookup), true);
+        $this->assertEquals('hello', $result['test_parameter']);
+        $this->assertArrayNotHasKey('custom_parameters', $result);
+        $this->assertEquals('enhanced', $result['match']);
+        $this->assertEquals(5, $result['candidates']);
+    }
+
+    public function testJSONEncoding_NullFieldsOmittedFromBatchBody() {
+        $lookup = new Lookup();
+        $lookup->setStreet("123 Main St");
+        $json = json_encode($lookup);
+        $result = json_decode($json, true);
+
+        // Fields that were set should be present
+        $this->assertEquals('123 Main St', $result['street']);
+        $this->assertEquals('enhanced', $result['match']);
+        $this->assertEquals(5, $result['candidates']);
+
+        // Null fields should be absent (not present as explicit null)
+        $this->assertArrayNotHasKey('input_id', $result);
+        $this->assertArrayNotHasKey('street2', $result);
+        $this->assertArrayNotHasKey('secondary', $result);
+        $this->assertArrayNotHasKey('city', $result);
+        $this->assertArrayNotHasKey('state', $result);
+        $this->assertArrayNotHasKey('zipcode', $result);
+        $this->assertArrayNotHasKey('lastline', $result);
+        $this->assertArrayNotHasKey('addressee', $result);
+        $this->assertArrayNotHasKey('urbanization', $result);
+        $this->assertArrayNotHasKey('format', $result);
+        $this->assertArrayNotHasKey('county_source', $result);
+
+        // Verify the raw JSON string does not contain null values
+        $this->assertStringNotContainsString(':null', str_replace(' ', '', $json));
+    }
+
+    public function testEmptyStringMatchStrategyDefaultsToEnhanced() {
+        $lookup = new Lookup();
+        $lookup->setMatchStrategy('');
+        $result = $this->encode($lookup);
+        $this->assertEquals('enhanced', $result['match']);
+        $this->assertEquals(5, $result['candidates']);
     }
 }

@@ -90,7 +90,7 @@ class Lookup implements \JsonSerializable {
             'lastline' => $this->lastline,
             'addressee' => $this->addressee,
             'urbanization' => $this->urbanization,
-            'match' => ($matchStrategy !== self::STRICT) ? $matchStrategy : null,
+            'match' => $matchStrategy,
             'format' => $this->outputFormat,
             'county_source' => $this->countySource,
             'candidates' => $candidates
@@ -98,7 +98,7 @@ class Lookup implements \JsonSerializable {
         foreach ($this->customParamArray as $key => $value) {
             $jsonArray[$key] = $value;
         }
-        return $jsonArray;
+        return array_filter($jsonArray, function($value) { return $value !== null; });
     }
 
     //region [ Getters ]

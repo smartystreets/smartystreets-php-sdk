@@ -25,7 +25,7 @@ us_autocomplete_pro_api:
 	php examples/USAutocompleteProExample.php
 
 us_enrichment_api:
-	php examples/USEnrichmentExample.php
+	php examples/USEnrichmentExample.php && php examples/USEnrichmentGeoReferenceExample.php && php examples/USEnrichmentRiskExample.php && php examples/USEnrichmentSecondaryExample.php && php examples/USEnrichmentGenericExample.php
 
 us_extract_api:
 	php examples/USExtractExample.php
@@ -37,7 +37,7 @@ us_street_iana_timezone_api:
 	php examples/UsStreetIanaTimeZoneExample.php
 
 us_street_api:
-	php examples/UsStreetSingleAddressExample.php && php examples/UsStreetMultipleAddressesExample.php && php examples/UsStreetComponentAnalysisExample.php && php examples/UsStreetIanaTimeZoneExample.php
+	php examples/UsStreetSingleAddressExample.php && php examples/UsStreetMultipleAddressesExample.php && php examples/UsStreetComponentAnalysisExample.php && php examples/UsStreetIanaTimeZoneExample.php && php examples/USStreetLookupsWithMatchStrategyExamples.php
 
 us_zipcode_api:
 	php examples/UsZIPCodeSingleLookupExample.php && php examples/UsZIPCodeMultipleLookupsExample.php
