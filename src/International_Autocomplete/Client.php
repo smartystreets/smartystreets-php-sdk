@@ -52,6 +52,10 @@ class Client {
         $request->setParameter("country", $lookup->getCountry());
         $request->setParameter("search", $lookup->getSearch());
         $request->setParameter("max_results", $lookup->getMaxResults());
+        $request->setParameter("max_group_results", $lookup->getMaxGroupResults());
+        if ($lookup->getGeolocation()) {
+            $request->setParameter("geolocation", "on");
+        }
         $request->setParameter("include_only_locality", $lookup->getLocality());
         $request->setParameter("include_only_postal_code", $lookup->getPostalCode());
 

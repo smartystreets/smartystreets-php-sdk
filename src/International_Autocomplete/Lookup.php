@@ -10,6 +10,7 @@ namespace SmartyStreets\PhpSdk\International_Autocomplete;
 class Lookup {
     //region [ Fields ]
     const MAX_RESULTS_DEFAULT = 10;
+    const MAX_GROUP_RESULTS_DEFAULT = 100;
 
 
     private $result,
@@ -17,6 +18,8 @@ class Lookup {
             $search,
             $address_id,
             $maxResults,
+            $maxGroupResults,
+            $geolocation,
             $locality,
             $postalCode,
             $customParamArray;
@@ -30,6 +33,8 @@ class Lookup {
         $this->result = array();
         $this->search = $search;
         $this->maxResults = Lookup::MAX_RESULTS_DEFAULT;
+        $this->maxGroupResults = Lookup::MAX_GROUP_RESULTS_DEFAULT;
+        $this->geolocation = false;
         $this->customParamArray = array();
     }
 
@@ -57,6 +62,14 @@ class Lookup {
 
     public function getMaxResults() {
         return $this->maxResults;
+    }
+
+    public function getMaxGroupResults() {
+        return $this->maxGroupResults;
+    }
+
+    public function getGeolocation(): bool {
+        return $this->geolocation;
     }
 
     public function getLocality() {
@@ -95,6 +108,17 @@ class Lookup {
             $this->maxResults = $maxResults;
         else
             throw new \InvalidArgumentException("Max suggestions must be a positive integer no larger than 10.");
+    }
+
+    public function setMaxGroupResults($maxGroupResults) {
+        if ($maxGroupResults > 0)
+            $this->maxGroupResults = $maxGroupResults;
+        else
+            throw new \InvalidArgumentException("Max group results must be a positive integer.");
+    }
+
+    public function setGeolocation(bool $geolocation) {
+        $this->geolocation = $geolocation;
     }
 
     public function setLocality($locality) {

@@ -37,6 +37,8 @@ class InternationalAutocompleteExample {
         $lookup = new Lookup("Louis");
         $lookup->setCountry("FRA");
         $lookup->setLocality("Paris");
+        $lookup->setMaxGroupResults(5);
+        $lookup->setGeolocation(true);
 
         // Uncomment the below line to add a custom parameter to the API call
         // $lookup->addCustomParameter("parameter", "value");
