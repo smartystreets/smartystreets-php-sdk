@@ -289,6 +289,14 @@ class ClientBuilder {
     }
 
     private function buildSender() {
+        if ($this->httpSender !== null) {
+            $conflicts = [];
+            if ($this->maxTimeout !== 10000) $conflicts[] = 'withMaxTimeout()';
+            if ($this->proxy !== null) $conflicts[] = 'viaProxy()';
+            if ($this->debugMode !== false) $conflicts[] = 'withDebug()';
+            if (!empty($conflicts))
+                throw new \InvalidArgumentException('withSender() cannot be combined with: ' . implode(', ', $conflicts) . '. These options only apply to the built-in HTTP transport.');
+        }
         $sender = $this->httpSender ?? new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode);
 
         $sender = new StatusCodeSender($sender);

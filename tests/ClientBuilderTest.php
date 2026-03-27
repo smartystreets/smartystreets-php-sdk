@@ -29,6 +29,26 @@ class ClientBuilderTest extends TestCase {
         $this->assertEquals('component-analysis,iana-timezone', $this->getCustomQuery($builder)['features']);
     }
 
+    public function testWithSender_ThrowsWhenCombinedWithMaxTimeout() {
+        $this->expectException(\InvalidArgumentException::class);
+        $capturingSender = new RequestCapturingSender();
+        $credentials = new StaticCredentials('test-id', 'test-token');
+        (new ClientBuilder($credentials))
+            ->withSender($capturingSender)
+            ->withMaxTimeout(5000)
+            ->buildUsStreetApiClient();
+    }
+
+    public function testWithSender_ThrowsWhenCombinedWithProxy() {
+        $this->expectException(\InvalidArgumentException::class);
+        $capturingSender = new RequestCapturingSender();
+        $credentials = new StaticCredentials('test-id', 'test-token');
+        (new ClientBuilder($credentials))
+            ->withSender($capturingSender)
+            ->viaProxy('http://localhost:8080')
+            ->buildUsStreetApiClient();
+    }
+
     public function testWithSender_WrapsWithMiddlewareChain() {
         $capturingSender = new RequestCapturingSender();
         $credentials = new StaticCredentials('test-id', 'test-token');
