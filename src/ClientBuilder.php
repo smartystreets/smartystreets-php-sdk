@@ -36,6 +36,7 @@ require_once(__DIR__ . '/International_Postal_Code/Client.php');
 require_once(__DIR__ . '/US_Reverse_Geo/Client.php');
 require_once(__DIR__ . '/US_Enrichment/Client.php');
 require_once(__DIR__ . '/CustomQuerySender.php');
+require_once(__DIR__ . '/CustomHeaderSender.php');
 
 
 /**
@@ -288,12 +289,25 @@ class ClientBuilder {
     }
 
     private function buildSender() {
-        if ($this->httpSender != null)
-            return $this->httpSender;
-
-        $sender = new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode, $this->ip, $this->customHeaders, $this->appendHeaders);
+        if ($this->httpSender !== null) {
+            $conflicts = [];
+            if ($this->maxTimeout !== 10000) $conflicts[] = 'withMaxTimeout()';
+            if ($this->proxy !== null) $conflicts[] = 'viaProxy()';
+            if ($this->debugMode !== false) $conflicts[] = 'withDebug()';
+            if (!empty($conflicts))
+                throw new \InvalidArgumentException('withSender() cannot be combined with: ' . implode(', ', $conflicts) . '. These options only apply to the built-in HTTP transport.');
+        }
+        $sender = $this->httpSender ?? new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode);
 
         $sender = new StatusCodeSender($sender);
+
+        $effectiveHeaders = $this->customHeaders;
+        if ($this->ip !== null) {
+            $effectiveHeaders['X-Forwarded-For'] = $this->ip;
+        }
+        if (!empty($effectiveHeaders)) {
+            $sender = new CustomHeaderSender($effectiveHeaders, $sender, $this->appendHeaders);
+        }
 
         if ($this->maxRetries > 0)
             $sender = new RetrySender($this->maxRetries, new MySleeper(), $this->logger, $sender);

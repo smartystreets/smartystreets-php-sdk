@@ -2,45 +2,56 @@
 
 namespace SmartyStreets\PhpSdk\Tests;
 
-require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
-require_once(dirname(dirname(__FILE__)) . '/src/Response.php');
-require_once(dirname(dirname(__FILE__)) . '/src/NativeSender.php');
-require_once(dirname(dirname(__FILE__)) . '/src/Proxy.php');
-require_once(dirname(dirname(__FILE__)) . '/src/Exceptions/SmartyException.php');
-require_once('Mocks/MockSender.php');
-use SmartyStreets\PhpSdk\Proxy;
-use SmartyStreets\PhpSdk\Request;
-use SmartyStreets\PhpSdk\Response;
-use SmartyStreets\PhpSdk\NativeSender;
-use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
-use SmartyStreets\PhpSdk\Exceptions\SmartyException;
+require_once(dirname(dirname(__FILE__)) . '/src/ClientBuilder.php');
+require_once(dirname(dirname(__FILE__)) . '/src/StaticCredentials.php');
+require_once(dirname(dirname(__FILE__)) . '/src/US_Street/Lookup.php');
+require_once('Mocks/RequestCapturingSender.php');
+use SmartyStreets\PhpSdk\ClientBuilder;
+use SmartyStreets\PhpSdk\StaticCredentials;
+use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
 use PHPUnit\Framework\TestCase;
 
 class XForwardedForTest extends TestCase {
-    public function testNativeSetOnQuery() {
-        $request = new Request();
-        //$licenses = ["one","two","three"];
-        //$inner = new MockSender(new Response(123, null, ""));
-        $sender = new NativeSender(10000, null, false, "0.0.0.0");
+    public function testXForwardedForHeaderSetViaClientBuilder() {
+        $capturingSender = new RequestCapturingSender();
+        $credentials = new StaticCredentials('test-id', 'test-token');
+        $client = (new ClientBuilder($credentials))
+            ->withXForwardedFor('0.0.0.0')
+            ->withSender($capturingSender)
+            ->buildUsStreetApiClient();
 
-        try {
-            $sender->send($request);
-        } catch (SmartyException $ex) {
-        }
-        $this->assertEquals("0.0.0.0", $request->getHeaders()["X-Forwarded-For"]);
+        $lookup = new \SmartyStreets\PhpSdk\US_Street\Lookup('1 Rosedale');
+        $client->sendLookup($lookup);
+
+        $this->assertEquals('0.0.0.0', $capturingSender->getRequest()->getHeaders()['X-Forwarded-For']);
     }
 
-    public function testNativeNotSet() {
-        $request = new Request();
-        //$inner = new MockSender(new Response(123, null, ""));
-        $sender = new NativeSender();
+    public function testXForwardedForNotSetWhenNotConfigured() {
+        $capturingSender = new RequestCapturingSender();
+        $credentials = new StaticCredentials('test-id', 'test-token');
+        $client = (new ClientBuilder($credentials))
+            ->withSender($capturingSender)
+            ->buildUsStreetApiClient();
 
-        try {
-            $sender->send($request);
-        } catch (SmartyException $ex) {
-        }
-        $headers = $request->getHeaders();
+        $lookup = new \SmartyStreets\PhpSdk\US_Street\Lookup('1 Rosedale');
+        $client->sendLookup($lookup);
 
-        $this->assertEquals(false, array_key_exists("X-Forwarded-For", $headers));
+        $this->assertArrayNotHasKey('X-Forwarded-For', $capturingSender->getRequest()->getHeaders());
+    }
+
+    public function testXForwardedForCombinedWithCustomHeaders() {
+        $capturingSender = new RequestCapturingSender();
+        $credentials = new StaticCredentials('test-id', 'test-token');
+        $client = (new ClientBuilder($credentials))
+            ->withXForwardedFor('0.0.0.0')
+            ->withCustomHeader('X-Custom', 'value')
+            ->withSender($capturingSender)
+            ->buildUsStreetApiClient();
+
+        $lookup = new \SmartyStreets\PhpSdk\US_Street\Lookup('1 Rosedale');
+        $client->sendLookup($lookup);
+
+        $this->assertEquals('0.0.0.0', $capturingSender->getRequest()->getHeaders()['X-Forwarded-For']);
+        $this->assertEquals('value', $capturingSender->getRequest()->getHeaders()['X-Custom']);
     }
 }

@@ -14,18 +14,12 @@ class NativeSender implements Sender
 {
     private $maxTimeOut,
         $proxy,
-        $debugMode,
-        $ip,
-        $customHeaders,
-        $appendHeaders;
+        $debugMode;
 
-    public function __construct($maxTimeOut = 10000, ?Proxy $proxy = null, $debugMode = false, $ip = null, $customHeaders = [], $appendHeaders = []) {
+    public function __construct($maxTimeOut = 10000, ?Proxy $proxy = null, $debugMode = false) {
         $this->maxTimeOut = $maxTimeOut;
         $this->proxy = $proxy;
         $this->debugMode = $debugMode;
-        $this->ip = $ip;
-        $this->customHeaders = $customHeaders;
-        $this->appendHeaders = $appendHeaders;
     }
 
     function send(Request $smartyRequest) {
@@ -68,7 +62,6 @@ class NativeSender implements Sender
         curl_setopt($ch, CURLOPT_POSTFIELDS, ($smartyRequest->getPayload()));
         curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->maxTimeOut);
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->buildUserAgent());
         if ($this->debugMode && defined("STDERR"))
             curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         if ($this->proxy != null)
@@ -77,74 +70,22 @@ class NativeSender implements Sender
         if ($smartyRequest->getReferer() != null)
             curl_setopt($ch, CURLOPT_REFERER, $smartyRequest->getReferer());
 
-        // Headers
         $smartyRequest->setHeader('Content-Type', $smartyRequest->getContentType());
-        if ($this->ip != null) {
-            $smartyRequest->setHeader('X-Forwarded-For', $this->ip);
-        }
-        if (count($this->customHeaders) != 0) {
-            foreach ($this->customHeaders as $key => $value) {
-                // User-Agent is handled via CURLOPT_USERAGENT in buildUserAgent()
-                if (strcasecmp($key, 'User-Agent') === 0) {
-                    continue;
-                }
-                $appendKey = $this->findAppendHeaderKey($key);
-                if ($appendKey !== null) {
-                    $separator = $this->appendHeaders[$appendKey];
-                    $headers = $smartyRequest->getHeaders();
-                    $existingKey = null;
-                    foreach ($headers as $hk => $hv) {
-                        if (strcasecmp($hk, $key) === 0) {
-                            $existingKey = $hk;
-                            break;
-                        }
-                    }
-                    $existing = $existingKey !== null ? $headers[$existingKey] : '';
-                    $headerKey = $existingKey !== null ? $existingKey : $key;
-                    $smartyRequest->setHeader($headerKey, $existing !== '' ? $existing . $separator . $value : $value);
-                } else {
-                    $smartyRequest->setHeader($key, $value);
-                }
-            }
-        }
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getCURLOPTHeaders($smartyRequest));
 
-        return $ch;
-    }
-
-    protected function buildUserAgent() {
-        $userAgent = 'smartystreets (sdk:php@' . VERSION . ')';
-
-        $customUAKey = null;
-        foreach ($this->customHeaders as $key => $value) {
+        $hasUserAgent = false;
+        foreach ($smartyRequest->getHeaders() as $key => $value) {
             if (strcasecmp($key, 'User-Agent') === 0) {
-                $customUAKey = $key;
+                $hasUserAgent = true;
                 break;
             }
         }
-
-        if ($customUAKey === null) {
-            return $userAgent;
+        if (!$hasUserAgent) {
+            $smartyRequest->setHeader('User-Agent', 'smartystreets (sdk:php@' . VERSION . ')');
         }
 
-        $appendKey = $this->findAppendHeaderKey('User-Agent');
-        if ($appendKey !== null) {
-            $separator = $this->appendHeaders[$appendKey];
-            $userAgent = $userAgent . $separator . $this->customHeaders[$customUAKey];
-        } else {
-            $userAgent = $this->customHeaders[$customUAKey];
-        }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getCURLOPTHeaders($smartyRequest));
 
-        return $userAgent;
-    }
-
-    private function findAppendHeaderKey($header) {
-        foreach ($this->appendHeaders as $key => $separator) {
-            if (strcasecmp($key, $header) === 0) {
-                return $key;
-            }
-        }
-        return null;
+        return $ch;
     }
 
     private function setProxy(&$ch) {
