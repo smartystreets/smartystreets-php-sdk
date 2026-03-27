@@ -29,11 +29,11 @@ class ClientBuilderTest extends TestCase {
         $this->assertEquals('component-analysis,iana-timezone', $this->getCustomQuery($builder)['features']);
     }
 
-    public function testWithWrappedSender_WrapsWithMiddlewareChain() {
+    public function testWithSender_WrapsWithMiddlewareChain() {
         $capturingSender = new RequestCapturingSender();
         $credentials = new StaticCredentials('test-id', 'test-token');
         $client = (new ClientBuilder($credentials))
-            ->withWrappedSender($capturingSender)
+            ->withSender($capturingSender)
             ->buildUsStreetApiClient();
 
         $lookup = new \SmartyStreets\PhpSdk\US_Street\Lookup('1 Rosedale');

@@ -36,6 +36,7 @@ require_once(__DIR__ . '/International_Postal_Code/Client.php');
 require_once(__DIR__ . '/US_Reverse_Geo/Client.php');
 require_once(__DIR__ . '/US_Enrichment/Client.php');
 require_once(__DIR__ . '/CustomQuerySender.php');
+require_once(__DIR__ . '/CustomHeaderSender.php');
 
 
 /**
@@ -57,7 +58,6 @@ class ClientBuilder {
     private $signer,
             $serializer,
             $httpSender,
-            $wrappedHttpSender,
             $maxRetries,
             $maxTimeout,
             $urlPrefix,
@@ -82,7 +82,6 @@ class ClientBuilder {
         $this->appendHeaders = [];
         $this->ip = null;
         $this->customQuery = [];
-        $this->wrappedHttpSender = null;
     }
 
     /**
@@ -126,16 +125,6 @@ class ClientBuilder {
      */
     public function withSender(Sender $sender) {
         $this->httpSender = $sender;
-        return $this;
-    }
-
-    /**
-     * Replaces the innermost NativeSender while keeping the rest of the sender chain intact.
-     * @param Sender $sender The sender to use as the HTTP transport layer.
-     * @return $this Returns <b>this</b> to accommodate method chaining.
-     */
-    public function withWrappedSender(Sender $sender) {
-        $this->wrappedHttpSender = $sender;
         return $this;
     }
 
@@ -300,12 +289,17 @@ class ClientBuilder {
     }
 
     private function buildSender() {
-        if ($this->httpSender != null)
-            return $this->httpSender;
-
-        $sender = $this->wrappedHttpSender ?? new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode, $this->ip, $this->customHeaders, $this->appendHeaders);
+        $sender = $this->httpSender ?? new NativeSender($this->maxTimeout, $this->proxy, $this->debugMode);
 
         $sender = new StatusCodeSender($sender);
+
+        $effectiveHeaders = $this->customHeaders;
+        if ($this->ip !== null) {
+            $effectiveHeaders['X-Forwarded-For'] = $this->ip;
+        }
+        if (!empty($effectiveHeaders)) {
+            $sender = new CustomHeaderSender($effectiveHeaders, $sender, $this->appendHeaders);
+        }
 
         if ($this->maxRetries > 0)
             $sender = new RetrySender($this->maxRetries, new MySleeper(), $this->logger, $sender);
