@@ -24,8 +24,7 @@ class Result  {
         $rootAddress,
         $aliases,
         $secondaries,
-        $count,
-        $etag;
+        $count;
 
     //endregion
 
@@ -53,10 +52,6 @@ class Result  {
                 $this->createSecondaryData($obj, $this->dataSubsetName);
             }
         }
-    }
-
-    public function setETag($etag) {
-        $this->etag = $etag;
     }
 
     private function createAttributes($dataSetName, $dataSubsetName, $attributesObj){

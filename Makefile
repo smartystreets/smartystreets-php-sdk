@@ -25,7 +25,13 @@ us_autocomplete_pro_api:
 	php examples/USAutocompleteProExample.php
 
 us_enrichment_api:
-	php examples/USEnrichmentExample.php && php examples/USEnrichmentGeoReferenceExample.php && php examples/USEnrichmentRiskExample.php && php examples/USEnrichmentSecondaryExample.php && php examples/USEnrichmentGenericExample.php
+	php examples/USEnrichmentExample.php && php examples/USEnrichmentGeoReferenceExample.php && php examples/USEnrichmentRiskExample.php && php examples/USEnrichmentSecondaryExample.php && php examples/USEnrichmentGenericExample.php && php examples/USEnrichmentBusinessExample.php
+
+us_enrichment_business_api:
+	php examples/USEnrichmentBusinessExample.php
+
+us_enrichment_etag:
+	php examples/USEnrichmentEtagExample.php
 
 us_extract_api:
 	php examples/USExtractExample.php
@@ -44,4 +50,4 @@ us_zipcode_api:
 
 examples: international_autocomplete_api international_postal_code_api international_street_api us_autocomplete_pro_api us_enrichment_api us_extract_api us_reverse_geo_api us_street_api us_zipcode_api
 
-.PHONY: test package release examples international_autocomplete_api international_postal_code_api international_street_api us_autocomplete_pro_api us_enrichment_api us_extract_api us_reverse_geo_api us_street_api us_street_iana_timezone_api us_zipcode_api
+.PHONY: test package release examples international_autocomplete_api international_postal_code_api international_street_api us_autocomplete_pro_api us_enrichment_api us_enrichment_business_api us_enrichment_etag us_extract_api us_reverse_geo_api us_street_api us_street_iana_timezone_api us_zipcode_api

@@ -2,196 +2,193 @@
 
 namespace SmartyStreets\PhpSdk\US_Enrichment;
 
+require_once(__DIR__ . '/../Exceptions/SmartyException.php');
 require_once(__DIR__ . '/../Exceptions/UnprocessableEntityException.php');
+require_once(__DIR__ . '/../HeaderUtil.php');
 require_once(__DIR__ . '/../Sender.php');
 require_once(__DIR__ . '/../Serializer.php');
 require_once(__DIR__ . '/../Request.php');
+require_once(__DIR__ . '/EnrichmentLookupBase.php');
 require_once(__DIR__ . '/Lookup.php');
 require_once(__DIR__ . '/Result.php');
+require_once(__DIR__ . '/Business/Summary/Lookup.php');
+require_once(__DIR__ . '/Business/Detail/Lookup.php');
+
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
+use SmartyStreets\PhpSdk\HeaderUtil;
+use SmartyStreets\PhpSdk\Request;
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
-use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\US_Enrichment\Business\Detail\Lookup as BusinessDetailLookup;
+use SmartyStreets\PhpSdk\US_Enrichment\Business\Summary\Lookup as BusinessSummaryLookup;
 
 class Client {
-    private $sender,
-            $serializer;
+    private Sender $sender;
+    private ?Serializer $serializer;
 
     public function __construct(Sender $sender, ?Serializer $serializer = null) {
         $this->sender = $sender;
         $this->serializer = $serializer;
     }
 
-    public function sendPropertyPrincipalLookup($principalLookup){
-        if (is_string($principalLookup)) {
-            $lookup = new Lookup($principalLookup, "property", "principal");
-            $this->sendLookup($lookup);
-            return $lookup->getResponse();
-        }
-        else if (is_object($principalLookup)) {
-            $principalLookup->setDataSetName("property");
-            $principalLookup->setDataSubSetName("principal");
-            $this->sendLookup($principalLookup);
-            return $principalLookup->getResponse();
-        }
-        else {
-            return null;
-        }
+    public function sendPropertyPrincipalLookup($principalLookup) {
+        return $this->sendDatasetLookup($principalLookup, 'property', 'principal');
     }
 
-    public function sendGeoReferenceLookup($geoReferenceLookup){
-        if (is_string($geoReferenceLookup)) {
-            $lookup = new Lookup($geoReferenceLookup, "geo-reference");
-            $this->sendLookup($lookup);
-            return $lookup->getResponse();
-        }
-        else if (is_object($geoReferenceLookup)) {
-            $geoReferenceLookup->setDataSetName("geo-reference");
-            $geoReferenceLookup->setDataSubSetName(null);
-            $this->sendLookup($geoReferenceLookup);
-            return $geoReferenceLookup->getResponse();
-        }
-        else {
-            return null;
-        }
+    public function sendGeoReferenceLookup($geoReferenceLookup) {
+        return $this->sendDatasetLookup($geoReferenceLookup, 'geo-reference', null);
     }
 
-    public function sendRiskLookup($riskLookup){
-        if (is_string($riskLookup)) {
-            $lookup = new Lookup($riskLookup, "risk");
-            $this->sendLookup($lookup);
-            return $lookup->getResponse();
-        }
-        else if (is_object($riskLookup)) {
-            $riskLookup->setDataSetName("risk");
-            $riskLookup->setDataSubSetName(null);
-            $this->sendLookup($riskLookup);
-            return $riskLookup->getResponse();
-        }
-        else {
-            return null;
-        }
+    public function sendRiskLookup($riskLookup) {
+        return $this->sendDatasetLookup($riskLookup, 'risk', null);
     }
 
-    public function sendSecondaryLookup($secondaryLookup){
-        if (is_string($secondaryLookup)) {
-            $lookup = new Lookup($secondaryLookup, "secondary");
-            $this->sendLookup($lookup);
-            return $lookup->getResponse();
-        }
-        else if (is_object($secondaryLookup)) {
-            $secondaryLookup->setDataSetName("secondary");
-            $secondaryLookup->setDataSubSetName(null);
-            $this->sendLookup($secondaryLookup);
-            return $secondaryLookup->getResponse();
-        }
-        else {
-            return null;
-        }
+    public function sendSecondaryLookup($secondaryLookup) {
+        return $this->sendDatasetLookup($secondaryLookup, 'secondary', null);
     }
 
-    public function sendSecondaryCountLookup($secondaryCountLookup){
-        if (is_string($secondaryCountLookup)) {
-            $lookup = new Lookup($secondaryCountLookup, "secondary", "count");
-            $this->sendLookup($lookup);
-            return $lookup->getResponse();
-        }
-        else if (is_object($secondaryCountLookup)) {
-            $secondaryCountLookup->setDataSetName("secondary");
-            $secondaryCountLookup->setDataSubSetName("count");
-            $this->sendLookup($secondaryCountLookup);
-            return $secondaryCountLookup->getResponse();
-        }
-        else {
-            return null;
-        }
+    public function sendSecondaryCountLookup($secondaryCountLookup) {
+        return $this->sendDatasetLookup($secondaryCountLookup, 'secondary', 'count');
     }
 
-    public function sendGenericLookup($genericLookup, $dataSetName, $dataSubsetName){
-        if (is_string($genericLookup)) {
-            $lookup = new Lookup($genericLookup, $dataSetName, $dataSubsetName);
-            $this->sendLookup($lookup);
-            return $lookup->getResponse();
-        }
-        else if (is_object($genericLookup)) {
-            $genericLookup->setDataSetName($dataSetName);
-            $genericLookup->setDataSubSetName($dataSubsetName);
-            $this->sendLookup($genericLookup);
-            return $genericLookup->getResponse();
-        }
-        else {
-            return null;
-        }
+    public function sendGenericLookup($genericLookup, string $dataSetName, ?string $dataSubsetName) {
+        return $this->sendDatasetLookup($genericLookup, $dataSetName, $dataSubsetName);
     }
 
-    private function sendLookup(Lookup $lookup) {
-        $request = $this->buildRequest($lookup);
-        $response = $this->sender->send($request);
-        
-        $results = $this->buildResults($this->serializer->deserialize($response->getPayload()));
-        $headers = $response->getHeaders();
-        if (count($results) > 0 && is_array($headers) && isset($headers['etag']) ) {
-            $results[0]->setETag($headers['etag']);
+    /**
+     * @param BusinessSummaryLookup|string|null $businessLookup SmartyKey string or a Business\Summary\Lookup.
+     * @return \SmartyStreets\PhpSdk\US_Enrichment\Business\Summary\Result[]
+     */
+    public function sendBusinessLookup($businessLookup): array {
+        if (is_string($businessLookup)) {
+            $lookup = new BusinessSummaryLookup($businessLookup);
+        } elseif ($businessLookup instanceof BusinessSummaryLookup) {
+            $lookup = $businessLookup;
+        } else {
+            throw new SmartyException('sendBusinessLookup requires a string SmartyKey or Business\\Summary\\Lookup');
         }
-
-        $lookup->setResponse($results);
+        $this->assertAddressIdentifierPresent($lookup);
+        $request = $this->buildEnrichmentRequest($lookup);
+        $this->dispatch($request, $lookup);
+        return $lookup->getResults();
     }
 
-    private function buildResults($objArray){
-        $response = [];
-        if($objArray == null){
-            return $response;
+    /**
+     * @param BusinessDetailLookup|string|null $detailLookup businessId string or a Business\Detail\Lookup.
+     */
+    public function sendBusinessDetailLookup($detailLookup): ?\SmartyStreets\PhpSdk\US_Enrichment\Business\Detail\Result {
+        if (is_string($detailLookup)) {
+            $lookup = new BusinessDetailLookup($detailLookup);
+        } elseif ($detailLookup instanceof BusinessDetailLookup) {
+            $lookup = $detailLookup;
+        } else {
+            throw new SmartyException('sendBusinessDetailLookup requires a string businessId or Business\\Detail\\Lookup');
         }
-        foreach($objArray as $result) {
-            $response[] = new Result($result);
+        $businessId = $lookup->getBusinessId();
+        if ($businessId === null || trim($businessId) === '') {
+            throw new SmartyException("Business\\Detail\\Lookup requires a non-empty 'businessId'");
         }
-        return $response;
-    }
-
-
-    private function buildRequest(Lookup $lookup) {
         $request = new Request();
+        $request->setUrlComponents('/business/' . rawurlencode($businessId));
+        $this->applyIncludeExclude($request, $lookup);
+        $this->applyEtagAndCustomParams($request, $lookup);
+        $this->dispatch($request, $lookup);
+        return $lookup->getResult();
+    }
 
-        $request->setUrlComponents("/lookup/". $this->getUrlPrefix($lookup));
-
-        if ($lookup->getSmartyKey() == null) {
-            $request->setParameter("freeform", $lookup->getFreeform());
-            $request->setParameter("street", $lookup->getStreet());
-            $request->setParameter("city", $lookup->getCity());
-            $request->setParameter("state", $lookup->getState());
-            $request->setParameter("zipcode", $lookup->getZipcode());
+    private function sendDatasetLookup($input, string $dataSetName, ?string $dataSubsetName) {
+        if (is_string($input)) {
+            $lookup = new Lookup($input, $dataSetName, $dataSubsetName);
+        } elseif ($input instanceof Lookup) {
+            $lookup = $input;
+            $lookup->setDataSetName($dataSetName);
+            $lookup->setDataSubsetName($dataSubsetName);
+        } else {
+            throw new SmartyException('Enrichment lookup requires a string SmartyKey or US_Enrichment\\Lookup');
         }
+        $this->assertAddressIdentifierPresent($lookup);
+        $request = $this->buildEnrichmentRequest($lookup);
+        $this->dispatch($request, $lookup);
+        return $lookup->getResponse();
+    }
 
-        $request->setParameter("include", $this->buildFilterString($lookup->getIncludeArray()));
-        $request->setParameter("exclude", $this->buildFilterString($lookup->getExcludeArray()));
-        $request->setParameter("features", $lookup->getFeatures());
-        $request->setHeader("etag", $lookup->getETag());
-
-        foreach ($lookup->getCustomParamArray() as $key => $value) {
-            $request->setParameter($key, $value);
+    private function assertAddressIdentifierPresent(Lookup $lookup): void {
+        if (self::isBlank($lookup->getSmartyKey())
+            && self::isBlank($lookup->getStreet())
+            && self::isBlank($lookup->getFreeform())) {
+            throw new SmartyException("Lookup requires one of 'smartyKey', 'street', or 'freeform' to be set");
         }
+    }
 
+    private static function isBlank(?string $value): bool {
+        return $value === null || trim($value) === '';
+    }
+
+    private function dispatch(Request $request, EnrichmentLookupBase $lookup): void {
+        $response = $this->sender->send($request);
+        $etag = HeaderUtil::extractEtag($response->getHeaders());
+        if ($etag !== null) {
+            $lookup->setResponseEtag($etag);
+        }
+        $payload = $response->getPayload();
+        $decoded = $payload === null || $payload === '' ? null : $this->serializer->deserialize($payload);
+        $lookup->buildResults(is_array($decoded) ? $decoded : null);
+    }
+
+    private function buildEnrichmentRequest(Lookup $lookup): Request {
+        $request = new Request();
+        $request->setUrlComponents('/lookup/' . $this->getUrlPrefix($lookup));
+
+        if ($lookup->getSmartyKey() === null) {
+            $request->setParameter('freeform', $lookup->getFreeform());
+            $request->setParameter('street', $lookup->getStreet());
+            $request->setParameter('city', $lookup->getCity());
+            $request->setParameter('state', $lookup->getState());
+            $request->setParameter('zipcode', $lookup->getZipcode());
+        }
+        $this->applyIncludeExclude($request, $lookup);
+        $request->setParameter('features', $lookup->getFeatures());
+        $this->applyEtagAndCustomParams($request, $lookup);
         return $request;
     }
 
-    private function getUrlPrefix($lookup){
-        if ($lookup->getSmartyKey() == null) {
-            if ($lookup->getDataSubsetName() == null) {
-                return "search/" . $lookup->getDataSetName();
-            }
-            return "search/" . $lookup->getDataSetName() . "/" . $lookup->getDataSubsetName();
+    private function applyIncludeExclude(Request $request, EnrichmentLookupBase $lookup): void {
+        $include = $this->buildFilterString($lookup->getIncludeArray());
+        if ($include !== null) {
+            $request->setParameter('include', $include);
         }
-        else {
-            if ($lookup->getDataSubsetName() == null) {
-                return $lookup->getSmartyKey() . "/" . $lookup->getDataSetName();
-            }
-            return $lookup->getSmartyKey() . "/" . $lookup->getDataSetName() . "/" . $lookup->getDataSubsetName();
+        $exclude = $this->buildFilterString($lookup->getExcludeArray());
+        if ($exclude !== null) {
+            $request->setParameter('exclude', $exclude);
         }
     }
 
-    private function buildFilterString($list) {
-        if (empty($list))
-            return null;
+    private function applyEtagAndCustomParams(Request $request, EnrichmentLookupBase $lookup): void {
+        if ($lookup->getRequestEtag() !== null) {
+            $request->setHeader('Etag', $lookup->getRequestEtag());
+        }
+        foreach ($lookup->getCustomParamArray() as $key => $value) {
+            $request->setParameter($key, $value);
+        }
+    }
 
-        return join(',', $list);
+    private function getUrlPrefix(Lookup $lookup): string {
+        if ($lookup->getSmartyKey() === null) {
+            if ($lookup->getDataSubsetName() === null) {
+                return 'search/' . $lookup->getDataSetName();
+            }
+            return 'search/' . $lookup->getDataSetName() . '/' . $lookup->getDataSubsetName();
+        }
+        if ($lookup->getDataSubsetName() === null) {
+            return $lookup->getSmartyKey() . '/' . $lookup->getDataSetName();
+        }
+        return $lookup->getSmartyKey() . '/' . $lookup->getDataSetName() . '/' . $lookup->getDataSubsetName();
+    }
+
+    private function buildFilterString(array $list): ?string {
+        if (empty($list)) {
+            return null;
+        }
+        return implode(',', $list);
     }
 }

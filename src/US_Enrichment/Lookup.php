@@ -2,29 +2,35 @@
 
 namespace SmartyStreets\PhpSdk\US_Enrichment;
 
-class Lookup {
+require_once(__DIR__ . '/EnrichmentLookupBase.php');
+require_once(__DIR__ . '/Result.php');
 
-    //region [ Fields ]
+class Lookup extends EnrichmentLookupBase {
+    protected ?string $smartyKey;
+    protected ?string $freeform = null;
+    protected ?string $street = null;
+    protected ?string $city = null;
+    protected ?string $state = null;
+    protected ?string $zipcode = null;
+    protected ?string $dataSetName;
+    protected ?string $dataSubsetName;
+    protected ?string $features = null;
+    protected ?array $response = null;
 
-    private $smartyKey,
-        $freeform,
-        $street,
-        $city,
-        $state,
-        $zipcode,
-        $dataSetName,
-        $dataSubsetName,
-        $include,
-        $exclude,
-        $features,
-        $etag,
-        $response,
-        $customParamArray;
-
-    //endregion
-
-    public function __construct($smartyKey = null, $dataSetName = null, $dataSubsetName = null, $freeform = null, $street = null, $city = null, $state = null,
-    $zipcode = null, $include = null, $exclude = null, $features = null, $etag = null) {
+    public function __construct(
+        ?string $smartyKey = null,
+        ?string $dataSetName = null,
+        ?string $dataSubsetName = null,
+        ?string $freeform = null,
+        ?string $street = null,
+        ?string $city = null,
+        ?string $state = null,
+        ?string $zipcode = null,
+        ?array $include = null,
+        ?array $exclude = null,
+        ?string $features = null,
+        ?string $requestEtag = null
+    ) {
         $this->smartyKey = $smartyKey;
         $this->dataSetName = $dataSetName;
         $this->dataSubsetName = $dataSubsetName;
@@ -33,131 +39,105 @@ class Lookup {
         $this->city = $city;
         $this->state = $state;
         $this->zipcode = $zipcode;
-        $this->include = array();
-        $this->exclude = array();
         $this->features = $features;
-        $this->etag = $etag;
-        $this->response = null;
-        $this->customParamArray = array();
+        $this->requestEtag = $requestEtag;
+        if ($include !== null) {
+            $this->include = $include;
+        }
+        if ($exclude !== null) {
+            $this->exclude = $exclude;
+        }
     }
 
-    public function getSmartyKey(){
+    public function getSmartyKey(): ?string {
         return $this->smartyKey;
     }
 
-    public function getFreeform(){
-        return $this->freeform;
-    }
-    
-    public function getStreet(){
-        return $this->street;
-    }
-
-    public function getCity(){
-        return $this->city;
-    }
-
-    public function getState(){
-        return $this->state;
-    }
-
-    public function getZipcode(){
-        return $this->zipcode;
-    }
-
-    public function getDataSetName(){
-        return $this->dataSetName;
-    }
-
-    public function getDataSubsetName(){
-        return $this->dataSubsetName;
-    }
-    
-    public function getIncludeArray() {
-        return $this->include;
-    }
-
-    public function getExcludeArray() {
-        return $this->exclude;
-    }
-
-    public function getFeatures() {
-        return $this->features;
-    }
-
-    public function getETag() {
-        return $this->etag;
-    }
-
-    public function getResponse() {
-        return $this->response;
-    }
-
-    public function getCustomParamArray() {
-        return $this->customParamArray;
-    }
-
-    public function setSmartyKey($smartyKey) {
+    public function setSmartyKey(?string $smartyKey): void {
         $this->smartyKey = $smartyKey;
     }
 
-    public function setDataSetName($dataSetName) {
-        $this->dataSetName = $dataSetName;
+    public function getFreeform(): ?string {
+        return $this->freeform;
     }
 
-    public function setDataSubsetName($dataSubsetName) {
-        $this->dataSubsetName = $dataSubsetName;
-    }
-
-    public function setFreeform($freeform) {
+    public function setFreeform(?string $freeform): void {
         $this->freeform = $freeform;
     }
 
-    public function setStreet($street){
+    public function getStreet(): ?string {
+        return $this->street;
+    }
+
+    public function setStreet(?string $street): void {
         $this->street = $street;
     }
 
-    public function setCity($city){
+    public function getCity(): ?string {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): void {
         $this->city = $city;
     }
 
-    public function setState($state){
+    public function getState(): ?string {
+        return $this->state;
+    }
+
+    public function setState(?string $state): void {
         $this->state = $state;
     }
 
-    public function setZipcode($zipcode){
+    public function getZipcode(): ?string {
+        return $this->zipcode;
+    }
+
+    public function setZipcode(?string $zipcode): void {
         $this->zipcode = $zipcode;
     }
 
-    public function setIncludeArray($include) {
-        $this->include = $include;
+    public function getDataSetName(): ?string {
+        return $this->dataSetName;
     }
 
-    public function setExcludeArray($exclude) {
-        $this->exclude = $exclude;
+    public function setDataSetName(?string $dataSetName): void {
+        $this->dataSetName = $dataSetName;
     }
 
-    public function setFeatures($features) {
+    public function getDataSubsetName(): ?string {
+        return $this->dataSubsetName;
+    }
+
+    public function setDataSubsetName(?string $dataSubsetName): void {
+        $this->dataSubsetName = $dataSubsetName;
+    }
+
+    public function getFeatures(): ?string {
+        return $this->features;
+    }
+
+    public function setFeatures(?string $features): void {
         $this->features = $features;
     }
 
-    public function setETag($etag) {
-        $this->etag = $etag;
+    public function getResponse(): ?array {
+        return $this->response;
     }
 
-    public function setResponse($response){
+    public function setResponse(?array $response): void {
         $this->response = $response;
     }
 
-    public function addIncludeAttribute($attribute) {
-        array_push($this->include, $attribute);
-    }
-
-    public function addExcludeAttribute($attribute) {
-        array_push($this->exclude, $attribute);
-    }
-
-    public function addCustomParameter($parameter, $value) {
-        $this->customParamArray[$parameter] = $value;
+    public function buildResults(?array $rawArray): void {
+        if ($rawArray === null) {
+            $this->response = [];
+            return;
+        }
+        $response = [];
+        foreach ($rawArray as $entry) {
+            $response[] = new Result($entry);
+        }
+        $this->response = $response;
     }
 }

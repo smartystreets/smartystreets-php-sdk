@@ -91,7 +91,7 @@ class ClientTest extends TestCase {
         $this->assertEquals("http://localhost/lookup/search/property/principal?freeform=123+Test+Street+City+State+Zipcode", $capturingSender->getRequest()->getUrl());
     }
     
-    public function testSendingETag() {
+    public function testCapturingResponseEtag() {
         $mockHeaders = [
             'etag' => 'abcdef'
         ];
@@ -99,12 +99,8 @@ class ClientTest extends TestCase {
         $mockSender = new MockSender($response);
         $sender = new URLPrefixSender("http://localhost", $mockSender);
         $mockResults = [
-            [
-                'count' => '5'
-            ],
-            [
-                'count' => '8'
-            ]
+            ['count' => '5'],
+            ['count' => '8'],
         ];
         $serializer = new MockDeserializer($mockResults);
         $client = new Client($sender, $serializer);
@@ -112,6 +108,47 @@ class ClientTest extends TestCase {
         $lookup->setFreeform("123 Test Street City State Zipcode");
 
         $client->sendPropertyPrincipalLookup($lookup);
-        $this->assertEquals("abcdef", $lookup->getResponse()[0]->etag);
+
+        $this->assertEquals("abcdef", $lookup->getResponseEtag());
+    }
+
+    public function testRequestEtagHeaderIsSent() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup("1");
+        $lookup->setRequestEtag("abc-123");
+
+        $client->sendPropertyPrincipalLookup($lookup);
+
+        $headers = $capturingSender->getRequest()->getHeaders();
+        $this->assertArrayHasKey('Etag', $headers);
+        $this->assertEquals('abc-123', $headers['Etag']);
+    }
+
+    public function testRejectsWhitespaceOnlyLookup() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup("   ");
+        $lookup->setStreet("   ");
+        $lookup->setFreeform("   ");
+
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
+        $client->sendPropertyPrincipalLookup($lookup);
+    }
+
+    public function testRejectsNonLookupInput() {
+        $client = new Client(new URLPrefixSender("http://localhost", new RequestCapturingSender()), new MockSerializer(null));
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
+        $client->sendPropertyPrincipalLookup(null);
+    }
+
+    public function testRejectsIntegerInput() {
+        $client = new Client(new URLPrefixSender("http://localhost", new RequestCapturingSender()), new MockSerializer(null));
+        $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
+        $client->sendGeoReferenceLookup(42);
     }
 }

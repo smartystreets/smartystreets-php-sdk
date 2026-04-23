@@ -12,6 +12,7 @@ use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;
 use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
 use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
+use SmartyStreets\PhpSdk\Exceptions\RequestNotModifiedException;
 use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
 use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
@@ -99,6 +100,36 @@ class StatusCodeSenderTest extends TestCase {
         $classType = GatewayTimeoutException::class;
 
         $this->assertSend(504, $classType);
+    }
+
+    public function testNotModifiedExceptionCarriesResponseEtag() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', ['Etag' => 'server-refreshed-etag']));
+        try {
+            $sender->send(new Request());
+            $this->fail("Expected RequestNotModifiedException");
+        } catch (RequestNotModifiedException $ex) {
+            $this->assertEquals('server-refreshed-etag', $ex->getResponseEtag());
+        }
+    }
+
+    public function testNotModifiedExceptionResponseEtagIsCaseInsensitive() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', ['ETAG' => 'case-insensitive-etag']));
+        try {
+            $sender->send(new Request());
+            $this->fail("Expected RequestNotModifiedException");
+        } catch (RequestNotModifiedException $ex) {
+            $this->assertEquals('case-insensitive-etag', $ex->getResponseEtag());
+        }
+    }
+
+    public function testNotModifiedExceptionResponseEtagNullWhenHeaderAbsent() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', null));
+        try {
+            $sender->send(new Request());
+            $this->fail("Expected RequestNotModifiedException");
+        } catch (RequestNotModifiedException $ex) {
+            $this->assertNull($ex->getResponseEtag());
+        }
     }
 
     private function assertSend($statusCode, $classType) {

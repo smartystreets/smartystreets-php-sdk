@@ -3,6 +3,7 @@
 namespace SmartyStreets\PhpSdk;
 
 include_once('Sender.php');
+require_once(__DIR__ . '/HeaderUtil.php');
 require_once(__DIR__ . '/Exceptions/BadCredentialsException.php');
 require_once(__DIR__ . '/Exceptions/BadRequestException.php');
 require_once(__DIR__ . '/Exceptions/InternalServerErrorException.php');
@@ -48,7 +49,7 @@ class StatusCodeSender implements Sender
             case 200:
                 return $response;
             case 304:
-                throw new RequestNotModifiedException("Record has not been modified since the last request.", $response->getStatusCode());
+                throw new RequestNotModifiedException("Record has not been modified since the last request.", $response->getStatusCode(), null, HeaderUtil::extractEtag($response->getHeaders()));
             case 400:
                 throw new BadRequestException("Bad Request (Malformed Payload): A GET request lacked a street field or the request body of a POST request contained malformed JSON.", $response->getStatusCode());
             case 401:
