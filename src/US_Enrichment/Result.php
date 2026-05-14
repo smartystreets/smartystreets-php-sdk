@@ -5,7 +5,6 @@ namespace SmartyStreets\PhpSdk\US_Enrichment;
 require_once(__DIR__ . '/../ArrayUtil.php');
 require_once(__DIR__ . '/PrincipalAttributes.php');
 require_once(__DIR__ . '/GeoReferenceAttributes.php');
-require_once(__DIR__ . '/RiskAttributes.php');
 require_once(__DIR__ . '/SecondaryAttributes.php');
 require_once(__DIR__ . '/SecondaryCountAttributes.php');
 require_once(__DIR__ . '/MatchedAddress.php');
@@ -61,8 +60,6 @@ class Result  {
             }
         } else if ($dataSetName == 'geo-reference') {
             return new GeoReferenceAttributes($attributesObj);
-        } else if ($dataSetName == 'risk') {
-            return new RiskAttributes($attributesObj);
         }
     }
 

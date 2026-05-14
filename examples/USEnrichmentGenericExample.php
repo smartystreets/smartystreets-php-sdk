@@ -41,7 +41,6 @@ class USEnrichmentGenericExample
         // Available dataset/subset combinations include:
         //   "property" / "principal"
         //   "geo-reference" / null
-        //   "risk" / null
         //   "secondary" / null
         //   "secondary" / "count"
 

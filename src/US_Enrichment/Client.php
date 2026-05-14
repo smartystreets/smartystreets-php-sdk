@@ -39,10 +39,6 @@ class Client {
         return $this->sendDatasetLookup($geoReferenceLookup, 'geo-reference', null);
     }
 
-    public function sendRiskLookup($riskLookup) {
-        return $this->sendDatasetLookup($riskLookup, 'risk', null);
-    }
-
     public function sendSecondaryLookup($secondaryLookup) {
         return $this->sendDatasetLookup($secondaryLookup, 'secondary', null);
     }
