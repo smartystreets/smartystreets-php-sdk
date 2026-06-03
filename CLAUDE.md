@@ -13,12 +13,12 @@ make us_street_api           # Run US Street API examples
 
 To run a single test file:
 ```bash
-phpunit tests/US_Street/ClientTest.php
+./vendor/bin/phpunit tests/US_Street/ClientTest.php
 ```
 
 To run a specific test method:
 ```bash
-phpunit --filter testMethodName tests/US_Street/ClientTest.php
+./vendor/bin/phpunit --filter testMethodName tests/US_Street/ClientTest.php
 ```
 
 ## Architecture Overview
@@ -57,6 +57,6 @@ Tests mirror the src directory structure. Key test utilities in `tests/Mocks/`:
 
 ### Dependencies
 
-- PHP >= 5.6
+- PHP >= 8.3
 - Zero runtime dependencies (PSR Log is optional for custom logging)
-- Dev: PHPUnit 9
+- Dev: PHPUnit 12

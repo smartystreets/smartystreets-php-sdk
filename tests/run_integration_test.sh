@@ -8,7 +8,7 @@ SERVER_PID=$!
 sleep 1
 
 # Run PHPUnit
-phpunit --display-phpunit-deprecations --group integration tests/
+./vendor/bin/phpunit --display-phpunit-deprecations --group integration tests/
 
 # Kill the echo server
 kill $SERVER_PID
