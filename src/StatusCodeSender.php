@@ -41,6 +41,29 @@ class StatusCodeSender implements Sender
         $this->inner = $inner;
     }
 
+    function messageFrom(Response $response, String $fallback)
+    {
+        $payload = $response->getPayload();
+        if ($payload === null || $payload === '') {
+            return $fallback;
+        }
+
+        $responseJSON = json_decode($payload, true, 10);
+
+        if (! isset($responseJSON['errors'])) {
+            return $fallback;
+        }
+
+        $errorMessage = '';
+        foreach ($responseJSON['errors'] as $error) {
+            $errorMessage .= isset($error['message']) ? $error['message'] . ' ' : '';
+        }
+
+        $errorMessage = trim($errorMessage);
+
+        return $errorMessage === '' ? $fallback : $errorMessage;
+    }
+
     function send(Request $request)
     {
         $response = $this->inner->send($request);
@@ -51,17 +74,17 @@ class StatusCodeSender implements Sender
             case 304:
                 throw new RequestNotModifiedException("Record has not been modified since the last request.", $response->getStatusCode(), null, HeaderUtil::extractEtag($response->getHeaders()));
             case 400:
-                throw new BadRequestException("Bad Request (Malformed Payload): A GET request lacked a street field or the request body of a POST request contained malformed JSON.", $response->getStatusCode());
+                throw new BadRequestException($this->messageFrom($response, "Bad Request (Malformed Payload): A GET request lacked a street field or the request body of a POST request contained malformed JSON."), $response->getStatusCode());
             case 401:
-                throw new BadCredentialsException("Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials.", $response->getStatusCode());
+                throw new BadCredentialsException($this->messageFrom($response, "Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials."), $response->getStatusCode());
             case 402:
-                throw new PaymentRequiredException("Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.", $response->getStatusCode());
+                throw new PaymentRequiredException($this->messageFrom($response, "Payment Required: There is no active subscription for the account associated with the credentials submitted with the request."), $response->getStatusCode());
             case 408:
-                throw new RequestTimeoutException("Request timeout error.", $response->getStatusCode());
+                throw new RequestTimeoutException($this->messageFrom($response, "Request timeout error."), $response->getStatusCode());
             case 413:
-                throw new RequestEntityTooLargeException("Request Entity Too Large: The request body has exceeded the maximum size.", $response->getStatusCode());
+                throw new RequestEntityTooLargeException($this->messageFrom($response, "Request Entity Too Large: The request body has exceeded the maximum size."), $response->getStatusCode());
             case 422:
-                throw new UnprocessableEntityException("GET request lacked required fields.", $response->getStatusCode());
+                throw new UnprocessableEntityException($this->messageFrom($response, "GET request lacked required fields."), $response->getStatusCode());
             case 429:
                 $responseJSON = json_decode($response->getPayload(), true, 10);
 
