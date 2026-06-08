@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 test:
-	phpunit --exclude-group "integration" tests
+	./vendor/bin/phpunit --exclude-group "integration" tests
 
 test-integration:
 	./tests/run_integration_test.sh
