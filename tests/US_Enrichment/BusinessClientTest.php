@@ -67,6 +67,34 @@ class BusinessClientTest extends TestCase {
         $this->assertEquals("http://localhost/lookup/search/business?freeform=freeform", $capturing->getRequest()->getUrl());
     }
 
+    public function testSendingBusinessNameSearchLookup() {
+        $capturing = new RequestCapturingSender();
+        $client = new Client(new URLPrefixSender("http://localhost", $capturing), new MockSerializer(null));
+
+        $lookup = new SummaryLookup();
+        $lookup->setFreeform("freeform");
+        $lookup->setBusinessName("Acme Corp");
+
+        $client->sendBusinessLookup($lookup);
+
+        $this->assertEquals(
+            "http://localhost/lookup/search/business?freeform=freeform&business_name=Acme+Corp",
+            $capturing->getRequest()->getUrl()
+        );
+    }
+
+    public function testBusinessNameOmittedWhenNotSet() {
+        $capturing = new RequestCapturingSender();
+        $client = new Client(new URLPrefixSender("http://localhost", $capturing), new MockSerializer(null));
+
+        $lookup = new SummaryLookup();
+        $lookup->setFreeform("freeform");
+
+        $client->sendBusinessLookup($lookup);
+
+        $this->assertStringNotContainsString("business_name", $capturing->getRequest()->getUrl());
+    }
+
     // endregion
 
     // region Detail URL shape

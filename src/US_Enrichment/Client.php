@@ -141,6 +141,9 @@ class Client {
             $request->setParameter('city', $lookup->getCity());
             $request->setParameter('state', $lookup->getState());
             $request->setParameter('zipcode', $lookup->getZipcode());
+            if (!self::isBlank($lookup->getBusinessName())) {
+                $request->setParameter('business_name', $lookup->getBusinessName());
+            }
         }
         $this->applyIncludeExclude($request, $lookup);
         $request->setParameter('features', $lookup->getFeatures());

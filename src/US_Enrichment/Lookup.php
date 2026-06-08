@@ -12,6 +12,7 @@ class Lookup extends EnrichmentLookupBase {
     protected ?string $city = null;
     protected ?string $state = null;
     protected ?string $zipcode = null;
+    protected ?string $businessName = null;
     protected ?string $dataSetName;
     protected ?string $dataSubsetName;
     protected ?string $features = null;
@@ -26,6 +27,7 @@ class Lookup extends EnrichmentLookupBase {
         ?string $city = null,
         ?string $state = null,
         ?string $zipcode = null,
+        ?string $businessName = null,
         ?array $include = null,
         ?array $exclude = null,
         ?string $features = null,
@@ -39,6 +41,7 @@ class Lookup extends EnrichmentLookupBase {
         $this->city = $city;
         $this->state = $state;
         $this->zipcode = $zipcode;
+        $this->businessName = $businessName;
         $this->features = $features;
         $this->requestEtag = $requestEtag;
         if ($include !== null) {
@@ -95,6 +98,14 @@ class Lookup extends EnrichmentLookupBase {
 
     public function setZipcode(?string $zipcode): void {
         $this->zipcode = $zipcode;
+    }
+
+    public function getBusinessName(): ?string {
+        return $this->businessName;
+    }
+
+    public function setBusinessName(?string $businessName): void {
+        $this->businessName = $businessName;
     }
 
     public function getDataSetName(): ?string {
