@@ -11,7 +11,8 @@ class Changes extends RootLevel {
 
     //region [fields]
 
-    private $components;
+    private $country,
+            $components;
 
     //endregion
 
@@ -20,7 +21,12 @@ class Changes extends RootLevel {
             return;
 
         parent::__construct($obj);
+        $this->country = ArrayUtil::getField($obj, 'country');
         $this->components = new Components(ArrayUtil::getField($obj, 'components'));
+    }
+
+    public function getCountry() {
+        return $this->country;
     }
 
     public function getComponents() {
