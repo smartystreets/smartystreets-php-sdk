@@ -18,8 +18,8 @@ $client = (new ClientBuilder(new BasicAuthCredentials($authId, $authToken)))
 
 // Business summary SEARCH path: no smartyKey, search by freeform address + business name.
 $lookup = new SummaryLookup();
-$lookup->setFreeform("1600 Amphitheatre Pkwy, Mountain View, CA");
-$lookup->setBusinessName("Google");
+$lookup->setBusinessName("delta air");
+$lookup->setCity("atlanta");
 
 try {
     $summaryResults = $client->sendBusinessLookup($lookup);
@@ -39,7 +39,7 @@ if (empty($summary->businesses)) {
     exit(0);
 }
 
-echo "Matching businesses for SmartyKey: {$summary->smartyKey}\n";
+echo "Summary results for businessName: {$summary->businessName}\n";
 foreach ($summary->businesses as $biz) {
     echo "  - {$biz->companyName} (ID: {$biz->businessId})\n";
 }

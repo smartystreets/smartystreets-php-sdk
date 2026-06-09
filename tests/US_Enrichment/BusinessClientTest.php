@@ -72,13 +72,12 @@ class BusinessClientTest extends TestCase {
         $client = new Client(new URLPrefixSender("http://localhost", $capturing), new MockSerializer(null));
 
         $lookup = new SummaryLookup();
-        $lookup->setFreeform("freeform");
-        $lookup->setBusinessName("Acme Corp");
+        $lookup->setBusinessName("Style Studio");
 
         $client->sendBusinessLookup($lookup);
 
         $this->assertEquals(
-            "http://localhost/lookup/search/business?freeform=freeform&business_name=Acme+Corp",
+            "http://localhost/lookup/search/business?business_name=Style+Studio",
             $capturing->getRequest()->getUrl()
         );
     }
