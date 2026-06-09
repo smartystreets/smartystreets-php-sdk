@@ -102,7 +102,6 @@ class CandidateTest extends TestCase {
                     "address6" => "66",
                     "address7" => "67",
                     "address8" => "68",
-                    "country" => "125",
                     "components" => array(
                         "country_iso_3" => "73",
                         "super_administrative_area" => "74",
@@ -264,7 +263,6 @@ class CandidateTest extends TestCase {
         $this->assertEquals("66", $changes->getAddress6());
         $this->assertEquals("67", $changes->getAddress7());
         $this->assertEquals("68", $changes->getAddress8());
-        $this->assertEquals("125", $changes->getCountry());
 
         //region [ Changes->Components ]
         $components = $changes->getComponents();
