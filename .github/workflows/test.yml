@@ -1,9 +1,12 @@
-name: Publish PHP SDK
+name: Test
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   test:
@@ -11,6 +14,7 @@ jobs:
     strategy:
       matrix:
         php-version: ['8.3', '8.4']
+
     container:
       image: php:${{ matrix.php-version }}-cli
 
@@ -20,16 +24,3 @@ jobs:
       - run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
       - run: composer install --prefer-dist --no-progress
       - run: make test
-
-  publish:
-    needs: test
-    runs-on: ubuntu-latest
-    container:
-      image: php:8.3-cli
-
-    steps:
-      - uses: actions/checkout@v4
-      - run: apt-get update && apt-get install -y unzip
-      - run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-      - run: composer install --prefer-dist --no-progress
-      - run: make release
