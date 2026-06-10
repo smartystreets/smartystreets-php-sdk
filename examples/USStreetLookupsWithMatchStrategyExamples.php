@@ -25,72 +25,79 @@ class USStreetLookupsWithMatchStrategyExamples {
 
         $client = (new ClientBuilder($credentials))
             ->buildUsStreetApiClient();
+
+        // Each address is run through all three match strategies so you can compare how
+        // 'strict', 'enhanced', and 'invalid' each handle a valid, an invalid, and an
+        // ambiguous address.
+        //   - strict:   only returns candidates that are valid, mailable addresses.
+        //   - enhanced: returns a more comprehensive dataset (requires a US Core or Rooftop license).
+        //   - invalid:  most permissive; always returns at least one candidate (a best-guess standardization).
+        // Documentation for input fields: https://smartystreets.com/docs/cloud/us-street-api
+        $addresses = [
+            ["valid (real, deliverable)",    "1600 Amphitheatre Pkwy", "Mountain View", "CA", "94043"],
+            ["invalid (no such address)",    "9999 W 1150 S",          "Provo",         "UT", "84601"],
+            ["ambiguous (missing ZIP/unit)", "1 Rosedale St",          "Baltimore",     "MD", ""],
+        ];
+        $strategies = [Lookup::STRICT, Lookup::ENHANCED, Lookup::INVALID];
+
         $batch = new Batch();
+        $cases = []; // parallel metadata for each lookup, in the order they are added to the batch
 
-        $addressWithStrictStrategy = new Lookup();
-        $addressWithStrictStrategy->setStreet("691 W 1150 S");
-        $addressWithStrictStrategy->setCity("provo");
-        $addressWithStrictStrategy->setState("utah");
-        $addressWithStrictStrategy->setMatchStrategy(Lookup::STRICT);
-
-        // Uncomment the below line to add a custom parameter to the API call
-        // $addressWithStrictStrategy->addCustomParameter("parameter", "value");
-
-        $addressWithInvalidStrategy = new Lookup();
-        $addressWithInvalidStrategy->setStreet("693 W 1150 S");
-        $addressWithInvalidStrategy->setCity("provo");
-        $addressWithInvalidStrategy->setState("utah");
-        $addressWithInvalidStrategy->setMatchStrategy(Lookup::INVALID);
-
-        $addressWithEnhancedStrategy = new Lookup();
-        $addressWithEnhancedStrategy->setStreet("9999 W 1150 S");
-        $addressWithEnhancedStrategy->setCity("provo");
-        $addressWithEnhancedStrategy->setState("utah");
-        $addressWithEnhancedStrategy->setMatchStrategy(Lookup::ENHANCED);
+        foreach ($addresses as [$label, $street, $city, $state, $zipcode]) {
+            foreach ($strategies as $strategy) {
+                $lookup = new Lookup();
+                $lookup->setStreet($street);
+                $lookup->setCity($city);
+                $lookup->setState($state);
+                $lookup->setZipcode($zipcode);
+                $lookup->setMatchStrategy($strategy);
+                $lookup->setMaxCandidates(10); // allow ambiguous addresses to return more than one match
+                $batch->add($lookup);
+                $cases[] = [$label, "$street, $city, $state", $strategy];
+            }
+        }
 
         try {
-            $batch->add($addressWithStrictStrategy);
-            $batch->add($addressWithInvalidStrategy);
-            $batch->add($addressWithEnhancedStrategy);
-
             $client->sendBatch($batch);
-            $this->displayResults($batch);
         }
         catch (BatchFullException $ex) {
             echo("Oops! Batch was already full.");
+            return;
         }
         catch (\Exception $ex) {
             echo($ex->getMessage());
+            return;
         }
+
+        $this->displayResults($batch, $cases);
     }
 
-    public function displayResults(Batch $batch) {
+    public function displayResults(Batch $batch, array $cases) {
         $lookups = $batch->getAllLookups();
+        $lastAddress = null;
 
-        for($i = 0; $i < $batch->size(); $i++) {
+        for ($i = 0; $i < $batch->size(); $i++) {
+            [$label, $addressDisplay, $strategy] = $cases[$i];
+
+            if ($addressDisplay !== $lastAddress) {
+                echo("\n" . str_repeat("=", 70) . "\n");
+                echo(" Address: $addressDisplay  [$label]\n");
+                echo(str_repeat("=", 70) . "\n");
+                $lastAddress = $addressDisplay;
+            }
+
             $candidates = $lookups[$i]->getResult();
+            echo("\n--- '$strategy' strategy ---\n");
 
             if (empty($candidates)) {
-                echo("\nAddress " . $i . " is invalid.\n");
+                echo("  0 candidates - no match returned under this strategy.\n");
                 continue;
             }
 
-            echo("\nAddress " . $i . " has at least one candidate. If the match parameter is set to STRICT, the address is valid. Otherwise, check the Analysis output fields to see if the address is valid.\n");
-
+            echo("  " . count($candidates) . " candidate(s):\n");
             foreach ($candidates as $candidate) {
-                $components = $candidate->getComponents();
-                $metadata = $candidate->getMetadata();
-
-                echo("\n\nCandidate " . $candidate->getCandidateIndex() . " ");
-                echo("with " . $lookups[$i]->getMatchStrategy() . " strategy");
-                echo("\nDelivery line 1: " . $candidate->getDeliveryLine1());
-                echo("\nLast line:       " . $candidate->getLastLine());
-                echo("\nZIP Code:        " . $components->getZIPCode() . "-" . $components->getPlus4Code());
-                echo("\nCounty:          " . $metadata->getCountyName());
-                echo("\nLatitude:        " . $metadata->getLatitude());
-                echo("\nLongitude:       " . $metadata->getLongitude());
+                echo("    [" . $candidate->getCandidateIndex() . "] " . $candidate->getDeliveryLine1() . "  " . $candidate->getLastLine() . "\n");
             }
-            echo("\n***********************************\n");
         }
         echo("\n");
     }
