@@ -5,11 +5,14 @@ namespace SmartyStreets\PhpSdk;
 include_once('Sender.php');
 require_once(__DIR__ . '/HeaderUtil.php');
 require_once(__DIR__ . '/Exceptions/BadCredentialsException.php');
+require_once(__DIR__ . '/Exceptions/BadGatewayException.php');
 require_once(__DIR__ . '/Exceptions/BadRequestException.php');
+require_once(__DIR__ . '/Exceptions/ForbiddenException.php');
 require_once(__DIR__ . '/Exceptions/InternalServerErrorException.php');
 require_once(__DIR__ . '/Exceptions/PaymentRequiredException.php');
 require_once(__DIR__ . '/Exceptions/RequestEntityTooLargeException.php');
 require_once(__DIR__ . '/Exceptions/RequestNotModifiedException.php');
+require_once(__DIR__ . '/Exceptions/RequestTimeoutException.php');
 require_once(__DIR__ . '/Exceptions/ServiceUnavailableException.php');
 require_once(__DIR__ . '/Exceptions/TooManyRequestsException.php');
 require_once(__DIR__ . '/Exceptions/UnprocessableEntityException.php');
@@ -18,6 +21,7 @@ require_once(__DIR__ . '/Exceptions/GatewayTimeoutException.php');
 use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
 use SmartyStreets\PhpSdk\Exceptions\BadGatewayException;
 use SmartyStreets\PhpSdk\Exceptions\BadRequestException;
+use SmartyStreets\PhpSdk\Exceptions\ForbiddenException;
 use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
 use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
@@ -72,13 +76,15 @@ class StatusCodeSender implements Sender
             case 200:
                 return $response;
             case 304:
-                throw new RequestNotModifiedException("Record has not been modified since the last request.", $response->getStatusCode(), null, HeaderUtil::extractEtag($response->getHeaders()));
+                throw new RequestNotModifiedException("Not Modified: The requested record has not been modified since the previous request with the Etag value.", $response->getStatusCode(), null, HeaderUtil::extractEtag($response->getHeaders()));
             case 400:
-                throw new BadRequestException($this->messageFrom($response, "Bad Request (Malformed Payload): A GET request lacked a street field or the request body of a POST request contained malformed JSON."), $response->getStatusCode());
+                throw new BadRequestException($this->messageFrom($response, "Bad Request (Malformed Payload): A GET request lacked a required field or the request body of a POST request contained malformed JSON."), $response->getStatusCode());
             case 401:
                 throw new BadCredentialsException($this->messageFrom($response, "Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials."), $response->getStatusCode());
             case 402:
                 throw new PaymentRequiredException($this->messageFrom($response, "Payment Required: There is no active subscription for the account associated with the credentials submitted with the request."), $response->getStatusCode());
+            case 403:
+                throw new ForbiddenException($this->messageFrom($response, "Forbidden: The request contained valid data and was understood by the server, but the server is refusing action."), $response->getStatusCode());
             case 408:
                 throw new RequestTimeoutException($this->messageFrom($response, "Request timeout error."), $response->getStatusCode());
             case 413:
@@ -86,32 +92,22 @@ class StatusCodeSender implements Sender
             case 422:
                 throw new UnprocessableEntityException($this->messageFrom($response, "GET request lacked required fields."), $response->getStatusCode());
             case 429:
-                $responseJSON = json_decode($response->getPayload(), true, 10);
-
                 $retryAfterValue = DEFAULT_BACKOFF_DURATION;
                 if (isset($response->getHeaders()['retry-after'])){
                     $retryAfterValue = intval($response->getHeaders()['retry-after']);
                 }
 
-                if (! isset($responseJSON['errors'])) {
-                    throw new TooManyRequestsException("The rate limit for the plan associated with this subscription has been exceeded. To see plans with higher rate limits, visit our pricing page.", $response->getStatusCode(), $retryAfterValue);
-                }
-                $errorMessage = '';
-                foreach($responseJSON['errors'] as $error){
-                    $errorMessage .= isset($error['message']) ? $error['message'].' ': '';
-                }
-
-                throw new TooManyRequestsException($errorMessage, $response->getStatusCode(), $retryAfterValue);
+                throw new TooManyRequestsException($this->messageFrom($response, "Too Many Requests: The rate limit for your account has been exceeded."), $response->getStatusCode(), $retryAfterValue);
             case 500:
-                throw new InternalServerErrorException("Internal Server Error.", $response->getStatusCode());
+                throw new InternalServerErrorException($this->messageFrom($response, "Internal Server Error."), $response->getStatusCode());
             case 502:
-                throw new BadGatewayException("Bad Gateway error.", $response->getStatusCode());
+                throw new BadGatewayException($this->messageFrom($response, "Bad Gateway error."), $response->getStatusCode());
             case 503:
-                throw new ServiceUnavailableException("Service Unavailable. Try again later.", $response->getStatusCode());
+                throw new ServiceUnavailableException($this->messageFrom($response, "Service Unavailable. Try again later."), $response->getStatusCode());
             case 504:
-                throw new GatewayTimeoutException("The upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed.", $response->getStatusCode());
+                throw new GatewayTimeoutException($this->messageFrom($response, "The upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed."), $response->getStatusCode());
             default:
-                throw new SmartyException("Error sending request. Status code is: ", $response->getStatusCode());
+                throw new SmartyException($this->messageFrom($response, "The server returned an unexpected HTTP status code: " . $response->getStatusCode()), $response->getStatusCode());
         }
     }
 }
