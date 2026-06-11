@@ -85,7 +85,7 @@ class Client {
             throw new SmartyException("Business\\Detail\\Lookup requires a non-empty 'businessId'");
         }
         $request = new Request();
-        $request->setUrlComponents('/business/' . rawurlencode($businessId));
+        $request->setUrlComponents('/lookup/business/' . rawurlencode($businessId));
         $this->applyIncludeExclude($request, $lookup);
         $this->applyEtagAndCustomParams($request, $lookup);
         $this->dispatch($request, $lookup);

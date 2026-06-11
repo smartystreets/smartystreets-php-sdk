@@ -104,7 +104,7 @@ class BusinessClientTest extends TestCase {
 
         $client->sendBusinessDetailLookup("ABC123");
 
-        $this->assertEquals("http://localhost/business/ABC123?", $capturing->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/business/ABC123?", $capturing->getRequest()->getUrl());
     }
 
     public function testBusinessDetailUrlEncodesReservedChars() {
@@ -113,7 +113,7 @@ class BusinessClientTest extends TestCase {
 
         $client->sendBusinessDetailLookup("a/b?c#d");
 
-        $this->assertEquals("http://localhost/business/a%2Fb%3Fc%23d?", $capturing->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/business/a%2Fb%3Fc%23d?", $capturing->getRequest()->getUrl());
     }
 
     public function testBusinessDetailSendsEtagHeader() {
@@ -139,7 +139,7 @@ class BusinessClientTest extends TestCase {
 
         $client->sendBusinessDetailLookup($lookup);
 
-        $this->assertEquals("http://localhost/business/ABC123?include=phone", $capturing->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/business/ABC123?include=phone", $capturing->getRequest()->getUrl());
     }
 
     public function testBusinessDetailExcludeFieldsLandInUrl() {
@@ -151,7 +151,7 @@ class BusinessClientTest extends TestCase {
 
         $client->sendBusinessDetailLookup($lookup);
 
-        $this->assertEquals("http://localhost/business/ABC123?exclude=credit_score", $capturing->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/business/ABC123?exclude=credit_score", $capturing->getRequest()->getUrl());
     }
 
     public function testBusinessDetailCustomParametersLandInUrl() {
@@ -165,7 +165,7 @@ class BusinessClientTest extends TestCase {
         $client->sendBusinessDetailLookup($lookup);
 
         $this->assertEquals(
-            "http://localhost/business/ABC123?experimental=1&trace=on",
+            "http://localhost/lookup/business/ABC123?experimental=1&trace=on",
             $capturing->getRequest()->getUrl()
         );
     }
@@ -182,7 +182,7 @@ class BusinessClientTest extends TestCase {
         $client->sendBusinessDetailLookup($lookup);
 
         $this->assertEquals(
-            "http://localhost/business/ABC123?include=phone&exclude=credit_score&trace=on",
+            "http://localhost/lookup/business/ABC123?include=phone&exclude=credit_score&trace=on",
             $capturing->getRequest()->getUrl()
         );
     }

@@ -16,7 +16,6 @@ $authToken = getenv('SMARTY_AUTH_TOKEN');
 $client = (new ClientBuilder(new BasicAuthCredentials($authId, $authToken)))
     ->buildUsEnrichmentApiClient();
 
-// Business summary SEARCH path: no smartyKey, search by freeform address + business name.
 $lookup = new SummaryLookup();
 $lookup->setBusinessName("delta air");
 $lookup->setCity("atlanta");
@@ -39,7 +38,7 @@ if (empty($summary->businesses)) {
     exit(0);
 }
 
-echo "Summary results for businessName: {$summary->businessName}\n";
+echo "Summary results for businessName: {$lookup->getBusinessName()}\n";
 foreach ($summary->businesses as $biz) {
     echo "  - {$biz->companyName} (ID: {$biz->businessId})\n";
 }
