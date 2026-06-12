@@ -27,11 +27,11 @@ class Lookup extends EnrichmentLookupBase {
         ?string $city = null,
         ?string $state = null,
         ?string $zipcode = null,
-        ?string $businessName = null,
         ?array $include = null,
         ?array $exclude = null,
         ?string $features = null,
-        ?string $requestEtag = null
+        ?string $requestEtag = null,
+        ?string $businessName = null
     ) {
         $this->smartyKey = $smartyKey;
         $this->dataSetName = $dataSetName;
