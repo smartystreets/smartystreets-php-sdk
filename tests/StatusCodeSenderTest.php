@@ -223,7 +223,7 @@ class StatusCodeSenderTest extends TestCase {
             $sender->send(new Request());
             $this->fail("Should have thrown exception.");
         } catch (TooManyRequestsException $ex) {
-            $this->assertEquals("Too Many Requests: The rate limit for your account has been exceeded.", $ex->getMessage());
+            $this->assertEquals("Too Many Requests: The rate limit for your account has been exceeded. Body:", $ex->getMessage());
         }
     }
 
@@ -280,6 +280,40 @@ class StatusCodeSenderTest extends TestCase {
             "The server returned an unexpected HTTP status code: 418");
     }
 
+    public function testFallbackAppendsUnparseableBody() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(422, 'not json'));
+
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (UnprocessableEntityException $ex) {
+            $this->assertEquals("GET request lacked required fields. Body: not json", $ex->getMessage());
+        }
+    }
+
+    public function testFallbackAppendsBodyWithoutMessages() {
+        $payload = json_encode(['errors' => []]);
+        $sender = new StatusCodeSender(new MockStatusCodeSender(422, $payload));
+
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (UnprocessableEntityException $ex) {
+            $this->assertEquals("GET request lacked required fields. Body: " . $payload, $ex->getMessage());
+        }
+    }
+
+    public function testBlankBodyYieldsEmptyBodyLabel() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(422, '   '));
+
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (UnprocessableEntityException $ex) {
+            $this->assertEquals("GET request lacked required fields. Body:", $ex->getMessage());
+        }
+    }
+
     private function assertSend($statusCode, $classType) {
         $sender = new StatusCodeSender(new MockStatusCodeSender($statusCode));
 
@@ -313,7 +347,7 @@ class StatusCodeSenderTest extends TestCase {
             $this->fail("Should have thrown exception.");
         } catch (\Exception $ex) {
             $this->assertInstanceOf($classType, $ex);
-            $this->assertEquals($fallback, $ex->getMessage());
+            $this->assertEquals($fallback . " Body:", $ex->getMessage());
             $this->assertEquals($statusCode, $ex->getCode());
         }
     }

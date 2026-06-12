@@ -48,24 +48,25 @@ class StatusCodeSender implements Sender
     function messageFrom(Response $response, String $fallback)
     {
         $payload = $response->getPayload();
-        if ($payload === null || $payload === '') {
-            return $fallback;
+        $body = $payload === null ? '' : trim($payload);
+
+        if ($body !== '') {
+            $responseJSON = json_decode($payload, true, 10);
+
+            if (isset($responseJSON['errors'])) {
+                $errorMessage = '';
+                foreach ($responseJSON['errors'] as $error) {
+                    $errorMessage .= isset($error['message']) ? $error['message'] . ' ' : '';
+                }
+
+                $errorMessage = trim($errorMessage);
+                if ($errorMessage !== '') {
+                    return $errorMessage;
+                }
+            }
         }
 
-        $responseJSON = json_decode($payload, true, 10);
-
-        if (! isset($responseJSON['errors'])) {
-            return $fallback;
-        }
-
-        $errorMessage = '';
-        foreach ($responseJSON['errors'] as $error) {
-            $errorMessage .= isset($error['message']) ? $error['message'] . ' ' : '';
-        }
-
-        $errorMessage = trim($errorMessage);
-
-        return $errorMessage === '' ? $fallback : $errorMessage;
+        return trim($fallback . ' Body: ' . $body);
     }
 
     function send(Request $request)
