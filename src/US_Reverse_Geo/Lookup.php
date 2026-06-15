@@ -2,6 +2,9 @@
 
 namespace SmartyStreets\PhpSdk\US_Reverse_Geo;
 
+require_once(__DIR__ . '/../Source.php');
+use SmartyStreets\PhpSdk\Source;
+
 /**
  * In addition to holding all of the input data for this lookup, this class also<br>
  *     will contain the result of the lookup after it comes back from the API.
@@ -41,8 +44,8 @@ class Lookup {
         return $this->longitude;
     }
 
-    public function getSource() {
-        return $this->source;
+    public function getSource(): ?string {
+        return $this->source?->value;
     }
 
     public function getCustomParamArray() {
@@ -55,7 +58,7 @@ class Lookup {
 
     //region [ Setters ]
 
-    public function setSource($source) {
+    public function setSource(?Source $source) {
         $this->source = $source;
     }
 

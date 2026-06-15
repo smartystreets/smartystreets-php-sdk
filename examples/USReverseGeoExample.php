@@ -5,11 +5,13 @@ require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Reverse_Geo/Lookup.php');
 require_once(__DIR__ . '/../src/US_Reverse_Geo/Client.php');
+require_once(__DIR__ . '/../src/Source.php');
 
 use SmartyStreets\PhpSdk\BasicAuthCredentials;
 // use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Lookup;
+use SmartyStreets\PhpSdk\Source;
 
 $lookupExample = new USReverseGeoExample();
 $lookupExample->run();
@@ -35,6 +37,9 @@ class USReverseGeoExample
             ->buildUsReverseGeoApiClient();
 
         $lookup = new Lookup(40.111111, -111.111111);
+
+        // $lookup->setSource(Source::All);
+        // $lookup->setSource(Source::Postal);
 
         // Uncomment the below line to add a custom parameter to the API call
         // $lookup->addCustomParameter("parameter", "value");
