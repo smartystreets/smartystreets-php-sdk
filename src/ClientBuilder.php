@@ -30,6 +30,7 @@ require_once(__DIR__ . '/US_Street/Client.php');
 require_once(__DIR__ . '/US_ZIPCode/Client.php');
 require_once(__DIR__ . '/US_Extract/Client.php');
 require_once(__DIR__ . '/US_Autocomplete_Pro/Client.php');
+require_once(__DIR__ . '/US_Autocomplete/Client.php');
 require_once(__DIR__ . '/International_Street/Client.php');
 require_once(__DIR__ . '/International_Autocomplete/Client.php');
 require_once(__DIR__ . '/International_Postal_Code/Client.php');
@@ -49,6 +50,7 @@ class ClientBuilder {
     const INTERNATIONAL_AUTOCOMPLETE_API_URL = "https://international-autocomplete.api.smarty.com";
     const INTERNATIONAL_POSTAL_CODE_API_URL = "https://international-postal-code.api.smarty.com";
     const US_AUTOCOMPLETE_PRO_API_URL = "https://us-autocomplete-pro.api.smarty.com/";
+    const US_AUTOCOMPLETE_API_URL = "https://us-autocomplete.api.smarty.com";
     const US_EXTRACT_API_URL = "https://us-extract.api.smarty.com";
     const US_STREET_API_URL = "https://us-street.api.smarty.com/street-address";
     const US_ZIP_CODE_API_URL = "https://us-zipcode.api.smarty.com/lookup";
@@ -246,6 +248,11 @@ class ClientBuilder {
     public function buildUSAutocompleteProApiClient() {
         $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_PRO_API_URL);
         return new USAutoCompleteProApiClient($this->buildSender(), $this->serializer);
+    }
+
+    public function buildUSAutocompleteApiClient() {
+        $this->ensureURLPrefixNotNull(self::US_AUTOCOMPLETE_API_URL);
+        return new USAutoCompleteApiClient($this->buildSender(), $this->serializer);
     }
 
     public function buildUSExtractApiClient() {
