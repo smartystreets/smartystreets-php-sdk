@@ -9,6 +9,8 @@ require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Business/Summary/Lookup.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Business/Detail/Lookup.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/StatusCodeSender.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockStatusCodeSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
 
@@ -19,6 +21,8 @@ use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
+use SmartyStreets\PhpSdk\StatusCodeSender;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockStatusCodeSender;
 use SmartyStreets\PhpSdk\URLPrefixSender;
 use SmartyStreets\PhpSdk\US_Enrichment\Business\Detail\Lookup as DetailLookup;
 use SmartyStreets\PhpSdk\US_Enrichment\Business\Summary\Lookup as SummaryLookup;
@@ -360,6 +364,19 @@ class BusinessClientTest extends TestCase {
         $result = $client->sendBusinessDetailLookup("ABC");
 
         $this->assertNull($result);
+    }
+
+    public function testSummary304LeavesResultsNullForCacheHitDetection() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', ['Etag' => 'refreshed-etag']));
+        $client = new Client($sender, new MockDeserializer(null));
+        $lookup = new SummaryLookup("1962995076");
+        $lookup->setRequestEtag('old-etag');
+
+        $results = $client->sendBusinessLookup($lookup);
+
+        $this->assertNull($results);
+        $this->assertNull($lookup->getResults());
+        $this->assertEquals('refreshed-etag', $lookup->getResponseEtag());
     }
 
     // endregion

@@ -14,7 +14,8 @@ class HeaderUtil {
         }
         foreach ($headers as $key => $value) {
             if (is_string($key) && strcasecmp($key, 'etag') === 0) {
-                return is_array($value) ? ($value[0] ?? null) : $value;
+                $etag = is_array($value) ? ($value[0] ?? null) : $value;
+                return $etag === null ? null : trim($etag);
             }
         }
         return null;

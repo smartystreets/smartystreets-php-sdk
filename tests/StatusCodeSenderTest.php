@@ -14,7 +14,6 @@ use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;
 use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
 use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
-use SmartyStreets\PhpSdk\Exceptions\RequestNotModifiedException;
 use SmartyStreets\PhpSdk\Exceptions\RequestTimeoutException;
 use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
@@ -106,34 +105,13 @@ class StatusCodeSenderTest extends TestCase {
         $this->assertSend(504, $classType);
     }
 
-    public function testNotModifiedExceptionCarriesResponseEtag() {
+    public function test304IsNotAnError() {
         $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', ['Etag' => 'server-refreshed-etag']));
-        try {
-            $sender->send(new Request());
-            $this->fail("Expected RequestNotModifiedException");
-        } catch (RequestNotModifiedException $ex) {
-            $this->assertEquals('server-refreshed-etag', $ex->getResponseEtag());
-        }
-    }
 
-    public function testNotModifiedExceptionResponseEtagIsCaseInsensitive() {
-        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', ['ETAG' => 'case-insensitive-etag']));
-        try {
-            $sender->send(new Request());
-            $this->fail("Expected RequestNotModifiedException");
-        } catch (RequestNotModifiedException $ex) {
-            $this->assertEquals('case-insensitive-etag', $ex->getResponseEtag());
-        }
-    }
+        $response = $sender->send(new Request());
 
-    public function testNotModifiedExceptionResponseEtagNullWhenHeaderAbsent() {
-        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', null));
-        try {
-            $sender->send(new Request());
-            $this->fail("Expected RequestNotModifiedException");
-        } catch (RequestNotModifiedException $ex) {
-            $this->assertNull($ex->getResponseEtag());
-        }
+        $this->assertEquals(304, $response->getStatusCode());
+        $this->assertEquals('server-refreshed-etag', $response->getHeaders()['Etag']);
     }
 
     public function test400UsesMessageFromResponsePayload() {
@@ -258,17 +236,6 @@ class StatusCodeSenderTest extends TestCase {
     public function test504FallsBackToDefaultMessage() {
         $this->assertFallbackMessage(504, GatewayTimeoutException::class,
             "The upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed.");
-    }
-
-    public function test304UsesStandardMessage() {
-        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', null));
-        try {
-            $sender->send(new Request());
-            $this->fail("Expected RequestNotModifiedException");
-        } catch (RequestNotModifiedException $ex) {
-            $this->assertEquals("Not Modified: The requested record has not been modified since the previous request with the Etag value.",
-                $ex->getMessage());
-        }
     }
 
     public function testUnexpectedStatusCodeUsesMessageFromResponsePayload() {

@@ -75,9 +75,8 @@ class StatusCodeSender implements Sender
 
         switch ($response->getStatusCode()) {
             case 200:
-                return $response;
             case 304:
-                throw new RequestNotModifiedException("Not Modified: The requested record has not been modified since the previous request with the Etag value.", $response->getStatusCode(), null, HeaderUtil::extractEtag($response->getHeaders()));
+                return $response;
             case 400:
                 throw new BadRequestException($this->messageFrom($response, "Bad Request (Malformed Payload): A GET request lacked a required field or the request body of a POST request contained malformed JSON."), $response->getStatusCode());
             case 401:

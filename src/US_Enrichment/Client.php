@@ -55,7 +55,7 @@ class Client {
      * @param BusinessSummaryLookup|string|null $businessLookup SmartyKey string or a Business\Summary\Lookup.
      * @return \SmartyStreets\PhpSdk\US_Enrichment\Business\Summary\Result[]
      */
-    public function sendBusinessLookup($businessLookup): array {
+    public function sendBusinessLookup($businessLookup): ?array {
         if (is_string($businessLookup)) {
             $lookup = new BusinessSummaryLookup($businessLookup);
         } elseif ($businessLookup instanceof BusinessSummaryLookup) {
@@ -125,6 +125,9 @@ class Client {
         $etag = HeaderUtil::extractEtag($response->getHeaders());
         if ($etag !== null) {
             $lookup->setResponseEtag($etag);
+        }
+        if ($response->getStatusCode() === 304) {
+            return;
         }
         $payload = $response->getPayload();
         $decoded = $payload === null || $payload === '' ? null : $this->serializer->deserialize($payload);
