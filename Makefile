@@ -6,7 +6,7 @@ test:
 test-integration:
 	./tests/run_integration_test.sh
 
-package:
+package: test
 	#@echo -n ""
 
 release: package
