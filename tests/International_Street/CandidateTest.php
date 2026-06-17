@@ -22,17 +22,12 @@ class CandidateTest extends TestCase {
             "address6" => "7",
             "address7" => "8",
             "address8" => "9",
-            "address9" => "10",
-            "address10" => "11",
-            "address11" => "12",
-            "address12" => "13",
             "components" => array(
                 "country_iso_3" => "14",
                 "super_administrative_area" => '15',
                 "administrative_area" => "16",
                 "administrative_area_iso2" => "16.1",
-                "administrative_area_short" => "16.2",
-                "administrative_area_long" => "16.3",
+                "attention" => "119",
                 "sub_administrative_area" => "17",
                 "dependent_locality" => "18",
                 "dependent_locality_name" => "19",
@@ -46,6 +41,11 @@ class CandidateTest extends TestCase {
                 "premise_number" => "27",
                 "premise_prefix_number" => "27.5",
                 "premise_type" => "28",
+                "short_address_code" => "120",
+                "sub_building_leading_type" => "121",
+                "sub_building_block" => "122",
+                "sub_building_door" => "123",
+                "sub_building_staircase" => "124",
                 "thoroughfare" => "29",
                 "thoroughfare_predirection" => "30",
                 "thoroughfare_postdirection" => "31",
@@ -102,16 +102,11 @@ class CandidateTest extends TestCase {
                     "address6" => "66",
                     "address7" => "67",
                     "address8" => "68",
-                    "address9" => "69",
-                    "address10" => "70",
-                    "address11" => "71",
-                    "address12" => "72",
                     "components" => array(
                         "country_iso_3" => "73",
                         "super_administrative_area" => "74",
                         "administrative_area" => "75",
-                        "administrative_area_short" => "75.1",
-                        "administrative_area_long" => "75.2",
+                        "attention" => "126",
                         "sub_administrative_area" => "76",
                         "dependent_locality" => "77",
                         "dependent_locality_name" => "78",
@@ -125,6 +120,11 @@ class CandidateTest extends TestCase {
                         "premise_number" => "86",
                         "premise_prefix_number" => "87",
                         "premise_type" => "88",
+                        "short_address_code" => "127",
+                        "sub_building_leading_type" => "128",
+                        "sub_building_block" => "129",
+                        "sub_building_door" => "130",
+                        "sub_building_staircase" => "131",
                         "thoroughfare" => "89",
                         "thoroughfare_predirection" => "90",
                         "thoroughfare_postdirection" => "91",
@@ -170,10 +170,6 @@ class CandidateTest extends TestCase {
         $this->assertEquals("7", $candidate->getAddress6());
         $this->assertEquals("8", $candidate->getAddress7());
         $this->assertEquals("9", $candidate->getAddress8());
-        $this->assertEquals("10", $candidate->getAddress9());
-        $this->assertEquals("11", $candidate->getAddress10());
-        $this->assertEquals("12", $candidate->getAddress11());
-        $this->assertEquals("13", $candidate->getAddress12());
         //endregion
 
         //region [ Components ]
@@ -183,8 +179,7 @@ class CandidateTest extends TestCase {
         $this->assertEquals("15", $components->getSuperAdministrativeArea());
         $this->assertEquals("16", $components->getAdministrativeArea());
         $this->assertEquals("16.1", $components->getAdministrativeAreaISO2());
-        $this->assertEquals("16.2", $components->getAdministrativeAreaShort());
-        $this->assertEquals("16.3", $components->getAdministrativeAreaLong());
+        $this->assertEquals("119", $components->getAttention());
         $this->assertEquals("17", $components->getSubAdministrativeArea());
         $this->assertEquals("18", $components->getDependentLocality());
         $this->assertEquals("19", $components->getDependentLocalityName());
@@ -198,6 +193,11 @@ class CandidateTest extends TestCase {
         $this->assertEquals("27", $components->getPremiseNumber());
         $this->assertEquals("27.5", $components->getPremisePrefixNumber());
         $this->assertEquals("28", $components->getPremiseType());
+        $this->assertEquals("120", $components->getShortAddressCode());
+        $this->assertEquals("121", $components->getSubBuildingLeadingType());
+        $this->assertEquals("122", $components->getSubBuildingBlock());
+        $this->assertEquals("123", $components->getSubBuildingDoor());
+        $this->assertEquals("124", $components->getSubBuildingStaircase());
         $this->assertEquals("29", $components->getThoroughfare());
         $this->assertEquals("30", $components->getThoroughfarePredirection());
         $this->assertEquals("31", $components->getThoroughfarePostdirection());
@@ -263,10 +263,6 @@ class CandidateTest extends TestCase {
         $this->assertEquals("66", $changes->getAddress6());
         $this->assertEquals("67", $changes->getAddress7());
         $this->assertEquals("68", $changes->getAddress8());
-        $this->assertEquals("69", $changes->getAddress9());
-        $this->assertEquals("70", $changes->getAddress10());
-        $this->assertEquals("71", $changes->getAddress11());
-        $this->assertEquals("72", $changes->getAddress12());
 
         //region [ Changes->Components ]
         $components = $changes->getComponents();
@@ -274,8 +270,7 @@ class CandidateTest extends TestCase {
         $this->assertEquals("73", $components->getCountryIso3());
         $this->assertEquals("74", $components->getSuperAdministrativeArea());
         $this->assertEquals("75", $components->getAdministrativeArea());
-        $this->assertEquals("75.1", $components->getAdministrativeAreaShort());
-        $this->assertEquals("75.2", $components->getAdministrativeAreaLong());
+        $this->assertEquals("126", $components->getAttention());
         $this->assertEquals("76", $components->getSubAdministrativeArea());
         $this->assertEquals("77", $components->getDependentLocality());
         $this->assertEquals("78", $components->getDependentLocalityName());
@@ -289,6 +284,11 @@ class CandidateTest extends TestCase {
         $this->assertEquals("86", $components->getPremiseNumber());
         $this->assertEquals("87", $components->getPremisePrefixNumber());
         $this->assertEquals("88", $components->getPremiseType());
+        $this->assertEquals("127", $components->getShortAddressCode());
+        $this->assertEquals("128", $components->getSubBuildingLeadingType());
+        $this->assertEquals("129", $components->getSubBuildingBlock());
+        $this->assertEquals("130", $components->getSubBuildingDoor());
+        $this->assertEquals("131", $components->getSubBuildingStaircase());
         $this->assertEquals("89", $components->getThoroughfare());
         $this->assertEquals("90", $components->getThoroughfarePredirection());
         $this->assertEquals("91", $components->getThoroughfarePostdirection());

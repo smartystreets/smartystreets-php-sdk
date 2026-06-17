@@ -15,8 +15,7 @@ class Components {
             $superAdministrativeArea,
             $administrativeArea,
             $administrativeAreaISO2,
-            $administrativeAreaShort,
-            $administrativeAreaLong,
+            $attention,
             $subAdministrativeArea,
             $dependentLocality,
             $dependentLocalityName,
@@ -30,6 +29,11 @@ class Components {
             $premiseNumber,
             $premisePrefixNumber,
             $premiseType,
+            $shortAddressCode,
+            $subBuildingLeadingType,
+            $subBuildingBlock,
+            $subBuildingDoor,
+            $subBuildingStaircase,
             $thoroughfare,
             $thoroughfarePredirection,
             $thoroughfarePostdirection,
@@ -75,8 +79,7 @@ class Components {
         $this->superAdministrativeArea = ArrayUtil::getField($obj,'super_administrative_area');
         $this->administrativeArea = ArrayUtil::getField($obj,'administrative_area');
         $this->administrativeAreaISO2 = ArrayUtil::getField($obj,'administrative_area_iso2');
-        $this->administrativeAreaShort = ArrayUtil::getField($obj,'administrative_area_short');
-        $this->administrativeAreaLong = ArrayUtil::getField($obj,'administrative_area_long');
+        $this->attention = ArrayUtil::getField($obj,'attention');
         $this->subAdministrativeArea = ArrayUtil::getField($obj,'sub_administrative_area');
         $this->dependentLocality = ArrayUtil::getField($obj,'dependent_locality');
         $this->dependentLocalityName = ArrayUtil::getField($obj,'dependent_locality_name');
@@ -90,6 +93,11 @@ class Components {
         $this->premiseNumber = ArrayUtil::getField($obj,'premise_number');
         $this->premisePrefixNumber = ArrayUtil::getField($obj,'premise_prefix_number');
         $this->premiseType = ArrayUtil::getField($obj,'premise_type');
+        $this->shortAddressCode = ArrayUtil::getField($obj,'short_address_code');
+        $this->subBuildingLeadingType = ArrayUtil::getField($obj,'sub_building_leading_type');
+        $this->subBuildingBlock = ArrayUtil::getField($obj,'sub_building_block');
+        $this->subBuildingDoor = ArrayUtil::getField($obj,'sub_building_door');
+        $this->subBuildingStaircase = ArrayUtil::getField($obj,'sub_building_staircase');
         $this->thoroughfare = ArrayUtil::getField($obj,'thoroughfare');
         $this->thoroughfarePredirection = ArrayUtil::getField($obj,'thoroughfare_predirection');
         $this->thoroughfarePostdirection = ArrayUtil::getField($obj,'thoroughfare_postdirection');
@@ -172,12 +180,8 @@ class Components {
         return $this->administrativeAreaISO2;
     }
 
-    public function getAdministrativeAreaShort() {
-        return $this->administrativeAreaShort;
-    }
-
-    public function getAdministrativeAreaLong() {
-        return $this->administrativeAreaLong;
+    public function getAttention() {
+        return $this->attention;
     }
 
     public function getSubAdministrativeArea() {
@@ -230,6 +234,26 @@ class Components {
 
     public function getPremiseType() {
         return $this->premiseType;
+    }
+
+    public function getShortAddressCode() {
+        return $this->shortAddressCode;
+    }
+
+    public function getSubBuildingLeadingType() {
+        return $this->subBuildingLeadingType;
+    }
+
+    public function getSubBuildingBlock() {
+        return $this->subBuildingBlock;
+    }
+
+    public function getSubBuildingDoor() {
+        return $this->subBuildingDoor;
+    }
+
+    public function getSubBuildingStaircase() {
+        return $this->subBuildingStaircase;
     }
 
     public function getThoroughfare() {
