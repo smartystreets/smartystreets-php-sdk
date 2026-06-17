@@ -81,8 +81,4 @@ class NativeSenderTest extends TestCase {
         $this->assertEquals($expectedBody, $response->getPayload());
         $this->assertEquals(5, count($response->getHeaders()));
     }
-
-    public function testBogusTest() {
-        $this->assertEquals("ok", "ok");
-    }
 }

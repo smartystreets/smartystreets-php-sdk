@@ -13,6 +13,7 @@ use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
 use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
 use SmartyStreets\PhpSdk\Exceptions\RequestNotModifiedException;
+use SmartyStreets\PhpSdk\Exceptions\RequestTimeoutException;
 use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
 use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
@@ -132,11 +133,93 @@ class StatusCodeSenderTest extends TestCase {
         }
     }
 
+    public function test400UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(400, BadRequestException::class);
+    }
+
+    public function test400FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(400, BadRequestException::class,
+            "Bad Request (Malformed Payload): A GET request lacked a street field or the request body of a POST request contained malformed JSON.");
+    }
+
+    public function test401UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(401, BadCredentialsException::class);
+    }
+
+    public function test401FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(401, BadCredentialsException::class,
+            "Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials.");
+    }
+
+    public function test402UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(402, PaymentRequiredException::class);
+    }
+
+    public function test402FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(402, PaymentRequiredException::class,
+            "Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.");
+    }
+
+    public function test408UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(408, RequestTimeoutException::class);
+    }
+
+    public function test408FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(408, RequestTimeoutException::class, "Request timeout error.");
+    }
+
+    public function test413UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(413, RequestEntityTooLargeException::class);
+    }
+
+    public function test413FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(413, RequestEntityTooLargeException::class,
+            "Request Entity Too Large: The request body has exceeded the maximum size.");
+    }
+
+    public function test422UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(422, UnprocessableEntityException::class);
+    }
+
+    public function test422FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(422, UnprocessableEntityException::class, "GET request lacked required fields.");
+    }
+
     private function assertSend($statusCode, $classType) {
         $sender = new StatusCodeSender(new MockStatusCodeSender($statusCode));
 
         $this->expectException($classType);
 
         $sender->send(new Request());
+    }
+
+    private function assertMessageFromPayload($statusCode, $classType) {
+        $payload = json_encode(['errors' => [
+            ['message' => 'First problem.'],
+            ['message' => 'Second problem.'],
+        ]]);
+        $sender = new StatusCodeSender(new MockStatusCodeSender($statusCode, $payload));
+
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (\Exception $ex) {
+            $this->assertInstanceOf($classType, $ex);
+            $this->assertEquals('First problem. Second problem.', $ex->getMessage());
+            $this->assertEquals($statusCode, $ex->getCode());
+        }
+    }
+
+    private function assertFallbackMessage($statusCode, $classType, $fallback) {
+        $sender = new StatusCodeSender(new MockStatusCodeSender($statusCode, ''));
+
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (\Exception $ex) {
+            $this->assertInstanceOf($classType, $ex);
+            $this->assertEquals($fallback, $ex->getMessage());
+            $this->assertEquals($statusCode, $ex->getCode());
+        }
     }
 }

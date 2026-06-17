@@ -4,6 +4,8 @@
 
 The official client libraries for accessing SmartyStreets APIs from PHP.
 
+Compatible with PHP 8.3 and later.
+
 [![asciicast](https://asciinema.org/a/120313.png)](https://asciinema.org/a/120313)
 
 You may have noticed this page is curiously sparse. Don't panic, there's [documentation](https://smartystreets.com/docs/sdk/php) and [examples](examples).
