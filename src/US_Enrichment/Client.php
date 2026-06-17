@@ -85,7 +85,7 @@ class Client {
             throw new SmartyException("Business\\Detail\\Lookup requires a non-empty 'businessId'");
         }
         $request = new Request();
-        $request->setUrlComponents('/business/' . rawurlencode($businessId));
+        $request->setUrlComponents('/lookup/business/' . rawurlencode($businessId));
         $this->applyIncludeExclude($request, $lookup);
         $this->applyEtagAndCustomParams($request, $lookup);
         $this->dispatch($request, $lookup);
@@ -111,8 +111,9 @@ class Client {
     private function assertAddressIdentifierPresent(Lookup $lookup): void {
         if (self::isBlank($lookup->getSmartyKey())
             && self::isBlank($lookup->getStreet())
-            && self::isBlank($lookup->getFreeform())) {
-            throw new SmartyException("Lookup requires one of 'smartyKey', 'street', or 'freeform' to be set");
+            && self::isBlank($lookup->getFreeform())
+            && self::isBlank($lookup->getBusinessName())) {
+            throw new SmartyException("Lookup requires one of 'smartyKey', 'street', 'freeform', or 'business_name' to be set");
         }
     }
 
@@ -141,6 +142,7 @@ class Client {
             $request->setParameter('city', $lookup->getCity());
             $request->setParameter('state', $lookup->getState());
             $request->setParameter('zipcode', $lookup->getZipcode());
+            $request->setParameter('business_name', $lookup->getBusinessName());
         }
         $this->applyIncludeExclude($request, $lookup);
         $request->setParameter('features', $lookup->getFeatures());

@@ -25,10 +25,13 @@ us_autocomplete_pro_api:
 	php examples/USAutocompleteProExample.php
 
 us_enrichment_api:
-	php examples/USEnrichmentExample.php && php examples/USEnrichmentGeoReferenceExample.php && php examples/USEnrichmentSecondaryExample.php && php examples/USEnrichmentGenericExample.php && php examples/USEnrichmentBusinessExample.php
+	php examples/USEnrichmentExample.php && php examples/USEnrichmentGeoReferenceExample.php && php examples/USEnrichmentSecondaryExample.php && php examples/USEnrichmentGenericExample.php && php examples/USEnrichmentBusinessExample.php && php examples/USEnrichmentBusinessNameSearchExample.php && php examples/USEnrichmentEtagExample.php
 
 us_enrichment_business_api:
 	php examples/USEnrichmentBusinessExample.php
+
+us_enrichment_business_name_search_api:
+	php examples/USEnrichmentBusinessNameSearchExample.php
 
 us_enrichment_etag:
 	php examples/USEnrichmentEtagExample.php
