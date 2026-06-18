@@ -10,6 +10,7 @@ use SmartyStreets\PhpSdk\BasicAuthCredentials;
 // use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Autocomplete\Lookup;
+use SmartyStreets\PhpSdk\US_Autocomplete\Source;
 use SmartyStreets\PhpSdk\US_Autocomplete\Suggestion;
 
 // This example is for US Autocomplete (V2). It has the same name as a previous product
@@ -50,7 +51,7 @@ class USAutocompleteExample
 //          $lookup->addPreferState("CO");
             $lookup->setPreferRatio(3);
             $lookup->setMaxResults(5);
-            $lookup->setSource("all");
+            $lookup->setSource(Source::All);
 
             // Uncomment the below line to add a custom parameter to the API call
             // $lookup->addCustomParameter("parameter", "value");
