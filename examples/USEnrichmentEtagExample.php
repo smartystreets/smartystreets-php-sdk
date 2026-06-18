@@ -8,7 +8,6 @@ require_once(__DIR__ . '/../src/US_Enrichment/Business/Detail/Lookup.php');
 
 use SmartyStreets\PhpSdk\BasicAuthCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
-use SmartyStreets\PhpSdk\Exceptions\RequestNotModifiedException;
 use SmartyStreets\PhpSdk\US_Enrichment\Business\Detail\Lookup as DetailLookup;
 use SmartyStreets\PhpSdk\US_Enrichment\Business\Summary\Lookup as SummaryLookup;
 
@@ -40,10 +39,12 @@ function exerciseSummaryEtag($client, string $smartyKey): ?string {
     $second->setRequestEtag($captured);
     try {
         $client->sendBusinessLookup($second);
-        echo "  Call 2 (matching Etag): 200 — server did NOT honor the conditional. Results=" . count($second->getResults())
-            . ", Etag=" . display($second->getResponseEtag()) . "\n";
-    } catch (RequestNotModifiedException $ex) {
-        echo "  Call 2 (matching Etag): 304 RequestNotModifiedException — caller treats this as cache-valid. Refreshed Etag=" . display($ex->getResponseEtag()) . "\n";
+        if ($second->getResults() === null) {
+            echo "  Call 2 (matching Etag): 304 not modified — cache is still valid. Refreshed Etag=" . display($second->getResponseEtag()) . "\n";
+        } else {
+            echo "  Call 2 (matching Etag): 200 — server did NOT honor the conditional. Results=" . count($second->getResults())
+                . ", Etag=" . display($second->getResponseEtag()) . "\n";
+        }
     } catch (Exception $ex) {
         echo "  Call 2 unexpected failure: " . get_class($ex) . ": " . $ex->getMessage() . "\n";
         return null;
@@ -53,10 +54,12 @@ function exerciseSummaryEtag($client, string $smartyKey): ?string {
     $third->setRequestEtag($captured . "X");
     try {
         $client->sendBusinessLookup($third);
-        echo "  Call 3 (mutated Etag): 200 as expected. Results=" . count($third->getResults())
-            . ", Etag=" . display($third->getResponseEtag()) . "\n";
-    } catch (RequestNotModifiedException $ex) {
-        echo "  Call 3 (mutated Etag): 304 — UNEXPECTED. Server treated a different Etag as matching.\n";
+        if ($third->getResults() === null) {
+            echo "  Call 3 (mutated Etag): 304 — UNEXPECTED. Server treated a different Etag as matching.\n";
+        } else {
+            echo "  Call 3 (mutated Etag): 200 as expected. Results=" . count($third->getResults())
+                . ", Etag=" . display($third->getResponseEtag()) . "\n";
+        }
     } catch (Exception $ex) {
         echo "  Call 3 unexpected failure: " . get_class($ex) . ": " . $ex->getMessage() . "\n";
     }
@@ -89,11 +92,13 @@ function exerciseDetailEtag($client, string $businessId): void {
     $second->setRequestEtag($captured);
     try {
         $client->sendBusinessDetailLookup($second);
-        echo "  Call 2 (matching Etag): 200 — server did NOT honor the conditional. businessId="
-            . ($second->getResult()->businessId ?? '<null>') . ", Etag=" . display($second->getResponseEtag()) . "\n";
-    } catch (RequestNotModifiedException $ex) {
-        echo "  Call 2 (matching Etag): 304 RequestNotModifiedException — caller treats this as cache-valid. Refreshed Etag="
-            . display($ex->getResponseEtag()) . "\n";
+        if ($second->getResult() === null) {
+            echo "  Call 2 (matching Etag): 304 not modified — cache is still valid. Refreshed Etag="
+                . display($second->getResponseEtag()) . "\n";
+        } else {
+            echo "  Call 2 (matching Etag): 200 — server did NOT honor the conditional. businessId="
+                . ($second->getResult()->businessId ?? '<null>') . ", Etag=" . display($second->getResponseEtag()) . "\n";
+        }
     } catch (Exception $ex) {
         echo "  Call 2 unexpected failure: " . get_class($ex) . ": " . $ex->getMessage() . "\n";
         return;
@@ -103,10 +108,12 @@ function exerciseDetailEtag($client, string $businessId): void {
     $third->setRequestEtag($captured . "X");
     try {
         $client->sendBusinessDetailLookup($third);
-        echo "  Call 3 (mutated Etag): 200 as expected. businessId="
-            . ($third->getResult()->businessId ?? '<null>') . ", Etag=" . display($third->getResponseEtag()) . "\n";
-    } catch (RequestNotModifiedException $ex) {
-        echo "  Call 3 (mutated Etag): 304 — UNEXPECTED. Server treated a different Etag as matching.\n";
+        if ($third->getResult() === null) {
+            echo "  Call 3 (mutated Etag): 304 — UNEXPECTED. Server treated a different Etag as matching.\n";
+        } else {
+            echo "  Call 3 (mutated Etag): 200 as expected. businessId="
+                . ($third->getResult()->businessId ?? '<null>') . ", Etag=" . display($third->getResponseEtag()) . "\n";
+        }
     } catch (Exception $ex) {
         echo "  Call 3 unexpected failure: " . get_class($ex) . ": " . $ex->getMessage() . "\n";
     }

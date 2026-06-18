@@ -6,6 +6,7 @@ require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSerializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockDeserializer.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/RequestCapturingSender.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockStatusCodeSender.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/StatusCodeSender.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Client.php');
@@ -16,6 +17,8 @@ use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
 use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
+use SmartyStreets\PhpSdk\StatusCodeSender;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockStatusCodeSender;
 use SmartyStreets\PhpSdk\URLPrefixSender;
 use SmartyStreets\PhpSdk\Response;
 use SmartyStreets\PhpSdk\US_Enrichment\Client;
@@ -112,6 +115,21 @@ class ClientTest extends TestCase {
         $this->assertEquals("abcdef", $lookup->getResponseEtag());
     }
 
+    public function testResponseEtagIsTrimmed() {
+        $mockHeaders = [
+            'etag' => ' abcdef'
+        ];
+        $response = new Response(200, "hello world", $mockHeaders);
+        $sender = new URLPrefixSender("http://localhost", new MockSender($response));
+        $client = new Client($sender, new MockDeserializer([['count' => '5']]));
+        $lookup = new Lookup();
+        $lookup->setFreeform("123 Test Street City State Zipcode");
+
+        $client->sendPropertyPrincipalLookup($lookup);
+
+        $this->assertEquals("abcdef", $lookup->getResponseEtag());
+    }
+
     public function testRequestEtagHeaderIsSent() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost", $capturingSender);
@@ -150,5 +168,19 @@ class ClientTest extends TestCase {
         $client = new Client(new URLPrefixSender("http://localhost", new RequestCapturingSender()), new MockSerializer(null));
         $this->expectException(\SmartyStreets\PhpSdk\Exceptions\SmartyException::class);
         $client->sendGeoReferenceLookup(42);
+    }
+
+    public function test304IsSuccessWithRefreshedEtagAndUntouchedResults() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', ['Etag' => 'refreshed-etag']));
+        $client = new Client($sender, new MockDeserializer(null));
+        $lookup = new Lookup();
+        $lookup->setFreeform("123 Test Street City State Zipcode");
+        $lookup->setRequestEtag('old-etag');
+        $lookup->setResponse(['prior']);
+
+        $client->sendPropertyPrincipalLookup($lookup);
+
+        $this->assertEquals('refreshed-etag', $lookup->getResponseEtag());
+        $this->assertEquals(['prior'], $lookup->getResponse());
     }
 }
