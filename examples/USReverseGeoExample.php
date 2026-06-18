@@ -5,13 +5,11 @@ require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Reverse_Geo/Lookup.php');
 require_once(__DIR__ . '/../src/US_Reverse_Geo/Client.php');
-require_once(__DIR__ . '/../src/Source.php');
-
 use SmartyStreets\PhpSdk\BasicAuthCredentials;
 // use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Lookup;
-use SmartyStreets\PhpSdk\Source;
+use SmartyStreets\PhpSdk\US_Reverse_Geo\Source;
 
 $lookupExample = new USReverseGeoExample();
 $lookupExample->run();

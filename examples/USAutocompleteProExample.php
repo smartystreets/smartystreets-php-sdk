@@ -5,14 +5,12 @@ require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Autocomplete_Pro/Lookup.php');
 require_once(__DIR__ . '/../src/US_Autocomplete_Pro/Client.php');
-require_once(__DIR__ . '/../src/Source.php');
-
 use SmartyStreets\PhpSdk\BasicAuthCredentials;
 // use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Lookup;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Suggestion;
-use SmartyStreets\PhpSdk\Source;
+use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Source;
 
 $lookupExample = new USAutocompleteProExample();
 $lookupExample->run();

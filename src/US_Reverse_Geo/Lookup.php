@@ -2,8 +2,7 @@
 
 namespace SmartyStreets\PhpSdk\US_Reverse_Geo;
 
-require_once(__DIR__ . '/../Source.php');
-use SmartyStreets\PhpSdk\Source;
+require_once(__DIR__ . '/Source.php');
 
 /**
  * In addition to holding all of the input data for this lookup, this class also<br>

@@ -10,7 +10,7 @@ require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete_Pro/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete_Pro/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Source.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete_Pro/Source.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
@@ -19,7 +19,7 @@ use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
 use SmartyStreets\PhpSdk\URLPrefixSender;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Client;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Lookup;
-use SmartyStreets\PhpSdk\Source;
+use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Source;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase {

@@ -10,7 +10,7 @@ require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Reverse_Geo/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Reverse_Geo/Lookup.php');
-require_once(dirname(dirname(dirname(__FILE__))) . '/src/Source.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Reverse_Geo/Source.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/Candidate.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Street/LanguageMode.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
@@ -21,7 +21,7 @@ use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
 use SmartyStreets\PhpSdk\URLPrefixSender;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Client;
 use SmartyStreets\PhpSdk\US_Reverse_Geo\Lookup;
-use SmartyStreets\PhpSdk\Source;
+use SmartyStreets\PhpSdk\US_Reverse_Geo\Source;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase {
