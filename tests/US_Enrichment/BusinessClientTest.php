@@ -9,6 +9,8 @@ require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Business/Summary/Lookup.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Enrichment/Business/Detail/Lookup.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/StatusCodeSender.php');
+require_once(dirname(dirname(__FILE__)) . '/Mocks/MockStatusCodeSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
 
@@ -19,6 +21,8 @@ use SmartyStreets\PhpSdk\Tests\Mocks\MockDeserializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSender;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockSerializer;
 use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
+use SmartyStreets\PhpSdk\StatusCodeSender;
+use SmartyStreets\PhpSdk\Tests\Mocks\MockStatusCodeSender;
 use SmartyStreets\PhpSdk\URLPrefixSender;
 use SmartyStreets\PhpSdk\US_Enrichment\Business\Detail\Lookup as DetailLookup;
 use SmartyStreets\PhpSdk\US_Enrichment\Business\Summary\Lookup as SummaryLookup;
@@ -67,6 +71,33 @@ class BusinessClientTest extends TestCase {
         $this->assertEquals("http://localhost/lookup/search/business?freeform=freeform", $capturing->getRequest()->getUrl());
     }
 
+    public function testSendingBusinessNameSearchLookup() {
+        $capturing = new RequestCapturingSender();
+        $client = new Client(new URLPrefixSender("http://localhost", $capturing), new MockSerializer(null));
+
+        $lookup = new SummaryLookup();
+        $lookup->setBusinessName("Style Studio");
+
+        $client->sendBusinessLookup($lookup);
+
+        $this->assertEquals(
+            "http://localhost/lookup/search/business?business_name=Style+Studio",
+            $capturing->getRequest()->getUrl()
+        );
+    }
+
+    public function testBusinessNameOmittedWhenNotSet() {
+        $capturing = new RequestCapturingSender();
+        $client = new Client(new URLPrefixSender("http://localhost", $capturing), new MockSerializer(null));
+
+        $lookup = new SummaryLookup();
+        $lookup->setFreeform("freeform");
+
+        $client->sendBusinessLookup($lookup);
+
+        $this->assertStringNotContainsString("business_name", $capturing->getRequest()->getUrl());
+    }
+
     // endregion
 
     // region Detail URL shape
@@ -77,7 +108,7 @@ class BusinessClientTest extends TestCase {
 
         $client->sendBusinessDetailLookup("ABC123");
 
-        $this->assertEquals("http://localhost/business/ABC123?", $capturing->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/business/ABC123?", $capturing->getRequest()->getUrl());
     }
 
     public function testBusinessDetailUrlEncodesReservedChars() {
@@ -86,7 +117,7 @@ class BusinessClientTest extends TestCase {
 
         $client->sendBusinessDetailLookup("a/b?c#d");
 
-        $this->assertEquals("http://localhost/business/a%2Fb%3Fc%23d?", $capturing->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/business/a%2Fb%3Fc%23d?", $capturing->getRequest()->getUrl());
     }
 
     public function testBusinessDetailSendsEtagHeader() {
@@ -112,7 +143,7 @@ class BusinessClientTest extends TestCase {
 
         $client->sendBusinessDetailLookup($lookup);
 
-        $this->assertEquals("http://localhost/business/ABC123?include=phone", $capturing->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/business/ABC123?include=phone", $capturing->getRequest()->getUrl());
     }
 
     public function testBusinessDetailExcludeFieldsLandInUrl() {
@@ -124,7 +155,7 @@ class BusinessClientTest extends TestCase {
 
         $client->sendBusinessDetailLookup($lookup);
 
-        $this->assertEquals("http://localhost/business/ABC123?exclude=credit_score", $capturing->getRequest()->getUrl());
+        $this->assertEquals("http://localhost/lookup/business/ABC123?exclude=credit_score", $capturing->getRequest()->getUrl());
     }
 
     public function testBusinessDetailCustomParametersLandInUrl() {
@@ -138,7 +169,7 @@ class BusinessClientTest extends TestCase {
         $client->sendBusinessDetailLookup($lookup);
 
         $this->assertEquals(
-            "http://localhost/business/ABC123?experimental=1&trace=on",
+            "http://localhost/lookup/business/ABC123?experimental=1&trace=on",
             $capturing->getRequest()->getUrl()
         );
     }
@@ -155,7 +186,7 @@ class BusinessClientTest extends TestCase {
         $client->sendBusinessDetailLookup($lookup);
 
         $this->assertEquals(
-            "http://localhost/business/ABC123?include=phone&exclude=credit_score&trace=on",
+            "http://localhost/lookup/business/ABC123?include=phone&exclude=credit_score&trace=on",
             $capturing->getRequest()->getUrl()
         );
     }
@@ -360,6 +391,19 @@ class BusinessClientTest extends TestCase {
         $result = $client->sendBusinessDetailLookup("ABC");
 
         $this->assertNull($result);
+    }
+
+    public function testSummary304LeavesResultsNullForCacheHitDetection() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', ['Etag' => 'refreshed-etag']));
+        $client = new Client($sender, new MockDeserializer(null));
+        $lookup = new SummaryLookup("1962995076");
+        $lookup->setRequestEtag('old-etag');
+
+        $results = $client->sendBusinessLookup($lookup);
+
+        $this->assertNull($results);
+        $this->assertNull($lookup->getResults());
+        $this->assertEquals('refreshed-etag', $lookup->getResponseEtag());
     }
 
     // endregion

@@ -3,6 +3,7 @@
 namespace SmartyStreets\PhpSdk\US_Autocomplete_Pro;
 
 require_once(dirname(dirname(__DIR__)) . '/src/US_Autocomplete_Pro/GeolocateType.php');
+require_once(__DIR__ . '/Source.php');
 
 /**
  * In addition to holding all of the input data for this lookup, this class also<br>
@@ -143,8 +144,8 @@ class Lookup {
         return $this->selected;
     }
 
-    public function getSource() {
-        return $this->source;
+    public function getSource(): ?string {
+        return $this->source?->value;
     }
 
     public function getCustomParamArray() {
@@ -220,7 +221,7 @@ class Lookup {
         $this->selected = $selected;
     }
 
-    public function setSource($source) {
+    public function setSource(?Source $source) {
         $this->source = $source;
     }
 

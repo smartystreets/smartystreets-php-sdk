@@ -10,6 +10,7 @@ require_once(dirname(dirname(__FILE__)) . '/Mocks/MockSender.php');
 require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete_Pro/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete_Pro/Lookup.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/US_Autocomplete_Pro/Source.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/URLPrefixSender.php');
@@ -18,6 +19,7 @@ use SmartyStreets\PhpSdk\Tests\Mocks\RequestCapturingSender;
 use SmartyStreets\PhpSdk\URLPrefixSender;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Client;
 use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Lookup;
+use SmartyStreets\PhpSdk\US_Autocomplete_Pro\Source;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase {
@@ -50,4 +52,46 @@ class ClientTest extends TestCase {
 
         $this->assertEquals('http://localhost/lookup?search=testSearch&prefer_cities=testCity&prefer_geolocation=city&parameter=value', $capturingSender->getRequest()->getUrl());
     }
+
+    public function testSendingLookupWithSourceAll() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+
+        $lookup = new Lookup("testSearch");
+        $lookup->setSource(Source::All);
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals('http://localhost/lookup?search=testSearch&prefer_geolocation=city&source=all', $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testSendingLookupWithSourcePostal() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+
+        $lookup = new Lookup("testSearch");
+        $lookup->setSource(Source::Postal);
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals('http://localhost/lookup?search=testSearch&prefer_geolocation=city&source=postal', $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testSendingLookupWithNoSourceOmitsParam() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+
+        $lookup = new Lookup("testSearch");
+
+        $client->sendLookup($lookup);
+
+        $this->assertStringNotContainsString('source', $capturingSender->getRequest()->getUrl());
+    }
 }
+

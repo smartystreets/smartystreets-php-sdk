@@ -7,14 +7,16 @@ require_once(dirname(dirname(__FILE__)) . '/src/StatusCodeSender.php');
 require_once(dirname(dirname(__FILE__)) . '/src/Request.php');
 
 use SmartyStreets\PhpSdk\Exceptions\BadCredentialsException;
+use SmartyStreets\PhpSdk\Exceptions\BadGatewayException;
 use SmartyStreets\PhpSdk\Exceptions\BadRequestException;
+use SmartyStreets\PhpSdk\Exceptions\ForbiddenException;
 use SmartyStreets\PhpSdk\Exceptions\GatewayTimeoutException;
 use SmartyStreets\PhpSdk\Exceptions\InternalServerErrorException;
 use SmartyStreets\PhpSdk\Exceptions\PaymentRequiredException;
 use SmartyStreets\PhpSdk\Exceptions\RequestEntityTooLargeException;
-use SmartyStreets\PhpSdk\Exceptions\RequestNotModifiedException;
 use SmartyStreets\PhpSdk\Exceptions\RequestTimeoutException;
 use SmartyStreets\PhpSdk\Exceptions\ServiceUnavailableException;
+use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\TooManyRequestsException;
 use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 use SmartyStreets\PhpSdk\Tests\Mocks\MockStatusCodeSender;
@@ -103,34 +105,13 @@ class StatusCodeSenderTest extends TestCase {
         $this->assertSend(504, $classType);
     }
 
-    public function testNotModifiedExceptionCarriesResponseEtag() {
+    public function test304IsNotAnError() {
         $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', ['Etag' => 'server-refreshed-etag']));
-        try {
-            $sender->send(new Request());
-            $this->fail("Expected RequestNotModifiedException");
-        } catch (RequestNotModifiedException $ex) {
-            $this->assertEquals('server-refreshed-etag', $ex->getResponseEtag());
-        }
-    }
 
-    public function testNotModifiedExceptionResponseEtagIsCaseInsensitive() {
-        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', ['ETAG' => 'case-insensitive-etag']));
-        try {
-            $sender->send(new Request());
-            $this->fail("Expected RequestNotModifiedException");
-        } catch (RequestNotModifiedException $ex) {
-            $this->assertEquals('case-insensitive-etag', $ex->getResponseEtag());
-        }
-    }
+        $response = $sender->send(new Request());
 
-    public function testNotModifiedExceptionResponseEtagNullWhenHeaderAbsent() {
-        $sender = new StatusCodeSender(new MockStatusCodeSender(304, '', null));
-        try {
-            $sender->send(new Request());
-            $this->fail("Expected RequestNotModifiedException");
-        } catch (RequestNotModifiedException $ex) {
-            $this->assertNull($ex->getResponseEtag());
-        }
+        $this->assertEquals(304, $response->getStatusCode());
+        $this->assertEquals('server-refreshed-etag', $response->getHeaders()['Etag']);
     }
 
     public function test400UsesMessageFromResponsePayload() {
@@ -139,7 +120,7 @@ class StatusCodeSenderTest extends TestCase {
 
     public function test400FallsBackToDefaultMessage() {
         $this->assertFallbackMessage(400, BadRequestException::class,
-            "Bad Request (Malformed Payload): A GET request lacked a street field or the request body of a POST request contained malformed JSON.");
+            "Bad Request (Malformed Payload): A GET request lacked a required field or the request body of a POST request contained malformed JSON.");
     }
 
     public function test401UsesMessageFromResponsePayload() {
@@ -185,6 +166,121 @@ class StatusCodeSenderTest extends TestCase {
         $this->assertFallbackMessage(422, UnprocessableEntityException::class, "GET request lacked required fields.");
     }
 
+    public function test403ResponseThrowsForbiddenException() {
+        $this->assertSend(403, ForbiddenException::class);
+    }
+
+    public function test403UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(403, ForbiddenException::class);
+    }
+
+    public function test403FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(403, ForbiddenException::class,
+            "Forbidden: The request contained valid data and was understood by the server, but the server is refusing action.");
+    }
+
+    public function test429UsesMessageFromResponsePayload() {
+        $payload = json_encode(['errors' => [
+            ['message' => 'First problem.'],
+            ['message' => 'Second problem.'],
+        ]]);
+        $sender = new StatusCodeSender(new MockStatusCodeSender(429, $payload));
+
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (TooManyRequestsException $ex) {
+            $this->assertEquals('First problem. Second problem.', $ex->getMessage());
+        }
+    }
+
+    public function test429FallsBackToDefaultMessage() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(429, ''));
+
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (TooManyRequestsException $ex) {
+            $this->assertEquals("Too Many Requests: The rate limit for your account has been exceeded. Body:", $ex->getMessage());
+        }
+    }
+
+    public function test500UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(500, InternalServerErrorException::class);
+    }
+
+    public function test500FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(500, InternalServerErrorException::class, "Internal Server Error.");
+    }
+
+    public function test502UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(502, BadGatewayException::class);
+    }
+
+    public function test502FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(502, BadGatewayException::class, "Bad Gateway error.");
+    }
+
+    public function test503UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(503, ServiceUnavailableException::class);
+    }
+
+    public function test503FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(503, ServiceUnavailableException::class, "Service Unavailable. Try again later.");
+    }
+
+    public function test504UsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(504, GatewayTimeoutException::class);
+    }
+
+    public function test504FallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(504, GatewayTimeoutException::class,
+            "The upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed.");
+    }
+
+    public function testUnexpectedStatusCodeUsesMessageFromResponsePayload() {
+        $this->assertMessageFromPayload(418, SmartyException::class);
+    }
+
+    public function testUnexpectedStatusCodeFallsBackToDefaultMessage() {
+        $this->assertFallbackMessage(418, SmartyException::class,
+            "The server returned an unexpected HTTP status code: 418");
+    }
+
+    public function testFallbackAppendsUnparseableBody() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(422, 'not json'));
+
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (UnprocessableEntityException $ex) {
+            $this->assertEquals("GET request lacked required fields. Body: not json", $ex->getMessage());
+        }
+    }
+
+    public function testFallbackAppendsBodyWithoutMessages() {
+        $payload = json_encode(['errors' => []]);
+        $sender = new StatusCodeSender(new MockStatusCodeSender(422, $payload));
+
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (UnprocessableEntityException $ex) {
+            $this->assertEquals("GET request lacked required fields. Body: " . $payload, $ex->getMessage());
+        }
+    }
+
+    public function testBlankBodyYieldsEmptyBodyLabel() {
+        $sender = new StatusCodeSender(new MockStatusCodeSender(422, '   '));
+
+        try {
+            $sender->send(new Request());
+            $this->fail("Should have thrown exception.");
+        } catch (UnprocessableEntityException $ex) {
+            $this->assertEquals("GET request lacked required fields. Body:", $ex->getMessage());
+        }
+    }
+
     private function assertSend($statusCode, $classType) {
         $sender = new StatusCodeSender(new MockStatusCodeSender($statusCode));
 
@@ -218,7 +314,7 @@ class StatusCodeSenderTest extends TestCase {
             $this->fail("Should have thrown exception.");
         } catch (\Exception $ex) {
             $this->assertInstanceOf($classType, $ex);
-            $this->assertEquals($fallback, $ex->getMessage());
+            $this->assertEquals($fallback . " Body:", $ex->getMessage());
             $this->assertEquals($statusCode, $ex->getCode());
         }
     }

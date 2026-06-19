@@ -19,11 +19,7 @@ class RootLevel {
         $address5,
         $address6,
         $address7,
-        $address8,
-        $address9,
-        $address10,
-        $address11,
-        $address12;
+        $address8;
 
     //endregion
 
@@ -41,10 +37,6 @@ class RootLevel {
         $this->address6 = ArrayUtil::getField($obj, 'address6');
         $this->address7 = ArrayUtil::getField($obj, 'address7');
         $this->address8 = ArrayUtil::getField($obj, 'address8');
-        $this->address9 = ArrayUtil::getField($obj, 'address9');
-        $this->address10 = ArrayUtil::getField($obj, 'address10');
-        $this->address11 = ArrayUtil::getField($obj, 'address11');
-        $this->address12 = ArrayUtil::getField($obj, 'address12');
     }
 
     //region [ Getters ]
@@ -87,22 +79,6 @@ class RootLevel {
 
     public function getAddress8() {
         return $this->address8;
-    }
-
-    public function getAddress9() {
-        return $this->address9;
-    }
-
-    public function getAddress10() {
-        return $this->address10;
-    }
-
-    public function getAddress11() {
-        return $this->address11;
-    }
-
-    public function getAddress12() {
-        return $this->address12;
     }
 
     //endregion
