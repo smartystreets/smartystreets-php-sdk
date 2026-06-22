@@ -17,6 +17,7 @@ class Suggestion {
             $state,
             $zipcode,
             $entries;
+            $source;
 
     public function __construct($obj = null) {
         if ($obj == null)
@@ -30,6 +31,7 @@ class Suggestion {
         $this->state = ArrayUtil::getField($obj, 'state');
         $this->zipcode = ArrayUtil::getField($obj, 'zipcode');
         $this->entries = ArrayUtil::getField($obj, 'entries');
+        $this->source = ArrayUtil::getField($obj, 'source');
     }
 
     public function getSmartyKey() {
@@ -62,5 +64,9 @@ class Suggestion {
 
     public function getEntries() {
         return $this->entries;
+    }
+
+    public function getSource() {
+        return $this->source;
     }
 }
