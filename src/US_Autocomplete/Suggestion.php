@@ -16,7 +16,7 @@ class Suggestion {
             $city,
             $state,
             $zipcode,
-            $entries;
+            $entries,
             $source;
 
     public function __construct($obj = null) {
