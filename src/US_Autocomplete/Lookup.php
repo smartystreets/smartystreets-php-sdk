@@ -50,6 +50,7 @@ class Lookup {
         $this->preferZIPCodes = array();
         $this->preferRatio = Lookup::PREFER_RATIO_DEFAULT;
         $this->preferGeolocation = new GeolocateType(GEOLOCATE_TYPE_CITY);
+        $this->exclude = array();
         $this->customParamArray = array();
     }
 
@@ -145,8 +146,12 @@ class Lookup {
         return $this->selected;
     }
 
-    public function getExclude() {
+    public function getExclude(): array {
         return $this->exclude;
+    }
+
+    public function addExclude($item) {
+        $this->exclude[] = $item;
     }
 
     public function getSource(): ?string {
@@ -226,7 +231,7 @@ class Lookup {
         $this->selected = $selected;
     }
 
-    public function setExclude($exclude) {
+    public function setExclude(array $exclude) {
         $this->exclude = $exclude;
     }
 

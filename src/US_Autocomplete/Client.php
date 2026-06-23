@@ -58,7 +58,7 @@ class Client {
         $request->setParameter("prefer_geolocation", $lookup->getPreferGeolocation()->getName());
         $request->setParameter("source", $lookup->getSource());
         $request->setParameter("selected", $lookup->getSelected());
-        $request->setParameter("exclude", $lookup->getExclude());
+        $request->setParameter("exclude", $this->buildFilterString($lookup->getExclude(), ","));
 
         foreach ($lookup->getCustomParamArray() as $key => $value) {
             $request->setParameter($key, $value);
@@ -67,10 +67,10 @@ class Client {
         return $request;
     }
 
-    private function buildFilterString($list) {
+    private function buildFilterString($list, $separator = ';') {
         if (empty($list))
             return null;
 
-        return join(';', $list);
+        return join($separator, $list);
     }
 }

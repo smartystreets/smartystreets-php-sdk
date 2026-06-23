@@ -54,7 +54,7 @@ class ClientTest extends TestCase {
         $lookup->setPreferRatio(3);
         $lookup->setSource(Source::All);
         $lookup->setSelected("selectedAddress");
-        $lookup->setExclude("excludedAddress");
+        $lookup->addExclude("excludedAddress");
 
         $client->sendLookup($lookup);
 
@@ -68,11 +68,11 @@ class ClientTest extends TestCase {
         $client = new Client($sender, $serializer);
 
         $lookup = new Lookup("testSearch");
-        $lookup->setExclude("excludedAddress");
+        $lookup->setExclude(["excludedAddress", "excludedAddress2"]);
 
         $client->sendLookup($lookup);
 
-        $this->assertStringContainsString('&exclude=excludedAddress', $capturingSender->getRequest()->getUrl());
+        $this->assertStringContainsString('&exclude=excludedAddress%2CexcludedAddress2', $capturingSender->getRequest()->getUrl());
     }
 
     public function testSendingLookupWithSourceAll() {
