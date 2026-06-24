@@ -1,5 +1,8 @@
 #!/usr/bin/make -f
 
+setup:
+	composer install
+
 test:
 	./vendor/bin/phpunit --exclude-group "integration" tests
 
@@ -23,6 +26,9 @@ international_street_api:
 
 us_autocomplete_pro_api:
 	php examples/USAutocompleteProExample.php
+
+us_autocomplete_api:
+	php examples/USAutocompleteExample.php
 
 us_enrichment_api:
 	php examples/USEnrichmentExample.php && php examples/USEnrichmentGeoReferenceExample.php && php examples/USEnrichmentSecondaryExample.php && php examples/USEnrichmentGenericExample.php && php examples/USEnrichmentBusinessExample.php && php examples/USEnrichmentBusinessNameSearchExample.php && php examples/USEnrichmentEtagExample.php
@@ -54,6 +60,6 @@ us_street_api:
 us_zipcode_api:
 	php examples/UsZIPCodeSingleLookupExample.php && php examples/UsZIPCodeMultipleLookupsExample.php
 
-examples: international_autocomplete_api international_postal_code_api international_street_api us_autocomplete_pro_api us_enrichment_api us_extract_api us_reverse_geo_api us_street_api us_zipcode_api
+examples: international_autocomplete_api international_postal_code_api international_street_api us_autocomplete_pro_api us_autocomplete_api us_enrichment_api us_extract_api us_reverse_geo_api us_street_api us_zipcode_api
 
-.PHONY: test package release examples international_autocomplete_api international_postal_code_api international_street_api us_autocomplete_pro_api us_enrichment_api us_enrichment_business_api us_enrichment_etag us_extract_api us_reverse_geo_api us_street_api us_street_iana_timezone_api us_street_match_strategy_api us_zipcode_api
+.PHONY: setup test package release examples international_autocomplete_api international_postal_code_api international_street_api us_autocomplete_pro_api us_autocomplete_api us_enrichment_api us_enrichment_business_api us_enrichment_etag us_extract_api us_reverse_geo_api us_street_api us_street_iana_timezone_api us_street_match_strategy_api us_zipcode_api
