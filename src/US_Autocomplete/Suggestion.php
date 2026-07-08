@@ -11,6 +11,7 @@ use SmartyStreets\PhpSdk\ArrayUtil;
 class Suggestion {
     private $smartyKey,
             $entryID,
+            $urbanization,
             $streetLine,
             $secondary,
             $city,
@@ -25,6 +26,7 @@ class Suggestion {
 
         $this->smartyKey = ArrayUtil::getField($obj, 'smarty_key');
         $this->entryID = ArrayUtil::getField($obj, 'entry_id');
+        $this->urbanization = ArrayUtil::getField($obj, 'urbanization');
         $this->streetLine = ArrayUtil::getField($obj, 'street_line');
         $this->secondary = ArrayUtil::getField($obj, 'secondary');
         $this->city = ArrayUtil::getField($obj, 'city');
@@ -40,6 +42,10 @@ class Suggestion {
 
     public function getEntryID() {
         return $this->entryID;
+    }
+
+    public function getUrbanization() {
+        return $this->urbanization;
     }
 
     public function getStreetLine() {
