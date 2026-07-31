@@ -54,7 +54,7 @@ class ClientTest extends TestCase {
         $lookup->setInputId("1234");
         $lookup->setCountry("0");
         $lookup->setGeocode(true);
-        $lookup->setLanguage(new LanguageMode(LANGUAGE_MODE_NATIVE));
+        $lookup->setLanguage(LanguageMode::Native);
         $lookup->setFreeform("1");
         $lookup->setAddress1("2");
         $lookup->setAddress2("3");
@@ -71,6 +71,22 @@ class ClientTest extends TestCase {
         $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
     }
 
+    public function testSendingLookupWithMixedCaseLanguageValue() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("0");
+        $lookup->setFreeform("1");
+        $lookup->setLanguage(LanguageMode::fromValue("Latin"));
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals("http://localhost/verify?country=0&language=latin&freeform=1",
+            $capturingSender->getRequest()->getUrl());
+    }
+
     public function testSendingCustomParameterLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost", $capturingSender);
@@ -82,7 +98,7 @@ class ClientTest extends TestCase {
         $lookup->setInputId("1234");
         $lookup->setCountry("0");
         $lookup->setGeocode(true);
-        $lookup->setLanguage(new LanguageMode(LANGUAGE_MODE_NATIVE));
+        $lookup->setLanguage(LanguageMode::Native);
         $lookup->setFreeform("1");
         $lookup->setAddress1("2");
         $lookup->setAddress2("3");
