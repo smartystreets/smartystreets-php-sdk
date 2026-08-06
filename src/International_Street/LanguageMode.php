@@ -2,22 +2,29 @@
 
 namespace SmartyStreets\PhpSdk\International_Street;
 
-define('LANGUAGE_MODE_NATIVE', 'native', false);
-define('LANGUAGE_MODE_LATIN', 'latin', false);
+require_once(__DIR__ . '/../Exceptions/UnprocessableEntityException.php');
+use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 
 /**
- * When not set, the output language will match the language of the input values. When set to <b>NATIVE</b> the<br>
- *     results will always be in the language of the output country. When set to <b>LATIN</b> the results<br>
+ * When not set, the output language will match the language of the input values. When set to <b>Native</b> the<br>
+ *     results will always be in the language of the output country. When set to <b>Latin</b> the results<br>
  *     will always be provided using a Latin character set.
  */
-class LanguageMode {
-    private $name;
+enum LanguageMode: string {
+    case Native = 'native';
+    case Latin = 'latin';
 
-    public function __construct($name) {
-        $this->name = $name;
-    }
-
-    public function getName() {
-        return $this->name;
+    /**
+     * Resolves a value (eg. from user input or config) into a LanguageMode, matching 'native'/'latin' regardless of case.
+     * @throws UnprocessableEntityException when the value doesn't match 'native' or 'latin', case-insensitively.
+     */
+    public static function fromValue(string $value): self {
+        foreach (self::cases() as $case) {
+            if (strcasecmp($case->value, $value) === 0) {
+                return $case;
+            }
+        }
+        throw new UnprocessableEntityException(
+            "invalid Language value; must be unset, 'native', or 'latin' (case-insensitive)");
     }
 }

@@ -49,7 +49,7 @@ class Client {
         $request->setParameter("country", $lookup->getCountry());
         $request->setParameter("geocode", $lookup->getGeocode());
         if ($lookup->getLanguage() != null)
-            $request->setParameter("language", $lookup->getLanguage()->getName());
+            $request->setParameter("language", $lookup->getLanguage()->value);
         $request->setParameter("freeform", $lookup->getFreeform());
         $request->setParameter("address1", $lookup->getAddress1());
         $request->setParameter("address2", $lookup->getAddress2());
