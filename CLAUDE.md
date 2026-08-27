@@ -44,7 +44,7 @@ Each sender wraps the next and implements the `Sender` interface.
 ### Key Patterns
 
 - **Batch Processing**: `Batch` class holds up to 100 lookups per request. Results map back to inputs by index.
-- **Authentication**: `Credentials` interface with `StaticCredentials` (auth-id/auth-token query params), `SharedCredentials` (embedded key signing), and `BasicAuthCredentials` (HTTP Basic Auth header) implementations.
+- **Authentication**: `Credentials` interface with `StaticCredentials` (auth-id/auth-token query params), `SharedCredentials` (embedded key signing), and `BasicAuthCredentials` (HTTP Basic Auth header) implementations. Embedded/website keys are GET-only, so they are not valid for batch (POST) requests or the US Extract API (POST-only): https://www.smarty.com/docs/cloud/authentication
 - **Exception Hierarchy**: All exceptions inherit from `SmartyException`. Status codes map to specific exceptions (e.g., `BadCredentialsException`, `TooManyRequestsException`).
 - **Retry Logic**: `RetrySender` handles retryable status codes (408, 429, 500, 502, 503, 504) with backoff via `Sleeper` interface.
 
