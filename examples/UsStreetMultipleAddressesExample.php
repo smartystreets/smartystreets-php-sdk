@@ -3,12 +3,10 @@
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Street/Lookup.php');
 require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
-// require_once(__DIR__ . '/../src/SharedCredentials.php');
 
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Exceptions\BatchFullException;
 use SmartyStreets\PhpSdk\BasicAuthCredentials;
-// use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Street\Lookup;
 use SmartyStreets\PhpSdk\Batch;
@@ -21,7 +19,6 @@ class UsStreetMultipleAddressesExample
     public function run()
     {
 
-
         // $authId = 'Your SmartyStreets Auth ID here';
         // $authToken = 'Your SmartyStreets Auth Token here';
 
@@ -29,9 +26,8 @@ class UsStreetMultipleAddressesExample
         $authId = getenv('SMARTY_AUTH_ID');
         $authToken = getenv('SMARTY_AUTH_TOKEN');
 
-        // For client-side requests (browser/mobile), use SharedCredentials:
-        // $credentials = new SharedCredentials($key, $hostname);
-
+        // Batch requests are sent via HTTP POST. Embedded keys are restricted to GET, so
+        // batches require secret keys: https://www.smarty.com/docs/cloud/authentication
         $credentials = new BasicAuthCredentials($authId, $authToken);
 
         $client = (new ClientBuilder($credentials))

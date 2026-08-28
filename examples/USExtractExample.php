@@ -2,12 +2,10 @@
 
 require_once(__DIR__ . '/../src/ArrayUtil.php');
 require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
-// require_once(__DIR__ . '/../src/SharedCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/US_Extract/Lookup.php');
 require_once(__DIR__ . '/../src/US_Extract/Client.php');
 use SmartyStreets\PhpSdk\BasicAuthCredentials;
-// use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\US_Extract\Lookup;
 use SmartyStreets\PhpSdk\ArrayUtil;
@@ -24,9 +22,8 @@ class USExtractExample {
        $authId = getenv('SMARTY_AUTH_ID');
        $authToken = getenv('SMARTY_AUTH_TOKEN');
 
-        // For client-side requests (browser/mobile), use SharedCredentials:
-        // $credentials = new SharedCredentials($key, $hostname);
-
+        // The US Extract API is POST-only and embedded keys are restricted to GET, so this
+        // API requires secret keys: https://www.smarty.com/docs/cloud/authentication
         $credentials = new BasicAuthCredentials($authId, $authToken);
         $client = (new ClientBuilder($credentials))->buildUSExtractApiClient();
         $text = "Here is some text.\r\nMy address is 3785 Las Vegs Av." .
