@@ -11,6 +11,7 @@ require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Autocomplete/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Autocomplete/Lookup.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Autocomplete/Candidate.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Autocomplete/LanguageMode.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Exceptions/SmartyException.php');
@@ -24,6 +25,7 @@ use SmartyStreets\PhpSdk\URLPrefixSender;
 use SmartyStreets\PhpSdk\International_Autocomplete\Client;
 use SmartyStreets\PhpSdk\International_Autocomplete\Lookup;
 use SmartyStreets\PhpSdk\International_Autocomplete\Candidate;
+use SmartyStreets\PhpSdk\International_Autocomplete\LanguageMode;
 use SmartyStreets\PhpSdk\Response;
 use PHPUnit\Framework\TestCase;
 
@@ -155,6 +157,56 @@ class ClientTest extends TestCase {
         $client->sendLookup($lookup);
 
         $this->assertStringContainsString("geolocation=on", $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testSendingLookupWithLanguage() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("0");
+        $lookup->setSearch("1");
+        $lookup->setLanguage(LanguageMode::Native);
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals("http://localhost/v2/lookup?country=0&search=1&max_results=10&max_group_results=100&language=native",
+            $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testSendingLookupWithMixedCaseLanguageValue() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("0");
+        $lookup->setSearch("1");
+        $lookup->setLanguage(LanguageMode::fromValue("Latin"));
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals("http://localhost/v2/lookup?country=0&search=1&max_results=10&max_group_results=100&language=latin",
+            $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testLanguageOmittedFromUrlWhenNotSet() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("0");
+        $lookup->setSearch("1");
+
+        $this->assertNull($lookup->getLanguage());
+
+        $client->sendLookup($lookup);
+
+        $url = $capturingSender->getRequest()->getUrl();
+        $this->assertStringNotContainsString("language", $url);
+        $this->assertEquals("http://localhost/v2/lookup?country=0&search=1&max_results=10&max_group_results=100", $url);
     }
 
     public function testDefaultValuesForNewFields() {
