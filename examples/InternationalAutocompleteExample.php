@@ -5,10 +5,12 @@ require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/International_Autocomplete/Lookup.php');
 require_once(__DIR__ . '/../src/International_Autocomplete/Client.php');
+require_once(__DIR__ . '/../src/International_Autocomplete/LanguageMode.php');
 use SmartyStreets\PhpSdk\BasicAuthCredentials;
 // use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\International_Autocomplete\Lookup;
+use SmartyStreets\PhpSdk\International_Autocomplete\LanguageMode;
 
 $lookupExample = new InternationalAutocompleteExample();
 $lookupExample->run();
@@ -39,6 +41,7 @@ class InternationalAutocompleteExample {
         $lookup->setLocality("Paris");
         $lookup->setMaxGroupResults(5);
         $lookup->setGeolocation(true);
+        $lookup->setLanguage(LanguageMode::Native);
 
         // Uncomment the below line to add a custom parameter to the API call
         // $lookup->addCustomParameter("parameter", "value");
