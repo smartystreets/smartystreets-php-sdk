@@ -22,6 +22,7 @@ class Lookup {
             $geolocation,
             $locality,
             $postalCode,
+            $language,
             $customParamArray;
     //endregion
 
@@ -80,6 +81,10 @@ class Lookup {
         return $this->postalCode;
     }
 
+    public function getLanguage() {
+        return $this->language;
+    }
+
     public function getCustomParamArray() {
         return $this->customParamArray;
     }
@@ -127,6 +132,10 @@ class Lookup {
 
     public function setPostalCode($postalCode) {
         $this->postalCode = $postalCode;
+    }
+
+    public function setLanguage(LanguageMode $language) {
+        $this->language = $language;
     }
 
     //endregion

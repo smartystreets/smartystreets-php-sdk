@@ -58,6 +58,9 @@ class Client {
         }
         $request->setParameter("include_only_locality", $lookup->getLocality());
         $request->setParameter("include_only_postal_code", $lookup->getPostalCode());
+        if ($lookup->getLanguage() != null) {
+            $request->setParameter("language", $lookup->getLanguage()->value);
+        }
 
         foreach ($lookup->getCustomParamArray() as $key => $value) {
             $request->setParameter($key, $value);
