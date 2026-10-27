@@ -22,7 +22,8 @@ class Candidate {
             $dependentLocalityName,
             $doubleDependentLocality,
             $postalCode,
-            $postalCodeExtra;
+            $postalCodeExtra,
+            $thoroughfare;
 
     public function __construct($obj = null) {
         if ($obj == null)
@@ -39,6 +40,7 @@ class Candidate {
         $this->doubleDependentLocality = ArrayUtil::getField($obj, 'double_dependent_locality');
         $this->postalCode = ArrayUtil::getField($obj, 'postal_code');
         $this->postalCodeExtra = ArrayUtil::getField($obj, 'postal_code_extra');
+        $this->thoroughfare = ArrayUtil::getField($obj, 'thoroughfare');
     }
 
     //region [ Getters ]
@@ -85,6 +87,10 @@ class Candidate {
 
     public function getPostalCodeExtra() {
         return $this->postalCodeExtra;
+    }
+
+    public function getThoroughfare() {
+        return $this->thoroughfare;
     }
 
     //endregion

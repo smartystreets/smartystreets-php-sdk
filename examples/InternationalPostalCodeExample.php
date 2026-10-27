@@ -5,10 +5,12 @@ require_once(__DIR__ . '/../src/BasicAuthCredentials.php');
 require_once(__DIR__ . '/../src/ClientBuilder.php');
 require_once(__DIR__ . '/../src/International_Postal_Code/Lookup.php');
 require_once(__DIR__ . '/../src/International_Postal_Code/Client.php');
+require_once(__DIR__ . '/../src/International_Postal_Code/LanguageMode.php');
 use SmartyStreets\PhpSdk\BasicAuthCredentials;
 // use SmartyStreets\PhpSdk\SharedCredentials;
 use SmartyStreets\PhpSdk\ClientBuilder;
 use SmartyStreets\PhpSdk\International_Postal_Code\Lookup;
+use SmartyStreets\PhpSdk\International_Postal_Code\LanguageMode;
 
 $lookupExample = new InternationalPostalCodeExample();
 $lookupExample->run();
@@ -40,6 +42,8 @@ class InternationalPostalCodeExample {
         $lookup->setAdministrativeArea("SP");
         $lookup->setCountry("Brazil");
         $lookup->setPostalCode("02516");
+        // $lookup->setLanguage(LanguageMode::Native);
+        // $lookup->setMaxResults(10);
 
         try {
             $client->sendLookup($lookup); // The candidates are also stored in the lookup's 'result' field.
@@ -67,6 +71,7 @@ class InternationalPostalCodeExample {
             $this->display($candidate->getAdministrativeArea());
             $this->display($candidate->getSuperAdministrativeArea());
             $this->display($candidate->getPostalCode());
+            $this->display($candidate->getThoroughfare());
             echo("\n");
         }
     }

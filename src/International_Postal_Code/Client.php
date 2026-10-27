@@ -7,6 +7,7 @@ require_once(__DIR__ . '/../Sender.php');
 require_once(__DIR__ . '/../Serializer.php');
 require_once(__DIR__ . '/../Request.php');
 require_once(__DIR__ . '/Candidate.php');
+require_once(__DIR__ . '/LanguageMode.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
@@ -46,9 +47,13 @@ class Client {
 
         $request->setParameter("input_id", $lookup->getInputId());
         $request->setParameter("country", $lookup->getCountry());
+        if ($lookup->getLanguage() != null)
+            $request->setParameter("language", $lookup->getLanguage()->value);
         $request->setParameter("locality", $lookup->getLocality());
         $request->setParameter("administrative_area", $lookup->getAdministrativeArea());
         $request->setParameter("postal_code", $lookup->getPostalCode());
+        if ($lookup->getMaxResults() > 0)
+            $request->setParameter("max_results", strval($lookup->getMaxResults()));
 
         return $request;
     }

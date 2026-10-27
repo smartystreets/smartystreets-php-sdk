@@ -87,6 +87,53 @@ class ClientTest extends TestCase {
             $capturingSender->getRequest()->getUrl());
     }
 
+    public function testSendingLookupWithMaxResults() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("0");
+        $lookup->setFreeform("1");
+        $lookup->setMaxResults(10);
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals("http://localhost/verify?country=0&freeform=1&max_results=10",
+            $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testMaxResultsOmittedWhenNotSet() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("0");
+        $lookup->setFreeform("1");
+
+        $this->assertNull($lookup->getMaxResults());
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals("http://localhost/verify?country=0&freeform=1", $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testMaxResultsOmittedWhenZero() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("0");
+        $lookup->setFreeform("1");
+        $lookup->setMaxResults(0);
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals("http://localhost/verify?country=0&freeform=1", $capturingSender->getRequest()->getUrl());
+    }
+
     public function testSendingCustomParameterLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost", $capturingSender);

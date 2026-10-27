@@ -60,6 +60,8 @@ class Client {
         $request->setParameter("administrative_area", $lookup->getAdministrativeArea());
         $request->setParameter("postal_code", $lookup->getPostalCode());
         $request->setParameter("features", $lookup->getFeatures());
+        if ($lookup->getMaxResults() > 0)
+            $request->setParameter("max_results", strval($lookup->getMaxResults()));
 
         foreach ($lookup->getCustomParamArray() as $key => $value) {
             $request->setParameter($key, $value);
