@@ -11,6 +11,7 @@ require_once(dirname(dirname(__FILE__)) . '/Mocks/MockCrashingSender.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Postal_Code/Client.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Postal_Code/Lookup.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Postal_Code/Candidate.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/src/International_Postal_Code/LanguageMode.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Batch.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Response.php');
 require_once(dirname(dirname(dirname(__FILE__))) . '/src/Exceptions/SmartyException.php');
@@ -24,6 +25,7 @@ use SmartyStreets\PhpSdk\URLPrefixSender;
 use SmartyStreets\PhpSdk\International_Postal_Code\Client;
 use SmartyStreets\PhpSdk\International_Postal_Code\Lookup;
 use SmartyStreets\PhpSdk\International_Postal_Code\Candidate;
+use SmartyStreets\PhpSdk\International_Postal_Code\LanguageMode;
 use SmartyStreets\PhpSdk\Response;
 use PHPUnit\Framework\TestCase;
 
@@ -119,7 +121,8 @@ class ClientTest extends TestCase {
                 'administrative_area' => '4',
                 'sub_administrative_area' => '5',
                 'super_administrative_area' => '6',
-                'postal_code' => '7'
+                'postal_code' => '7',
+                'thoroughfare' => '8'
             )
         );
         $response = new Response(200, "", "");
@@ -138,12 +141,13 @@ class ClientTest extends TestCase {
         $this->assertEquals("5", $candidate->getSubAdministrativeArea());
         $this->assertEquals("6", $candidate->getSuperAdministrativeArea());
         $this->assertEquals("7", $candidate->getPostalCode());
+        $this->assertEquals("8", $candidate->getThoroughfare());
     }
 
     public function testSendingSingleFullyPopulatedLookup() {
         $capturingSender = new RequestCapturingSender();
         $sender = new URLPrefixSender("http://localhost", $capturingSender);
-        $expectedUrl = "http://localhost/lookup?input_id=ID-8675309&country=Brazil&locality=Sao+Paulo&administrative_area=SP&postal_code=02516";
+        $expectedUrl = "http://localhost/lookup?input_id=ID-8675309&country=Brazil&language=native&locality=Sao+Paulo&administrative_area=SP&postal_code=02516&max_results=25";
         $serializer = new MockSerializer(null);
         $client = new Client($sender, $serializer);
         $lookup = new Lookup();
@@ -152,10 +156,69 @@ class ClientTest extends TestCase {
         $lookup->setLocality("Sao Paulo");
         $lookup->setAdministrativeArea("SP");
         $lookup->setPostalCode("02516");
+        $lookup->setLanguage(LanguageMode::Native);
+        $lookup->setMaxResults(25);
 
         $client->sendLookup($lookup);
 
         $this->assertEquals($expectedUrl, $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testSendingLookupWithMixedCaseLanguageValue() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("CAN");
+        $lookup->setLanguage(LanguageMode::fromValue("Latin"));
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals("http://localhost/lookup?country=CAN&language=latin",
+            $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testSendingLookupWithMaxResults() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("CAN");
+        $lookup->setMaxResults(1000);
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals("http://localhost/lookup?country=CAN&max_results=1000",
+            $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testLanguageAndMaxResultsOmittedWhenNotSet() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("CAN");
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals("http://localhost/lookup?country=CAN", $capturingSender->getRequest()->getUrl());
+    }
+
+    public function testMaxResultsOmittedWhenZero() {
+        $capturingSender = new RequestCapturingSender();
+        $sender = new URLPrefixSender("http://localhost", $capturingSender);
+        $serializer = new MockSerializer(null);
+        $client = new Client($sender, $serializer);
+        $lookup = new Lookup();
+        $lookup->setCountry("CAN");
+        $lookup->setMaxResults(0);
+
+        $client->sendLookup($lookup);
+
+        $this->assertEquals("http://localhost/lookup?country=CAN", $capturingSender->getRequest()->getUrl());
     }
 }
 

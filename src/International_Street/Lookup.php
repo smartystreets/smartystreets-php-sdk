@@ -26,6 +26,7 @@ class Lookup {
             $administrativeArea,
             $postalCode,
             $features,
+            $maxResults,
             $customParamArray;
 
     //endregion
@@ -151,6 +152,10 @@ class Lookup {
         return $this->features;
     }
 
+    public function getMaxResults() {
+        return $this->maxResults;
+    }
+
     public function getCustomParamArray() {
         return $this->customParamArray;
     }
@@ -230,6 +235,13 @@ class Lookup {
 
     public function setFeatures($features) {
         $this->features = $features;
+    }
+
+    /**
+     * @param $maxResults int The maximum number of candidates to return. Only sent when greater than 0.
+     */
+    public function setMaxResults($maxResults) {
+        $this->maxResults = $maxResults;
     }
 
     //endregion

@@ -6,6 +6,7 @@ require_once(__DIR__ . '/../Exceptions/UnprocessableEntityException.php');
 require_once(__DIR__ . '/../Sender.php');
 require_once(__DIR__ . '/../Serializer.php');
 require_once(__DIR__ . '/../Request.php');
+require_once(__DIR__ . '/../MaxResultsUtil.php');
 require_once(__DIR__ . '/../Batch.php');
 require_once(__DIR__ . '/Candidate.php');
 use SmartyStreets\PhpSdk\Exceptions\SmartyException;
@@ -13,6 +14,7 @@ use SmartyStreets\PhpSdk\Exceptions\UnprocessableEntityException;
 use SmartyStreets\PhpSdk\Sender;
 use SmartyStreets\PhpSdk\Serializer;
 use SmartyStreets\PhpSdk\Request;
+use SmartyStreets\PhpSdk\MaxResultsUtil;
 
 /**
  * This client sends lookups to the SmartyStreets International Street API, <br>
@@ -60,6 +62,7 @@ class Client {
         $request->setParameter("administrative_area", $lookup->getAdministrativeArea());
         $request->setParameter("postal_code", $lookup->getPostalCode());
         $request->setParameter("features", $lookup->getFeatures());
+        $request->setParameter("max_results", MaxResultsUtil::normalize($lookup->getMaxResults()));
 
         foreach ($lookup->getCustomParamArray() as $key => $value) {
             $request->setParameter($key, $value);
